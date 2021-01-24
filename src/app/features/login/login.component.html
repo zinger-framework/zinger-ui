@@ -51,6 +51,7 @@
           <div>
             <div class="input-group custom">
               <input
+                [(ngModel)]="email"
                 type="email"
                 name="email"
                 class="form-control form-control-lg"
@@ -66,6 +67,7 @@
 
             <div class="input-group custom">
               <input
+                [(ngModel)]="password"
                 type="password"
                 name="password"
                 class="form-control form-control-lg"
@@ -92,6 +94,7 @@
 
             <div class="input-group mb-0">
               <input
+                (click)="login()"
                 class="btn btn-primary btn-lg btn-block"
                 type="submit"
                 value="Login Now"

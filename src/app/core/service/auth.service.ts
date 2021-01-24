@@ -12,8 +12,8 @@ export class AuthService {
 
   constructor(private http: HttpClient) {}
 
-  login(){
-    let requestBody = JSON.stringify({"emails":"harsha1@gmail.com","mobile":"9176019334","password":"123456"})
+  login(email: string, password: string){
+    let requestBody = JSON.stringify({"emails":"harsha1@gmail.com","mobile": email,"password": password})
     let loginPromise = this.http.post('http://api.zinger.pw/v2/auth/login/password',requestBody).toPromise()
     return loginPromise
   }

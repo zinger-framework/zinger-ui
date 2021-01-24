@@ -6,13 +6,13 @@ import { AuthService } from '../service/auth.service';
 @Injectable({
   providedIn: 'root'
 })
-export class BasicInterceptorService implements HttpInterceptor{
+export class AuthInterceptorService implements HttpInterceptor{
 
   constructor(public authService: AuthService){
   }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    console.log("Post Service isAuthenticated: "+this.authService.isAuthenticated)
+    console.log("Login Service isAuthenticated: "+this.authService.isAuthenticated)
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
