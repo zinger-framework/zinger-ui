@@ -24,16 +24,17 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css",
-              "src/assets/stylesheets/style.css",
               "src/assets/stylesheets/core.css",
-              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "src/assets/stylesheets/icon-font.min.css",
               "node_modules/datatables.net-bs4/css/dataTables.bootstrap4.min.css",
-              "node_modules/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css"
+              "node_modules/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css",
+              "src/assets/stylesheets/style.css"
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",
-              "node_modules/bootstrap/dist/js/bootstrap.min.js"]
+              "node_modules/bootstrap/dist/js/bootstrap.min.js",
+              "node_modules/jquery-steps/build/jquery.steps.js"
+            ]
           },
           "configurations": {
             "production": {
