@@ -20,20 +20,23 @@
             "tsConfig": "tsconfig.app.json",
             "aot": true,
             "assets": [
-              "src/favicon.ico",
               "src/assets"
             ],
             "styles": [
+              "node_modules/switchery/standalone/switchery.css",
+              "node_modules/jquery-steps/demo/css/jquery.steps.css",
               "src/assets/stylesheets/core.css",
-              "src/assets/stylesheets/icon-font.min.css",
-              "node_modules/datatables.net-bs4/css/dataTables.bootstrap4.min.css",
-              "node_modules/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css",
-              "src/assets/stylesheets/style.css"
+              "src/assets/stylesheets/style.css",
+              "src/assets/stylesheets/icon-font.min.css"
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",
-              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
-              "node_modules/jquery-steps/build/jquery.steps.js"
+              "node_modules/jquery-steps/build/jquery.steps.js",
+              "node_modules/apexcharts/dist/apexcharts.min.js",
+              "node_modules/switchery/standalone/switchery.js",
+              "src/assets/scripts/core.js",
+              "src/assets/scripts/script.js",
+              "src/assets/scripts/dashboard.js"
             ]
           },
           "configurations": {
