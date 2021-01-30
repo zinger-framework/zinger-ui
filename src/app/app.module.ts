@@ -6,17 +6,24 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { PageNotFoundComponent } from './core/component/page-not-found/page-not-found.component';
 import { HeaderComponent } from './core/component/header/header.component';
-import { interceptorProviders } from './core/interceptor/interceptor';
+import { InterceptorProviders } from './core/interceptor/interceptor';
 import { AuthService } from './core/service/auth.service'
+import { JwtService } from './core/service/jwt.service'
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
+import { ProfileComponent } from './features/profile/profile.component';
+import { SidebarComponent } from './core/component/sidebar/sidebar.component';
+import { DashboardComponent } from './features/dashboard/dashboard.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     PageNotFoundComponent,
-    HeaderComponent
+    HeaderComponent,
+    ProfileComponent,
+    SidebarComponent,
+    DashboardComponent
   ],
   imports: [
     BrowserModule,
@@ -26,7 +33,7 @@ import { CommonModule } from '@angular/common';
     HttpClientModule,
     LoginModule
   ],
-  providers: [AuthService, interceptorProviders],
+  providers: [AuthService, InterceptorProviders, JwtService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
