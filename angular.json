@@ -26,6 +26,7 @@
               "src/assets/stylesheets/core.css",
               "src/assets/stylesheets/icon-font.min.css",
               "src/assets/stylesheets/style.css",
+              "src/assets/stylesheets/angular-wizard.scss",
               "node_modules/switchery/standalone/switchery.css"
             ],
             "scripts": [
