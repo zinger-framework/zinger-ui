@@ -10,7 +10,7 @@ import {AppComponent} from './app.component';
 
 import {CoreModule} from './core/core.module';
 import {FeaturesModule} from './features/features.module';
-import {SharedComponentsModule} from './shared/shared-components.module';
+import {SharedModule} from './shared/shared.module';
 import {LayoutsModule} from './layouts/layouts.module';
 
 @NgModule({
@@ -26,7 +26,7 @@ import {LayoutsModule} from './layouts/layouts.module';
     NgbModule,
     CoreModule,
     FeaturesModule,
-    SharedComponentsModule,
+    SharedModule,
     LayoutsModule
   ],
   bootstrap: [AppComponent]

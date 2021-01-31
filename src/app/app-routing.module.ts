@@ -7,9 +7,9 @@ import {DashboardComponent} from './features/dashboard/dashboard.component';
 
 const routes: Routes = [
   {path: 'login', component: LoginComponent},
+  {path: 'forgot_password', component: ForgotPasswordComponent},
   {path: 'profile', component: ProfileComponent},
-  {path: 'profile', component: DashboardComponent},
-  {path: 'testComponent', component: ForgotPasswordComponent}
+  {path: 'dashboard', component: DashboardComponent}
 ];
 
 @NgModule({

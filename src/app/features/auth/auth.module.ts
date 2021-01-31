@@ -6,17 +6,19 @@ import {ForgotPasswordComponent} from './forgot-password/forgot-password.compone
 import {ArchwizardModule} from 'angular-archwizard';
 import {RouterModule} from '@angular/router';
 import {NgbButtonsModule} from '@ng-bootstrap/ng-bootstrap';
+import {SharedModule} from '../../shared/shared.module';
 
 @NgModule({
   declarations: [LoginComponent, ForgotPasswordComponent],
-  imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    ArchwizardModule,
-    RouterModule,
-    NgbButtonsModule
-  ]
+    imports: [
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        ArchwizardModule,
+        RouterModule,
+        NgbButtonsModule,
+        SharedModule
+    ]
 })
 export class AuthModule {
 }

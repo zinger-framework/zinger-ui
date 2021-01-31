@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {JwtService} from '../../core/service/jwt.service';
 
 @Component({
-  selector: 'app-sidebar',
+  selector: 'sidebar',
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.css']
 })

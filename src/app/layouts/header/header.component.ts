@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {JwtService} from '../../core/service/jwt.service';
 
 @Component({
-  selector: 'app-header',
+  selector: 'header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
