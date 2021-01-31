@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { JwtService } from '../../service/jwt.service'
+import {Component, OnInit} from '@angular/core';
+import {JwtService} from '../../core/service/jwt.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -7,13 +7,12 @@ import { JwtService } from '../../service/jwt.service'
   styleUrls: ['./sidebar.component.css']
 })
 export class SidebarComponent implements OnInit {
+  isAuthenicated = false;
 
-  isAuthenicated: Boolean = false;
-
-  constructor(public jwtService: JwtService) { }
+  constructor(public jwtService: JwtService) {
+  }
 
   ngOnInit(): void {
     this.isAuthenicated = this.jwtService.isLoggedIn();
   }
-
 }

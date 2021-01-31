@@ -1,12 +1,12 @@
 $aw-colors: (
   '_': (
     'default': (
-      'border-color-default': rgba(24,31,72,.3),
-      'background-color-default': rgba(24,31,72,.3),
-      'symbol-color-default': rgba(24,31,72,.3),
-      'border-color-hover': rgba(24,31,72,.32),
-      'background-color-hover': rgba(24,31,72,.3),
-      'symbol-color-hover': rgba(24,31,72,.32),
+      'border-color-default': rgba(24, 31, 72, .3),
+      'background-color-default': rgba(24, 31, 72, .3),
+      'symbol-color-default': rgba(24, 31, 72, .3),
+      'border-color-hover': rgba(24, 31, 72, .32),
+      'background-color-hover': rgba(24, 31, 72, .3),
+      'symbol-color-hover': rgba(24, 31, 72, .32),
     ),
     'current': (
       'border-color-default': var(--blue),
@@ -27,8 +27,8 @@ $aw-colors: (
   )
 ) !default;
 
-$aw-line-color: rgba(24,31,72,.3) !default;
-$aw-label-color-default: rgba(24,31,72,.6) !default;
+$aw-line-color: rgba(24, 31, 72, .3) !default;
+$aw-label-color-default: rgba(24, 31, 72, .6) !default;
 $aw-label-color-hover: darken($aw-label-color-default, 20%) !default;
 $aw-circle-border-width: 2.4px !default;
 $aw-text-height: 12.5px !default;
@@ -43,7 +43,9 @@ aw-wizard-navigation-bar.horizontal ul.steps-indicator {
   }
 
   li.current, li.done {
-    .label { color: #181f48; }
+    .label {
+      color: #181f48;
+    }
   }
 
   li.done:not(.editing):after {

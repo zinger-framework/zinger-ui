@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { JwtService } from '../../service/jwt.service'
+import {Component, OnInit} from '@angular/core';
+import {JwtService} from '../../core/service/jwt.service';
 
 @Component({
   selector: 'app-header',
@@ -7,10 +7,11 @@ import { JwtService } from '../../service/jwt.service'
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
-  name: String = "";
+  name: String = '';
   isAuthenticated: Boolean = false;
 
-  constructor(public jwtService: JwtService) {}
+  constructor(public jwtService: JwtService) {
+  }
 
   ngOnInit(): void {
     this.name = 'Logesh';

@@ -974,7 +974,7 @@
   };
   var R = r.Deferred();
   r.fn.ready = function (a) {
-    return R.then(a)["catch"](function (a) {
+    return R.then(a).catch(function (a) {
       r.readyException(a)
     }), this
   }, r.extend({
@@ -2254,7 +2254,7 @@
         g === !0 ? g = j[e] : j[e] !== !0 && (f = h[0], k.unshift(h[1]));
         break
       }
-      if (g !== !0) if (g && a["throws"]) b = g(b); else try {
+      if (g !== !0) if (g && a.throws) b = g(b); else try {
         b = g(b)
       } catch (l) {
         return {state: "parsererror", error: g ? l : "No conversion from " + i + " to " + f}
@@ -2824,8 +2824,8 @@
   function P(t, o, n) {
     var i = void 0 === n ? t : t.slice(0, N(t, 'name', n));
     return i.forEach(function (t) {
-      t['function'] && console.warn('`modifier.function` is deprecated, use `modifier.fn`!');
-      var n = t['function'] || t.fn;
+      t.function && console.warn('`modifier.function` is deprecated, use `modifier.fn`!');
+      var n = t.function || t.fn;
       t.enabled && e(n) && (o.offsets.popper = g(o.offsets.popper), o.offsets.reference = g(o.offsets.reference), o = n(o, t))
     }), o
   }
@@ -5155,7 +5155,7 @@
   };
 
   function calendar(key, mom, now) {
-    var output = this._calendar[key] || this._calendar['sameElse'];
+    var output = this._calendar[key] || this._calendar.sameElse;
     return isFunction(output) ? output.call(mom, now) : output;
   }
 
@@ -5562,7 +5562,6 @@
     return this;
   }
 
-
   function stringSet(units, value) {
     if (typeof units === 'object') {
       units = normalizeObjectUnits(units);
@@ -5664,7 +5663,7 @@
   function localeMonths(m, format) {
     if (!m) {
       return isArray(this._months) ? this._months :
-        this._months['standalone'];
+        this._months.standalone;
     }
     return isArray(this._months) ? this._months[m.month()] :
       this._months[(this._months.isFormat || MONTHS_IN_FORMAT).test(format) ? 'format' : 'standalone'][m.month()];
@@ -5675,7 +5674,7 @@
   function localeMonthsShort(m, format) {
     if (!m) {
       return isArray(this._monthsShort) ? this._monthsShort :
-        this._monthsShort['standalone'];
+        this._monthsShort.standalone;
     }
     return isArray(this._monthsShort) ? this._monthsShort[m.month()] :
       this._monthsShort[MONTHS_IN_FORMAT.test(format) ? 'format' : 'standalone'][m.month()];
@@ -6112,7 +6111,7 @@
   function localeWeekdays(m, format) {
     if (!m) {
       return isArray(this._weekdays) ? this._weekdays :
-        this._weekdays['standalone'];
+        this._weekdays.standalone;
     }
     return isArray(this._weekdays) ? this._weekdays[m.day()] :
       this._weekdays[this._weekdays.isFormat.test(format) ? 'format' : 'standalone'][m.day()];
@@ -6337,7 +6336,6 @@
     }
   }
 
-
   function computeWeekdaysParse() {
     function cmpLenRev(a, b) {
       return b.length - a.length;
@@ -6505,7 +6503,6 @@
     }
   }
 
-
 // MOMENTS
 
 // Setting the hour should keep the time, because the user explicitly
@@ -6654,7 +6651,6 @@
       // make sure we set the locale AFTER all child locales have been
       // created, so we won't end up with the child locale set.
       getSetGlobalLocale(name);
-
 
       return locales[name];
     } else {
@@ -7199,7 +7195,6 @@
     configFromArray(config);
     checkOverflow(config);
   }
-
 
   function meridiemFixWrap(locale, hour, meridiem) {
     var isPm;
@@ -8321,7 +8316,6 @@
   addUnitPriority('weekYear', 1);
   addUnitPriority('isoWeekYear', 1);
 
-
 // PARSING
 
   addRegexToken('G', matchSigned);
@@ -8546,7 +8540,6 @@
   addFormatToken(0, ['SSSSSSSSS', 9], 0, function () {
     return this.millisecond() * 1000000;
   });
-
 
 // ALIASES
 
@@ -9137,7 +9130,6 @@
     years = absFloor(months / 12);
     months %= 12;
 
-
     // inspired by https://github.com/dordille/moment-isoduration/blob/master/moment.isoduration.js
     var Y = years;
     var M = months;
@@ -9224,7 +9216,6 @@
   });
 
 // Side effect imports
-
 
   hooks.version = '2.21.0';
 
@@ -9348,7 +9339,6 @@ and dependencies (minified).
     var pluginNS = "mCustomScrollbar",
       pluginPfx = "mCS",
       defaultSelector = ".mCustomScrollbar",
-
 
       /*
 	----------------------------------------
@@ -9635,7 +9625,6 @@ and dependencies (minified).
 			*/
       },
 
-
       /*
 	----------------------------------------
 	VARS, CONSTANTS
@@ -9652,7 +9641,6 @@ and dependencies (minified).
         "mCS-autoHide", "mCS-dir-rtl", "mCS_no_scrollbar_y", "mCS_no_scrollbar_x", "mCS_y_hidden", "mCS_x_hidden", "mCSB_draggerContainer",
         "mCSB_buttonUp", "mCSB_buttonDown", "mCSB_buttonLeft", "mCSB_buttonRight"
       ],
-
 
       /*
 	----------------------------------------
@@ -9786,8 +9774,6 @@ and dependencies (minified).
         },
         /* ---------------------------------------- */
 
-
-
         /*
 			plugin update method
 			updates content and scrollbar(s) values, events and status
@@ -9908,8 +9894,6 @@ and dependencies (minified).
         },
         /* ---------------------------------------- */
 
-
-
         /*
 			plugin scrollTo method
 			triggers a scrolling event to a specific value
@@ -9985,8 +9969,6 @@ and dependencies (minified).
         },
         /* ---------------------------------------- */
 
-
-
         /*
 			plugin stop method
 			stops scrolling animation
@@ -10011,8 +9993,6 @@ and dependencies (minified).
 
         },
         /* ---------------------------------------- */
-
-
 
         /*
 			plugin disable method
@@ -10051,8 +10031,6 @@ and dependencies (minified).
 
         },
         /* ---------------------------------------- */
-
-
 
         /*
 			plugin destroy method
@@ -10105,7 +10083,6 @@ and dependencies (minified).
 
       },
 
-
       /*
 	----------------------------------------
 	FUNCTIONS
@@ -10117,7 +10094,6 @@ and dependencies (minified).
         return (typeof $(this) !== "object" || $(this).length < 1) ? defaultSelector : this;
       },
       /* -------------------- */
-
 
       /* changes options according to theme */
       _theme = function (obj) {
@@ -10134,7 +10110,6 @@ and dependencies (minified).
       },
       /* -------------------- */
 
-
       /* live option timers removal */
       removeLiveTimers = function (selector) {
         if (liveTimers[selector]) {
@@ -10144,20 +10119,17 @@ and dependencies (minified).
       },
       /* -------------------- */
 
-
       /* normalizes axis option to valid values: "y", "x", "yx" */
       _findAxis = function (val) {
         return (val === "yx" || val === "xy" || val === "auto") ? "yx" : (val === "x" || val === "horizontal") ? "x" : "y";
       },
       /* -------------------- */
 
-
       /* normalizes scrollButtons.scrollType option to valid values: "stepless", "stepped" */
       _findScrollButtonsType = function (val) {
         return (val === "stepped" || val === "pixels" || val === "step" || val === "click") ? "stepped" : "stepless";
       },
       /* -------------------- */
-
 
       /* generates plugin markup */
       _pluginMarkup = function () {
@@ -10200,7 +10172,6 @@ and dependencies (minified).
       },
       /* -------------------- */
 
-
       /* calculates content width */
       _contentWidth = function (el) {
         var val = [el[0].scrollWidth, Math.max.apply(Math, el.children().map(function () {
@@ -10209,7 +10180,6 @@ and dependencies (minified).
         return val[0] > w ? val[0] : val[1] > w ? val[1] : "100%";
       },
       /* -------------------- */
-
 
       /* expands content horizontally */
       _expandContentHorizontally = function () {
@@ -10243,7 +10213,6 @@ and dependencies (minified).
       },
       /* -------------------- */
 
-
       /* adds scrollbar buttons */
       _scrollButtons = function () {
         var $this = $(this), d = $this.data(pluginPfx), o = d.opt,
@@ -10261,7 +10230,6 @@ and dependencies (minified).
         }
       },
       /* -------------------- */
-
 
       /* auto-adjusts scrollbar dragger length */
       _setDraggerLength = function () {
@@ -10284,7 +10252,6 @@ and dependencies (minified).
       },
       /* -------------------- */
 
-
       /* calculates scrollbar to content ratio */
       _scrollRatio = function () {
         var $this = $(this), d = $this.data(pluginPfx),
@@ -10299,7 +10266,6 @@ and dependencies (minified).
         d.scrollRatio = {y: ratio[0], x: ratio[1]};
       },
       /* -------------------- */
-
 
       /* toggles scrolling classes */
       _onDragClasses = function (el, action, xpnd) {
@@ -10323,7 +10289,6 @@ and dependencies (minified).
       },
       /* -------------------- */
 
-
       /* checks if content overflows its container to determine if scrolling is required */
       _overflowed = function () {
         var $this = $(this), d = $this.data(pluginPfx),
@@ -10341,7 +10306,6 @@ and dependencies (minified).
         return [contentHeight > mCustomScrollBox.height(), contentWidth > mCustomScrollBox.width()];
       },
       /* -------------------- */
-
 
       /* resets content position to 0 */
       _resetContentPosition = function () {
@@ -10366,7 +10330,6 @@ and dependencies (minified).
         }
       },
       /* -------------------- */
-
 
       /* binds scrollbar events */
       _bindEvents = function () {
@@ -10408,7 +10371,6 @@ and dependencies (minified).
       },
       /* -------------------- */
 
-
       /* unbinds scrollbar events */
       _unbindEvents = function () {
         var $this = $(this), d = $this.data(pluginPfx), o = d.opt,
@@ -10439,7 +10401,6 @@ and dependencies (minified).
         }
       },
       /* -------------------- */
-
 
       /* toggles scrollbar visibility */
       _scrollbarVisibility = function (disabled) {
@@ -10490,7 +10451,6 @@ and dependencies (minified).
       },
       /* -------------------- */
 
-
       /* returns input coordinates of pointer, touch and mouse events (relative to document) */
       _coordinates = function (e) {
         var t = e.type,
@@ -10517,7 +10477,6 @@ and dependencies (minified).
         }
       },
       /* -------------------- */
-
 
       /*
 		SCROLLBAR DRAG EVENTS
@@ -10593,7 +10552,6 @@ and dependencies (minified).
         }
       },
       /* -------------------- */
-
 
       /*
 		TOUCH SWIPE EVENTS
@@ -10792,7 +10750,6 @@ and dependencies (minified).
       },
       /* -------------------- */
 
-
       /*
 		SELECT TEXT EVENTS
 		scrolls content when text is selected
@@ -10860,7 +10817,6 @@ and dependencies (minified).
         }
       },
       /* -------------------- */
-
 
       /*
 		MOUSE WHEEL EVENT
@@ -10939,9 +10895,8 @@ and dependencies (minified).
       },
       /* -------------------- */
 
-
       /* checks if iframe can be accessed */
-      _canAccessIFrameCache = new Object(),
+      _canAccessIFrameCache = {},
       _canAccessIFrame = function (iframe) {
         var result = false, cacheKey = false, html = null;
         if (iframe === undefined) {
@@ -10974,7 +10929,6 @@ and dependencies (minified).
       },
       /* -------------------- */
 
-
       /* switches iframe's pointer-events property (drag, mousewheel etc. over cross-domain iframes) */
       _iframe = function (evt) {
         var el = this.find("iframe");
@@ -10986,7 +10940,6 @@ and dependencies (minified).
       },
       /* -------------------- */
 
-
       /* disables mouse-wheel when hovering specific elements like select, datalist etc. */
       _disableMousewheel = function (el, target) {
         var tag = target.nodeName.toLowerCase(),
@@ -10996,7 +10949,6 @@ and dependencies (minified).
         return $.inArray(tag, tags) > -1 && !($.inArray(tag, focusTags) > -1 && !$(target).is(":focus"));
       },
       /* -------------------- */
-
 
       /*
 		DRAGGER RAIL CLICK EVENT
@@ -11044,7 +10996,6 @@ and dependencies (minified).
         });
       },
       /* -------------------- */
-
 
       /*
 		FOCUS EVENT
@@ -11094,7 +11045,6 @@ and dependencies (minified).
       },
       /* -------------------- */
 
-
       /* sets content wrapper scrollTop/scrollLeft always to 0 */
       _wrapperScroll = function () {
         var $this = $(this), d = $this.data(pluginPfx),
@@ -11107,7 +11057,6 @@ and dependencies (minified).
         });
       },
       /* -------------------- */
-
 
       /*
 		BUTTONS EVENTS
@@ -11169,7 +11118,6 @@ and dependencies (minified).
         });
       },
       /* -------------------- */
-
 
       /*
 		KEYBOARD EVENTS
@@ -11276,7 +11224,6 @@ and dependencies (minified).
       },
       /* -------------------- */
 
-
       /* scrolls content sequentially (used when scrolling via buttons, keyboard arrows etc.) */
       _sequentialScroll = function (el, action, trigger, e, s) {
         var d = el.data(pluginPfx), o = d.opt, seq = d.sequential,
@@ -11342,7 +11289,6 @@ and dependencies (minified).
       },
       /* -------------------- */
 
-
       /* returns a yx array from value */
       _arr = function (val) {
         var o = $(this).data(pluginPfx).opt, vals = [];
@@ -11366,7 +11312,6 @@ and dependencies (minified).
         return vals;
       },
       /* -------------------- */
-
 
       /* translates values (e.g. "top", 100, "100px", "#id") to actual scroll-to positions */
       _to = function (val, dir) {
@@ -11431,7 +11376,6 @@ and dependencies (minified).
         }
       },
       /* -------------------- */
-
 
       /* calls the update method automatically */
       _autoUpdate = function (rem) {
@@ -11539,13 +11483,11 @@ and dependencies (minified).
       },
       /* -------------------- */
 
-
       /* snaps scrolling to a multiple of a pixels number */
       _snapAmount = function (to, amount, offset) {
         return (Math.round(to / amount) * amount - offset);
       },
       /* -------------------- */
-
 
       /* stops content and scrollbar animations */
       _stop = function (el) {
@@ -11556,7 +11498,6 @@ and dependencies (minified).
         });
       },
       /* -------------------- */
-
 
       /*
 		ANIMATES CONTENT
@@ -11764,7 +11705,6 @@ and dependencies (minified).
       },
       /* -------------------- */
 
-
       /*
 		CUSTOM JAVASCRIPT ANIMATION TWEEN
 		Lighter and faster than jquery animate() and css transitions
@@ -11893,7 +11833,6 @@ and dependencies (minified).
       },
       /* -------------------- */
 
-
       /* returns current time */
       _getTime = function () {
         if (window.performance && window.performance.now) {
@@ -11911,7 +11850,6 @@ and dependencies (minified).
         }
       },
       /* -------------------- */
-
 
       /* stops a tween */
       _stopTween = function () {
@@ -11935,7 +11873,6 @@ and dependencies (minified).
       },
       /* -------------------- */
 
-
       /* deletes a property (avoiding the exception thrown by IE) */
       _delete = function (c, m) {
         try {
@@ -11946,13 +11883,11 @@ and dependencies (minified).
       },
       /* -------------------- */
 
-
       /* detects left mouse button */
       _mouseBtnLeft = function (e) {
         return !(e.which && e.which !== 1);
       },
       /* -------------------- */
-
 
       /* detects if pointer type event is touch */
       _pointerTouch = function (e) {
@@ -11961,13 +11896,11 @@ and dependencies (minified).
       },
       /* -------------------- */
 
-
       /* checks if value is numeric */
       _isNumeric = function (val) {
         return !isNaN(parseFloat(val)) && isFinite(val);
       },
       /* -------------------- */
-
 
       /* returns element position according to content */
       _childPos = function (el) {
@@ -11975,7 +11908,6 @@ and dependencies (minified).
         return [el.offset().top - p.offset().top, el.offset().left - p.offset().left];
       },
       /* -------------------- */
-
 
       /* checks if browser tab is hidden/inactive via Page Visibility API */
       _isTabHidden = function () {
@@ -11994,7 +11926,6 @@ and dependencies (minified).
         }
       };
     /* -------------------- */
-
 
     /*
 	----------------------------------------
@@ -12126,8 +12057,7 @@ var wysihtml5 = {
  * Version: 1.2.2
  * Build date: 13 November 2011
  */
-window['rangy'] = (function () {
-
+window.rangy = (function () {
 
   var OBJECT = "object", FUNCTION = "function", UNDEFINED = "undefined";
 
@@ -12783,7 +12713,6 @@ rangy.createModule("DomUtil", function (api, module) {
 rangy.createModule("DomRange", function (api, module) {
   api.requireModules(["DomUtil"]);
 
-
   var dom = api.dom;
   var DomPosition = dom.DomPosition;
   var DOMException = api.DOMException;
@@ -12904,7 +12833,6 @@ rangy.createModule("DomRange", function (api, module) {
 
     for (var node, frag = getRangeDocument(iterator.range).createDocumentFragment(), subIterator; node = iterator.next();) {
 
-
       if (iterator.isPartiallySelectedSubtree()) {
         node = node.cloneNode(false);
         subIterator = iterator.getSubtreeIterator();
@@ -12954,7 +12882,6 @@ rangy.createModule("DomRange", function (api, module) {
   function RangeIterator(range, clonePartiallySelectedTextNodes) {
     this.range = range;
     this.clonePartiallySelectedTextNodes = clonePartiallySelectedTextNodes;
-
 
     if (!range.collapsed) {
       this.sc = range.startContainer;
@@ -13494,7 +13421,6 @@ rangy.createModule("DomRange", function (api, module) {
       return touchingIsIntersecting ? startComparison <= 0 && endComparison >= 0 : startComparison < 0 && endComparison > 0;
     },
 
-
     isPointInRange: function (node, offset) {
       assertRangeValid(this);
       assertNode(node, "HIERARCHY_REQUEST_ERR");
@@ -13797,7 +13723,6 @@ rangy.createModule("DomRange", function (api, module) {
       splitBoundaries: function () {
         assertRangeValid(this);
 
-
         var sc = this.startContainer, so = this.startOffset, ec = this.endContainer, eo = this.endOffset;
         var startEndSame = (sc === ec);
 
@@ -13985,7 +13910,6 @@ rangy.createModule("WrappedRange", function (api, module) {
   var DomPosition = dom.DomPosition;
   var DomRange = api.DomRange;
 
-
   /*----------------------------------------------------------------------------------------------------------------*/
 
   /*
@@ -14038,7 +13962,6 @@ rangy.createModule("WrappedRange", function (api, module) {
 
     }
 
-
     // Deal with nodes that cannot "contain rich HTML markup". In practice, this means form inputs, images and
     // similar. See http://msdn.microsoft.com/en-us/library/aa703950%28VS.85%29.aspx
     if (!containerElement.canHaveHTML) {
@@ -14066,7 +13989,6 @@ rangy.createModule("WrappedRange", function (api, module) {
       // node containing the text range's boundary, so we move the end of the working range to the boundary point
       // and measure the length of its text to get the boundary's offset within the node.
       workingRange.setEndPoint(isStart ? "EndToStart" : "EndToEnd", textRange);
-
 
       var offset;
 
@@ -14114,12 +14036,10 @@ rangy.createModule("WrappedRange", function (api, module) {
       boundaryPosition = new DomPosition(boundaryNode, offset);
     } else {
 
-
       // If the boundary immediately follows a character data node and this is the end boundary, we should favour
       // a position within that, and likewise for a start boundary preceding a character data node
       previousNode = (isCollapsed || !isStart) && workingNode.previousSibling;
       nextNode = (isCollapsed || isStart) && workingNode.nextSibling;
-
 
       if (nextNode && dom.isCharacterDataNode(nextNode)) {
         boundaryPosition = new DomPosition(nextNode, 0);
@@ -14328,7 +14248,6 @@ rangy.createModule("WrappedRange", function (api, module) {
 
       } catch (ex) {
 
-
         canSetRangeStartAfterEnd = false;
 
         rangeProto.setStart = function (node, offset) {
@@ -14403,7 +14322,6 @@ rangy.createModule("WrappedRange", function (api, module) {
       if (range.compareBoundaryPoints(range.START_TO_END, range2) == -1 &
         range.compareBoundaryPoints(range.END_TO_START, range2) == 1) {
         // This is the wrong way round, so correct for it
-
 
         rangeProto.compareBoundaryPoints = function (type, range) {
           range = range.nativeRange || range;
@@ -14491,7 +14409,6 @@ rangy.createModule("WrappedRange", function (api, module) {
       if (range.collapsed) {
         var tr = createBoundaryTextRange(new DomPosition(range.startContainer, range.startOffset), true);
 
-
         return tr;
 
         //return createBoundaryTextRange(new DomPosition(range.startContainer, range.startOffset), true);
@@ -14559,7 +14476,6 @@ rangy.createModule("WrappedSelection", function (api, module) {
     getSelection,
     selectionIsCollapsed,
     CONTROL = "Control";
-
 
   function getWinSelection(winParam) {
     return (winParam || window).getSelection();
@@ -15043,7 +14959,6 @@ rangy.createModule("WrappedSelection", function (api, module) {
         range = dom.getBody(sel.win.document).createTextRange();
         range.collapse(true);
       }
-
 
       if (sel.docSelection.type == CONTROL) {
         updateControlSelection(sel);
@@ -16475,7 +16390,6 @@ wysihtml5.dom.getAsDom = (function () {
     context._wysihtml5_supportsHTML5Tags = true;
   };
 
-
   /**
    * List of html5 tags
    * taken from http://simon.html5.org/html5-elements
@@ -17086,7 +17000,7 @@ wysihtml5.dom.parse = (function () {
     }
 
     if (newUniqueClasses.length) {
-      attributes["class"] = newUniqueClasses.join(" ");
+      attributes.class = newUniqueClasses.join(" ");
     }
 
     // set attributes on newNode
@@ -17159,7 +17073,6 @@ wysihtml5.dom.parse = (function () {
   function _handleText(oldNode) {
     return oldNode.ownerDocument.createTextNode(oldNode.data);
   }
-
 
   // ------------ attribute checks ------------ \\
   var attributeCheckMethods = {
@@ -17855,7 +17768,6 @@ wysihtml5.quirks.cleanPastedHTML = (function () {
       dom.observe(composer.element, ["cut", "keydown"], clearIfNecessary);
     };
   })();
-
 
   /**
    * In Opera when the caret is in the first and only item of a list (<ul><li>|</li></ul>) and the list is the first child of the contentEditable element, it's impossible to delete the list by hitting backspace
@@ -20532,7 +20444,6 @@ wysihtml5.views.View = Base.extend(
     }
   };
 
-
   wysihtml5.views.Composer.prototype.style = function () {
     var that = this,
       originalActiveElement = doc.querySelector(":focus"),
@@ -20661,7 +20572,6 @@ wysihtml5.views.View = Base.extend(
         that.parent.fire("destroy:composer");
       }
     }, 250);
-
 
     // --------- Focus & blur logic ---------
     dom.observe(focusBlurElement, "focus", function () {
@@ -21014,7 +20924,6 @@ wysihtml5.views.Textarea = wysihtml5.views.View.extend(
     SELECTOR_FORM_ELEMENTS = "input, select, textarea",
     SELECTOR_FIELDS = "[data-wysihtml5-dialog-field]",
     ATTRIBUTE_FIELDS = "data-wysihtml5-dialog-field";
-
 
   wysihtml5.toolbar.Dialog = wysihtml5.lang.Dispatcher.extend(
     /** @scope wysihtml5.toolbar.Dialog.prototype */ {
@@ -21877,7 +21786,6 @@ wysihtml5.views.Textarea = wysihtml5.views.View.extend(
     return tpl[key](locale, options);
   };
 
-
   var Wysihtml5 = function (el, options) {
     this.el = el;
     var toolbarOpts = options || defaultOptions;
@@ -22680,7 +22588,6 @@ wysihtml5.views.Textarea = wysihtml5.views.View.extend(
 
         return new RegExp('(^|>|' + symbols + ')(' + sign + ')($|<|' + symbols + ')', 'g');
       },
-
 
       selectDate: function (date) {
         var _this = this,
@@ -23861,7 +23768,6 @@ wysihtml5.views.Textarea = wysihtml5.views.View.extend(
           }
         }
 
-
         if (dp.isSame(currentDate, date, type)) classes += ' -current-';
         if (parent.focused && dp.isSame(date, parent.focused, type)) classes += ' -focus-';
         if (parent._isSelected(date, type)) classes += ' -selected-';
@@ -24474,7 +24380,7 @@ wysihtml5.views.Textarea = wysihtml5.views.View.extend(
   })();
 })(window, jQuery);
 ;(function ($) {
-  $.fn.datepicker.language['en'] = {
+  $.fn.datepicker.language.en = {
     days: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
     daysShort: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
     daysMin: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
@@ -24554,15 +24460,12 @@ wysihtml5.views.Textarea = wysihtml5.views.View.extend(
 
       $('head').append('<style>#td-clock-' + _td_id + ' .td-clock {color:' + _td_options.textColor + ';background: ' + _td_options.backgroundColor + '; box-shadow: 0 0 0 1px ' + _td_options.borderColor + ',0 0 0 8px rgba(0, 0, 0, 0.05); } #td-clock-' + _td_id + ' .td-clock .td-time span.on { color:' + _td_options.primaryColor + '} #td-clock-' + _td_id + ' .td-clock:before { border-color: ' + _td_options.borderColor + '} #td-clock-' + _td_id + ' .td-select:after { box-shadow: 0 0 0 1px ' + _td_options.borderColor + ' } #td-clock-' + _td_id + ' .td-clock:before,#td-clock-' + _td_id + ' .td-select:after {background: ' + _td_options.backgroundColor + ';} #td-clock-' + _td_id + ' .td-lancette {border: 2px solid ' + _td_options.primaryColor + '; opacity:0.1}#td-clock-' + _td_id + ' .td-lancette div:after { background: ' + _td_options.primaryColor + ';} #td-clock-' + _td_id + ' .td-bulletpoint div:after { background:' + _td_options.primaryColor + '; opacity:0.1}</style>');
 
-
       var
         _td_container = $('#td-clock-' + _td_id),
         _td_overlay = _td_container.find('.td-overlay'),
         _td_c = _td_container.find('.td-clock');
 
-
       _td_c.find('svg').attr('style', "stroke:" + _td_options.borderColor);
-
 
       var
         _td_init_deg = -1,
@@ -24663,9 +24566,7 @@ wysihtml5.views.Textarea = wysihtml5.views.View.extend(
 
           _td_input.val(str);
 
-
         };
-
 
       if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
         _td_mobile = true;
@@ -24849,7 +24750,6 @@ wysihtml5.views.Textarea = wysihtml5.views.View.extend(
         _td_rotation(_td_event_deg);
         _td_wheel_deg = _td_event_deg;
         _td_init_deg = -1;
-
 
       }
 
@@ -29293,7 +29193,7 @@ wysihtml5.views.Textarea = wysihtml5.views.View.extend(
                   // as an ID it is less than ideal. In larger point
                   // releases, may be better to just kick out an error.
                   if (i === 0 || (i === 1 && name[2] === '..') || name[i - 1] === '..') {
-                    continue;
+
                   } else if (i > 0) {
                     name.splice(i - 1, 2);
                     i -= 2;
@@ -35506,7 +35406,6 @@ wysihtml5.views.Textarea = wysihtml5.views.View.extend(
           return this.unbind('mousewheel', fn);
         }
       });
-
 
       function handler(event) {
         var orgEvent = event || window.event,

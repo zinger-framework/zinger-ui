@@ -1,23 +1,20 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 
 @Injectable()
 export class JwtService {
-
-  metaData: JSON;
-
-  getToken(): String {
-    return window.localStorage['authorization'];
+  getToken(): string {
+    return window.localStorage.authorization;
   }
 
-  saveToken(token: String) {
-    window.localStorage['authorization'] = token;
+  saveToken(token: string) {
+    window.localStorage.authorization = token;
   }
 
   destroyToken() {
     window.localStorage.removeItem('authorization');
   }
 
-  isLoggedIn(){
+  isLoggedIn() {
     return this.getToken() != null;
   }
 }
