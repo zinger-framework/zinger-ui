@@ -23,6 +23,7 @@
               "src/assets"
             ],
             "styles": [
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "src/assets/stylesheets/core.css",
               "src/assets/stylesheets/icon-font.min.css",
               "src/assets/stylesheets/style.css",
@@ -128,6 +129,7 @@
           }
         }
       }
-    }},
+    }
+  },
   "defaultProject": "zinger-ui"
 }

@@ -14,7 +14,7 @@ import { CommonModule } from '@angular/common';
 import { ProfileComponent } from './features/profile/profile.component';
 import { SidebarComponent } from './core/component/sidebar/sidebar.component';
 import { DashboardComponent } from './features/dashboard/dashboard.component';
-
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -31,7 +31,8 @@ import { DashboardComponent } from './features/dashboard/dashboard.component';
     FormsModule,
     AppRoutingModule,
     HttpClientModule,
-    LoginModule
+    LoginModule,
+    NgbModule
   ],
   providers: [AuthService, InterceptorProviders, JwtService],
   bootstrap: [AppComponent]

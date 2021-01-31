@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AuthService } from '../../core/service/auth.service';
+import { FormBuilder, FormGroup, FormControl, Validators, ValidationErrors } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
@@ -7,26 +8,33 @@ import { AuthService } from '../../core/service/auth.service';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
+  authForm: FormGroup;
 
-  @Input() email: string;
-  @Input() password: string;
-
-  constructor(public authService: AuthService) { }
+  constructor(public authService: AuthService, private fb: FormBuilder) {
+    this.authForm = this.fb.group({
+      role: ['', Validators.required],
+      email: ['', Validators.required],
+      password: ['', Validators.required]
+    });
+  }
 
   ngOnInit(): void {
   }
 
-  login(){
-    console.log("Email: "+this.email+"\n Password: "+this.password);
-    this.authService.login(this.email,this.password)
-    .then(data => console.log("Data1: "+JSON.stringify(data)))
-    .catch(error => console.log("Data1: "+JSON.stringify(error)))
-    /* Go to Next Step
-     1. Store the data in session storage
-     2. Reload the form component alone
-     3. Try to break the current form into components
-    */
-
+  submitForm() {
+    const credentials = this.authForm.value;
+    this.getFormValidationErrors();
+    console.log('Credentials: ', credentials);
   }
 
+  getFormValidationErrors() {
+    Object.keys(this.authForm.controls).forEach(key => {
+      const controlErrors: ValidationErrors = this.authForm.get(key).errors;
+      if (controlErrors != null) {
+        Object.keys(controlErrors).forEach(keyError => {
+          console.log('Key control: ' + key + ', keyError: ' + keyError + ', err value: ', controlErrors[keyError]);
+        });
+      }
+    });
+  }
 }
