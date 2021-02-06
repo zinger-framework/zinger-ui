@@ -7,9 +7,10 @@ import {ArchwizardModule} from 'angular-archwizard';
 import {RouterModule} from '@angular/router';
 import {NgbButtonsModule} from '@ng-bootstrap/ng-bootstrap';
 import {SharedModule} from '../../shared/shared.module';
+import {AuthComponent} from './auth.component';
 
 @NgModule({
-  declarations: [LoginComponent, ForgotPasswordComponent],
+  declarations: [LoginComponent, ForgotPasswordComponent, AuthComponent],
     imports: [
         CommonModule,
         FormsModule,
