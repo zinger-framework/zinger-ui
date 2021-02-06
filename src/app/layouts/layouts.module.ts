@@ -6,6 +6,7 @@ import {HeaderComponent} from './public/header/header.component';
 import {PageNotFoundComponent} from './page-not-found/page-not-found.component';
 import {SidebarComponent} from './private/sidebar/sidebar.component';
 import {PublicComponent} from './public/public.component';
+import {RouterModule} from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import {PublicComponent} from './public/public.component';
     PublicComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    RouterModule
   ]
 })
 export class LayoutsModule {
