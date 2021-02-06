@@ -18,7 +18,9 @@ export class FormInputComponent implements OnInit {
   @Input() name: string;
   @Input() isRequired = true;
 
-  constructor() { }
+  constructor() {
+  }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+  }
 }

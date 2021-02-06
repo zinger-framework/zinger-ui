@@ -1,4 +1,6 @@
 import {Component} from '@angular/core';
+import {CommonUtils} from './core/utils/common.utils';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +9,9 @@ import {Component} from '@angular/core';
 })
 export class AppComponent {
   title = 'zinger-ui';
+
+  constructor(private route: Router) {
+    const url = CommonUtils.fetchUrl(this.route);
+    console.log(url);
+  }
 }

@@ -1,20 +1,20 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {AuthComponent} from './auth.component';
+import {PublicComponent} from './public.component';
 
-describe('AuthComponent', () => {
-  let component: AuthComponent;
-  let fixture: ComponentFixture<AuthComponent>;
+describe('PublicComponent', () => {
+  let component: PublicComponent;
+  let fixture: ComponentFixture<PublicComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [AuthComponent]
+      declarations: [PublicComponent]
     })
       .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AuthComponent);
+    fixture = TestBed.createComponent(PublicComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

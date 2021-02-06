@@ -1,19 +1,25 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 
-import {HeaderComponent} from './header/header.component';
+import {PrivateComponent} from './private/private.component';
+import {HeaderComponent} from './public/header/header.component';
 import {PageNotFoundComponent} from './page-not-found/page-not-found.component';
-import {SidebarComponent} from './sidebar/sidebar.component';
+import {SidebarComponent} from './private/sidebar/sidebar.component';
+import {PublicComponent} from './public/public.component';
 
 @NgModule({
   declarations: [
+    PrivateComponent,
     PageNotFoundComponent,
     HeaderComponent,
-    SidebarComponent
+    SidebarComponent,
+    PublicComponent
   ],
   exports: [
     SidebarComponent,
-    HeaderComponent
+    HeaderComponent,
+    PrivateComponent,
+    PublicComponent
   ],
   imports: [
     CommonModule
