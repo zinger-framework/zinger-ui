@@ -6,8 +6,7 @@
     <div class="login-menu">
       <ul>
         <li>
-          <a routerLink="/auth/login">{{componentName}}</a>
-          <!--          <a routerLink="auth/register">Register</a>-->
+          <a [routerLink]="navData.url">{{navData.text}}</a>
         </li>
       </ul>
     </div>
