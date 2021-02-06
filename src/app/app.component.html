@@ -1,3 +1,5 @@
-<app-private></app-private>
-<app-public componentName="Vijay"></app-public>
+<app-private *ngIf="jwtService.isLoggedIn(); else unauthorized"></app-private>
+<ng-template #unauthorized>
+  <app-public></app-public>
+</ng-template>
 <router-outlet></router-outlet>

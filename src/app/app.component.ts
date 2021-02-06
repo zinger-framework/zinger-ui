@@ -1,4 +1,5 @@
 import {Component} from '@angular/core';
+import {JwtService} from './core/service/jwt.service';
 
 @Component({
   selector: 'app-root',
@@ -6,8 +7,6 @@ import {Component} from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'zinger-ui';
-
-  constructor() {
+  constructor(public jwtService: JwtService) {
   }
 }
