@@ -210,7 +210,7 @@ p {
 }
 
 .chat-box .chat-desc ul, .pd-ltr-20 {
-  padding: 20px 20px 0
+  padding: 20px 20px 20px;
 }
 
 .pd-30 {
@@ -1433,7 +1433,7 @@ table.dataTable.dtr-inline.collapsed > tbody > tr.parent > td:first-child:before
   -ms-flex-pack: end;
   justify-content: flex-end;
   height: 70px;
-  width: 50%
+  width: 100%
 }
 
 .header-left .brand-logo {
@@ -1659,7 +1659,8 @@ table.dataTable.dtr-inline.collapsed > tbody > tr.parent > td:first-child:before
   font-weight: 500;
   line-height: 45px;
   font-family: 'Inter', sans-serif;
-  padding: 0 20px
+  padding: 0 20px;
+  cursor: pointer;
 }
 
 .brand-logo a .light-logo, .sidebar-light .brand-logo a .dark-logo {
@@ -1978,9 +1979,9 @@ table.dataTable.dtr-inline.collapsed > tbody > tr.parent > td:first-child:before
 }
 
 .login-header {
-  position: relative;
-  padding: 0 15px;
-  background-color: #fff;
+  /*position: relative;*/
+  /*padding: 0 15px;*/
+  /*background-color: #fff;*/
   z-index: 1
 }
 
@@ -1992,7 +1993,8 @@ table.dataTable.dtr-inline.collapsed > tbody > tr.parent > td:first-child:before
 .login-menu a {
   font-size: 20px;
   font-weight: 600;
-  color: #FF4141
+  color: #FF4141;
+  cursor: pointer;
 }
 
 .login-wrap {
@@ -2120,7 +2122,7 @@ body.IE .login-wrap .container, body.IE .register-page-wrap .container {
 }
 
 .main-container {
-  padding: 80px 20px 0 300px
+  padding: 80px 10px 0 290px
 }
 
 .page-header .dropdown-menu {

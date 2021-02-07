@@ -1,1 +1,40 @@
-<p>dashboard works!</p>
+<div class="card-deck mb-30 text-center">
+  <card class="card card-box" title="Signup" value="8"></card>
+  <card class="card card-box" title="Orders" value="287"></card>
+  <card class="card card-box" title="Transaction Cost" value="1,233"></card>
+  <card class="card card-box" title="Revenue" value="233"></card>
+</div>
+
+<div class="bg-white pd-20 card-box mb-30">
+  <h4 class="h4 text-blue">Transactions</h4>
+  <div id="txn_chart">
+    <apx-chart
+      [chart]="txnChartOptions.chart"
+      [colors]="txnChartOptions.colors"
+      [dataLabels]="txnChartOptions.dataLabels"
+      [fill]="txnChartOptions.fill"
+      [grid]="txnChartOptions.grid"
+      [legend]="txnChartOptions.legend"
+      [plotOptions]="txnChartOptions.plotOptions"
+      [series]="txnChartOptions.series"
+      [stroke]="txnChartOptions.stroke"
+      [tooltip]="txnChartOptions.tooltip"
+      [xaxis]="txnChartOptions.xaxis"
+      [yaxis]="txnChartOptions.yaxis"></apx-chart>
+  </div>
+</div>
+
+<div class="bg-white pd-20 card-box mb-30">
+  <h4 class="h4 text-blue">New Registrations</h4>
+  <div id="reg_chart">
+    <apx-chart
+      [chart]="newRegChartOptions.chart"
+      [fill]="newRegChartOptions.fill"
+      [grid]="newRegChartOptions.grid"
+      [markers]="newRegChartOptions.markers"
+      [series]="newRegChartOptions.series"
+      [stroke]="newRegChartOptions.stroke"
+      [xaxis]="newRegChartOptions.xaxis"
+      [yaxis]="newRegChartOptions.yaxis"></apx-chart>
+  </div>
+</div>
