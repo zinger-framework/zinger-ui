@@ -1,16 +1,16 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {AuthService} from './service/auth.service';
+import {ApiService} from './service/api.service';
 import {JwtService} from './service/jwt.service';
 import {HTTP_INTERCEPTORS} from '@angular/common/http';
-import {AuthInterceptorService} from './interceptor/auth.interceptor';
+import {AuthInterceptorService} from './interceptor/api.interceptor';
 
 @NgModule({
   declarations: [],
   imports: [
     CommonModule
   ],
-  providers: [AuthService, JwtService,
+  providers: [ApiService, JwtService,
     [{provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true}]
   ]
 })
