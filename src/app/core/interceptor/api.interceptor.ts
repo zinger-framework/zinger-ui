@@ -1,7 +1,8 @@
 import {Injectable} from '@angular/core';
-import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http';
+import {HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http';
 import {JwtService} from '../service/jwt.service';
 import {Observable, throwError} from 'rxjs';
+import {map, catchError} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -13,20 +14,31 @@ export class AuthInterceptorService implements HttpInterceptor {
   }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    console.log("interceptor called")
     request.headers.set('Content-Type', 'application/json');
     if (!this.publicAPIs.includes(request.url)) {
       request.headers.set('Authorization', this.jwtService.getToken());
     }
 
-    // return next.handle(request).map(event => {
-    //   return event;
-    // }).catch((err: any) => {
-    //   if (err instanceof HttpErrorResponse) {
-    //     this.handleError(err);
-    //     return err;
-    //   }
-    // });
-    return next.handle(request);
+    return next.handle(request)
+      .pipe(
+        map(event => {
+          return event;
+        }),
+        catchError((error: HttpErrorResponse) => {
+          let errorMsg = '';
+          if (error.error instanceof ErrorEvent) {
+            console.log('this is client side error');
+            errorMsg = `Error: ${error.error.message}`;
+          }
+          else {
+            console.log('this is server side error');
+            errorMsg = `Error Code: ${error.status},  Message: ${error.message}`;
+          }
+          console.log(errorMsg);
+          return throwError(errorMsg);
+        })
+      )
   }
 
   public handleError(errorResponse: any) {

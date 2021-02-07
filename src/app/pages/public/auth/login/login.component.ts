@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {AuthService} from '../../../../core/service/auth.service';
+import {ApiService} from '../../../core/service/api.service';
 import {FormBuilder, FormGroup, ValidationErrors, Validators} from '@angular/forms';
 
 @Component({
@@ -10,7 +10,7 @@ import {FormBuilder, FormGroup, ValidationErrors, Validators} from '@angular/for
 export class LoginComponent implements OnInit {
   authForm: FormGroup;
 
-  constructor(public authService: AuthService, private fb: FormBuilder) {
+  constructor(public authService: ApiService, private fb: FormBuilder) {
     this.authForm = this.fb.group({
       role: ['', Validators.required],
       email: ['', Validators.required],
