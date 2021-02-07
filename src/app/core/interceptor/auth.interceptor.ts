@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http';
+import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http';
 import {JwtService} from '../service/jwt.service';
 import {Observable, throwError} from 'rxjs';
 
@@ -18,14 +18,15 @@ export class AuthInterceptorService implements HttpInterceptor {
       request.headers.set('Authorization', this.jwtService.getToken());
     }
 
-    return next.handle(request).map(event => {
-      return event;
-    }).catch((err: any) => {
-      if (err instanceof HttpErrorResponse) {
-        this.handleError(err);
-        return err;
-      }
-    });
+    // return next.handle(request).map(event => {
+    //   return event;
+    // }).catch((err: any) => {
+    //   if (err instanceof HttpErrorResponse) {
+    //     this.handleError(err);
+    //     return err;
+    //   }
+    // });
+    return next.handle(request);
   }
 
   public handleError(errorResponse: any) {

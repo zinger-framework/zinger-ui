@@ -9,9 +9,11 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 
 import {CoreModule} from './core/core.module';
-import {FeaturesModule} from './features/features.module';
+import {PagesModule} from './pages/pages.module';
 import {SharedModule} from './shared/shared.module';
 import {LayoutsModule} from './layouts/layouts.module';
+import {PrivateModule} from './pages/private/private.module';
+import {PublicModule} from './pages/public/public.module';
 
 @NgModule({
   declarations: [
@@ -25,9 +27,11 @@ import {LayoutsModule} from './layouts/layouts.module';
     HttpClientModule,
     NgbModule,
     CoreModule,
-    FeaturesModule,
+    PagesModule,
     SharedModule,
-    LayoutsModule
+    LayoutsModule,
+    PrivateModule,
+    PublicModule
   ],
   bootstrap: [AppComponent]
 })
