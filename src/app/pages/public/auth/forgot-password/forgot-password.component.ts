@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {ApiService} from '../../../core/service/api.service'
+import {ApiService} from '../../../../core/service/api.service';
+
 @Component({
   selector: 'forgot-password',
   templateUrl: './forgot-password.component.html',

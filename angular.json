@@ -34,7 +34,7 @@
               "src/assets/scripts/core.js",
               "src/assets/scripts/script.js",
               "node_modules/switchery/standalone/switchery.js",
-              "node_modules/ng-apexcharts/bundles/ng-apexcharts.umd.min.js"
+              "node_modules/apexcharts/dist/apexcharts.min.js"
             ]
           },
           "configurations": {

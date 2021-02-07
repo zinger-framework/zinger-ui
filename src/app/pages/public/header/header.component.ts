@@ -8,18 +8,15 @@ import {filter} from 'rxjs/operators';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
-  @Input() navDataUrl: string;
-  @Input() navDataTitle: string;
+  @Input() navData: any;
 
   constructor(private route: Router) {
     route.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe(event => {
       if (event instanceof RouterEvent) {
         if (event.url.includes('login')) {
-          this.navDataTitle = 'Register';
-          this.navDataUrl = '/auth/register';
+          this.navData = {title: 'Register', url: '/auth/register'};
         } else {
-          this.navDataTitle = 'Login';
-          this.navDataUrl = '/auth/login';
+          this.navData = {title: 'Login', url: '/auth/login'};
         }
       }
     });

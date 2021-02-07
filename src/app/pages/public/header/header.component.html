@@ -5,8 +5,8 @@
     </div>
     <div class="login-menu">
       <ul>
-        <li>
-          <a [routerLink]="navDataUrl">{{navDataTitle}}</a>
+        <li *ngIf="navData != undefined">
+          <a [routerLink]="navData.url">{{navData.title}}</a>
         </li>
       </ul>
     </div>
