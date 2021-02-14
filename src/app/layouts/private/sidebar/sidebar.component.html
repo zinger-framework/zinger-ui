@@ -1,4 +1,4 @@
-<div *ngIf="jwtService.isLoggedIn()" class="left-side-bar">
+<div *ngIf="jwtService.isAuthTokenPresent()" class="left-side-bar">
   <div class="brand-logo">
     <a href="/dashboard"><img src="../../../../assets/images/zinger-text.svg"></a>
   </div>

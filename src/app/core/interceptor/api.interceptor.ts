@@ -7,7 +7,7 @@ import {map, catchError} from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
-export class AuthInterceptorService implements HttpInterceptor {
+export class ApiInterceptorService implements HttpInterceptor {
   private publicAPIs = ['/auth/login'];
 
   constructor(private jwtService: JwtService) {
@@ -28,15 +28,13 @@ export class AuthInterceptorService implements HttpInterceptor {
         catchError((error: HttpErrorResponse) => {
           let errorMsg = '';
           if (error.error instanceof ErrorEvent) {
-            console.log('this is client side error');
             errorMsg = `Error: ${error.error.message}`;
           }
           else {
-            console.log('this is server side error');
             errorMsg = `Error Code: ${error.status},  Message: ${error.message}`;
           }
           console.log(errorMsg);
-          return throwError(errorMsg);
+          return throwError(error);
         })
       )
   }

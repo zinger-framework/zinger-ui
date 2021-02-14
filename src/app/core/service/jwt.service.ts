@@ -14,7 +14,7 @@ export class JwtService {
     window.localStorage.removeItem('authorization');
   }
 
-  isLoggedIn() {
+  isAuthTokenPresent() {
     return this.getToken() != null;
   }
 }

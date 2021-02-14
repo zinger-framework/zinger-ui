@@ -13,6 +13,6 @@ export class SidebarComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.isAuthenicated = this.jwtService.isLoggedIn();
+    this.isAuthenicated = this.jwtService.isAuthTokenPresent();
   }
 }
