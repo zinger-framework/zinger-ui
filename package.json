@@ -23,6 +23,7 @@
     "@ng-bootstrap/ng-bootstrap": "^6.2.0",
     "angular-archwizard": "6.1.0",
     "apexcharts": "^3.24.0",
+    "ng-apexcharts": "^1.5.1",
     "bootstrap": "^4.4.0",
     "switchery": "0.0.2",
     "zone.js": "~0.10.2"

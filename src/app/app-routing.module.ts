@@ -1,10 +1,10 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {LoginComponent} from './features/auth/login/login.component';
-import {ForgotPasswordComponent} from './features/auth/forgot-password/forgot-password.component';
-import {AuthComponent} from './features/auth/auth.component';
-import {ProfileComponent} from './features/profile/profile.component';
-import {DashboardComponent} from './features/dashboard/dashboard.component';
+import {LoginComponent} from './pages/public/auth/login/login.component';
+import {ForgotPasswordComponent} from './pages/public/auth/forgot-password/forgot-password.component';
+import {AuthComponent} from './pages/public/auth/auth.component';
+import {ProfileComponent} from './pages/private/profile/profile.component';
+import {DashboardComponent} from './pages/private/dashboard/dashboard.component';
 import {PageNotFoundComponent} from './layouts/page-not-found/page-not-found.component';
 
 const routes: Routes = [

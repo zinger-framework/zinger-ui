@@ -8,15 +8,15 @@ import {filter} from 'rxjs/operators';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
-  @Input() navData: object;
+  @Input() navData: any;
 
   constructor(private route: Router) {
     route.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe(event => {
       if (event instanceof RouterEvent) {
         if (event.url.includes('login')) {
-          this.navData = {text: 'Register', url: '/auth/register'};
+          this.navData = {title: 'Register', url: '/auth/register'};
         } else {
-          this.navData = {text: 'Login', url: '/auth/login'};
+          this.navData = {title: 'Login', url: '/auth/login'};
         }
       }
     });

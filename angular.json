@@ -34,8 +34,7 @@
               "src/assets/scripts/core.js",
               "src/assets/scripts/script.js",
               "node_modules/switchery/standalone/switchery.js",
-              "node_modules/apexcharts/dist/apexcharts.min.js",
-              "src/assets/scripts/dashboard.js"
+              "node_modules/apexcharts/dist/apexcharts.min.js"
             ]
           },
           "configurations": {

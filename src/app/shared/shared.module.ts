@@ -3,11 +3,13 @@ import {CommonModule} from '@angular/common';
 import {ReactiveFormsModule} from '@angular/forms';
 
 import {FormInputComponent} from './form-elements/form-input/form-input.component';
+import {CardComponent} from './card/card.component';
 
 @NgModule({
-  declarations: [FormInputComponent],
+  declarations: [FormInputComponent, CardComponent],
   exports: [
-    FormInputComponent
+    FormInputComponent,
+    CardComponent
   ],
   imports: [
     CommonModule,
