@@ -2,6 +2,7 @@ import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/
 import {AuthService} from '../../../core/service/auth.service'
 import {JwtService} from "../../../core/service/jwt.service";
 import {Router} from "@angular/router";
+import {FormBuilder, FormControl, FormGroup, ValidationErrors, Validators} from '@angular/forms';
 
 @Component({
   selector: 'forgot-password',
@@ -11,15 +12,26 @@ import {Router} from "@angular/router";
 export class ForgotPasswordComponent implements OnInit,AfterViewInit {
 
   @ViewChild("parent") private parentRef: ElementRef<HTMLElement>;
-  inputEmail: string = '';
-  inputOtp: string = '';
-  inputPwd: string = '';
-  inputConfirmPwd: string = '';
   parentElement: HTMLElement;
   canExitFirstStep = false;
   canExitSecondStep = false;
+  forgotPwdForm: FormGroup;
 
-  constructor(private authService: AuthService, private  jwtService: JwtService,private router: Router) {
+  constructor(private authService: AuthService, private  jwtService: JwtService,private router: Router,private fb: FormBuilder) {
+    this.createForm();
+  }
+
+  createForm(){
+    const emailPattern = /^\S+@\S+\.[a-z]+$/i
+    const otpPattern = /^[0-9]{6}$/g
+    this.forgotPwdForm = this.fb.group({
+      otpForm: new FormGroup({
+        email: new FormControl('',[Validators.required,Validators.pattern(emailPattern)])
+      }),
+      otp: new FormControl('',[Validators.required,Validators.pattern(otpPattern)]),
+      password: new FormControl('',[Validators.required,Validators.minLength(6)]),
+      confirmPassword: new FormControl('',[Validators.required,Validators.minLength(6)])
+    });
   }
 
   ngOnInit(): void {
@@ -29,13 +41,13 @@ export class ForgotPasswordComponent implements OnInit,AfterViewInit {
     this.parentElement = this.parentRef.nativeElement;
   }
 
-
   sendOtp(){
-    if(this.inputEmail.length <= 0 || !this.inputEmail.match(/^\S+@\S+\.[a-z]+$/i)) {
+    let inputEmail = this.forgotPwdForm.get('otpForm.email').value;
+    if(inputEmail.length <= 0 || !inputEmail.match(/^\S+@\S+\.[a-z]+$/i)) {
       this.show_error(this.parentElement,'email', ['Please provide a valid email']);
       return;
     }
-    this.authService.forgot_password_otp(this.inputEmail)
+    this.authService.forgot_password_otp(inputEmail)
       .then((response) => {
         console.log("auth token: ",response['data']['auth_token'])
         this.jwtService.saveToken(response['data']['auth_token'])
@@ -43,15 +55,19 @@ export class ForgotPasswordComponent implements OnInit,AfterViewInit {
         this.hide_error(this.parentElement,'email')
       })
       .catch((error) => {
-        this.show_error(this.parentElement,"email",error['error']['reason'])
+        this.show_error(this.parentElement,"email",error['error'])
       })
   }
 
   resetPassword(){
     let error = null;
-    if(this.inputPwd.length < 6)
+    let inputPwd = this.forgotPwdForm.get('password').value;
+    let inputConfirmPwd = this.forgotPwdForm.get('confirmPassword').value;
+    let inputOtp = this.forgotPwdForm.get('otp').value;
+
+    if(inputPwd.length < 6)
       error = { param: 'password', message: 'Password should contain atleast 6 characters' }
-    else if (this.inputPwd != this.inputConfirmPwd)
+    else if (inputPwd != inputConfirmPwd)
       error = { param: 'password_confirmation', message: "Confirm Password doesn't match" }
 
     if(error!=null){
@@ -59,7 +75,7 @@ export class ForgotPasswordComponent implements OnInit,AfterViewInit {
       return;
     }
 
-    this.authService.reset_password(this.inputOtp,this.inputPwd,this.inputConfirmPwd)
+    this.authService.reset_password(inputOtp,inputPwd,inputConfirmPwd)
       .then(response => {
         this.hide_error(this.parentElement,'password')
         this.hide_error(this.parentElement,'password_confirmation')
@@ -74,11 +90,13 @@ export class ForgotPasswordComponent implements OnInit,AfterViewInit {
 
   exitFirstStep(event: any){
     let error = null;
-    if(this.inputEmail.length <= 0 || !this.inputEmail.match(/^\S+@\S+\.[a-z]+$/i))
+    let inputEmail = this.forgotPwdForm.get('otpForm.email').value;
+    let inputOtp = this.forgotPwdForm.get('otp').value;
+    if(inputEmail.length <= 0 || !inputEmail.match(/^\S+@\S+\.[a-z]+$/i))
       error = { param: 'email', message: 'Please provide a valid email' }
     else if(!this.jwtService.isAuthTokenPresent())
       error = { param: 'email', message: "Please click 'Get OTP' button to receive OTP" }
-    else if(!this.inputOtp.match(/^[0-9]{6}$/g))
+    else if(!inputOtp.match(/^[0-9]{6}$/g))
       error = { param: 'otp', message: 'Please provide a valid OTP' }
 
     if(error!=null){
