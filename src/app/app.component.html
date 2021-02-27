@@ -1,4 +1,4 @@
-<app-private *ngIf="jwtService.isLoggedIn(); else unauthorized" class="header-white sidebar-light"></app-private>
+<app-private *ngIf="jwtService.isAuthTokenPresent(); else unauthorized" class="header-white sidebar-light"></app-private>
 <ng-template #unauthorized>
   <app-public></app-public>
 </ng-template>

@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {AuthService} from '../../../core/service/auth.service'
-import {JwtService} from "../../../core/service/jwt.service";
+import {AuthService} from '../../../../core/service/auth.service'
+import {JwtService} from "../../../../core/service/jwt.service";
 import {Router} from "@angular/router";
 import {FormBuilder, FormControl, FormGroup, ValidationErrors, Validators} from '@angular/forms';
 
