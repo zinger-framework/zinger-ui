@@ -5,13 +5,20 @@ import {JwtService} from './service/jwt.service';
 import {HTTP_INTERCEPTORS} from '@angular/common/http';
 import {ApiInterceptorService} from './interceptor/api.interceptor';
 import {AuthService} from "./service/auth.service";
+import {FormValidationMessageComponent} from './validation/form-validation-message/form-validation-message.component';
+import {FormValidationMessageService} from './validation/form-validation-message.service';
+import {FormValidationMessageDirective} from './validation/form-validation-message.directive';
 
 @NgModule({
-  declarations: [],
+  declarations: [FormValidationMessageComponent, FormValidationMessageDirective],
   imports: [
     CommonModule
   ],
-  providers: [ApiService, JwtService, AuthService,
+  exports:[
+    FormValidationMessageDirective,
+    FormValidationMessageComponent
+  ],
+  providers: [ApiService, JwtService, AuthService, FormValidationMessageService,
     [{provide: HTTP_INTERCEPTORS, useClass: ApiInterceptorService, multi: true}]
   ]
 })

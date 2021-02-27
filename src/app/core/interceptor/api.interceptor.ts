@@ -14,7 +14,6 @@ export class ApiInterceptorService implements HttpInterceptor {
   }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    console.log("interceptor called")
     request.headers.set('Content-Type', 'application/json');
     if (!this.publicAPIs.includes(request.url)) {
       request.headers.set('Authorization', this.jwtService.getToken());

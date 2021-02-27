@@ -2,7 +2,7 @@ import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/
 import {AuthService} from '../../../../core/service/auth.service'
 import {JwtService} from "../../../../core/service/jwt.service";
 import {Router} from "@angular/router";
-import {FormBuilder, FormControl, FormGroup, ValidationErrors, Validators} from '@angular/forms';
+import {AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, Validators} from '@angular/forms';
 
 @Component({
   selector: 'forgot-password',
@@ -30,8 +30,15 @@ export class ForgotPasswordComponent implements OnInit,AfterViewInit {
       }),
       otp: new FormControl('',[Validators.required,Validators.pattern(otpPattern)]),
       password: new FormControl('',[Validators.required,Validators.minLength(6)]),
-      confirmPassword: new FormControl('',[Validators.required,Validators.minLength(6)])
+      confirmPassword: new FormControl('',[Validators.required,Validators.minLength(6),this.validatePassword])
     });
+  }
+
+  validatePassword(control: AbstractControl): {[key: string]: any} | null  {
+    if (control.value && control.root.get('password') && control.value != control.root.get('password').value) {
+      return { 'passwordNotEqual': 'Password do not match' };
+    }
+    return null;
   }
 
   ngOnInit(): void {
@@ -42,78 +49,45 @@ export class ForgotPasswordComponent implements OnInit,AfterViewInit {
   }
 
   sendOtp(){
-    let inputEmail = this.forgotPwdForm.get('otpForm.email').value;
-    if(inputEmail.length <= 0 || !inputEmail.match(/^\S+@\S+\.[a-z]+$/i)) {
-      this.show_error(this.parentElement,'email', ['Please provide a valid email']);
-      return;
-    }
-    this.authService.forgot_password_otp(inputEmail)
+    this.authService.forgot_password_otp(this.forgotPwdForm.get('otpForm.email').value)
       .then((response) => {
-        console.log("auth token: ",response['data']['auth_token'])
         this.jwtService.saveToken(response['data']['auth_token'])
         this.parentElement.querySelector("#email").setAttribute("readonly","true")
-        this.hide_error(this.parentElement,'email')
+        this.hide_error(this.parentElement,'feedback')
       })
       .catch((error) => {
-        this.show_error(this.parentElement,"email",error['error'])
+        this.show_error(this.parentElement,"feedback",error['message'])
       })
   }
 
   resetPassword(){
-    let error = null;
     let inputPwd = this.forgotPwdForm.get('password').value;
     let inputConfirmPwd = this.forgotPwdForm.get('confirmPassword').value;
     let inputOtp = this.forgotPwdForm.get('otp').value;
 
-    if(inputPwd.length < 6)
-      error = { param: 'password', message: 'Password should contain atleast 6 characters' }
-    else if (inputPwd != inputConfirmPwd)
-      error = { param: 'password_confirmation', message: "Confirm Password doesn't match" }
-
-    if(error!=null){
-      this.show_error(this.parentElement,error['param'],error['message'])
-      return;
-    }
-
     this.authService.reset_password(inputOtp,inputPwd,inputConfirmPwd)
       .then(response => {
-        this.hide_error(this.parentElement,'password')
-        this.hide_error(this.parentElement,'password_confirmation')
-        console.log(response)
+        this.hide_error(this.parentElement,'feedback')
         this.router.navigate(['/dashboard'])
       })
       .catch(error => {
-        console.log("checking error: ",error)
-        this.show_error(this.parentElement,"password_confirmation",error['error']['reason'])
+        // this.show_error(this.parentElement,"feedback",error['error']['reason'])
+        this.show_error(this.parentElement,"feedback",error['message'])
       })
   }
 
-  exitFirstStep(event: any){
-    let error = null;
-    let inputEmail = this.forgotPwdForm.get('otpForm.email').value;
-    let inputOtp = this.forgotPwdForm.get('otp').value;
-    if(inputEmail.length <= 0 || !inputEmail.match(/^\S+@\S+\.[a-z]+$/i))
-      error = { param: 'email', message: 'Please provide a valid email' }
-    else if(!this.jwtService.isAuthTokenPresent())
-      error = { param: 'email', message: "Please click 'Get OTP' button to receive OTP" }
-    else if(!inputOtp.match(/^[0-9]{6}$/g))
-      error = { param: 'otp', message: 'Please provide a valid OTP' }
-
-    if(error!=null){
-      this.show_error(this.parentElement,error['param'],error['message'])
-      return;
-    }
-    this.canExitFirstStep = true;
+  exitFirstStep(){
+    return this.forgotPwdForm.get('otp').valid && this.forgotPwdForm.get('otpForm.email').valid && this.jwtService.isAuthTokenPresent();
   }
 
   public show_error(parentElement: HTMLElement,param,reason) {
-    parentElement.querySelector("div.form-group-"+param).classList.add("has-danger");
-    parentElement.querySelector("div.form-group input#"+param).classList.add("form-control-danger");
+    // parentElement.querySelector("div.form-group-"+param).classList.add("has-danger");
+    // parentElement.querySelector("div.form-group input#"+param).classList.add("form-control-danger");
     parentElement.querySelector("div#error-"+param).innerHTML = "\t"+reason;
   }
   public hide_error(parentElement: HTMLElement,param){
-    parentElement.querySelector("div.form-group-"+param).classList.remove('has-danger');
-    parentElement.querySelector("div.form-group input#"+param).classList.remove('form-control-danger');
+    // parentElement.querySelector("div.form-group-"+param).classList.remove('has-danger');
+    // parentElement.querySelector("div.form-group input#"+param).classList.remove('form-control-danger');
     parentElement.querySelector("div#error-"+param).innerHTML = "";
   }
 
