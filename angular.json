@@ -23,17 +23,17 @@
               "src/assets"
             ],
             "styles": [
-              "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "src/assets/stylesheets/core.css",
               "src/assets/stylesheets/icon-font.min.css",
+              "node_modules/@ng-select/ng-select/themes/ant.design.theme.css",
               "src/assets/stylesheets/style.css",
               "src/assets/stylesheets/angular-wizard.scss",
-              "node_modules/switchery/standalone/switchery.css"
+              "node_modules/ngx-ui-switch/ui-switch.component.scss"
             ],
             "scripts": [
+              "node_modules/jquery/dist/jquery.min.js",
               "src/assets/scripts/core.js",
               "src/assets/scripts/script.js",
-              "node_modules/switchery/standalone/switchery.js",
               "node_modules/apexcharts/dist/apexcharts.min.js"
             ]
           },

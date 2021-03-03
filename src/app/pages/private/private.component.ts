@@ -12,5 +12,4 @@ export class PrivateComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
 }
