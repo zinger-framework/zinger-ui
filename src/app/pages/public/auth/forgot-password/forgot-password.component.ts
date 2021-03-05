@@ -16,6 +16,7 @@ export class ForgotPasswordComponent implements OnInit,AfterViewInit {
   canExitFirstStep = false;
   canExitSecondStep = false;
   forgotPwdForm: FormGroup;
+  apiError = { 'email': "", 'otp': "", 'password': "" };
 
   constructor(private authService: AuthService, private  jwtService: JwtService,private router: Router,private fb: FormBuilder) {
     this.createForm();
@@ -53,10 +54,12 @@ export class ForgotPasswordComponent implements OnInit,AfterViewInit {
       .then((response) => {
         this.jwtService.saveToken(response['data']['auth_token'])
         this.parentElement.querySelector("#email").setAttribute("readonly","true")
-        this.hide_error(this.parentElement,'feedback')
+         this.hide_error(this.parentElement,'feedback')
+        this.apiError['email'] = "";
       })
       .catch((error) => {
-        this.show_error(this.parentElement,"feedback",error['message'])
+        this.apiError['email'] = error['error']['reason'] + ":"+ new Date().getTime();
+        // this.show_error(this.parentElement,"error-email",error['error']['reason'])
       })
   }
 
@@ -72,7 +75,7 @@ export class ForgotPasswordComponent implements OnInit,AfterViewInit {
       })
       .catch(error => {
         // this.show_error(this.parentElement,"feedback",error['error']['reason'])
-        this.show_error(this.parentElement,"feedback",error['message'])
+        this.show_error(this.parentElement,"error-password_confirmation",error['error']['reason'])
       })
   }
 
@@ -81,14 +84,10 @@ export class ForgotPasswordComponent implements OnInit,AfterViewInit {
   }
 
   public show_error(parentElement: HTMLElement,param,reason) {
-    // parentElement.querySelector("div.form-group-"+param).classList.add("has-danger");
-    // parentElement.querySelector("div.form-group input#"+param).classList.add("form-control-danger");
-    parentElement.querySelector("div#error-"+param).innerHTML = "\t"+reason;
+    // parentElement.querySelector("div#"+param).innerHTML = "<div>"+reason+"</div>";
   }
   public hide_error(parentElement: HTMLElement,param){
-    // parentElement.querySelector("div.form-group-"+param).classList.remove('has-danger');
-    // parentElement.querySelector("div.form-group input#"+param).classList.remove('form-control-danger');
-    parentElement.querySelector("div#error-"+param).innerHTML = "";
+    // parentElement.querySelector("div#"+param).innerHTML = "";
   }
 
 }

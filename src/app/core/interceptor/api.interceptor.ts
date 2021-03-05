@@ -26,6 +26,7 @@ export class ApiInterceptorService implements HttpInterceptor {
         }),
         catchError((error: HttpErrorResponse) => {
           let errorMsg = '';
+          console.log(error)
           if (error.error instanceof ErrorEvent) {
             errorMsg = `Error: ${error.error.message}`;
           }
