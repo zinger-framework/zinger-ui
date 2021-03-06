@@ -7,24 +7,29 @@ import {API_ENDPOINTS} from "../utils/constants.utils";
   providedIn: 'root',
 })
 export class ApiService {
+  private publicAPIs = [API_ENDPOINTS.AUTH_FORGOT_PASSWORD_SEND_OTP,API_ENDPOINTS.AUTH_FORGOT_PASSWORD_RESET_PASSWORD];
   constructor(private http: HttpClient,private jwtService: JwtService) {
   }
 
-  private setHeaders(): HttpHeaders {
+  private setHeaders(path: string): HttpHeaders {
     const headersConfig = {
       'Content-Type': 'application/json',
       'Accept': 'application/json'
     };
 
-    if (this.jwtService.getToken()) {
-      headersConfig['Authorization'] = `Token ${this.jwtService.getToken()}`;
+    if (!this.publicAPIs.includes(path)) {
+      headersConfig['Authorization'] = this.jwtService.getToken();
+      console.log("path included "+path);
+    }else{
+      console.log("path not included "+path);
     }
+
     return new HttpHeaders(headersConfig);
   }
 
   get(path: string, params = new HttpParams()) {
     // need to add search: params options here
-    return this.http.get(`${API_ENDPOINTS.ADMIN_URL}${path}`, { headers: this.setHeaders() })
+    return this.http.get(`${API_ENDPOINTS.ADMIN_URL}${path}`, { headers: this.setHeaders(path) })
       .toPromise();
   }
 
@@ -32,7 +37,7 @@ export class ApiService {
     return this.http.put(
       `${API_ENDPOINTS.ADMIN_URL}${path}`,
       JSON.stringify(body),
-      { headers: this.setHeaders() }
+      { headers: this.setHeaders(path) }
     )
       .toPromise();
 
@@ -42,7 +47,7 @@ export class ApiService {
     return this.http.post(
       `${API_ENDPOINTS.ADMIN_URL}${path}`,
       JSON.stringify(body),
-      { headers: this.setHeaders() }
+      { headers: this.setHeaders(path) }
     )
       .toPromise();
   }
@@ -50,7 +55,7 @@ export class ApiService {
   delete(path){
     return this.http.delete(
       `${API_ENDPOINTS.ADMIN_URL}${path}`,
-      { headers: this.setHeaders() }
+      { headers: this.setHeaders(path) }
     )
       .toPromise();
   }

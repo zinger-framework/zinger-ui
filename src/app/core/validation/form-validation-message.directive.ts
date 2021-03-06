@@ -34,7 +34,7 @@ export class FormValidationMessageDirective implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if(changes['apiError']!=null){
-      let errorMsg = changes['apiError']['currentValue'];
+      let errorMsg = changes['apiError']['currentValue'].toString();
       (errorMsg.length>0)?this.setErrorMessage(errorMsg[0].toUpperCase()+errorMsg.substring(1)):this.clearErrorMessage();
       return;
     }

@@ -8,16 +8,11 @@ import {map, catchError} from 'rxjs/operators';
   providedIn: 'root'
 })
 export class ApiInterceptorService implements HttpInterceptor {
-  private publicAPIs = ['/auth/login'];
 
   constructor(private jwtService: JwtService) {
   }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    request.headers.set('Content-Type', 'application/json');
-    if (!this.publicAPIs.includes(request.url)) {
-      request.headers.set('Authorization', this.jwtService.getToken());
-    }
 
     return next.handle(request)
       .pipe(
