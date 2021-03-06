@@ -1,4 +1,13 @@
-import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  DoCheck,
+  ElementRef,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+  ViewChild
+} from '@angular/core';
 import {AuthService} from '../../../../core/service/auth.service'
 import {JwtService} from "../../../../core/service/jwt.service";
 import {Router} from "@angular/router";
@@ -31,7 +40,6 @@ export class ForgotPasswordComponent implements OnInit, AfterViewInit {
     this.FC_otp = this.forgotPwdForm.get('otp');
     this.FC_pwd = this.forgotPwdForm.get('password');
     this.FC_confirmPwd = this.forgotPwdForm.get('confirmPassword');
-    this.jwtService.destroyToken();
   }
 
   createForm() {
@@ -65,13 +73,11 @@ export class ForgotPasswordComponent implements OnInit, AfterViewInit {
     this.resetApiError()
     this.authService.forgot_password_otp(this.forgotPwdForm.get('otpForm.email').value)
       .then((response) => {
-        console.log("success observer")
         this.jwtService.saveToken(response['data']['auth_token'])
         this.parentElement.querySelector("#email").setAttribute("readonly", "true")
       })
       .catch((error) => {
-        console.log("failure observer")
-        this.apiError['email'] = error['error']['reason']['email'][0];
+        this.handleError(error)
       })
   }
 
@@ -86,12 +92,29 @@ export class ForgotPasswordComponent implements OnInit, AfterViewInit {
         this.router.navigate([APP_ROUTES.DASHBOARD])
       })
       .catch(error => {
-        console.log(error['error']['reason']);
-        let reasonKey = Object.keys(error['error']['reason'])[0];
-        this.apiError[reasonKey] = error['error']['reason'][reasonKey][0];
-        if (reasonKey == 'otp')
-          this.wizard.goToPreviousStep();
+        this.handleError(error,(args: string)=>{
+            console.log(args);
+            if(args == 'otp')
+              this.wizard.goToPreviousStep();
+        })
       })
+  }
+
+  handleError(error: any,callbackFunction?: (arg: string) => void){
+    if(error['error']['reason']!=null){
+      let reasonKey = Object.keys(error['error']['reason'])[0];
+      if(error['error']['reason'][reasonKey].constructor.name=="Array")
+          this.apiError[reasonKey] = error['error']['reason'][reasonKey][0];
+      else
+          this.apiError[reasonKey] = error['error']['reason'][reasonKey];
+      if(callbackFunction!=null)
+        callbackFunction(reasonKey);
+    }else{
+      console.log("here 1")
+        if(error['status']==429){
+          this.parentRef.nativeElement.querySelector("div.api-error").innerHTML = error['error']['message'];
+        }
+    }
   }
 
   exitFirstStep() {
