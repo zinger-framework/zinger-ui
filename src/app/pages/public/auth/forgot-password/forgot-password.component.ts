@@ -61,18 +61,19 @@ export class ForgotPasswordComponent implements OnInit,AfterViewInit {
   }
 
   sendOtp(){
+    this.resetApiError()
     this.authService.forgot_password_otp(this.forgotPwdForm.get('otpForm.email').value)
       .then((response) => {
         this.jwtService.saveToken(response['data']['auth_token'])
         this.parentElement.querySelector("#email").setAttribute("readonly","true")
-        this.apiError['email'] = "";
       })
       .catch((error) => {
-        this.apiError['email'] = error['error']['reason'] + ":"+ new Date().getTime();
+        this.apiError['email'] = error['error']['reason'];
       })
   }
 
   resetPassword(){
+    this.resetApiError()
     let inputPwd = this.forgotPwdForm.get('password').value;
     let inputConfirmPwd = this.forgotPwdForm.get('confirmPassword').value;
     let inputOtp = this.forgotPwdForm.get('otp').value;
@@ -84,7 +85,7 @@ export class ForgotPasswordComponent implements OnInit,AfterViewInit {
       .catch(error => {
         console.log(error['error']['reason']);
         let reasonKey = Object.keys(error['error']['reason'])[0];
-        this.apiError[reasonKey] = error['error']['reason'][reasonKey] + ":"+ new Date().getTime();
+        this.apiError[reasonKey] = error['error']['reason'][reasonKey];
         if(reasonKey == 'otp')
           this.wizard.goToPreviousStep();
       })
@@ -92,5 +93,9 @@ export class ForgotPasswordComponent implements OnInit,AfterViewInit {
 
   exitFirstStep(){
     return this.forgotPwdForm.get('otp').valid && this.forgotPwdForm.get('otpForm.email').valid && this.jwtService.isAuthTokenPresent();
+  }
+
+  resetApiError(){
+    this.apiError = { 'email': "", 'otp': "", 'password': "" };
   }
 }

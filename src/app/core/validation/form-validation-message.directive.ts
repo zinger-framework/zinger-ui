@@ -35,7 +35,7 @@ export class FormValidationMessageDirective implements OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     if(changes['apiError']!=null){
       let errorMsg = changes['apiError']['currentValue'];
-      (errorMsg.length>0)?this.setErrorMessage(errorMsg.split(":")[0]):this.clearErrorMessage();
+      (errorMsg.length>0)?this.setErrorMessage(errorMsg[0].toUpperCase()+errorMsg.substring(1)):this.clearErrorMessage();
       return;
     }
     this.validateForm();
@@ -52,14 +52,14 @@ export class FormValidationMessageDirective implements OnChanges {
     this.parentElement = this.el.nativeElement.parentElement.parentElement.parentElement;
     this.parentElement.querySelector("div.form-group-" + this.label).classList.add("has-danger");
     this.parentElement.querySelector("div.form-group input#" + this.label).classList.add("form-control-danger");
-    this.parentElement.querySelector("div#error-" + this.label).innerText = "\t" + errorMsg;
+    this.parentElement.querySelector("div#error-" + this.label).innerHTML = errorMsg;
   }
 
   private clearErrorMessage(): void{
     this.parentElement = this.el.nativeElement.parentElement.parentElement.parentElement;
     this.parentElement.querySelector("div.form-group-"+this.label).classList.remove('has-danger');
     this.parentElement.querySelector("div.form-group input#"+this.label).classList.remove('form-control-danger');
-    this.parentElement.querySelector("div#error-"+this.label).innerText = "";
+    this.parentElement.querySelector("div#error-"+this.label).innerHTML = "";
   }
 
 }

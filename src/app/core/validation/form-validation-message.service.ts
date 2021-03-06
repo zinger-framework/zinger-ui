@@ -13,7 +13,7 @@ export class FormValidationMessageService {
   label: string;
   defaultLabel = 'Field';
   errorMessages = ErrorMessages;
-  locale = "en"
+  locale = 'en';
   constructor() { }
 
   get currentControl(): AbstractControl {
@@ -62,7 +62,9 @@ export class FormValidationMessageService {
     const errorMessage = this.getMessagesByLocale[err.name];
 
     if (errorMessage !== undefined) {
-      message = errorMessage.message.replace(/{label}/g, this.label || this.defaultLabel);
+      let modified_label = this.label.replace('_',' ');
+      modified_label = modified_label[0].toUpperCase() + modified_label.substring(1);
+      message = errorMessage.message.replace(/{label}/g, modified_label || this.defaultLabel);
       if (errorMessage.rExp !== undefined) {
         const errorValues: string[] = errorMessage.rExp.split('|');
         for (const errorValue of errorValues) {
@@ -78,7 +80,7 @@ export class FormValidationMessageService {
   private get getMessagesByLocale() {
     const errorMessage = this.errorMessages;
     if (this.errorMessages[this.locale] === undefined) {
-      throw new Error('No existe soporte para el idioma. [LOCALE_ID]');
+      throw new Error('No existing error found. [LOCALE_ID]');
     }
     return errorMessage[this.locale];
   }
