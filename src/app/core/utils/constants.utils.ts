@@ -6,5 +6,6 @@ export const API_ENDPOINTS = {
 }
 
 export const APP_ROUTES = {
-  DASHBOARD: '/dashboard'
+  DASHBOARD: '/dashboard',
+  AUTH_LOGIN: '/auth/login'
 }

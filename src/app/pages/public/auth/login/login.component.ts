@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ApiService} from '../../../../core/service/api.service';
 import {FormBuilder, FormGroup, ValidationErrors, Validators} from '@angular/forms';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'login',
@@ -10,12 +11,16 @@ import {FormBuilder, FormGroup, ValidationErrors, Validators} from '@angular/for
 export class LoginComponent implements OnInit {
   authForm: FormGroup;
 
-  constructor(public authService: ApiService, private fb: FormBuilder) {
+  constructor(public authService: ApiService, private fb: FormBuilder, private router: Router) {
     this.authForm = this.fb.group({
       role: ['', Validators.required],
       email: ['', Validators.required],
       password: ['', Validators.required]
     });
+  }
+
+  redirect() {
+    this.router.navigate(['AUTH_FORGOT_PASSWORD'])
   }
 
   ngOnInit(): void {

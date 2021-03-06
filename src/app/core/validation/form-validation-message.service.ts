@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {FormControl, ControlContainer, AbstractControl, ValidationErrors, ValidatorFn} from '@angular/forms';
+import {AbstractControl, ControlContainer, FormControl, ValidationErrors, ValidatorFn} from '@angular/forms';
 import {ErrorMessages} from "./error-messages";
 
 @Injectable({
@@ -14,7 +14,9 @@ export class FormValidationMessageService {
   defaultLabel = 'Field';
   errorMessages = ErrorMessages;
   locale = 'en';
-  constructor() { }
+
+  constructor() {
+  }
 
   get currentControl(): AbstractControl {
     if (this.control instanceof FormControl) {
@@ -29,6 +31,14 @@ export class FormValidationMessageService {
   private get doNotShowMessage(): boolean {
     const currentControl: AbstractControl = this.currentControl;
     return currentControl.touched && currentControl.errors !== null;
+  }
+
+  private get getMessagesByLocale() {
+    const errorMessage = this.errorMessages;
+    if (this.errorMessages[this.locale] === undefined) {
+      throw new Error('No existing error found. [LOCALE_ID]');
+    }
+    return errorMessage[this.locale];
   }
 
   getErrorMessage(): string {
@@ -62,7 +72,7 @@ export class FormValidationMessageService {
     const errorMessage = this.getMessagesByLocale[err.name];
 
     if (errorMessage !== undefined) {
-      let modified_label = this.label.replace('_',' ');
+      let modified_label = this.label.replace('_', ' ');
       modified_label = modified_label[0].toUpperCase() + modified_label.substring(1);
       message = errorMessage.message.replace(/{label}/g, modified_label || this.defaultLabel);
       if (errorMessage.rExp !== undefined) {
@@ -75,14 +85,6 @@ export class FormValidationMessageService {
       message = typeof err.value === 'string' ? err.value : JSON.stringify(err.value);
     }
     return message;
-  }
-
-  private get getMessagesByLocale() {
-    const errorMessage = this.errorMessages;
-    if (this.errorMessages[this.locale] === undefined) {
-      throw new Error('No existing error found. [LOCALE_ID]');
-    }
-    return errorMessage[this.locale];
   }
 }
 

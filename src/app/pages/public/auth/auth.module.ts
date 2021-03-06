@@ -10,6 +10,7 @@ import {ForgotPasswordComponent} from './forgot-password/forgot-password.compone
 import {AuthComponent} from './auth.component';
 import {SharedModule} from '../../../shared/shared.module';
 import {CoreModule} from '../../../core/core.module';
+
 @NgModule({
   declarations: [LoginComponent, ForgotPasswordComponent, AuthComponent],
   imports: [
