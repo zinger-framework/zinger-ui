@@ -68,7 +68,7 @@ export class ForgotPasswordComponent implements OnInit,AfterViewInit {
         this.parentElement.querySelector("#email").setAttribute("readonly","true")
       })
       .catch((error) => {
-        this.apiError['email'] = error['error']['reason'];
+        this.apiError['email'] = error['error']['reason']['email'][0];
       })
   }
 
@@ -85,7 +85,7 @@ export class ForgotPasswordComponent implements OnInit,AfterViewInit {
       .catch(error => {
         console.log(error['error']['reason']);
         let reasonKey = Object.keys(error['error']['reason'])[0];
-        this.apiError[reasonKey] = error['error']['reason'][reasonKey];
+        this.apiError[reasonKey] = error['error']['reason'][reasonKey][0];
         if(reasonKey == 'otp')
           this.wizard.goToPreviousStep();
       })

@@ -17,11 +17,11 @@ const en = {
     message: '{label} is not a valid email address'
   },
   minlength: {
-    message: '{label} should contain at least {requiredLength} character(s)',
+    message: '{label} should contain at least {requiredLength} characters',
     rExp: 'requiredLength|actualLength'
   },
   maxlength: {
-    message: '{label} should contain at most {requiredLength} character(s)',
+    message: '{label} should contain at most {requiredLength} characters',
     rExp: 'requiredLength|actualLength'
   },
   pattern: {

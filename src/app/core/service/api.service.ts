@@ -19,9 +19,6 @@ export class ApiService {
 
     if (!this.publicAPIs.includes(path)) {
       headersConfig['Authorization'] = this.jwtService.getToken();
-      console.log("path included "+path);
-    }else{
-      console.log("path not included "+path);
     }
 
     return new HttpHeaders(headersConfig);
