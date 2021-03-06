@@ -1,6 +1,8 @@
-import { Injectable } from '@angular/core';
-import { ApiService } from './api.service';
+import {Injectable} from '@angular/core';
+import {ApiService} from './api.service';
 import {JwtService} from "./jwt.service";
+import {API_ENDPOINTS} from "../utils/constants.utils";
+
 
 @Injectable()
 export class AuthService {
@@ -11,11 +13,11 @@ export class AuthService {
 
   forgot_password_otp(email){
     const requestBody = { email: email };
-    return this.apiService.post('auth/forgot_password/send_otp', requestBody);
+    return this.apiService.post(API_ENDPOINTS.AUTH_FORGOT_PASSWORD_SEND_OTP, requestBody);
   }
 
   reset_password(otp,pwd,confirm_pwd){
     const requestBody = { auth_token: this.jwtService.getToken(), otp: otp, password: pwd, password_confirmation: confirm_pwd }
-    return this.apiService.post('auth/forgot_password/reset_password', requestBody)
+    return this.apiService.post(API_ENDPOINTS.AUTH_FORGOT_PASSWORD_RESET_PASSWORD, requestBody)
   }
 }

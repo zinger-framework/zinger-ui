@@ -2,7 +2,9 @@ import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/
 import {AuthService} from '../../../../core/service/auth.service'
 import {JwtService} from "../../../../core/service/jwt.service";
 import {Router} from "@angular/router";
-import {AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, Validators} from '@angular/forms';
+import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {WizardComponent} from "angular-archwizard";
+import {APP_ROUTES} from "../../../../core/utils/constants.utils"
 
 @Component({
   selector: 'forgot-password',
@@ -12,14 +14,23 @@ import {AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, 
 export class ForgotPasswordComponent implements OnInit,AfterViewInit {
 
   @ViewChild("parent") private parentRef: ElementRef<HTMLElement>;
+  @ViewChild(WizardComponent) public wizard: WizardComponent;
   parentElement: HTMLElement;
   canExitFirstStep = false;
   canExitSecondStep = false;
   forgotPwdForm: FormGroup;
   apiError = { 'email': "", 'otp': "", 'password': "" };
+  FC_email: AbstractControl ;
+  FC_otp: AbstractControl;
+  FC_pwd: AbstractControl;
+  FC_confirmPwd: AbstractControl;
 
   constructor(private authService: AuthService, private  jwtService: JwtService,private router: Router,private fb: FormBuilder) {
     this.createForm();
+    this.FC_email = this.forgotPwdForm.get('otpForm.email');
+    this.FC_otp = this.forgotPwdForm.get('otp');
+    this.FC_pwd = this.forgotPwdForm.get('password');
+    this.FC_confirmPwd = this.forgotPwdForm.get('confirmPassword');
   }
 
   createForm(){
@@ -54,12 +65,10 @@ export class ForgotPasswordComponent implements OnInit,AfterViewInit {
       .then((response) => {
         this.jwtService.saveToken(response['data']['auth_token'])
         this.parentElement.querySelector("#email").setAttribute("readonly","true")
-         this.hide_error(this.parentElement,'feedback')
         this.apiError['email'] = "";
       })
       .catch((error) => {
         this.apiError['email'] = error['error']['reason'] + ":"+ new Date().getTime();
-        // this.show_error(this.parentElement,"error-email",error['error']['reason'])
       })
   }
 
@@ -70,24 +79,18 @@ export class ForgotPasswordComponent implements OnInit,AfterViewInit {
 
     this.authService.reset_password(inputOtp,inputPwd,inputConfirmPwd)
       .then(response => {
-        this.hide_error(this.parentElement,'feedback')
-        this.router.navigate(['/dashboard'])
+        this.router.navigate([APP_ROUTES.DASHBOARD])
       })
       .catch(error => {
-        // this.show_error(this.parentElement,"feedback",error['error']['reason'])
-        this.show_error(this.parentElement,"error-password_confirmation",error['error']['reason'])
+        console.log(error['error']['reason']);
+        let reasonKey = Object.keys(error['error']['reason'])[0];
+        this.apiError[reasonKey] = error['error']['reason'][reasonKey] + ":"+ new Date().getTime();
+        if(reasonKey == 'otp')
+          this.wizard.goToPreviousStep();
       })
   }
 
   exitFirstStep(){
     return this.forgotPwdForm.get('otp').valid && this.forgotPwdForm.get('otpForm.email').valid && this.jwtService.isAuthTokenPresent();
   }
-
-  public show_error(parentElement: HTMLElement,param,reason) {
-    // parentElement.querySelector("div#"+param).innerHTML = "<div>"+reason+"</div>";
-  }
-  public hide_error(parentElement: HTMLElement,param){
-    // parentElement.querySelector("div#"+param).innerHTML = "";
-  }
-
 }

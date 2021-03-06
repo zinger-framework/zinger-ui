@@ -1,6 +1,6 @@
-import {Directive, ElementRef, Host, Input, Optional, SkipSelf, DoCheck, OnChanges, SimpleChanges} from '@angular/core';
-import {ControlContainer, ControlValueAccessor, FormControl} from '@angular/forms';
-import { FormValidationMessageService } from './form-validation-message.service';
+import {Directive, ElementRef, Host, Input, Optional, SkipSelf, OnChanges, SimpleChanges} from '@angular/core';
+import {ControlContainer, FormControl} from '@angular/forms';
+import {FormValidationMessageService} from './form-validation-message.service';
 
 @Directive({
   selector: '[formValidationMessage]'
@@ -22,7 +22,6 @@ export class FormValidationMessageDirective implements OnChanges {
   @Input()
   apiError: string = "";
 
-  apiErrorShown = true;
   parentElement: any;
 
   constructor(
@@ -37,7 +36,6 @@ export class FormValidationMessageDirective implements OnChanges {
     if(changes['apiError']!=null){
       let errorMsg = changes['apiError']['currentValue'];
       (errorMsg.length>0)?this.setErrorMessage(errorMsg.split(":")[0]):this.clearErrorMessage();
-      console.log("return called");
       return;
     }
     this.validateForm();
@@ -51,7 +49,6 @@ export class FormValidationMessageDirective implements OnChanges {
   }
 
   private setErrorMessage(errorMsg: string): void{
-    console.log("set called: "+errorMsg);
     this.parentElement = this.el.nativeElement.parentElement.parentElement.parentElement;
     this.parentElement.querySelector("div.form-group-" + this.label).classList.add("has-danger");
     this.parentElement.querySelector("div.form-group input#" + this.label).classList.add("form-control-danger");
@@ -59,7 +56,6 @@ export class FormValidationMessageDirective implements OnChanges {
   }
 
   private clearErrorMessage(): void{
-    console.log("clear called");
     this.parentElement = this.el.nativeElement.parentElement.parentElement.parentElement;
     this.parentElement.querySelector("div.form-group-"+this.label).classList.remove('has-danger');
     this.parentElement.querySelector("div.form-group input#"+this.label).classList.remove('form-control-danger');

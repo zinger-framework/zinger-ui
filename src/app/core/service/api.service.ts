@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {JwtService} from './jwt.service'
-import {environment } from "../utils/constants.utils";
+import {API_ENDPOINTS} from "../utils/constants.utils";
 
 @Injectable({
   providedIn: 'root',
@@ -24,13 +24,13 @@ export class ApiService {
 
   get(path: string, params = new HttpParams()) {
     // need to add search: params options here
-    return this.http.get(`${environment.admin_url}${path}`, { headers: this.setHeaders() })
+    return this.http.get(`${API_ENDPOINTS.ADMIN_URL}${path}`, { headers: this.setHeaders() })
       .toPromise();
   }
 
   put(path: string, body: Object = {}){
     return this.http.put(
-      `${environment.admin_url}${path}`,
+      `${API_ENDPOINTS.ADMIN_URL}${path}`,
       JSON.stringify(body),
       { headers: this.setHeaders() }
     )
@@ -40,7 +40,7 @@ export class ApiService {
 
   post(path: string, body: Object = {}){
     return this.http.post(
-      `${environment.admin_url}${path}`,
+      `${API_ENDPOINTS.ADMIN_URL}${path}`,
       JSON.stringify(body),
       { headers: this.setHeaders() }
     )
@@ -49,7 +49,7 @@ export class ApiService {
 
   delete(path){
     return this.http.delete(
-      `${environment.admin_url}${path}`,
+      `${API_ENDPOINTS.ADMIN_URL}${path}`,
       { headers: this.setHeaders() }
     )
       .toPromise();
