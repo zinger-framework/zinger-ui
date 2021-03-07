@@ -22,6 +22,9 @@ export class FormValidationMessageDirective implements OnChanges {
   @Input()
   apiError: string = "";
 
+  @Input()
+  parentRef: ElementRef<HTMLElement>;
+
   parentElement: any;
 
   constructor(
@@ -43,24 +46,27 @@ export class FormValidationMessageDirective implements OnChanges {
 
   private validateForm(): void {
     this.formErrorService.control = this.control;
-    this.formErrorService.label = this.label;
+    this.formErrorService.label = this.label.split("-").reverse()[0];
     let errorMsg = this.formErrorService.getErrorMessage();
     (errorMsg.length > 0) ? this.setErrorMessage(errorMsg) : this.clearErrorMessage()
   }
 
   private setErrorMessage(errorMsg: string): void {
-    this.parentElement = this.el.nativeElement.parentElement.parentElement.parentElement;
-    if(this.parentElement.querySelector("div.api-error")!=null)
-      this.parentElement.querySelectorAll("div.api-error").forEach(element => { element.innerHTML = ""})
+    if(this.parentRef==null) return;
+    this.parentElement = this.parentRef.nativeElement;
+    let lastIndex = this.label.lastIndexOf("-")+1;
+    console.log(this.label.toLowerCase().substring(0,lastIndex))
+    this.parentElement.querySelector("div."+this.label.toLowerCase().substring(0,lastIndex)+"api-error").innerHTML = ""
     this.parentElement.querySelector("div.form-group-" + this.label.toLowerCase()).classList.add("has-danger");
     this.parentElement.querySelector("div.form-group input#" + this.label.toLowerCase()).classList.add("form-control-danger");
     this.parentElement.querySelector("div#error-" + this.label.toLowerCase()).innerHTML = errorMsg;
   }
 
   private clearErrorMessage(): void {
-    this.parentElement = this.el.nativeElement.parentElement.parentElement.parentElement;
-    if(this.parentElement.querySelectorAll("div.api-error")!=null)
-      this.parentElement.querySelectorAll("div.api-error").forEach(element => { element.innerHTML = ""})
+    if(this.parentRef==null) return;
+    this.parentElement = this.parentRef.nativeElement;
+    let lastIndex = this.label.lastIndexOf("-")+1;
+    this.parentElement.querySelector("div."+this.label.toLowerCase().substring(0,lastIndex)+"api-error").innerHTML = ""
     this.parentElement.querySelector("div.form-group-" + this.label.toLowerCase()).classList.remove('has-danger');
     this.parentElement.querySelector("div.form-group input#" + this.label.toLowerCase()).classList.remove('form-control-danger');
     this.parentElement.querySelector("div#error-" + this.label.toLowerCase()).innerHTML = "";

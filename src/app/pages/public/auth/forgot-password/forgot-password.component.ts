@@ -30,7 +30,7 @@ export class ForgotPasswordComponent implements OnInit, AfterViewInit {
   FC_otp: AbstractControl;
   FC_pwd: AbstractControl;
   FC_confirmPwd: AbstractControl;
-  @ViewChild("parent") private parentRef: ElementRef<HTMLElement>;
+  @ViewChild("parent") parentRef: ElementRef<HTMLElement>;
 
   constructor(private authService: AuthService, private  jwtService: JwtService, private router: Router, private fb: FormBuilder) {
     this.createForm();
@@ -64,7 +64,7 @@ export class ForgotPasswordComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.parentElement = this.parentRef.nativeElement;
+    this.parentElement = this.parentRef.nativeElement
   }
 
   sendOtp() {
@@ -72,10 +72,10 @@ export class ForgotPasswordComponent implements OnInit, AfterViewInit {
     this.authService.forgot_password_otp(this.forgotPwdForm.get('otpForm.email').value)
       .then((response) => {
         this.jwtService.saveToken(response['data']['auth_token'])
-        this.parentElement.querySelector("#email").setAttribute("readonly", "true")
+        this.parentElement.querySelector("#otp-fm-email").setAttribute("readonly", "true")
       })
       .catch((error) => {
-        handleError(error,this.apiError,this.parentRef)
+        handleError(error,this.apiError,"otp-fm",this.parentRef)
       })
   }
 
@@ -90,7 +90,7 @@ export class ForgotPasswordComponent implements OnInit, AfterViewInit {
         this.router.navigate([APP_ROUTES.DASHBOARD])
       })
       .catch(error => {
-        let data = handleError(error,this.apiError,this.parentRef)
+        let data = handleError(error,this.apiError,"reset-pwd-fm",this.parentRef)
         if(data['key'] == 'otp') this.wizard.goToPreviousStep();
       })
   }
@@ -100,6 +100,12 @@ export class ForgotPasswordComponent implements OnInit, AfterViewInit {
   }
 
   resetApiError() {
-    this.apiError = {'email': "", 'otp': "", 'password': ""};
+    // this.apiError = {'email': "", 'otp': "", 'password': ""};
+    // console.log(event);
+  }
+
+  resetApiError1(event: Event) {
+    // this.apiError = {'email': "", 'otp': "", 'password': ""};
+    console.log(event);
   }
 }
