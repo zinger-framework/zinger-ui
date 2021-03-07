@@ -1,11 +1,8 @@
 import {
   AfterViewInit,
   Component,
-  DoCheck,
   ElementRef,
-  OnChanges,
   OnInit,
-  SimpleChanges,
   ViewChild
 } from '@angular/core';
 import {AuthService} from '../../../../core/service/auth.service'
@@ -14,6 +11,7 @@ import {Router} from "@angular/router";
 import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {WizardComponent} from "angular-archwizard";
 import {APP_ROUTES} from "../../../../core/utils/constants.utils"
+import {handleError} from "../../../../core/utils/common.utils"
 
 @Component({
   selector: 'forgot-password',
@@ -77,7 +75,7 @@ export class ForgotPasswordComponent implements OnInit, AfterViewInit {
         this.parentElement.querySelector("#email").setAttribute("readonly", "true")
       })
       .catch((error) => {
-        this.handleError(error)
+        handleError(error,this.apiError,this.parentRef)
       })
   }
 
@@ -92,29 +90,9 @@ export class ForgotPasswordComponent implements OnInit, AfterViewInit {
         this.router.navigate([APP_ROUTES.DASHBOARD])
       })
       .catch(error => {
-        this.handleError(error,(args: string)=>{
-            console.log(args);
-            if(args == 'otp')
-              this.wizard.goToPreviousStep();
-        })
+        let data = handleError(error,this.apiError,this.parentRef)
+        if(data['key'] == 'otp') this.wizard.goToPreviousStep();
       })
-  }
-
-  handleError(error: any,callbackFunction?: (arg: string) => void){
-    if(error['error']['reason']!=null){
-      let reasonKey = Object.keys(error['error']['reason'])[0];
-      if(error['error']['reason'][reasonKey].constructor.name=="Array")
-          this.apiError[reasonKey] = error['error']['reason'][reasonKey][0];
-      else
-          this.apiError[reasonKey] = error['error']['reason'][reasonKey];
-      if(callbackFunction!=null)
-        callbackFunction(reasonKey);
-    }else{
-      console.log("here 1")
-        if(error['status']==429){
-          this.parentRef.nativeElement.querySelector("div.api-error").innerHTML = error['error']['message'];
-        }
-    }
   }
 
   exitFirstStep() {

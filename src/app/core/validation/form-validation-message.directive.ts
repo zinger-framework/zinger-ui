@@ -51,7 +51,7 @@ export class FormValidationMessageDirective implements OnChanges {
   private setErrorMessage(errorMsg: string): void {
     this.parentElement = this.el.nativeElement.parentElement.parentElement.parentElement;
     if(this.parentElement.querySelector("div.api-error")!=null)
-      this.parentElement.querySelector("div.api-error").innerHTML = "";
+      this.parentElement.querySelectorAll("div.api-error").forEach(element => { element.innerHTML = ""})
     this.parentElement.querySelector("div.form-group-" + this.label.toLowerCase()).classList.add("has-danger");
     this.parentElement.querySelector("div.form-group input#" + this.label.toLowerCase()).classList.add("form-control-danger");
     this.parentElement.querySelector("div#error-" + this.label.toLowerCase()).innerHTML = errorMsg;
@@ -59,8 +59,8 @@ export class FormValidationMessageDirective implements OnChanges {
 
   private clearErrorMessage(): void {
     this.parentElement = this.el.nativeElement.parentElement.parentElement.parentElement;
-    if(this.parentElement.querySelector("div.api-error")!=null)
-      this.parentElement.querySelector("div.api-error").innerHTML = "";
+    if(this.parentElement.querySelectorAll("div.api-error")!=null)
+      this.parentElement.querySelectorAll("div.api-error").forEach(element => { element.innerHTML = ""})
     this.parentElement.querySelector("div.form-group-" + this.label.toLowerCase()).classList.remove('has-danger');
     this.parentElement.querySelector("div.form-group input#" + this.label.toLowerCase()).classList.remove('form-control-danger');
     this.parentElement.querySelector("div#error-" + this.label.toLowerCase()).innerHTML = "";
