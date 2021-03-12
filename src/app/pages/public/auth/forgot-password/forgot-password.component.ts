@@ -18,19 +18,14 @@ import {handleError} from "../../../../core/utils/common.utils"
   templateUrl: './forgot-password.component.html',
   styleUrls: ['./forgot-password.component.css']
 })
-export class ForgotPasswordComponent implements OnInit, AfterViewInit {
-
-  @ViewChild(WizardComponent) public wizard: WizardComponent;
-  parentElement: HTMLElement;
+export class ForgotPasswordComponent {
   canExitFirstStep = false;
   canExitSecondStep = false;
   forgotPwdForm: FormGroup;
-  apiError = {'email': "", 'otp': "", 'password': ""};
   FC_email: AbstractControl;
   FC_otp: AbstractControl;
   FC_pwd: AbstractControl;
   FC_confirmPwd: AbstractControl;
-  @ViewChild("parent") parentRef: ElementRef<HTMLElement>;
 
   constructor(private authService: AuthService, private  jwtService: JwtService, private router: Router, private fb: FormBuilder) {
     this.createForm();
@@ -60,22 +55,15 @@ export class ForgotPasswordComponent implements OnInit, AfterViewInit {
     return null;
   }
 
-  ngOnInit(): void {
-  }
-
-  ngAfterViewInit(): void {
-    this.parentElement = this.parentRef.nativeElement
-  }
-
   sendOtp() {
     this.resetApiError()
     this.authService.forgot_password_otp(this.forgotPwdForm.get('otpForm.email').value)
       .then((response) => {
         this.jwtService.saveToken(response['data']['auth_token'])
-        this.parentElement.querySelector("#otp-fm-email").setAttribute("readonly", "true")
+        // this.parentElement.querySelector("#otp-fm-email").setAttribute("readonly", "true")
       })
       .catch((error) => {
-        handleError(error,this.apiError,"otp-fm",this.parentRef)
+        handleError(error, "forgot-password-otp", { force_error_key: 'email' })
       })
   }
 
@@ -90,8 +78,8 @@ export class ForgotPasswordComponent implements OnInit, AfterViewInit {
         this.router.navigate([APP_ROUTES.DASHBOARD])
       })
       .catch(error => {
-        let data = handleError(error,this.apiError,"reset-pwd-fm",this.parentRef)
-        if(data['key'] == 'otp') this.wizard.goToPreviousStep();
+        // let data = handleError(error,"reset-pwd-fm",this.parentRef)
+        // if(data['key'] == 'otp') this.wizard.goToPreviousStep();
       })
   }
 
@@ -100,12 +88,9 @@ export class ForgotPasswordComponent implements OnInit, AfterViewInit {
   }
 
   resetApiError() {
-    // this.apiError = {'email': "", 'otp': "", 'password': ""};
-    // console.log(event);
   }
 
   resetApiError1(event: Event) {
-    // this.apiError = {'email': "", 'otp': "", 'password': ""};
     console.log(event);
   }
 }

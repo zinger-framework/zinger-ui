@@ -31,6 +31,7 @@
               "node_modules/switchery/standalone/switchery.css"
             ],
             "scripts": [
+              "node_modules/jquery/dist/jquery.min.js",
               "src/assets/scripts/core.js",
               "src/assets/scripts/script.js",
               "node_modules/switchery/standalone/switchery.js",

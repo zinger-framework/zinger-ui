@@ -20,9 +20,6 @@ export class FormValidationMessageDirective implements OnChanges {
   label: string;
 
   @Input()
-  apiError: string = "";
-
-  @Input()
   parentRef: ElementRef<HTMLElement>;
 
   parentElement: any;
