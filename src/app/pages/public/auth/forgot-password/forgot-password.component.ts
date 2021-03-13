@@ -1,5 +1,4 @@
 import {
-  AfterViewInit,
   Component
 } from '@angular/core';
 import {AuthService} from '../../../../core/service/auth.service'
@@ -8,6 +7,7 @@ import {Router} from "@angular/router";
 import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {APP_ROUTES} from "../../../../core/utils/constants.utils"
 import {handleError} from "../../../../core/utils/common.utils"
+import $ from 'jquery';
 
 @Component({
   selector: 'forgot-password',
@@ -28,7 +28,7 @@ export class ForgotPasswordComponent{
     const emailPattern = /^\S+@\S+\.[a-z]+$/i
     const otpPattern = /^[0-9]{6}$/g
     this.otpForm = this.fb.group({
-      email: new FormControl('', [Validators.required, Validators.pattern(emailPattern)])
+      email: new FormControl('', [Validators.required, Validators.minLength(6), Validators.pattern(emailPattern)])
     })
     this.forgotPwdForm = this.fb.group({
       otp: new FormControl('', [Validators.required, Validators.pattern(otpPattern)]),
@@ -45,19 +45,17 @@ export class ForgotPasswordComponent{
   }
 
   sendOtp() {
-    this.resetApiError()
-    this.authService.forgot_password_otp(this.forgotPwdForm.get('otpForm.email').value)
+    this.authService.forgot_password_otp(this.otpForm.get('email').value)
       .then((response) => {
         this.jwtService.saveToken(response['data']['auth_token'])
-        // this.parentElement.querySelector("#otp-fm-email").setAttribute("readonly", "true")
+        $('form.forgot-password-otp div.form-group-email input').attr('readonly', true);
       })
       .catch((error) => {
-        handleError(error, "forgot-password-otp", { force_error_key: 'email' })
+        handleError(error, 'forgot-password-otp')
       })
   }
 
   resetPassword() {
-    this.resetApiError()
     let inputPwd = this.forgotPwdForm.get('password').value;
     let inputConfirmPwd = this.forgotPwdForm.get('confirmPassword').value;
     let inputOtp = this.forgotPwdForm.get('otp').value;
@@ -74,12 +72,5 @@ export class ForgotPasswordComponent{
 
   exitFirstStep() {
     return this.forgotPwdForm.get('otp').valid && this.forgotPwdForm.get('otpForm.email').valid && this.jwtService.isAuthTokenPresent();
-  }
-
-  resetApiError() {
-  }
-
-  resetApiError1(event: Event) {
-    console.log(event);
   }
 }

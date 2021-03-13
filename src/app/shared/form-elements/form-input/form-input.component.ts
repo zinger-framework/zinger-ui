@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, Input, OnInit} from '@angular/core';
-import {AbstractControl, ControlContainer, FormGroupDirective, ValidationErrors, ValidatorFn} from '@angular/forms';
-import {buildMessage, setErrorMessage} from '../../../core/utils/common.utils'
+import {AbstractControl, ControlContainer, FormGroupDirective} from '@angular/forms';
+import {buildMessage, clearErrorMessage, setErrorMessage} from '../../../core/utils/common.utils';
 
 @Component({
   selector: 'form-input',
@@ -28,16 +28,15 @@ export class FormInputComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     this.control.valueChanges.subscribe(data => {
-      this.getValidationError()
+      this.getValidationError();
     });
   }
 
   getValidationError() {
     if (this.control && this.control.invalid && this.control.touched) {
-      const errors: ValidationErrors | ValidatorFn = this.control.errors;
-      setErrorMessage(buildMessage(this.control.errors), this.formName, this.name);
-    }else{
-      setErrorMessage("", this.formName, this.name);
+      setErrorMessage(buildMessage(this.control.errors, this.name), this.formName, this.name);
+    } else {
+      clearErrorMessage(this.formName, this.name);
     }
   }
 }
