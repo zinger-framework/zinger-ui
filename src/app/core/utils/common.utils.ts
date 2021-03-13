@@ -1,6 +1,6 @@
 import $ from 'jquery';
 import {ValidationErrors} from '@angular/forms';
-import {ErrorMessages} from './error-messages';
+import {ValidationErrorMessages} from './validation-error-messages.utils';
 
 export function handleError(error: any, className: string, options = {}) {
   let reason = error['error']['reason'];
@@ -45,7 +45,7 @@ export function clearErrorMessage(className: string, fieldKey = '') {
 
 export function buildMessage(error: ValidationErrors, label: string): string {
   let errorKey = Object.keys(error)[0];
-  let errMsgObj = ErrorMessages[errorKey];
+  let errMsgObj = ValidationErrorMessages[errorKey];
   if (errMsgObj != null) {
     let message = errMsgObj['message'];
     for (let param of errMsgObj['params']) {
@@ -57,8 +57,7 @@ export function buildMessage(error: ValidationErrors, label: string): string {
     }
     return message;
   } else {
-    return error.value;
+    return Object.values(error)[0]
   }
-  return 'Invalid input';
 }
 

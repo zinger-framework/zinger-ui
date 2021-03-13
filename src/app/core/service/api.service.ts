@@ -31,13 +31,8 @@ export class ApiService implements HttpInterceptor {
           return event;
         }),
         catchError((error: HttpErrorResponse) => {
-          let errorMsgLog = '';
           let errorMsg = '';
-          console.log(error);
-          if (error.error instanceof ErrorEvent) {
-            errorMsgLog = `Error: ${error.error.message}`;
-          } else {
-            errorMsgLog = `Error Code: ${error.status},  Message: ${error.message}`;
+          if (!(error.error instanceof ErrorEvent)) {
             if (error.status == 0) {
               errorMsg = 'Please check your internet connection';
             } else if (error.status == 401) {
@@ -47,7 +42,7 @@ export class ApiService implements HttpInterceptor {
                   errorMsg = error.error.message;
                 }
                 case 'OTP_UNVERIFIED': {
-                  console.log('navigate to OTP screen');
+                  console.log('Navigate to OTP screen');
                   errorMsg = error.error.message;
                 }
               }
@@ -63,10 +58,8 @@ export class ApiService implements HttpInterceptor {
           }
           if (errorMsg.length > 0) {
             // toast(errorMsg)
-            console.log(errorMsg);
             return new Observable<HttpEvent<any>>();
           } else {
-            console.log('error: ' + errorMsgLog);
             return throwError(error);
           }
         })
@@ -84,9 +77,7 @@ export class ApiService implements HttpInterceptor {
       `${API_ENDPOINTS.ADMIN_URL}${path}`,
       JSON.stringify(body),
       {headers: this.setHeaders(path)}
-    )
-      .toPromise();
-
+    ).toPromise();
   }
 
   post(path: string, body: Object = {}) {
@@ -94,16 +85,14 @@ export class ApiService implements HttpInterceptor {
       `${API_ENDPOINTS.ADMIN_URL}${path}`,
       JSON.stringify(body),
       {headers: this.setHeaders(path)}
-    )
-      .toPromise();
+    ).toPromise();
   }
 
   delete(path) {
     return this.http.delete(
       `${API_ENDPOINTS.ADMIN_URL}${path}`,
       {headers: this.setHeaders(path)}
-    )
-      .toPromise();
+    ).toPromise();
   }
 
   private logout() {
@@ -124,7 +113,6 @@ export class ApiService implements HttpInterceptor {
         this.router.navigate([APP_ROUTES.AUTH_LOGIN]);
       }
     }
-
     return new HttpHeaders(headersConfig);
   }
 }

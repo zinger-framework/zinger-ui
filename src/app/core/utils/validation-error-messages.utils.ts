@@ -1,4 +1,4 @@
-export const ErrorMessages = {
+export const ValidationErrorMessages = {
   required: {
     message: '{label} cannot be empty',
     params: ['label']

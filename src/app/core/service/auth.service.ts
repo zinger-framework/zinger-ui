@@ -3,7 +3,6 @@ import {ApiService} from './api.service';
 import {JwtService} from './jwt.service';
 import {API_ENDPOINTS} from '../utils/constants.utils';
 
-
 @Injectable()
 export class AuthService {
   constructor(
