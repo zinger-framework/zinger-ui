@@ -1,15 +1,11 @@
 import {
   AfterViewInit,
-  Component,
-  ElementRef,
-  OnInit,
-  ViewChild
+  Component
 } from '@angular/core';
 import {AuthService} from '../../../../core/service/auth.service'
 import {JwtService} from "../../../../core/service/jwt.service";
 import {Router} from "@angular/router";
 import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {WizardComponent} from "angular-archwizard";
 import {APP_ROUTES} from "../../../../core/utils/constants.utils"
 import {handleError} from "../../../../core/utils/common.utils"
 
@@ -18,30 +14,23 @@ import {handleError} from "../../../../core/utils/common.utils"
   templateUrl: './forgot-password.component.html',
   styleUrls: ['./forgot-password.component.css']
 })
-export class ForgotPasswordComponent {
+export class ForgotPasswordComponent{
   canExitFirstStep = false;
   canExitSecondStep = false;
   forgotPwdForm: FormGroup;
-  FC_email: AbstractControl;
-  FC_otp: AbstractControl;
-  FC_pwd: AbstractControl;
-  FC_confirmPwd: AbstractControl;
+  otpForm: FormGroup;
 
   constructor(private authService: AuthService, private  jwtService: JwtService, private router: Router, private fb: FormBuilder) {
     this.createForm();
-    this.FC_email = this.forgotPwdForm.get('otpForm.email');
-    this.FC_otp = this.forgotPwdForm.get('otp');
-    this.FC_pwd = this.forgotPwdForm.get('password');
-    this.FC_confirmPwd = this.forgotPwdForm.get('confirmPassword');
   }
 
   createForm() {
     const emailPattern = /^\S+@\S+\.[a-z]+$/i
     const otpPattern = /^[0-9]{6}$/g
+    this.otpForm = this.fb.group({
+      email: new FormControl('', [Validators.required, Validators.pattern(emailPattern)])
+    })
     this.forgotPwdForm = this.fb.group({
-      otpForm: new FormGroup({
-        email: new FormControl('', [Validators.required, Validators.pattern(emailPattern)])
-      }),
       otp: new FormControl('', [Validators.required, Validators.pattern(otpPattern)]),
       password: new FormControl('', [Validators.required, Validators.minLength(6)]),
       confirmPassword: new FormControl('', [Validators.required, Validators.minLength(6), this.validatePassword])

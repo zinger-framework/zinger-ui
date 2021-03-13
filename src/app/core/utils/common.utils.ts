@@ -1,4 +1,7 @@
 import $ from 'jquery';
+import {ErrorMessages} from "../validation/error-messages";
+import {ValidationErrors} from "@angular/forms";
+
 
 export function handleError(error: any, className: string, options = {}) {
   if (error['error']['reason'] != null) {
@@ -32,3 +35,9 @@ export function setErrorMessage(message: string, className: string, fieldKey = '
     $('form.' + className + ' div.form-control-feedback')[0].innerHTML = message;
   }
 }
+
+
+export function buildMessage(err: ValidationErrors): string {
+  return 'error1';
+}
+

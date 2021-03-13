@@ -28,7 +28,7 @@ export class FormValidationMessageService {
     }
   }
 
-  private get doNotShowMessage(): boolean {
+  private get showMessage(): boolean {
     const currentControl: AbstractControl = this.currentControl;
     return currentControl.touched && currentControl.errors !== null;
   }
@@ -42,7 +42,7 @@ export class FormValidationMessageService {
   }
 
   getErrorMessage(): string {
-    if (!this.doNotShowMessage) {
+    if (!this.showMessage) {
       return "";
     }
 
@@ -54,7 +54,7 @@ export class FormValidationMessageService {
   }
 
   getErrorMessages(): string[] {
-    if (!this.doNotShowMessage) {
+    if (!this.showMessage) {
       return [];
     }
 
