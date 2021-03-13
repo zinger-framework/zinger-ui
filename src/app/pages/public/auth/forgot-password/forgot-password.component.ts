@@ -6,6 +6,7 @@ import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from '
 import {APP_ROUTES} from '../../../../core/utils/constants.utils';
 import {handleError} from '../../../../core/utils/common.utils';
 import $ from 'jquery';
+import {ExtendedFormControl} from "../../../../core/utils/ExtendedFormControl";
 
 @Component({
   selector: 'forgot-password',
@@ -26,7 +27,8 @@ export class ForgotPasswordComponent {
     const emailPattern = /^\S+@\S+\.[a-z]+$/i;
     const otpPattern = /^[0-9]{6}$/g;
     this.otpForm = this.fb.group({
-      email: new FormControl('', [Validators.required, Validators.minLength(6), Validators.pattern(emailPattern)])
+      email: new ExtendedFormControl('', [Validators.required, Validators.pattern(emailPattern)],
+        "forgot-password-otp", "email")
     });
     this.forgotPwdForm = this.fb.group({
       otp: new FormControl('', [Validators.required, Validators.pattern(otpPattern)]),

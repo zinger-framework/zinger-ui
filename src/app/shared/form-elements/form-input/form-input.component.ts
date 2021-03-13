@@ -1,6 +1,5 @@
-import {AfterViewInit, Component, Input, OnInit} from '@angular/core';
-import {AbstractControl, ControlContainer, FormGroupDirective} from '@angular/forms';
-import {buildMessage, clearErrorMessage, setErrorMessage} from '../../../core/utils/common.utils';
+import {Component, Input} from '@angular/core';
+import {ControlContainer, FormGroupDirective} from '@angular/forms';
 
 @Component({
   selector: 'form-input',
@@ -13,30 +12,8 @@ import {buildMessage, clearErrorMessage, setErrorMessage} from '../../../core/ut
     }
   ]
 })
-export class FormInputComponent implements OnInit, AfterViewInit {
+export class FormInputComponent {
   @Input() inputType: string;
   @Input() placeholder: string;
   @Input() name: string;
-  @Input() formName: string;
-  @Input() control: AbstractControl;
-
-  constructor() {
-  }
-
-  ngOnInit(): void {
-  }
-
-  ngAfterViewInit() {
-    this.control.valueChanges.subscribe(data => {
-      this.getValidationError();
-    });
-  }
-
-  getValidationError() {
-    if (this.control && this.control.invalid && this.control.touched) {
-      setErrorMessage(buildMessage(this.control.errors, this.name), this.formName, this.name);
-    } else {
-      clearErrorMessage(this.formName, this.name);
-    }
-  }
 }
