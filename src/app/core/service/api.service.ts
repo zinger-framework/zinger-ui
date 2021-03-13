@@ -9,11 +9,11 @@ import {
   HttpParams,
   HttpRequest
 } from '@angular/common/http';
-import {JwtService} from './jwt.service'
-import {API_ENDPOINTS, APP_ROUTES} from "../utils/constants.utils";
-import {Observable, throwError} from "rxjs";
-import {catchError, map} from "rxjs/operators";
-import {Router} from "@angular/router";
+import {JwtService} from './jwt.service';
+import {API_ENDPOINTS, APP_ROUTES} from '../utils/constants.utils';
+import {Observable, throwError} from 'rxjs';
+import {catchError, map} from 'rxjs/operators';
+import {Router} from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -32,14 +32,14 @@ export class ApiService implements HttpInterceptor {
         }),
         catchError((error: HttpErrorResponse) => {
           let errorMsgLog = '';
-          let errorMsg = "";
-          console.log(error)
+          let errorMsg = '';
+          console.log(error);
           if (error.error instanceof ErrorEvent) {
             errorMsgLog = `Error: ${error.error.message}`;
           } else {
             errorMsgLog = `Error Code: ${error.status},  Message: ${error.message}`;
             if (error.status == 0) {
-              errorMsg = "Please check your internet connection"
+              errorMsg = 'Please check your internet connection';
             } else if (error.status == 401) {
               switch (error.error.reason) {
                 case 'UNAUTHORIZED': {
@@ -47,18 +47,18 @@ export class ApiService implements HttpInterceptor {
                   errorMsg = error.error.message;
                 }
                 case 'OTP_UNVERIFIED': {
-                  console.log("navigate to OTP screen");
+                  console.log('navigate to OTP screen');
                   errorMsg = error.error.message;
                 }
               }
             } else if (error.status == 403) {
-              if (error.error.reason == "UNAUTHORIZED") {
+              if (error.error.reason == 'UNAUTHORIZED') {
                 this.logout();
                 errorMsg = error.error.message;
               }
             } else if (error.status == 500) {
-              console.log("Something went wrong. Please try again later")
-              errorMsg = "Something went wrong. Please try again later";
+              console.log('Something went wrong. Please try again later');
+              errorMsg = 'Something went wrong. Please try again later';
             }
           }
           if (errorMsg.length > 0) {
@@ -66,11 +66,11 @@ export class ApiService implements HttpInterceptor {
             console.log(errorMsg);
             return new Observable<HttpEvent<any>>();
           } else {
-            console.log("error: " + errorMsgLog);
+            console.log('error: ' + errorMsgLog);
             return throwError(error);
           }
         })
-      )
+      );
   }
 
   get(path: string, params = new HttpParams()) {
@@ -108,7 +108,7 @@ export class ApiService implements HttpInterceptor {
 
   private logout() {
     this.jwtService.destroyToken();
-    this.router.navigate([APP_ROUTES.AUTH_LOGIN])
+    this.router.navigate([APP_ROUTES.AUTH_LOGIN]);
   }
 
   private setHeaders(path: string): HttpHeaders {
@@ -118,10 +118,11 @@ export class ApiService implements HttpInterceptor {
     };
 
     if (!this.publicAPIs.includes(path)) {
-      if (this.jwtService.isAuthTokenPresent())
+      if (this.jwtService.isAuthTokenPresent()) {
         headersConfig['Authorization'] = this.jwtService.getToken();
-      else
+      } else {
         this.router.navigate([APP_ROUTES.AUTH_LOGIN]);
+      }
     }
 
     return new HttpHeaders(headersConfig);

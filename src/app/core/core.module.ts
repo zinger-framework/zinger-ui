@@ -3,7 +3,7 @@ import {CommonModule} from '@angular/common';
 import {ApiService} from './service/api.service';
 import {JwtService} from './service/jwt.service';
 import {HTTP_INTERCEPTORS} from '@angular/common/http';
-import {AuthService} from "./service/auth.service";
+import {AuthService} from './service/auth.service';
 
 @NgModule({
   imports: [

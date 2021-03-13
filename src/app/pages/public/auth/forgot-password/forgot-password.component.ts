@@ -1,12 +1,10 @@
-import {
-  Component
-} from '@angular/core';
-import {AuthService} from '../../../../core/service/auth.service'
-import {JwtService} from "../../../../core/service/jwt.service";
-import {Router} from "@angular/router";
+import {Component} from '@angular/core';
+import {AuthService} from '../../../../core/service/auth.service';
+import {JwtService} from '../../../../core/service/jwt.service';
+import {Router} from '@angular/router';
 import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {APP_ROUTES} from "../../../../core/utils/constants.utils"
-import {handleError} from "../../../../core/utils/common.utils"
+import {APP_ROUTES} from '../../../../core/utils/constants.utils';
+import {handleError} from '../../../../core/utils/common.utils';
 import $ from 'jquery';
 
 @Component({
@@ -14,7 +12,7 @@ import $ from 'jquery';
   templateUrl: './forgot-password.component.html',
   styleUrls: ['./forgot-password.component.css']
 })
-export class ForgotPasswordComponent{
+export class ForgotPasswordComponent {
   canExitFirstStep = false;
   canExitSecondStep = false;
   forgotPwdForm: FormGroup;
@@ -25,11 +23,11 @@ export class ForgotPasswordComponent{
   }
 
   createForm() {
-    const emailPattern = /^\S+@\S+\.[a-z]+$/i
-    const otpPattern = /^[0-9]{6}$/g
+    const emailPattern = /^\S+@\S+\.[a-z]+$/i;
+    const otpPattern = /^[0-9]{6}$/g;
     this.otpForm = this.fb.group({
       email: new FormControl('', [Validators.required, Validators.minLength(6), Validators.pattern(emailPattern)])
-    })
+    });
     this.forgotPwdForm = this.fb.group({
       otp: new FormControl('', [Validators.required, Validators.pattern(otpPattern)]),
       password: new FormControl('', [Validators.required, Validators.minLength(6)]),
@@ -47,12 +45,12 @@ export class ForgotPasswordComponent{
   sendOtp() {
     this.authService.forgot_password_otp(this.otpForm.get('email').value)
       .then((response) => {
-        this.jwtService.saveToken(response['data']['auth_token'])
+        this.jwtService.saveToken(response['data']['auth_token']);
         $('form.forgot-password-otp div.form-group-email input').attr('readonly', true);
       })
       .catch((error) => {
-        handleError(error, 'forgot-password-otp')
-      })
+        handleError(error, 'forgot-password-otp');
+      });
   }
 
   resetPassword() {
@@ -62,12 +60,12 @@ export class ForgotPasswordComponent{
 
     this.authService.reset_password(inputOtp, inputPwd, inputConfirmPwd)
       .then(response => {
-        this.router.navigate([APP_ROUTES.DASHBOARD])
+        this.router.navigate([APP_ROUTES.DASHBOARD]);
       })
       .catch(error => {
         // let data = handleError(error,"reset-pwd-fm",this.parentRef)
         // if(data['key'] == 'otp') this.wizard.goToPreviousStep();
-      })
+      });
   }
 
   exitFirstStep() {

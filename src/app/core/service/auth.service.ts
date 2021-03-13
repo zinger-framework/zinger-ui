@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {ApiService} from './api.service';
-import {JwtService} from "./jwt.service";
-import {API_ENDPOINTS} from "../utils/constants.utils";
+import {JwtService} from './jwt.service';
+import {API_ENDPOINTS} from '../utils/constants.utils';
 
 
 @Injectable()
@@ -23,7 +23,7 @@ export class AuthService {
       otp: otp,
       password: pwd,
       password_confirmation: confirm_pwd
-    }
-    return this.apiService.post(API_ENDPOINTS.AUTH_FORGOT_PASSWORD_RESET_PASSWORD, requestBody)
+    };
+    return this.apiService.post(API_ENDPOINTS.AUTH_FORGOT_PASSWORD_RESET_PASSWORD, requestBody);
   }
 }

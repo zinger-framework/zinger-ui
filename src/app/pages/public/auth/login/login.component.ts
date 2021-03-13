@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ApiService} from '../../../../core/service/api.service';
 import {FormBuilder, FormGroup, ValidationErrors, Validators} from '@angular/forms';
-import {Router} from "@angular/router";
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'login',
@@ -20,7 +20,7 @@ export class LoginComponent implements OnInit {
   }
 
   redirect() {
-    this.router.navigate(['AUTH_FORGOT_PASSWORD'])
+    this.router.navigate(['AUTH_FORGOT_PASSWORD']);
   }
 
   ngOnInit(): void {
