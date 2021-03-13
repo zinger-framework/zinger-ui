@@ -8,3 +8,6 @@ export const APP_ROUTES = {
   DASHBOARD: '/dashboard',
   AUTH_LOGIN: '/auth/login'
 };
+
+export const EMAIL_REGEX = /^\S+@\S+\.[a-z]+$/i;
+export const OTP_REGEX = /^[0-9]{6}$/g;

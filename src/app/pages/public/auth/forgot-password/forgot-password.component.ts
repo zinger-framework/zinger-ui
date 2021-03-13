@@ -3,7 +3,7 @@ import {AuthService} from '../../../../core/service/auth.service';
 import {JwtService} from '../../../../core/service/jwt.service';
 import {Router} from '@angular/router';
 import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {APP_ROUTES} from '../../../../core/utils/constants.utils';
+import {APP_ROUTES, EMAIL_REGEX, OTP_REGEX} from '../../../../core/utils/constants.utils';
 import {handleError} from '../../../../core/utils/common.utils';
 import $ from 'jquery';
 import {ExtendedFormControl} from "../../../../core/utils/extended-form-control.utils";
@@ -24,14 +24,12 @@ export class ForgotPasswordComponent {
   }
 
   createForm() {
-    const emailPattern = /^\S+@\S+\.[a-z]+$/i;
-    const otpPattern = /^[0-9]{6}$/g;
     this.otpForm = this.fb.group({
-      email: new ExtendedFormControl('', [Validators.required, Validators.pattern(emailPattern)],
-        "forgot-password-otp", "email")
+      email: new ExtendedFormControl('', [Validators.required, Validators.pattern(EMAIL_REGEX)],
+        'forgot-password-otp', 'email')
     });
     this.forgotPwdForm = this.fb.group({
-      otp: new FormControl('', [Validators.required, Validators.pattern(otpPattern)]),
+      otp: new FormControl('', [Validators.required, Validators.pattern(OTP_REGEX)]),
       password: new FormControl('', [Validators.required, Validators.minLength(6)]),
       confirmPassword: new FormControl('', [Validators.required, Validators.minLength(6), this.validatePassword])
     });
@@ -39,7 +37,7 @@ export class ForgotPasswordComponent {
 
   validatePassword(control: AbstractControl): { [key: string]: any } | null {
     if (control.value && control.root.get('password') && control.value != control.root.get('password').value) {
-      return {'passwordNotEqual': 'Confirm Password doesn\'t match'};
+      return {'passwordNotEqual': "Confirm Password doesn't match"};
     }
   }
 
