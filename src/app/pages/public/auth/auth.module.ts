@@ -9,6 +9,7 @@ import {LoginComponent} from './login/login.component';
 import {ForgotPasswordComponent} from './forgot-password/forgot-password.component';
 import {AuthComponent} from './auth.component';
 import {SharedModule} from '../../../shared/shared.module';
+import {CoreModule} from '../../../core/core.module';
 
 @NgModule({
   declarations: [LoginComponent, ForgotPasswordComponent, AuthComponent],
@@ -19,7 +20,8 @@ import {SharedModule} from '../../../shared/shared.module';
     ArchwizardModule,
     RouterModule,
     NgbButtonsModule,
-    SharedModule
+    SharedModule,
+    CoreModule
   ]
 })
 export class AuthModule {

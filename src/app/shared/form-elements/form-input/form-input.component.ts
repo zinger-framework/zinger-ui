@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {ControlContainer, FormGroupDirective} from '@angular/forms';
 
 @Component({
@@ -12,15 +12,8 @@ import {ControlContainer, FormGroupDirective} from '@angular/forms';
     }
   ]
 })
-export class FormInputComponent implements OnInit {
+export class FormInputComponent {
   @Input() inputType: string;
   @Input() placeholder: string;
   @Input() name: string;
-  @Input() isRequired = true;
-
-  constructor() {
-  }
-
-  ngOnInit(): void {
-  }
 }
