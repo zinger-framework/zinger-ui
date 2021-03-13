@@ -4,6 +4,8 @@ import {FormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
 import {CommonModule} from '@angular/common';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {UiSwitchModule} from 'ngx-ui-switch';
+import {NgSelectModule} from '@ng-select/ng-select';
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
@@ -31,7 +33,13 @@ import {PublicModule} from './pages/public/public.module';
     SharedModule,
     LayoutsModule,
     PrivateModule,
-    PublicModule
+    PublicModule,
+    UiSwitchModule.forRoot({
+      size: 'medium',
+      color: '#28a745',
+      defaultBgColor: '#f56767'
+    }),
+    NgSelectModule
   ],
   bootstrap: [AppComponent]
 })

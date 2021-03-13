@@ -1,61 +1,13 @@
-jQuery(window).on("load", function () {
-  "use strict";
-  // bootstrap wysihtml5
-  $('.textarea_editor').wysihtml5({
-    html: true
-  });
-});
-jQuery(window).on("load resize", function () {
-  // custom scrollbar
-  $(".customscroll").mCustomScrollbar({
-    theme: "dark-2",
-    scrollInertia: 300,
-    autoExpandScrollbar: true,
-    advanced: {autoExpandHorizontalScroll: true}
-  });
-});
-jQuery(document).ready(function () {
+$(document).ready(function () {
   "use strict";
   // Background Image
-  jQuery(".bg_img").each(function (i, elem) {
-    var img = jQuery(elem);
-    jQuery(this).hide();
-    jQuery(this).parent().css({
+  $(".bg_img").each(function (i, elem) {
+    var img = $(elem);
+    $(this).hide();
+    $(this).parent().css({
       background: "url(" + img.attr("src") + ") no-repeat center center",
     });
   });
-
-  /*==============================================================*/
-  // Image to svg convert start
-  /*==============================================================*/
-  jQuery('img.svg').each(function () {
-    var $img = jQuery(this);
-    var imgID = $img.attr('id');
-    var imgClass = $img.attr('class');
-    var imgURL = $img.attr('src');
-    jQuery.get(imgURL, function (data) {
-      var $svg = jQuery(data).find('svg');
-      if (typeof imgID !== 'undefined') {
-        $svg = $svg.attr('id', imgID);
-      }
-      if (typeof imgClass !== 'undefined') {
-        $svg = $svg.attr('class', imgClass + ' replaced-svg');
-      }
-      $svg = $svg.removeAttr('xmlns:a');
-      if (!$svg.attr('viewBox') && $svg.attr('height') && $svg.attr('width')) {
-        $svg.attr('viewBox', '0 0 ' + $svg.attr('height') + ' ' + $svg.attr('width'))
-      }
-      $img.replaceWith($svg);
-    }, 'xml');
-  });
-  /*==============================================================*/
-  // Image to svg convert end
-  /*==============================================================*/
-
-  // click to scroll
-  // $('.collapse-box').on('shown.bs.collapse', function () {
-  // 	$(".customscroll").mCustomScrollbar("scrollTo",$(this));
-  // });
 
   // code split
   var entityMap = {
@@ -97,18 +49,6 @@ jQuery(document).ready(function () {
     });
   });
 
-  // custom select 2 init
-  $('.custom-select2').select2();
-
-  // Bootstrap Select
-  //$('.selectpicker').selectpicker();
-
-  // tooltip init
-  $('[data-toggle="tooltip"]').tooltip()
-
-  // popover init
-  $('[data-toggle="popover"]').popover()
-
   // form-control on focus add class
   $(".form-control").on('focus', function () {
     $(this).parent().addClass("focus");
@@ -116,16 +56,6 @@ jQuery(document).ready(function () {
   $(".form-control").on('focusout', function () {
     $(this).parent().removeClass("focus");
   })
-
-  // sidebar menu icon
-  $('.menu-icon, [data-toggle="left-sidebar-close"]').on('click', function () {
-    //$(this).toggleClass('open');
-    $('.left-side-bar').toggleClass('open');
-    $('.mobile-menu-overlay').toggleClass('show');
-  });
-  $('[data-toggle="header_search"]').on('click', function () {
-    jQuery('.header-search').slideToggle();
-  });
 
   var w = $(window).width();
   $(document).on('touchstart click', function (e) {
@@ -158,50 +88,7 @@ jQuery(document).ready(function () {
     var str = $html.prop('outerHTML');
     CopyToClipboard(str, true, "Copied");
   });
-  var clipboard = new ClipboardJS('.code-copy');
-  clipboard.on('success', function (e) {
-    CopyToClipboard('', true, "Copied");
-    e.clearSelection();
-  });
 
-  // date picker
-  $('.date-picker').datepicker({
-    language: 'en',
-    autoClose: true,
-    dateFormat: 'dd MM yyyy',
-  });
-  $('.datetimepicker').datepicker({
-    timepicker: true,
-    language: 'en',
-    autoClose: true,
-    dateFormat: 'dd MM yyyy',
-  });
-  $('.datetimepicker-range').datepicker({
-    language: 'en',
-    range: true,
-    multipleDates: true,
-    multipleDatesSeparator: " - "
-  });
-  $('.month-picker').datepicker({
-    language: 'en',
-    minView: 'months',
-    view: 'months',
-    autoClose: true,
-    dateFormat: 'MM yyyy',
-  });
-
-  // only time picker
-  $(".time-picker").timeDropper({
-    mousewheel: true,
-    meridians: true,
-    init_animation: 'dropdown',
-    setCurrentTime: false
-  });
-  $('.time-picker-default').timeDropper();
-
-  // var color = $('.btn').data('color');
-  // console.log(color);
-  // $('.btn').style('color'+color);
   $("[data-color]").each(function () {
     $(this).css('color', $(this).attr('data-color'));
   });
@@ -278,7 +165,7 @@ jQuery(document).ready(function () {
     }
 
   }
-})(window.jQuery || window.Zepto);
+})(window.$ || window.Zepto);
 
 // copy to clipboard function
 function CopyToClipboard(value, showNotification, notificationText) {
