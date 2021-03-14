@@ -6,7 +6,7 @@ import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from '
 import {APP_ROUTES, EMAIL_REGEX, OTP_REGEX} from '../../../../core/utils/constants.utils';
 import {handleError} from '../../../../core/utils/common.utils';
 import $ from 'jquery';
-import {ExtendedFormControl} from "../../../../core/utils/extended-form-control.utils";
+import {ExtendedFormControl} from '../../../../core/utils/extended-form-control.utils';
 
 @Component({
   selector: 'forgot-password',
@@ -37,7 +37,7 @@ export class ForgotPasswordComponent {
 
   validatePassword(control: AbstractControl): { [key: string]: any } | null {
     if (control.value && control.root.get('password') && control.value != control.root.get('password').value) {
-      return {'passwordNotEqual': "Confirm Password doesn't match"};
+      return {'passwordNotEqual': 'Confirm Password doesn\'t match'};
     }
   }
 

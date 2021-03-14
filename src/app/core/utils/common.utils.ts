@@ -25,21 +25,23 @@ export function handleError(error: any, className: string, options = {}) {
 
 export function setErrorMessage(message: string, className: string, fieldKey = '') {
   if (fieldKey != '') {
-    $('form.' + className + ' div.form-group-' + fieldKey + ' div.form-control-feedback')[0].innerHTML = message;
-    $('form.' + className + ' div.form-group-' + fieldKey)[0].classList.add('has-danger');
-    $('form.' + className + ' div.form-group-' + fieldKey + ' input')[0].classList.add('form-control-danger');
+    $(`form.${className} div.form-group-${fieldKey} div.form-control-feedback`)[0].innerHTML = message;
+    $(`form.${className} div.form-group-${fieldKey}`)[0].classList.add('has-danger');
+    $(`form.${className} div.form-group-${fieldKey} input`)[0].classList.add('form-control-danger');
   } else {
-    $('form.' + className + ' div.form-control-feedback')[0].innerHTML = message;
+    $(`form.${className} div.form-control-feedback`)[0].innerHTML = message;
+    $(`form.${className} div.form-control-feedback`)[0].classList.add('has-danger');
   }
 }
 
 export function clearErrorMessage(className: string, fieldKey = '') {
   if (fieldKey != '') {
-    $('form.' + className + ' div.form-group-' + fieldKey + ' div.form-control-feedback')[0].innerHTML = '';
-    $('form.' + className + ' div.form-group-' + fieldKey)[0].classList.remove('has-danger');
-    $('form.' + className + ' div.form-group-' + fieldKey + ' input')[0].classList.remove('form-control-danger');
+    $(`form.${className} div.form-group-${fieldKey} div.form-control-feedback`)[0].innerHTML = '';
+    $(`form.${className} div.form-group-${fieldKey}`)[0].classList.remove('has-danger');
+    $(`form.${className} div.form-group-${fieldKey} input`)[0].classList.remove('form-control-danger');
   } else {
-    $('form.' + className + ' div.form-control-feedback')[0].innerHTML = '';
+    $(`form.${className} div.form-control-feedback`)[0].innerHTML = '';
+    $(`form.${className} div.form-control-feedback`)[0].classList.remove('has-danger');
   }
 }
 
@@ -57,7 +59,7 @@ export function buildMessage(error: ValidationErrors, label: string): string {
     }
     return message;
   } else {
-    return Object.values(error)[0]
+    return Object.values(error)[0];
   }
 }
 

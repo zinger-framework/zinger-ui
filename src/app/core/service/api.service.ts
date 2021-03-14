@@ -14,6 +14,7 @@ import {API_ENDPOINTS, APP_ROUTES} from '../utils/constants.utils';
 import {Observable, throwError} from 'rxjs';
 import {catchError, map} from 'rxjs/operators';
 import {Router} from '@angular/router';
+import {ToastrService} from 'ngx-toastr';
 
 @Injectable({
   providedIn: 'root',
@@ -21,7 +22,7 @@ import {Router} from '@angular/router';
 export class ApiService implements HttpInterceptor {
   private publicAPIs = [API_ENDPOINTS.AUTH_FORGOT_PASSWORD_SEND_OTP, API_ENDPOINTS.AUTH_FORGOT_PASSWORD_RESET_PASSWORD];
 
-  constructor(private http: HttpClient, private router: Router, private jwtService: JwtService) {
+  constructor(private http: HttpClient, private router: Router, private jwtService: JwtService, private toastr: ToastrService) {
   }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -57,9 +58,12 @@ export class ApiService implements HttpInterceptor {
             }
           }
           if (errorMsg.length > 0) {
-            // toast(errorMsg)
+            this.toastr.error(errorMsg);
             return new Observable<HttpEvent<any>>();
           } else {
+            if (error['error']['reason'] != null) {
+              this.toastr.error(error['error']['message']);
+            }
             return throwError(error);
           }
         })

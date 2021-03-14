@@ -1,5 +1,5 @@
-import {AbstractControlOptions, AsyncValidatorFn, FormControl, ValidatorFn} from "@angular/forms";
-import {buildMessage, clearErrorMessage, setErrorMessage} from "./common.utils";
+import {AbstractControlOptions, AsyncValidatorFn, FormControl, ValidatorFn} from '@angular/forms';
+import {buildMessage, clearErrorMessage, setErrorMessage} from './common.utils';
 
 export class ExtendedFormControl extends FormControl {
   public focused: boolean = false;
@@ -8,7 +8,7 @@ export class ExtendedFormControl extends FormControl {
 
   constructor(formState?: any, validatorOrOpts?: ValidatorFn | ValidatorFn[] | AbstractControlOptions | null,
               className?: string, controlName?: string, asyncValidator?: AsyncValidatorFn | AsyncValidatorFn[] | null) {
-    super(formState, validatorOrOpts, asyncValidator)
+    super(formState, validatorOrOpts, asyncValidator);
     this.className = className;
     this.controlName = controlName;
     this.valueChanges.subscribe(data => {
@@ -26,6 +26,6 @@ export class ExtendedFormControl extends FormControl {
 
   markAsTouched(opts?: { onlySelf?: boolean }) {
     super.markAsTouched(opts);
-    this.getValidationError()
+    this.getValidationError();
   }
 }
