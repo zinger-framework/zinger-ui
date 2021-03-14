@@ -4,8 +4,10 @@ import {ValidationErrorMessages} from './validation-error-messages.utils';
 
 export function handleError(error: any, className: string, options = {}) {
   let reason = error['error']['reason'];
+  let errorMsg = {};
   if (reason != null) {
     if (typeof reason == 'string') {
+      errorMsg['error'] = reason;
       if (options['force_error_key'] != null) {
         setErrorMessage(reason, className, options['force_error_key']);
       } else {
@@ -15,12 +17,15 @@ export function handleError(error: any, className: string, options = {}) {
       Object.entries(reason).forEach(([reasonKey, value]) => {
         if (Array.isArray(value)) {
           setErrorMessage(value.join(', '), className, reasonKey);
+          errorMsg[reasonKey] = value.join(', ');
         }
       });
     }
   } else if (error['error']['message'] != null) {
     setErrorMessage(error['error']['message'], className);
+    errorMsg['error'] = error['error']['message'];
   }
+  return errorMsg;
 }
 
 export function setErrorMessage(message: string, className: string, fieldKey = '') {
