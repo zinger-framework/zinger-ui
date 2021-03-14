@@ -2,16 +2,14 @@ import {AbstractControlOptions, AsyncValidatorFn, FormControl, ValidatorFn} from
 import {buildMessage, clearErrorMessage, setErrorMessage} from './common.utils';
 
 export class ExtendedFormControl extends FormControl {
-  public focused: boolean = false;
-  public className: string;
   public controlName: string;
 
   constructor(formState?: any, validatorOrOpts?: ValidatorFn | ValidatorFn[] | AbstractControlOptions | null,
-              className?: string, controlName?: string, asyncValidator?: AsyncValidatorFn | AsyncValidatorFn[] | null) {
+              controlName?: string, asyncValidator?: AsyncValidatorFn | AsyncValidatorFn[] | null) {
     super(formState, validatorOrOpts, asyncValidator);
-    this.className = className;
     this.controlName = controlName;
     this.valueChanges.subscribe(data => {
+      this.parent.setErrors(null);
       this.getValidationError();
     });
     this.statusChanges.subscribe(data => {
@@ -20,12 +18,19 @@ export class ExtendedFormControl extends FormControl {
   }
 
   getValidationError() {
-    if (this.valid) {
-      clearErrorMessage(this.className, this.controlName);
-    } else if (this.errors.invalid != null) {
-      setErrorMessage(this.errors.invalid, this.className, this.controlName);
-    } else if (this.touched) {
-      setErrorMessage(buildMessage(this.errors, this.controlName), this.className, this.controlName);
+    let className = this.parent.controls['className'].value;
+    if (this.invalid) {
+      if (this.errors.invalid != null) {
+        setErrorMessage(this.errors.invalid, className, this.controlName);
+      } else if (this.touched) {
+        setErrorMessage(buildMessage(this.errors, this.controlName), className, this.controlName);
+      }
+    } else {
+      clearErrorMessage(className, this.controlName);
+    }
+
+    if (this.parent.errors?.invalid != null) {
+      setErrorMessage(this.parent.errors.invalid, className);
     }
   }
 

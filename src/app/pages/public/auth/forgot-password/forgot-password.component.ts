@@ -28,13 +28,14 @@ export class ForgotPasswordComponent {
 
   createForm() {
     this.otpForm = this.fb.group({
-      email: new ExtendedFormControl('', [Validators.required, Validators.pattern(EMAIL_REGEX)],
-        'forgot-password-otp', 'email')
+      email: new ExtendedFormControl('', [Validators.required, Validators.pattern(EMAIL_REGEX)],'email'),
+      className: 'forgot-password-otp'
     });
     this.forgotPwdForm = this.fb.group({
-      otp: new ExtendedFormControl('', [Validators.required, Validators.pattern(OTP_REGEX)], 'forgot-password', 'otp'),
-      password: new ExtendedFormControl('', [Validators.required, Validators.minLength(6)], 'forgot-password', 'password'),
-      confirm_password: new ExtendedFormControl('', [Validators.required, Validators.minLength(6), this.validatePassword], 'forgot-password', 'confirm_password')
+      otp: new ExtendedFormControl('', [Validators.required, Validators.pattern(OTP_REGEX)], 'otp'),
+      password: new ExtendedFormControl('', [Validators.required, Validators.minLength(6)], 'password'),
+      confirm_password: new ExtendedFormControl('', [Validators.required, Validators.minLength(6), this.validatePassword], 'confirm_password'),
+      className: 'forgot-password'
     });
   }
 
@@ -49,9 +50,10 @@ export class ForgotPasswordComponent {
       .then((response) => {
         this.jwtService.saveToken(response['data']['auth_token']);
         $('form.forgot-password-otp div.form-group-email input').attr('readonly', true);
+        $('form.forgot-password form-input.d-none')[0].classList.remove('d-none');
       })
       .catch((error) => {
-        handleError(error, this.otpForm, {'class_name': 'forgot-password-otp'});
+        handleError(error, this.otpForm);
       });
   }
 
@@ -65,7 +67,7 @@ export class ForgotPasswordComponent {
         this.router.navigate([APP_ROUTES.DASHBOARD]);
       })
       .catch(error => {
-        let errorMsg = handleError(error, this.forgotPwdForm, {'class_name': 'forgot-password'});
+        let errorMsg = handleError(error, this.forgotPwdForm);
         if (errorMsg['otp'] != null) {
           this.wizard.goToPreviousStep();
         }

@@ -2,7 +2,7 @@ import $ from 'jquery';
 import {FormGroup, ValidationErrors} from '@angular/forms';
 import {ValidationErrorMessages} from './validation-error-messages.utils';
 
-export function handleError(error: any, form: FormGroup, options = {}) {
+export function handleError(error: any, form: FormGroup) {
   let reason = error['error']['reason'];
   let errorMsg = {};
   if (reason != null) {
@@ -18,7 +18,7 @@ export function handleError(error: any, form: FormGroup, options = {}) {
     }
   } else if (error['error']['message'] != null) {
     setFormErrors(form, error['error']['message']);
-    setErrorMessage(error['error']['message'], options['class_name']);
+    setErrorMessage(error['error']['message'], form.controls.className.value);
   }
   return errorMsg;
 }
@@ -34,20 +34,18 @@ export function setFormErrors(form: FormGroup, message: string, fieldKey = '') {
 export function setErrorMessage(message: string, className: string, fieldKey = '') {
   if (fieldKey != '') {
     $(`form.${className} div.form-group-${fieldKey} div.form-control-feedback`)[0].innerHTML = message;
-    $(`form.${className} div.form-group-${fieldKey}`)[0].classList.add('has-danger');
     $(`form.${className} div.form-group-${fieldKey} input`)[0].classList.add('form-control-danger');
   } else {
-    $(`form.${className} div.form-control-feedback`)[0].innerHTML = message;
+    $(`form.${className} div.form-feedback`)[0].innerHTML = message;
   }
 }
 
 export function clearErrorMessage(className: string, fieldKey = '') {
   if (fieldKey != '') {
     $(`form.${className} div.form-group-${fieldKey} div.form-control-feedback`)[0].innerHTML = '';
-    $(`form.${className} div.form-group-${fieldKey}`)[0].classList.remove('has-danger');
     $(`form.${className} div.form-group-${fieldKey} input`)[0].classList.remove('form-control-danger');
   }
-  $(`form.${className} div.form-control-feedback`)[0].innerHTML = '';
+  $(`form.${className} div.form-feedback`)[0].innerHTML = '';
 }
 
 export function buildMessage(error: ValidationErrors, label: string): string {
