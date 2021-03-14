@@ -26,6 +26,7 @@
               "src/assets/stylesheets/core.css",
               "src/assets/stylesheets/icon-font.min.css",
               "node_modules/@ng-select/ng-select/themes/ant.design.theme.css",
+              "node_modules/ngx-toastr/toastr.css",
               "src/assets/stylesheets/style.css",
               "src/assets/stylesheets/angular-wizard.scss",
               "node_modules/ngx-ui-switch/ui-switch.component.scss"
