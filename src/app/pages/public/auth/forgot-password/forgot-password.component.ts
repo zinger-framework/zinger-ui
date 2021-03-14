@@ -48,7 +48,7 @@ export class ForgotPasswordComponent {
         $('form.forgot-password-otp div.form-group-email input').attr('readonly', true);
       })
       .catch((error) => {
-        handleError(error, 'forgot-password-otp');
+        handleError(error, this.otpForm, { 'class_name': 'forgot-password-otp' });
       });
   }
 

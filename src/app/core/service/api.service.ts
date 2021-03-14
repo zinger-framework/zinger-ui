@@ -53,7 +53,6 @@ export class ApiService implements HttpInterceptor {
                 errorMsg = error.error.message;
               }
             } else if (error.status == 500) {
-              console.log('Something went wrong. Please try again later');
               errorMsg = 'Something went wrong. Please try again later';
             }
           }

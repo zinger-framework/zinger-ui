@@ -1,25 +1,30 @@
 import $ from 'jquery';
-import {ValidationErrors} from '@angular/forms';
+import {FormGroup, ValidationErrors} from '@angular/forms';
 import {ValidationErrorMessages} from './validation-error-messages.utils';
 
-export function handleError(error: any, className: string, options = {}) {
+export function handleError(error: any, form: FormGroup, options = {}) {
   let reason = error['error']['reason'];
   if (reason != null) {
     if (typeof reason == 'string') {
-      if (options['force_error_key'] != null) {
-        setErrorMessage(reason, className, options['force_error_key']);
-      } else {
-        setErrorMessage(reason, className);
-      }
+      setFormErrors(form, reason);
     } else {
       Object.entries(reason).forEach(([reasonKey, value]) => {
         if (Array.isArray(value)) {
-          setErrorMessage(value.join(', '), className, reasonKey);
+          setFormErrors(form, value.join(', '), reasonKey);
         }
       });
     }
   } else if (error['error']['message'] != null) {
-    setErrorMessage(error['error']['message'], className);
+    setFormErrors(form, error['error']['message']);
+    setErrorMessage(error['error']['message'], options['class_name']);
+  }
+}
+
+export function setFormErrors(form: FormGroup, message: string, fieldKey = '') {
+  if (fieldKey != '') {
+    form.get(fieldKey).setErrors({invalid: message});
+  } else {
+    form.setErrors({invalid: message});
   }
 }
 
@@ -39,10 +44,9 @@ export function clearErrorMessage(className: string, fieldKey = '') {
     $(`form.${className} div.form-group-${fieldKey} div.form-control-feedback`)[0].innerHTML = '';
     $(`form.${className} div.form-group-${fieldKey}`)[0].classList.remove('has-danger');
     $(`form.${className} div.form-group-${fieldKey} input`)[0].classList.remove('form-control-danger');
-  } else {
-    $(`form.${className} div.form-control-feedback`)[0].innerHTML = '';
-    $(`form.${className} div.form-control-feedback`)[0].classList.remove('has-danger');
   }
+  $(`form.${className} div.form-control-feedback`)[0].innerHTML = '';
+  $(`form.${className} div.form-control-feedback`)[0].classList.remove('has-danger');
 }
 
 export function buildMessage(error: ValidationErrors, label: string): string {
