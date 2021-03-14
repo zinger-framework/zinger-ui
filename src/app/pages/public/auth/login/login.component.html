@@ -1,29 +1,56 @@
 <div class="login-title"><h2 class="text-center text-primary">Login to Zinger</h2></div>
+<aw-wizard navBarLayout="small">
+  <aw-wizard-step>
+    <form (ngSubmit)="login()" [formGroup]="authForm" class="auth-form">
+      <div class="select-role">
+        <div class="btn-group btn-group-toggle" formControlName="role" ngbRadioGroup>
+          <label class="btn" ngbButtonLabel>
+            <input ngbButton type="radio" value="Admin">
+            <div class="icon"><img alt="" class="svg" src="/assets/images/briefcase.svg"/></div>
+            <span>I'm Cocomo</span>Admin
+          </label>
+          <label class="btn" ngbButtonLabel>
+            <input ngbButton type="radio" value="Employee">
+            <div class="icon"><img alt="" class="svg" src="/assets/images/person.svg"/></div>
+            <span>I'm Cocomo</span>Employee
+          </label>
+        </div>
+      </div>
 
-<form (ngSubmit)="submitForm()" [formGroup]="authForm">
-  <div class="select-role">
-    <div class="btn-group btn-group-toggle" formControlName="role" ngbRadioGroup>
-      <label class="btn" ngbButtonLabel>
-        <input ngbButton type="radio" value="Admin">
-        <div class="icon"><img alt="" class="svg" src="/assets/images/briefcase.svg"/></div>
-        <span>I'm Cocomo</span>Admin
-      </label>
-      <label class="btn" ngbButtonLabel>
-        <input ngbButton type="radio" value="Employee">
-        <div class="icon"><img alt="" class="svg" src="/assets/images/person.svg"/></div>
-        <span>I'm Cocomo</span>Employee
-      </label>
-    </div>
-  </div>
+      <form-input inputType="email" name="email" placeholder="hello@example.com"></form-input>
+      <form-input inputType="password" name="password" placeholder="**********"></form-input>
 
-  <form-input inputType="email" name="email" placeholder="hello@example.com"></form-input>
-  <form-input inputType="password" name="password" placeholder="**********"></form-input>
+      <div class="row pb-30">
+        <div class="col-12">
+          <div class="forgot-password"><a [routerLink]="redirectToForgotPassword()">Forgot Password?</a></div>
+        </div>
+      </div>
 
-  <div class="row pb-30">
-    <div class="col-12">
-      <div class="forgot-password"><a routerLink="/auth/forgot_password">Forgot Password?</a></div>
-    </div>
-  </div>
+      <input [disabled]="!this.authForm.valid" class="btn btn-primary btn-lg btn-block" type="submit" value="Login Now"/>
+    </form>
+  </aw-wizard-step>
 
-  <input (click)="redirect()" class="btn btn-primary btn-lg btn-block" type="submit" value="Login Now"/>
-</form>
+  <aw-wizard-step>
+    <form (ngSubmit)="verifyOtp()" [formGroup]="otpForm" class="otp-form">
+      <form-input inputType="password" name="otp" placeholder="Enter OTP"></form-input>
+      <form (ngSubmit)="sendLoginOTP()" class="resend-otp">
+        <div class="row">
+          <div class="col-6"></div>
+          <div class="col-6">
+            <div class="resend-otp"> <button>Resend OTP</button> </div>
+          </div>
+        </div>
+      </form>
+      <input [disabled]="!this.otpForm.valid" awNextStep class="btn btn-primary btn-lg btn-block" type="submit" value="Verify OTP"/>
+    </form>
+  </aw-wizard-step>
+</aw-wizard>
+
+<style>
+  form.resend-otp button {
+    color: #555;
+    margin-bottom: 12px;
+    border: none;
+    background-color: transparent;
+  }
+</style>

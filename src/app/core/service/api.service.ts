@@ -19,7 +19,8 @@ import {Router} from '@angular/router';
   providedIn: 'root',
 })
 export class ApiService implements HttpInterceptor {
-  private publicAPIs = [API_ENDPOINTS.AUTH_FORGOT_PASSWORD_SEND_OTP, API_ENDPOINTS.AUTH_FORGOT_PASSWORD_RESET_PASSWORD];
+  private publicAPIs = [API_ENDPOINTS.AUTH_OTP_FORGOT_PASSWORD, API_ENDPOINTS.AUTH_RESET_PASSWORD,
+    API_ENDPOINTS.AUTH_LOGIN];
 
   constructor(private http: HttpClient, private router: Router, private jwtService: JwtService) {
   }
