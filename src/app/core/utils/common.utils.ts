@@ -11,6 +11,7 @@ export function handleError(error: any, form: FormGroup, options = {}) {
     } else {
       Object.entries(reason).forEach(([reasonKey, value]) => {
         if (Array.isArray(value)) {
+          errorMsg[reasonKey] = value.join(', ');
           setFormErrors(form, value.join(', '), reasonKey);
         }
       });
@@ -19,6 +20,7 @@ export function handleError(error: any, form: FormGroup, options = {}) {
     setFormErrors(form, error['error']['message']);
     setErrorMessage(error['error']['message'], options['class_name']);
   }
+  return errorMsg;
 }
 
 export function setFormErrors(form: FormGroup, message: string, fieldKey = '') {
@@ -27,7 +29,6 @@ export function setFormErrors(form: FormGroup, message: string, fieldKey = '') {
   } else {
     form.setErrors({invalid: message});
   }
-  return errorMsg;
 }
 
 export function setErrorMessage(message: string, className: string, fieldKey = '') {
@@ -37,7 +38,6 @@ export function setErrorMessage(message: string, className: string, fieldKey = '
     $(`form.${className} div.form-group-${fieldKey} input`)[0].classList.add('form-control-danger');
   } else {
     $(`form.${className} div.form-control-feedback`)[0].innerHTML = message;
-    $(`form.${className} div.form-control-feedback`)[0].classList.add('has-danger');
   }
 }
 
@@ -48,7 +48,6 @@ export function clearErrorMessage(className: string, fieldKey = '') {
     $(`form.${className} div.form-group-${fieldKey} input`)[0].classList.remove('form-control-danger');
   }
   $(`form.${className} div.form-control-feedback`)[0].innerHTML = '';
-  $(`form.${className} div.form-control-feedback`)[0].classList.remove('has-danger');
 }
 
 export function buildMessage(error: ValidationErrors, label: string): string {

@@ -2,7 +2,7 @@ import {Component, ViewChild} from '@angular/core';
 import {AuthService} from '../../../../core/service/auth.service';
 import {JwtService} from '../../../../core/service/jwt.service';
 import {Router} from '@angular/router';
-import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {APP_ROUTES, EMAIL_REGEX, OTP_REGEX} from '../../../../core/utils/constants.utils';
 import {handleError} from '../../../../core/utils/common.utils';
 import $ from 'jquery';
@@ -32,9 +32,9 @@ export class ForgotPasswordComponent {
         'forgot-password-otp', 'email')
     });
     this.forgotPwdForm = this.fb.group({
-      otp: new ExtendedFormControl('', [Validators.required, Validators.pattern(OTP_REGEX)],'forgot-password','otp'),
-      password: new ExtendedFormControl('', [Validators.required, Validators.minLength(6)],'forgot-password','password'),
-      confirm_password: new ExtendedFormControl('', [Validators.required, Validators.minLength(6), this.validatePassword],'forgot-password','confirm_password')
+      otp: new ExtendedFormControl('', [Validators.required, Validators.pattern(OTP_REGEX)], 'forgot-password', 'otp'),
+      password: new ExtendedFormControl('', [Validators.required, Validators.minLength(6)], 'forgot-password', 'password'),
+      confirm_password: new ExtendedFormControl('', [Validators.required, Validators.minLength(6), this.validatePassword], 'forgot-password', 'confirm_password')
     });
   }
 
@@ -51,7 +51,7 @@ export class ForgotPasswordComponent {
         $('form.forgot-password-otp div.form-group-email input').attr('readonly', true);
       })
       .catch((error) => {
-        handleError(error, this.otpForm, { 'class_name': 'forgot-password-otp' });
+        handleError(error, this.otpForm, {'class_name': 'forgot-password-otp'});
       });
   }
 
@@ -65,8 +65,10 @@ export class ForgotPasswordComponent {
         this.router.navigate([APP_ROUTES.DASHBOARD]);
       })
       .catch(error => {
-        let errorMsg = handleError(error, 'forgot-password');
-        if(errorMsg['otp']!=null) this.wizard.goToPreviousStep();
+        let errorMsg = handleError(error, this.forgotPwdForm, {'class_name': 'forgot-password'});
+        if (errorMsg['otp'] != null) {
+          this.wizard.goToPreviousStep();
+        }
       });
   }
 
