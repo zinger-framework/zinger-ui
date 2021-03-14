@@ -4,6 +4,7 @@ import {ValidationErrorMessages} from './validation-error-messages.utils';
 
 export function handleError(error: any, form: FormGroup, options = {}) {
   let reason = error['error']['reason'];
+  let errorMsg = {};
   if (reason != null) {
     if (typeof reason == 'string') {
       setFormErrors(form, reason);
@@ -26,6 +27,7 @@ export function setFormErrors(form: FormGroup, message: string, fieldKey = '') {
   } else {
     form.setErrors({invalid: message});
   }
+  return errorMsg;
 }
 
 export function setErrorMessage(message: string, className: string, fieldKey = '') {

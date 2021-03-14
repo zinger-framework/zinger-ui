@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {AuthService} from '../../../../core/service/auth.service';
 import {JwtService} from '../../../../core/service/jwt.service';
 import {Router} from '@angular/router';
@@ -7,6 +7,7 @@ import {APP_ROUTES, EMAIL_REGEX, OTP_REGEX} from '../../../../core/utils/constan
 import {handleError} from '../../../../core/utils/common.utils';
 import $ from 'jquery';
 import {ExtendedFormControl} from '../../../../core/utils/extended-form-control.utils';
+import {WizardComponent} from 'angular-archwizard';
 
 @Component({
   selector: 'forgot-password',
@@ -18,6 +19,8 @@ export class ForgotPasswordComponent {
   canExitSecondStep = false;
   forgotPwdForm: FormGroup;
   otpForm: FormGroup;
+  @ViewChild(WizardComponent)
+  public wizard: WizardComponent;
 
   constructor(private authService: AuthService, private  jwtService: JwtService, private router: Router, private fb: FormBuilder) {
     this.createForm();
@@ -29,9 +32,9 @@ export class ForgotPasswordComponent {
         'forgot-password-otp', 'email')
     });
     this.forgotPwdForm = this.fb.group({
-      otp: new FormControl('', [Validators.required, Validators.pattern(OTP_REGEX)]),
-      password: new FormControl('', [Validators.required, Validators.minLength(6)]),
-      confirmPassword: new FormControl('', [Validators.required, Validators.minLength(6), this.validatePassword])
+      otp: new ExtendedFormControl('', [Validators.required, Validators.pattern(OTP_REGEX)],'forgot-password','otp'),
+      password: new ExtendedFormControl('', [Validators.required, Validators.minLength(6)],'forgot-password','password'),
+      confirm_password: new ExtendedFormControl('', [Validators.required, Validators.minLength(6), this.validatePassword],'forgot-password','confirm_password')
     });
   }
 
@@ -54,7 +57,7 @@ export class ForgotPasswordComponent {
 
   resetPassword() {
     let inputPwd = this.forgotPwdForm.get('password').value;
-    let inputConfirmPwd = this.forgotPwdForm.get('confirmPassword').value;
+    let inputConfirmPwd = this.forgotPwdForm.get('confirm_password').value;
     let inputOtp = this.forgotPwdForm.get('otp').value;
 
     this.authService.reset_password(inputOtp, inputPwd, inputConfirmPwd)
@@ -62,12 +65,12 @@ export class ForgotPasswordComponent {
         this.router.navigate([APP_ROUTES.DASHBOARD]);
       })
       .catch(error => {
-        // let data = handleError(error,"reset-pwd-fm",this.parentRef)
-        // if(data['key'] == 'otp') this.wizard.goToPreviousStep();
+        let errorMsg = handleError(error, 'forgot-password');
+        if(errorMsg['otp']!=null) this.wizard.goToPreviousStep();
       });
   }
 
   exitFirstStep() {
-    return this.forgotPwdForm.get('otp').valid && this.forgotPwdForm.get('otpForm.email').valid && this.jwtService.isAuthTokenPresent();
+    return this.forgotPwdForm.get('otp').valid && this.otpForm.valid && this.jwtService.isAuthTokenPresent();
   }
 }
