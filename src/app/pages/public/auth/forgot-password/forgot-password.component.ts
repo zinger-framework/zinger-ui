@@ -28,7 +28,7 @@ export class ForgotPasswordComponent {
 
   createForm() {
     this.otpForm = this.fb.group({
-      email: new ExtendedFormControl('', [Validators.required, Validators.pattern(EMAIL_REGEX)],'email'),
+      email: new ExtendedFormControl('', [Validators.required, Validators.pattern(EMAIL_REGEX)], 'email'),
       className: 'forgot-password-otp'
     });
     this.forgotPwdForm = this.fb.group({
