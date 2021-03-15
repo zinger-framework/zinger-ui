@@ -608,13 +608,6 @@ p {
   box-shadow: 0 0 28px rgba(0, 0, 0, .08)
 }
 
-.wave1 {
-  background-image: url(../images/wave.png);
-  background-size: cover;
-  background-position: center bottom;
-  background-repeat: no-repeat
-}
-
 .card-box, .da-card {
   background-color: #fff;
   border-radius: 10px;
@@ -4261,6 +4254,22 @@ body.IE .login-wrap .container, body.IE .register-page-wrap .container {
   background: #FF4141;
   color: #ebecef;
   font-weight: 500
+}
+
+.toast-container .ngx-toastr:hover {
+  box-shadow: 0 0 12px #999999;
+  opacity: inherit;
+  cursor: inherit;
+}
+
+.toast-success {
+  background-color: #3DC763;
+  background-image: url(../images/check-circle.svg);
+}
+
+.toast-error {
+  background-color: #FD5656;
+  background-image: url(../images/exclamation.svg);
 }
 
 @media (min-width: 1301px) and (max-width: 1400px) {

@@ -14,6 +14,7 @@ import {API_ENDPOINTS, APP_ROUTES} from '../utils/constants.utils';
 import {Observable, throwError} from 'rxjs';
 import {catchError, map} from 'rxjs/operators';
 import {Router} from '@angular/router';
+import {ToastrService} from 'ngx-toastr';
 
 @Injectable({
   providedIn: 'root',
@@ -22,7 +23,7 @@ export class ApiService implements HttpInterceptor {
   private publicAPIs = [API_ENDPOINTS.AUTH_OTP_FORGOT_PASSWORD, API_ENDPOINTS.AUTH_RESET_PASSWORD,
     API_ENDPOINTS.AUTH_LOGIN];
 
-  constructor(private http: HttpClient, private router: Router, private jwtService: JwtService) {
+  constructor(private http: HttpClient, private router: Router, private jwtService: JwtService, private toastr: ToastrService) {
   }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -53,16 +54,16 @@ export class ApiService implements HttpInterceptor {
                 errorMsg = error.error.message;
               }
             } else if (error.status == 500) {
-              console.log('Something went wrong. Please try again later');
               errorMsg = 'Something went wrong. Please try again later';
             }
           }
           if (errorMsg.length > 0) {
-            // toast(errorMsg)
-            console.log("here 1");
+            this.toastr.error(errorMsg);
             return new Observable<HttpEvent<any>>();
           } else {
-            console.log("here 2");
+            if (error['error']['reason'] != null) {
+              this.toastr.error(error['error']['message']);
+            }
             return throwError(error);
           }
         })

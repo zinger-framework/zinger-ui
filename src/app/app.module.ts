@@ -3,9 +3,11 @@ import {NgModule} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
 import {CommonModule} from '@angular/common';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {UiSwitchModule} from 'ngx-ui-switch';
 import {NgSelectModule} from '@ng-select/ng-select';
+import {ToastrModule} from 'ngx-toastr';
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
@@ -39,7 +41,11 @@ import {PublicModule} from './pages/public/public.module';
       color: '#28a745',
       defaultBgColor: '#f56767'
     }),
-    NgSelectModule
+    NgSelectModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot({
+      closeButton: true
+    })
   ],
   bootstrap: [AppComponent]
 })
