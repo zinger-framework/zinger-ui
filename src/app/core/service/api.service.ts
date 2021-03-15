@@ -39,7 +39,7 @@ export class ApiService implements HttpInterceptor {
             } else if (error.status == 401) {
               switch (error.error.reason) {
                 case 'UNAUTHORIZED': {
-                  this.logout();
+                  if(request.url != API_ENDPOINTS.ADMIN_URL+API_ENDPOINTS.AUTH_LOGOUT) this.logout();
                   errorMsg = error.error.message;
                 }
                 case 'OTP_UNVERIFIED': {
@@ -59,8 +59,10 @@ export class ApiService implements HttpInterceptor {
           }
           if (errorMsg.length > 0) {
             // toast(errorMsg)
+            console.log("here 1");
             return new Observable<HttpEvent<any>>();
           } else {
+            console.log("here 2");
             return throwError(error);
           }
         })
@@ -97,8 +99,14 @@ export class ApiService implements HttpInterceptor {
   }
 
   private logout() {
-    this.jwtService.destroyToken();
-    this.router.navigate([APP_ROUTES.AUTH_LOGIN]);
+    this.delete(API_ENDPOINTS.AUTH_LOGOUT)
+      .then(response =>{
+        this.jwtService.destroyToken();
+        this.router.navigate([APP_ROUTES.AUTH_LOGIN]);
+      })
+      .catch(error => {
+        console.log("Toast Logout failed")
+      })
   }
 
   private setHeaders(path: string): HttpHeaders {

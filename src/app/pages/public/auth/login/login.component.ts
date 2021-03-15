@@ -60,7 +60,10 @@ export class LoginComponent implements OnInit {
   sendLoginOTP(){
     this.authService.sentLoginOTP()
       .then(response => {
-        this.jwtService.saveToken(response['data']['token']);
+        if(response['reason']=="ALREADY_LOGGED_IN")
+          this.router.navigate([APP_ROUTES.DASHBOARD]);
+        else
+          this.jwtService.saveToken(response['data']['token']);
       })
       .catch(error => {
         handleError(error,'otp-form');
