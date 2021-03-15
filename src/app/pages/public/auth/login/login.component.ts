@@ -22,12 +22,14 @@ export class LoginComponent implements OnInit {
   constructor(public authService: AuthService,private jwtService: JwtService, private fb: FormBuilder, private router: Router) {
     this.authForm = this.fb.group({
       role: new FormControl('', [Validators.required]),
-      email: new ExtendedFormControl('', [Validators.required, Validators.pattern(EMAIL_REGEX)],'auth-form','email'),
-      password: new ExtendedFormControl('', [Validators.required, Validators.minLength(6)],'auth-form','password'),
+      email: new ExtendedFormControl('', [Validators.required, Validators.pattern(EMAIL_REGEX)],'email'),
+      password: new ExtendedFormControl('', [Validators.required, Validators.minLength(6)],'password'),
+      className: 'auth-form'
     });
 
     this.otpForm = this.fb.group({
-      otp: new ExtendedFormControl('', [Validators.required, Validators.pattern(OTP_REGEX)],'otp-form','otp'),
+      otp: new ExtendedFormControl('', [Validators.required, Validators.pattern(OTP_REGEX)],'otp'),
+      className: 'otp-form'
     });
   }
 
@@ -42,7 +44,7 @@ export class LoginComponent implements OnInit {
           this.router.navigate([APP_ROUTES.DASHBOARD]);
       })
       .catch(error => {
-        handleError(error,'auth-form');
+        handleError(error,this.authForm);
       });
   }
 
@@ -53,7 +55,7 @@ export class LoginComponent implements OnInit {
         this.router.navigate([APP_ROUTES.DASHBOARD]);
       })
       .catch(error => {
-        handleError(error,'otp-form');
+        handleError(error,this.otpForm);
       })
   }
 
@@ -66,7 +68,7 @@ export class LoginComponent implements OnInit {
           this.jwtService.saveToken(response['data']['token']);
       })
       .catch(error => {
-        handleError(error,'otp-form');
+        handleError(error,this.otpForm);
       })
   }
 

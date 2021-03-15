@@ -64,7 +64,7 @@ export class ForgotPasswordComponent {
 
     this.authService.reset_password(inputOtp, inputPwd, inputConfirmPwd)
       .then(response => {
-        this.router.navigate([APP_ROUTES.DASHBOARD]);
+        this.router.navigate([APP_ROUTES.AUTH_LOGIN]);
       })
       .catch(error => {
         let errorMsg = handleError(error, this.forgotPwdForm);
