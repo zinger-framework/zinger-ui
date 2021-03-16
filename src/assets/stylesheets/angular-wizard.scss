@@ -33,6 +33,10 @@ $aw-label-color-hover: darken($aw-label-color-default, 20%) !default;
 $aw-circle-border-width: 2.4px !default;
 $aw-text-height: 12.5px !default;
 
+aw-wizard.hide-nav-bar aw-wizard-navigation-bar.horizontal {
+  display: none;
+}
+
 aw-wizard-navigation-bar.horizontal ul.steps-indicator {
   font-size: 20px;
   color: black;

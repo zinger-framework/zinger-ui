@@ -1,5 +1,5 @@
 <div class="login-title"><h2 class="text-center text-primary">Login to Zinger</h2></div>
-<aw-wizard navBarLayout="small">
+<aw-wizard navBarLayout="small" class="hide-nav-bar">
   <aw-wizard-step>
     <form (ngSubmit)="login()" [formGroup]="authForm" class="auth-form">
       <div class="select-role">
@@ -20,11 +20,7 @@
       <form-input inputType="email" name="email" placeholder="hello@example.com"></form-input>
       <form-input inputType="password" name="password" placeholder="**********"></form-input>
 
-      <div class="row pb-30">
-        <div class="col-12">
-          <div class="forgot-password"><a [routerLink]="redirectToForgotPassword()">Forgot Password?</a></div>
-        </div>
-      </div>
+      <div class="forgot-password"><a [routerLink]="redirectToForgotPassword()">Forgot Password?</a></div>
 
       <input [disabled]="!this.authForm.valid" class="btn btn-primary btn-lg btn-block" type="submit" value="Login Now"/>
     </form>
