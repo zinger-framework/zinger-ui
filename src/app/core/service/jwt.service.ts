@@ -1,17 +1,23 @@
 import {Injectable} from '@angular/core';
+import {LocalStorageService} from "./local-storage.service";
+import {SESSION_KEY} from '../utils/constants.utils'
 
 @Injectable()
 export class JwtService {
+
+  constructor(private localStorageService: LocalStorageService) {
+  }
+
   getToken(): string {
-    return window.localStorage.authorization;
+    return this.localStorageService.getData(SESSION_KEY.AUTHORIZATION)
   }
 
   saveToken(token: string) {
-    window.localStorage.authorization = token;
+    this.localStorageService.saveData(SESSION_KEY.AUTHORIZATION,token)
   }
 
   destroyToken() {
-    window.localStorage.removeItem('authorization');
+    this.localStorageService.destroyData(SESSION_KEY.AUTHORIZATION)
   }
 
   isAuthTokenPresent() {

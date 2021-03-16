@@ -14,5 +14,10 @@ export const APP_ROUTES = {
   AUTH_FORGOT_PASSWORD: '/auth/forgot_password'
 };
 
+export const SESSION_KEY = {
+  LOGGED_IN :'logged_in',
+  AUTHORIZATION: 'authorization'
+}
+
 export const EMAIL_REGEX = /^\S+@\S+\.[a-z]+$/i;
 export const OTP_REGEX = /^[0-9]{6}$/g;
