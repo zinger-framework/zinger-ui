@@ -30,12 +30,7 @@
     <form (ngSubmit)="verifyOtp()" [formGroup]="otpForm" class="otp-form">
       <form-input inputType="password" name="otp" placeholder="Enter OTP"></form-input>
       <form (ngSubmit)="sendLoginOTP()" class="resend-otp">
-        <div class="row">
-          <div class="col-6"></div>
-          <div class="col-6">
-            <div class="resend-otp"> <button>Resend OTP</button> </div>
-          </div>
-        </div>
+        <div class="otp-button"><button>Resend OTP</button></div>
       </form>
       <input [disabled]="!this.otpForm.valid" awNextStep class="btn btn-primary btn-lg btn-block" type="submit" value="Verify OTP"/>
     </form>
