@@ -15,13 +15,13 @@ import {LocalStorageService} from "../../../../core/service/local-storage.servic
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  authForm: FormGroup;
+  loginForm: FormGroup;
   otpForm: FormGroup;
   @ViewChild(WizardComponent)
   public wizard: WizardComponent;
 
   constructor(public authService: AuthService, private jwtService: JwtService, private localStorageService: LocalStorageService, private fb: FormBuilder, private router: Router) {
-    this.authForm = this.fb.group({
+    this.loginForm = this.fb.group({
       role: new FormControl('', [Validators.required]),
       email: new ExtendedFormControl('', [Validators.required, Validators.pattern(EMAIL_REGEX)], 'email'),
       password: new ExtendedFormControl('', [Validators.required, Validators.minLength(6)], 'password'),
@@ -39,7 +39,7 @@ export class LoginComponent implements OnInit {
 
   login() {
     this.authService
-      .login(this.authForm.get("email").value, this.authForm.get("password").value, this.authForm.get("role").value)
+      .login(this.loginForm.get("email").value, this.loginForm.get("password").value, this.loginForm.get("role").value)
       .then(response => {
         this.jwtService.saveToken(response['data']['token']);
         if (response['data']['redirect_to'] == 'OTP') {
@@ -51,7 +51,7 @@ export class LoginComponent implements OnInit {
         }
       })
       .catch(error => {
-        handleError(error, this.authForm);
+        handleError(error, this.loginForm);
       });
   }
 
@@ -66,7 +66,7 @@ export class LoginComponent implements OnInit {
       })
   }
 
-  sendLoginOTP() {
+  sendOTP() {
     this.authService.sentLoginOTP()
       .then(response => {
         if (response['reason'] == "ALREADY_LOGGED_IN")

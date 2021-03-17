@@ -30,6 +30,8 @@ export class ApiService implements HttpInterceptor {
     return next.handle(request)
       .pipe(
         map(event => {
+          if(event['body']!=null && event['body']['message']!=null && event['body']['message'].toLowerCase()!='success')
+            this.toastr.success(event['body']['message']);
           return event;
         }),
         catchError((error: HttpErrorResponse) => {
