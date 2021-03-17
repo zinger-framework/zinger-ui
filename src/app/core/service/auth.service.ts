@@ -15,7 +15,7 @@ export class AuthService {
 
   reset_password(otp, pwd, confirm_pwd) {
     const requestBody = {
-      auth_token: this.jwtService.getToken(),
+      auth_token: this.jwtService.getAuthToken(),
       otp: otp,
       password: pwd,
       password_confirmation: confirm_pwd
@@ -39,11 +39,11 @@ export class AuthService {
     return this.apiService.post(API_ENDPOINTS.AUTH_VERIFY_OTP, requestBody);
   }
 
-  sentLoginOTP() {
+  resendOtp() {
     return this.apiService.post(API_ENDPOINTS.AUTH_OTP_LOGIN)
   }
 
   logout() {
-    return this.apiService.delete(API_ENDPOINTS.AUTH_LOGOUT);
+    return this.apiService.delete(API_ENDPOINTS.AUTH_LOGOUT).finally(() => { this.apiService.logout(); })
   }
 }

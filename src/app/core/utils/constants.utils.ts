@@ -11,7 +11,8 @@ export const API_ENDPOINTS = {
 export const APP_ROUTES = {
   DASHBOARD: '/dashboard',
   AUTH_LOGIN: '/auth/login',
-  AUTH_FORGOT_PASSWORD: '/auth/forgot_password'
+  AUTH_FORGOT_PASSWORD: '/auth/forgot_password',
+  AUTH_SIGNUP: '/auth/signup'
 };
 
 export const SESSION_KEY = {

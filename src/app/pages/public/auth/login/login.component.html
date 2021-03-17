@@ -21,7 +21,7 @@
       <form-input inputType="email" name="email" placeholder="hello@example.com"></form-input>
       <form-input inputType="password" name="password" placeholder="**********"></form-input>
 
-      <div class="forgot-password"><a [routerLink]="redirectToForgotPassword()">Forgot Password?</a></div>
+      <div class="float-right pb-3"><a [routerLink]="redirectToForgotPassword()">Forgot Password?</a></div>
 
       <input [disabled]="!this.loginForm.valid" class="btn btn-primary btn-lg btn-block" type="submit"
              value="Login Now"/>
@@ -32,22 +32,12 @@
     <form (ngSubmit)="verifyOtp()" [formGroup]="otpForm" class="otp">
       <div class="form-feedback has-danger padding-bottom-10 text-center"></div>
       <form-input inputType="password" name="otp" placeholder="Enter OTP"></form-input>
-      <form (ngSubmit)="sendOTP()" class="resend-otp">
-        <div class="otp-button">
-          <button>Resend OTP</button>
-        </div>
-      </form>
+      <div class="pb-5 resend-otp">
+        <div class="float-left"><span (click)="logout()">Change Email</span></div>
+        <div class="float-right"><span (click)="resendOtp()">Resend OTP</span></div>
+      </div>
       <input [disabled]="!this.otpForm.valid" awNextStep class="btn btn-primary btn-lg btn-block" type="submit"
              value="Verify OTP"/>
     </form>
   </aw-wizard-step>
 </aw-wizard>
-
-<style>
-  form.resend-otp button {
-    color: #555;
-    margin-bottom: 12px;
-    border: none;
-    background-color: transparent;
-  }
-</style>

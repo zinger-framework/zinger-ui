@@ -20,13 +20,6 @@ export class HeaderComponent implements OnInit {
   }
 
   logout() {
-    this.authService.logout()
-      .then(response => {
-        this.jwtService.destroyToken();
-        this.router.navigate([APP_ROUTES.AUTH_LOGIN])
-      })
-      .catch(error => {
-        console.log("toast error: " + error)
-      });
+    this.authService.logout();
   }
 }

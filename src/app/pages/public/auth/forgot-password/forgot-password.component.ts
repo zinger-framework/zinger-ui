@@ -75,6 +75,6 @@ export class ForgotPasswordComponent {
   }
 
   exitFirstStep() {
-    return this.forgotPwdForm.get('otp').valid && this.otpForm.valid && this.jwtService.isAuthTokenPresent();
+    return this.forgotPwdForm.get('otp').valid && this.otpForm.valid && this.jwtService.isLoggedIn();
   }
 }

@@ -8,6 +8,7 @@ import {handleError} from "../../../../core/utils/common.utils";
 import {JwtService} from "../../../../core/service/jwt.service";
 import {WizardComponent} from "angular-archwizard";
 import {LocalStorageService} from "../../../../core/service/local-storage.service";
+import {ToastrService} from 'ngx-toastr';
 
 @Component({
   selector: 'login',
@@ -20,9 +21,10 @@ export class LoginComponent implements OnInit {
   @ViewChild(WizardComponent)
   public wizard: WizardComponent;
 
-  constructor(public authService: AuthService, private jwtService: JwtService, private localStorageService: LocalStorageService, private fb: FormBuilder, private router: Router) {
+  constructor(public authService: AuthService, private jwtService: JwtService, private localStorageService: LocalStorageService, 
+      private fb: FormBuilder, private router: Router, private toastr: ToastrService) {
     this.loginForm = this.fb.group({
-      role: new FormControl('', [Validators.required]),
+      role: new FormControl('Admin', [Validators.required]),
       email: new ExtendedFormControl('', [Validators.required, Validators.pattern(EMAIL_REGEX)], 'email'),
       password: new ExtendedFormControl('', [Validators.required, Validators.minLength(6)], 'password'),
       className: 'login'
@@ -59,6 +61,7 @@ export class LoginComponent implements OnInit {
     this.authService.verifyOTP(this.otpForm.get("otp").value)
       .then(response => {
         this.jwtService.saveToken(response['data']['token']);
+        this.localStorageService.saveData(SESSION_KEY.LOGGED_IN, 'true')
         this.router.navigate([APP_ROUTES.DASHBOARD]);
       })
       .catch(error => {
@@ -66,19 +69,25 @@ export class LoginComponent implements OnInit {
       })
   }
 
-  sendOTP() {
-    this.authService.sentLoginOTP()
+  resendOtp() {
+    this.authService.resendOtp()
       .then(response => {
-        if (response['reason'] == "ALREADY_LOGGED_IN")
+        if (response['reason'] == "ALREADY_LOGGED_IN") {
           this.router.navigate([APP_ROUTES.DASHBOARD]);
+        }
         else {
           this.jwtService.saveToken(response['data']['token']);
-          this.localStorageService.saveData(SESSION_KEY.LOGGED_IN, 'true')
         }
       })
       .catch(error => {
-        handleError(error, this.otpForm);
+        this.toastr.error(error['error']['message']);
       })
+  }
+
+  logout() {
+    this.authService.logout();
+    this.wizard.goToPreviousStep();
+    this.loginForm.reset();
   }
 
   redirectToForgotPassword() {

@@ -1,4 +1,8 @@
-form.login div.forgot-password, form.otp div.otp-button {
-  text-align: right;
-  margin-bottom: 16px;
+form.otp div.resend-otp span {
+  color: #555;
+  cursor: pointer;
+}
+
+form.otp div.resend-otp span:hover {
+  color: #FF4141;
 }

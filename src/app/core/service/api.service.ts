@@ -22,6 +22,7 @@ import {ToastrService} from 'ngx-toastr';
 export class ApiService implements HttpInterceptor {
   private publicAPIs = [API_ENDPOINTS.AUTH_OTP_FORGOT_PASSWORD, API_ENDPOINTS.AUTH_RESET_PASSWORD,
     API_ENDPOINTS.AUTH_LOGIN];
+  private loginOtpAPIs = [API_ENDPOINTS.AUTH_OTP_LOGIN, API_ENDPOINTS.AUTH_VERIFY_OTP, API_ENDPOINTS.AUTH_LOGOUT];
 
   constructor(private http: HttpClient, private router: Router, private jwtService: JwtService, private toastr: ToastrService) {
   }
@@ -101,15 +102,9 @@ export class ApiService implements HttpInterceptor {
     ).toPromise();
   }
 
-  private logout() {
-    this.delete(API_ENDPOINTS.AUTH_LOGOUT)
-      .then(response => {
-        this.jwtService.destroyToken();
-        this.router.navigate([APP_ROUTES.AUTH_LOGIN]);
-      })
-      .catch(error => {
-        this.toastr.error("Logout Failed")
-      })
+  logout() {
+    this.jwtService.destroyToken();
+    this.router.navigate([APP_ROUTES.AUTH_LOGIN]);
   }
 
   private setHeaders(path: string): HttpHeaders {
@@ -118,12 +113,27 @@ export class ApiService implements HttpInterceptor {
       'Accept': 'application/json'
     };
 
-    if (!this.publicAPIs.includes(path)) {
-      if (this.jwtService.isAuthTokenPresent()) {
-        headersConfig['Authorization'] = this.jwtService.getToken();
-      } else {
-        this.router.navigate([APP_ROUTES.AUTH_LOGIN]);
+    let setAuthToken;
+    if(this.loginOtpAPIs.includes(path)) {
+      if (this.jwtService.getAuthToken() != null) {
+        setAuthToken = true;
       }
+    }
+    else if (!this.publicAPIs.includes(path)) {
+      if (this.jwtService.isLoggedIn()) {
+        setAuthToken = true;
+      }
+    }
+    else {
+      setAuthToken = false;
+    }
+
+    if (setAuthToken == true) {
+      headersConfig['Authorization'] = this.jwtService.getAuthToken();
+    }
+    else if (setAuthToken != false) {
+      this.toastr.error('Please login to continue');
+      this.router.navigate([APP_ROUTES.AUTH_LOGIN]);
     }
     return new HttpHeaders(headersConfig);
   }
