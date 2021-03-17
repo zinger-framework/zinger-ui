@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {API_ENDPOINTS, APP_ROUTES} from "../../../core/utils/constants.utils";
+import {APP_ROUTES} from "../../../core/utils/constants.utils";
 import {AuthService} from "../../../core/service/auth.service";
 import {JwtService} from "../../../core/service/jwt.service";
 import {Router} from "@angular/router";
@@ -12,22 +12,21 @@ import {Router} from "@angular/router";
 export class HeaderComponent implements OnInit {
   @Input() name: string;
 
-  constructor(private authService: AuthService,private jwtService: JwtService,private router: Router) {
+  constructor(private authService: AuthService, private jwtService: JwtService, private router: Router) {
   }
 
   ngOnInit(): void {
     this.name = 'Logesh';
   }
 
-  logout(){
+  logout() {
     this.authService.logout()
-        .then(response => {
-          this.jwtService.destroyToken();
-          console.log(response)
-          this.router.navigate([APP_ROUTES.AUTH_LOGIN])
-        })
-        .catch(error => {
-          console.log("toast error: "+error)
-        });
+      .then(response => {
+        this.jwtService.destroyToken();
+        this.router.navigate([APP_ROUTES.AUTH_LOGIN])
+      })
+      .catch(error => {
+        console.log("toast error: " + error)
+      });
   }
 }

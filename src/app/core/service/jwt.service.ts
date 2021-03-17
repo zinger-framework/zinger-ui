@@ -13,7 +13,7 @@ export class JwtService {
   }
 
   saveToken(token: string) {
-    this.localStorageService.saveData(SESSION_KEY.AUTHORIZATION,token)
+    this.localStorageService.saveData(SESSION_KEY.AUTHORIZATION, token)
   }
 
   destroyToken() {

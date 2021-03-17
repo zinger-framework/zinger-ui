@@ -1,7 +1,7 @@
 <div class="login-title"><h2 class="text-center text-primary">Login to Zinger</h2></div>
-<aw-wizard navBarLayout="small" class="hide-nav-bar">
+<aw-wizard class="hide-nav-bar" navBarLayout="small">
   <aw-wizard-step>
-    <form (ngSubmit)="login()" [formGroup]="authForm" class="auth-form">
+    <form (ngSubmit)="login()" [formGroup]="authForm" class="login">
       <div class="form-feedback has-danger padding-bottom-10 text-center"></div>
       <div class="select-role">
         <div class="btn-group btn-group-toggle" formControlName="role" ngbRadioGroup>
@@ -23,18 +23,22 @@
 
       <div class="forgot-password"><a [routerLink]="redirectToForgotPassword()">Forgot Password?</a></div>
 
-      <input [disabled]="!this.authForm.valid" class="btn btn-primary btn-lg btn-block" type="submit" value="Login Now"/>
+      <input [disabled]="!this.authForm.valid" class="btn btn-primary btn-lg btn-block" type="submit"
+             value="Login Now"/>
     </form>
   </aw-wizard-step>
 
   <aw-wizard-step>
-    <form (ngSubmit)="verifyOtp()" [formGroup]="otpForm" class="otp-form">
+    <form (ngSubmit)="verifyOtp()" [formGroup]="otpForm" class="otp">
       <div class="form-feedback has-danger padding-bottom-10 text-center"></div>
       <form-input inputType="password" name="otp" placeholder="Enter OTP"></form-input>
       <form (ngSubmit)="sendLoginOTP()" class="resend-otp">
-        <div class="otp-button"><button>Resend OTP</button></div>
+        <div class="otp-button">
+          <button>Resend OTP</button>
+        </div>
       </form>
-      <input [disabled]="!this.otpForm.valid" awNextStep class="btn btn-primary btn-lg btn-block" type="submit" value="Verify OTP"/>
+      <input [disabled]="!this.otpForm.valid" awNextStep class="btn btn-primary btn-lg btn-block" type="submit"
+             value="Verify OTP"/>
     </form>
   </aw-wizard-step>
 </aw-wizard>

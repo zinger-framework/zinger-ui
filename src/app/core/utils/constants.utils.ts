@@ -15,7 +15,7 @@ export const APP_ROUTES = {
 };
 
 export const SESSION_KEY = {
-  LOGGED_IN :'logged_in',
+  LOGGED_IN: 'logged_in',
   AUTHORIZATION: 'authorization'
 }
 

@@ -1,4 +1,4 @@
-form.auth-form div.forgot-password, form.resend-otp div.otp-button {
+form.login div.forgot-password, form.otp div.otp-button {
   text-align: right;
   margin-bottom: 16px;
 }
