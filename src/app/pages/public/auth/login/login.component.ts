@@ -24,7 +24,7 @@ export class LoginComponent implements OnInit {
   constructor(public authService: AuthService, private jwtService: JwtService, private localStorageService: LocalStorageService, 
       private fb: FormBuilder, private router: Router, private toastr: ToastrService) {
     this.loginForm = this.fb.group({
-      role: new FormControl('Admin', [Validators.required]),
+      user_type: new ExtendedFormControl('Admin', [Validators.required], 'user_type'),
       email: new ExtendedFormControl('', [Validators.required, Validators.pattern(EMAIL_REGEX)], 'email'),
       password: new ExtendedFormControl('', [Validators.required, Validators.minLength(6)], 'password'),
       className: 'login'
@@ -41,7 +41,7 @@ export class LoginComponent implements OnInit {
 
   login() {
     this.authService
-      .login(this.loginForm.get("email").value, this.loginForm.get("password").value, this.loginForm.get("role").value)
+      .login(this.loginForm.get("email").value, this.loginForm.get("password").value, this.loginForm.get("user_type").value)
       .then(response => {
         this.jwtService.saveToken(response['data']['token']);
         if (response['data']['redirect_to'] == 'OTP') {
