@@ -4,7 +4,7 @@
     <form (ngSubmit)="login()" [formGroup]="loginForm" class="login">
       <div class="form-feedback has-danger padding-bottom-10 text-center"></div>
       <div class="select-role">
-        <div class="btn-group btn-group-toggle" formControlName="role" ngbRadioGroup>
+        <div class="btn-group btn-group-toggle" formControlName="user_type" ngbRadioGroup>
           <label class="btn" ngbButtonLabel>
             <input ngbButton type="radio" value="Admin">
             <div class="icon"><img alt="" class="svg" src="/assets/images/briefcase.svg"/></div>
