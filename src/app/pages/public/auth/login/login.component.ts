@@ -88,6 +88,7 @@ export class LoginComponent implements OnInit {
     this.authService.logout();
     this.wizard.goToPreviousStep();
     this.loginForm.reset();
+    this.loginForm.get('user_type').setValue('Admin');
   }
 
   redirectToForgotPassword() {
