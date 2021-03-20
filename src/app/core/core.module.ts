@@ -5,12 +5,13 @@ import {JwtService} from './service/jwt.service';
 import {HTTP_INTERCEPTORS} from '@angular/common/http';
 import {AuthService} from './service/auth.service';
 import {LocalStorageService} from "./service/local-storage.service";
+import {AuthGuardService} from "./service/auth-guard.service";
 
 @NgModule({
   imports: [
     CommonModule
   ],
-  providers: [LocalStorageService, JwtService, AuthService,
+  providers: [LocalStorageService, JwtService, AuthService, AuthGuardService,
     [{provide: HTTP_INTERCEPTORS, useClass: ApiService, multi: true}]
   ]
 })

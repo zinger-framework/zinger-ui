@@ -31,7 +31,7 @@ export class ApiService implements HttpInterceptor {
     return next.handle(request)
       .pipe(
         map(event => {
-          if(event['body']!=null && event['body']['message']!=null && event['body']['message'].toLowerCase()!='success')
+          if (event['body'] != null && event['body']['message'] != null && event['body']['message'].toLowerCase() != 'success')
             this.toastr.success(event['body']['message']);
           return event;
         }),
@@ -104,7 +104,6 @@ export class ApiService implements HttpInterceptor {
 
   logout() {
     this.jwtService.destroyToken();
-    this.router.navigate([APP_ROUTES.AUTH_LOGIN]);
   }
 
   private setHeaders(path: string): HttpHeaders {
@@ -114,24 +113,21 @@ export class ApiService implements HttpInterceptor {
     };
 
     let setAuthToken;
-    if(this.loginOtpAPIs.includes(path)) {
+    if (this.loginOtpAPIs.includes(path)) {
       if (this.jwtService.getAuthToken() != null) {
         setAuthToken = true;
       }
-    }
-    else if (!this.publicAPIs.includes(path)) {
+    } else if (!this.publicAPIs.includes(path)) {
       if (this.jwtService.isLoggedIn()) {
         setAuthToken = true;
       }
-    }
-    else {
+    } else {
       setAuthToken = false;
     }
 
     if (setAuthToken == true) {
       headersConfig['Authorization'] = this.jwtService.getAuthToken();
-    }
-    else if (setAuthToken != false) {
+    } else if (setAuthToken != false) {
       this.toastr.error('Please login to continue');
       this.router.navigate([APP_ROUTES.AUTH_LOGIN]);
     }

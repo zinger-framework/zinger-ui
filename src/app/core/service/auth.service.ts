@@ -44,6 +44,8 @@ export class AuthService {
   }
 
   logout() {
-    return this.apiService.delete(API_ENDPOINTS.AUTH_LOGOUT).finally(() => { this.apiService.logout(); })
+    return this.apiService.delete(API_ENDPOINTS.AUTH_LOGOUT).finally(() => {
+      this.apiService.logout();
+    })
   }
 }

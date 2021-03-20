@@ -1,5 +1,4 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {APP_ROUTES} from "../../../core/utils/constants.utils";
 import {AuthService} from "../../../core/service/auth.service";
 import {JwtService} from "../../../core/service/jwt.service";
 import {Router} from "@angular/router";

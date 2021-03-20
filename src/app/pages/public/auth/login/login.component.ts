@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {ExtendedFormControl} from "../../../../core/utils/extended-form-control.utils";
 import {APP_ROUTES, EMAIL_REGEX, OTP_REGEX, SESSION_KEY} from "../../../../core/utils/constants.utils";
@@ -21,8 +21,8 @@ export class LoginComponent implements OnInit {
   @ViewChild(WizardComponent)
   public wizard: WizardComponent;
 
-  constructor(public authService: AuthService, private jwtService: JwtService, private localStorageService: LocalStorageService, 
-      private fb: FormBuilder, private router: Router, private toastr: ToastrService) {
+  constructor(public authService: AuthService, public jwtService: JwtService, private localStorageService: LocalStorageService,
+              private fb: FormBuilder, private router: Router, private toastr: ToastrService) {
     this.loginForm = this.fb.group({
       user_type: new ExtendedFormControl('Admin', [Validators.required], 'user_type'),
       email: new ExtendedFormControl('', [Validators.required, Validators.pattern(EMAIL_REGEX)], 'email'),
@@ -74,8 +74,7 @@ export class LoginComponent implements OnInit {
       .then(response => {
         if (response['reason'] == "ALREADY_LOGGED_IN") {
           this.router.navigate([APP_ROUTES.DASHBOARD]);
-        }
-        else {
+        } else {
           this.jwtService.saveToken(response['data']['token']);
         }
       })
@@ -86,9 +85,8 @@ export class LoginComponent implements OnInit {
 
   logout() {
     this.authService.logout();
-    this.wizard.goToPreviousStep();
-    this.loginForm.reset();
-    this.loginForm.get('user_type').setValue('Admin');
+    this.router.navigate([APP_ROUTES.AUTH_LOGIN]);
+    this.loginForm.reset({user_type: 'Admin', className: 'login'});
   }
 
   redirectToForgotPassword() {

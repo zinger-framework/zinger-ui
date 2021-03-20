@@ -16,7 +16,8 @@ export class JwtService {
   }
 
   destroyToken() {
-    this.localStorageService.destroyData(SESSION_KEY.AUTHORIZATION)
+    this.localStorageService.destroyData(SESSION_KEY.AUTHORIZATION);
+    this.localStorageService.destroyData(SESSION_KEY.LOGGED_IN);
   }
 
   isLoggedIn() {
