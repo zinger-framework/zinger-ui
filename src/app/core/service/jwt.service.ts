@@ -5,24 +5,22 @@ import {SESSION_KEY} from '../utils/constants.utils'
 @Injectable({
   providedIn: 'root'
 })
-export class JwtService {
-  constructor(private localStorageService: LocalStorageService) {
-  }
+export class JwtService extends LocalStorageService {
 
   getAuthToken(): string {
-    return this.localStorageService.getData(SESSION_KEY.AUTHORIZATION)
+    return this.getData(SESSION_KEY.AUTHORIZATION)
   }
 
   saveToken(token: string) {
-    this.localStorageService.saveData(SESSION_KEY.AUTHORIZATION, token)
+    this.saveData(SESSION_KEY.AUTHORIZATION, token)
   }
 
   destroyToken() {
-    this.localStorageService.destroyData(SESSION_KEY.AUTHORIZATION);
-    this.localStorageService.destroyData(SESSION_KEY.LOGGED_IN);
+    this.destroyData(SESSION_KEY.AUTHORIZATION);
+    this.destroyData(SESSION_KEY.LOGGED_IN);
   }
 
   isLoggedIn() {
-    return this.getAuthToken() != null && this.localStorageService.getData(SESSION_KEY.LOGGED_IN) == 'true';
+    return this.getAuthToken() != null && this.getData(SESSION_KEY.LOGGED_IN) == 'true';
   }
 }

@@ -24,7 +24,7 @@ export class ApiService implements HttpInterceptor {
     API_ENDPOINTS.AUTH_LOGIN];
   private loginOtpAPIs = [API_ENDPOINTS.AUTH_OTP_LOGIN, API_ENDPOINTS.AUTH_VERIFY_OTP, API_ENDPOINTS.AUTH_LOGOUT];
 
-  constructor(private http: HttpClient, private router: Router, private jwtService: JwtService, private toastr: ToastrService) {
+  constructor(private http: HttpClient, private router: Router, protected jwtService: JwtService, private toastr: ToastrService) {
   }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {

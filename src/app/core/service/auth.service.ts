@@ -1,18 +1,15 @@
 import {Injectable} from '@angular/core';
 import {ApiService} from './api.service';
-import {JwtService} from './jwt.service';
 import {API_ENDPOINTS} from '../utils/constants.utils';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AuthService {
-  constructor(private apiService: ApiService, private jwtService: JwtService) {
-  }
+export class AuthService extends ApiService {
 
   forgot_password_otp(email) {
     const requestBody = {email: email};
-    return this.apiService.post(API_ENDPOINTS.AUTH_OTP_FORGOT_PASSWORD, requestBody);
+    return this.post(API_ENDPOINTS.AUTH_OTP_FORGOT_PASSWORD, requestBody);
   }
 
   reset_password(otp, pwd, confirm_pwd) {
@@ -22,7 +19,7 @@ export class AuthService {
       password: pwd,
       password_confirmation: confirm_pwd
     };
-    return this.apiService.post(API_ENDPOINTS.AUTH_RESET_PASSWORD, requestBody);
+    return this.post(API_ENDPOINTS.AUTH_RESET_PASSWORD, requestBody);
   }
 
   login(email, password, user_type) {
@@ -31,23 +28,23 @@ export class AuthService {
       password: password,
       user_type: user_type
     };
-    return this.apiService.post(API_ENDPOINTS.AUTH_LOGIN, requestBody);
+    return this.post(API_ENDPOINTS.AUTH_LOGIN, requestBody);
   }
 
   verifyOTP(otp) {
     const requestBody = {
       otp: otp
     }
-    return this.apiService.post(API_ENDPOINTS.AUTH_VERIFY_OTP, requestBody);
+    return this.post(API_ENDPOINTS.AUTH_VERIFY_OTP, requestBody);
   }
 
   resendOtp() {
-    return this.apiService.post(API_ENDPOINTS.AUTH_OTP_LOGIN)
+    return this.post(API_ENDPOINTS.AUTH_OTP_LOGIN)
   }
 
   logout() {
-    return this.apiService.delete(API_ENDPOINTS.AUTH_LOGOUT).finally(() => {
-      this.apiService.logout();
+    return this.delete(API_ENDPOINTS.AUTH_LOGOUT).finally(() => {
+      super.logout();
     })
   }
 }

@@ -4,7 +4,7 @@ import {AuthService} from '../../../../core/service/auth.service';
 import {JwtService} from '../../../../core/service/jwt.service';
 import {Router} from '@angular/router';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {APP_ROUTES, EMAIL_REGEX, OTP_REGEX} from '../../../../core/utils/constants.utils';
+import {APP_ROUTES, EMAIL_REGEX, OTP_REGEX, PASSWORD_LENGTH} from '../../../../core/utils/constants.utils';
 import {handleError} from '../../../../core/utils/common.utils';
 import $ from 'jquery';
 import {ExtendedFormControl} from '../../../../core/utils/extended-form-control.utils';
@@ -18,7 +18,7 @@ import {WizardComponent} from 'angular-archwizard';
 export class ForgotPasswordComponent extends BaseComponent {
   forgotPwdForm: FormGroup;
   otpForm: FormGroup;
-  
+
   @ViewChild(WizardComponent)
   public wizard: WizardComponent;
 
@@ -30,8 +30,8 @@ export class ForgotPasswordComponent extends BaseComponent {
     });
     this.forgotPwdForm = this.fb.group({
       otp: new ExtendedFormControl('', [Validators.required, Validators.pattern(OTP_REGEX)], 'otp'),
-      password: new ExtendedFormControl('', [Validators.required, Validators.minLength(6)], 'password'),
-      confirm_password: new ExtendedFormControl('', [Validators.required, Validators.minLength(6), this.validatePassword], 'confirm_password'),
+      password: new ExtendedFormControl('', [Validators.required, Validators.minLength(PASSWORD_LENGTH)], 'password'),
+      confirm_password: new ExtendedFormControl('', [Validators.required, Validators.minLength(PASSWORD_LENGTH), this.validatePassword], 'confirm_password'),
       className: 'forgot-password'
     });
   }
