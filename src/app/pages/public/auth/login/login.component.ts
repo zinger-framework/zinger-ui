@@ -63,7 +63,11 @@ export class LoginComponent extends BaseComponent {
   verifyOtp() {
     this.authService.verifyOTP(this.otpForm.get('otp').value)
       .then(response => {
-        this.jwtService.saveToken(response['data']['token']);
+        if (response['reason'] == 'ALREADY_LOGGED_IN') {
+          this.router.navigate([APP_ROUTES.DASHBOARD]);
+        } else {
+          this.jwtService.saveToken(response['data']['token']);
+        }
         this.localStorageService.saveData(SESSION_KEY.LOGGED_IN, 'true');
         this.router.navigate([APP_ROUTES.DASHBOARD]);
       })
