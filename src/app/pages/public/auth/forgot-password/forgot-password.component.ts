@@ -1,4 +1,5 @@
 import {Component, ViewChild} from '@angular/core';
+import {BaseComponent} from '../../../../base.component';
 import {AuthService} from '../../../../core/service/auth.service';
 import {JwtService} from '../../../../core/service/jwt.service';
 import {Router} from '@angular/router';
@@ -14,13 +15,15 @@ import {WizardComponent} from 'angular-archwizard';
   templateUrl: './forgot-password.component.html',
   styleUrls: ['./forgot-password.component.css']
 })
-export class ForgotPasswordComponent {
+export class ForgotPasswordComponent extends BaseComponent {
   forgotPwdForm: FormGroup;
   otpForm: FormGroup;
+  
   @ViewChild(WizardComponent)
   public wizard: WizardComponent;
 
   constructor(private authService: AuthService, private  jwtService: JwtService, private router: Router, private fb: FormBuilder) {
+    super();
     this.otpForm = this.fb.group({
       email: new ExtendedFormControl('', [Validators.required, Validators.pattern(EMAIL_REGEX)], 'email'),
       className: 'forgot-password-otp'
