@@ -84,9 +84,10 @@ export class LoginComponent implements OnInit {
   }
 
   logout() {
-    this.authService.logout();
-    this.router.navigate([APP_ROUTES.AUTH_LOGIN]);
-    this.loginForm.reset({user_type: 'Admin', className: 'login'});
+    this.authService.logout().finally(()=>{
+      this.wizard.goToStep(0);
+      this.loginForm.reset({user_type: 'Admin', className: 'login'});
+    });
   }
 
   redirectToForgotPassword() {
