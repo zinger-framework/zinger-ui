@@ -1,41 +1,50 @@
-import { Injectable } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
-import {  throwError } from 'rxjs';
-
+import {Injectable} from '@angular/core';
+import {ApiService} from './api.service';
+import {API_ENDPOINTS} from '../utils/constants.utils';
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root'
 })
-export class AuthService {
+export class AuthService extends ApiService {
 
-  isAuthenticated:boolean = false;
-
-  constructor(private http: HttpClient) {}
-
-  login(email: string, password: string){
-    let requestBody = JSON.stringify({"emails":"harsha1@gmail.com","mobile": email,"password": password})
-    let loginPromise = this.http.post('http://api.zinger.pw/v2/auth/login/password',requestBody).toPromise()
-    return loginPromise
+  forgot_password_otp(email) {
+    const requestBody = {email: email};
+    return this.post(API_ENDPOINTS.AUTH_OTP_FORGOT_PASSWORD, requestBody);
   }
 
-  handleError(errorResponse:any){
-    if (errorResponse.error instanceof ErrorEvent) {
-      return throwError(errorResponse.error.message)
-    } else {
-      switch (errorResponse.status) {
-        case 400:
-          return throwError(errorResponse.error.message)
-        case 401:
-          return throwError(errorResponse.error.message)
-        case 404:
-          return throwError(errorResponse.error.message)
-        case 409:
-          return throwError(errorResponse.error.message)
-        case 500:
-          return throwError(errorResponse.error.message)
-        default:
-          return throwError(errorResponse.error.message);
-      }
+  reset_password(otp, pwd, confirm_pwd) {
+    const requestBody = {
+      auth_token: this.jwtService.getAuthToken(),
+      otp: otp,
+      password: pwd,
+      password_confirmation: confirm_pwd
+    };
+    return this.post(API_ENDPOINTS.AUTH_RESET_PASSWORD, requestBody);
+  }
+
+  login(email, password, user_type) {
+    const requestBody = {
+      email: email,
+      password: password,
+      user_type: user_type
+    };
+    return this.post(API_ENDPOINTS.AUTH_LOGIN, requestBody);
+  }
+
+  verifyOTP(otp) {
+    const requestBody = {
+      otp: otp
     }
+    return this.post(API_ENDPOINTS.AUTH_VERIFY_OTP, requestBody);
+  }
+
+  resendOtp() {
+    return this.post(API_ENDPOINTS.AUTH_OTP_LOGIN)
+  }
+
+  logout() {
+    return this.delete(API_ENDPOINTS.AUTH_LOGOUT).finally(() => {
+      super.logout();
+    })
   }
 }

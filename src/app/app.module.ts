@@ -1,22 +1,27 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-import { LoginModule } from './features/login/login.module';
-import { FormsModule } from '@angular/forms';
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { PageNotFoundComponent } from './core/component/page-not-found/page-not-found.component';
-import { HeaderComponent } from './core/component/header/header.component';
-import { interceptorProviders } from './core/interceptor/interceptor';
-import { AuthService } from './core/service/auth.service'
-import { HttpClientModule } from '@angular/common/http';
-import { CommonModule } from '@angular/common';
+import {BrowserModule} from '@angular/platform-browser';
+import {NgModule} from '@angular/core';
+import {FormsModule} from '@angular/forms';
+import {HttpClientModule} from '@angular/common/http';
+import {CommonModule} from '@angular/common';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {NgSelectModule} from '@ng-select/ng-select';
+import {UiSwitchModule} from 'ngx-ui-switch';
+import {ToastrModule} from 'ngx-toastr';
+import {AppRoutingModule} from './app-routing.module';
+import {CoreModule} from './core/core.module';
+import {PagesModule} from './pages/pages.module';
+import {SharedModule} from './shared/shared.module';
+import {LayoutsModule} from './layouts/layouts.module';
+import {PrivateModule} from './pages/private/private.module';
+import {PublicModule} from './pages/public/public.module';
+
+import {AppComponent} from './app.component';
 
 @NgModule({
   declarations: [
-    AppComponent,
-    PageNotFoundComponent,
-    HeaderComponent
+    AppComponent
   ],
   imports: [
     BrowserModule,
@@ -24,9 +29,25 @@ import { CommonModule } from '@angular/common';
     FormsModule,
     AppRoutingModule,
     HttpClientModule,
-    LoginModule
+    NgbModule,
+    CoreModule,
+    PagesModule,
+    SharedModule,
+    LayoutsModule,
+    PrivateModule,
+    PublicModule,
+    UiSwitchModule.forRoot({
+      size: 'medium',
+      color: '#28a745',
+      defaultBgColor: '#f56767'
+    }),
+    NgSelectModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot({
+      closeButton: true
+    })
   ],
-  providers: [AuthService, interceptorProviders],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}
