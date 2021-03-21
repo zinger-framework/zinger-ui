@@ -15,18 +15,12 @@ import {WizardComponent} from 'angular-archwizard';
   styleUrls: ['./forgot-password.component.css']
 })
 export class ForgotPasswordComponent {
-  canExitFirstStep = false;
-  canExitSecondStep = false;
   forgotPwdForm: FormGroup;
   otpForm: FormGroup;
   @ViewChild(WizardComponent)
   public wizard: WizardComponent;
 
   constructor(private authService: AuthService, private  jwtService: JwtService, private router: Router, private fb: FormBuilder) {
-    this.createForm();
-  }
-
-  createForm() {
     this.otpForm = this.fb.group({
       email: new ExtendedFormControl('', [Validators.required, Validators.pattern(EMAIL_REGEX)], 'email'),
       className: 'forgot-password-otp'
