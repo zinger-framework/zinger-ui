@@ -33,24 +33,18 @@ export function setFormErrors(form: FormGroup, message: string, fieldKey = '') {
 }
 
 export function setErrorMessage(message: string, className: string, fieldKey = '') {
-  if (fieldKey != '') {
-    if ($(`form.${className} div.form-group-${fieldKey} div.form-control-feedback`)[0] != null) {
-      $(`form.${className} div.form-group-${fieldKey} div.form-control-feedback`)[0].innerHTML = message;
-      $(`form.${className} div.form-group-${fieldKey} input`)[0].classList.add('form-control-danger');
-    } else {
-      $(`form.${className} div.form-feedback`)[0].innerHTML = message;
-    }
+  if (fieldKey != '' && $(`form.${className} div.form-group-${fieldKey} div.form-control-feedback`)[0] != null) {
+    $(`form.${className} div.form-group-${fieldKey} div.form-control-feedback`)[0].innerHTML = message;
+    $(`form.${className} div.form-group-${fieldKey} input`)[0].classList.add('form-control-danger');
   } else {
     $(`form.${className} div.form-feedback`)[0].innerHTML = message;
   }
 }
 
 export function clearErrorMessage(className: string, fieldKey = '') {
-  if (fieldKey != '') {
-    if ($(`form.${className} div.form-group-${fieldKey} div.form-control-feedback`)[0] != null) {
-      $(`form.${className} div.form-group-${fieldKey} div.form-control-feedback`)[0].innerHTML = '';
-      $(`form.${className} div.form-group-${fieldKey} input`)[0].classList.remove('form-control-danger');
-    }
+  if (fieldKey != '' && $(`form.${className} div.form-group-${fieldKey} div.form-control-feedback`)[0] != null) {
+    $(`form.${className} div.form-group-${fieldKey} div.form-control-feedback`)[0].innerHTML = '';
+    $(`form.${className} div.form-group-${fieldKey} input`)[0].classList.remove('form-control-danger');
   }
   $(`form.${className} div.form-feedback`)[0].innerHTML = '';
 }
