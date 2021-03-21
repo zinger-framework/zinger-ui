@@ -1,4 +1,5 @@
-import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component} from '@angular/core';
+import {BaseComponent} from "../../../base.component";
 
 @Component({
   selector: 'app-profile',
@@ -6,7 +7,7 @@ import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
   styleUrls: ['./profile.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ProfileComponent implements OnInit {
+export class ProfileComponent extends BaseComponent {
   name: string;
   email: string;
   mobile: string;
@@ -15,6 +16,7 @@ export class ProfileComponent implements OnInit {
   roles = ['Admin', 'Manager', 'Delivery'];
 
   constructor() {
+    super();
   }
 
   ngOnInit(): void {

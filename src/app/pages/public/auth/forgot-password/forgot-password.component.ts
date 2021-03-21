@@ -50,7 +50,7 @@ export class ForgotPasswordComponent {
       .then((response) => {
         this.jwtService.saveToken(response['data']['auth_token']);
         $('form.forgot-password-otp div.form-group-email input').attr('readonly', true);
-        if($('form.forgot-password form-input.d-none')[0].classList.contains('d-none'))
+        if ($('form.forgot-password form-input.d-none')[0].classList.contains('d-none'))
           $('form.forgot-password form-input.d-none')[0].classList.remove('d-none');
       })
       .catch((error) => {
@@ -76,6 +76,6 @@ export class ForgotPasswordComponent {
   }
 
   exitFirstStep() {
-    return this.forgotPwdForm.get('otp').valid && this.otpForm.valid && this.jwtService.getAuthToken()!=null;
+    return this.forgotPwdForm.get('otp').valid && this.otpForm.valid && this.jwtService.getAuthToken() != null;
   }
 }

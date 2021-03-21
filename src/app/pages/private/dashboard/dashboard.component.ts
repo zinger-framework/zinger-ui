@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {
   ApexAxisChartSeries,
   ApexChart,
@@ -14,6 +14,7 @@ import {
   ApexYAxis,
   ChartComponent
 } from 'ng-apexcharts';
+import {BaseComponent} from "../../../base.component";
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -36,12 +37,13 @@ export type ChartOptions = {
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent extends BaseComponent {
   @ViewChild('txn_chart') chart: ChartComponent;
   public txnChartOptions: Partial<ChartOptions>;
   public newRegChartOptions: Partial<ChartOptions>;
 
   constructor() {
+    super();
   }
 
   ngOnInit(): void {

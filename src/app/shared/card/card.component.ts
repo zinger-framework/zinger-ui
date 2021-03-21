@@ -1,15 +1,17 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input} from '@angular/core';
+import {BaseComponent} from "../../base.component";
 
 @Component({
   selector: 'card',
   templateUrl: './card.component.html',
   styleUrls: ['./card.component.css']
 })
-export class CardComponent implements OnInit {
+export class CardComponent extends BaseComponent {
   @Input() title: string;
   @Input() value: string;
 
   constructor() {
+    super();
   }
 
   ngOnInit(): void {
