@@ -3,7 +3,9 @@ import {ApiService} from './api.service';
 import {JwtService} from './jwt.service';
 import {API_ENDPOINTS} from '../utils/constants.utils';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class AuthService {
   constructor(private apiService: ApiService, private jwtService: JwtService) {
   }

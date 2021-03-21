@@ -74,7 +74,6 @@ export class ApiService implements HttpInterceptor {
   }
 
   get(path: string, params = new HttpParams()) {
-    // need to add search: params options here
     return this.http.get(`${API_ENDPOINTS.ADMIN_URL}${path}`, {headers: this.setHeaders(path)})
       .toPromise();
   }

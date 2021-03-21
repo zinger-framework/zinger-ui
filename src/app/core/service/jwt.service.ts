@@ -2,7 +2,9 @@ import {Injectable} from '@angular/core';
 import {LocalStorageService} from "./local-storage.service";
 import {SESSION_KEY} from '../utils/constants.utils'
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class JwtService {
   constructor(private localStorageService: LocalStorageService) {
   }

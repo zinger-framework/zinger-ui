@@ -3,7 +3,9 @@ import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot} from '
 import {APP_ROUTES} from "../utils/constants.utils";
 import {JwtService} from "./jwt.service";
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class AuthGuardService implements CanActivate {
 
   constructor(public jwtService: JwtService, public router: Router) {
