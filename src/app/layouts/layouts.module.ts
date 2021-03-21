@@ -1,5 +1,6 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
+import {RouterModule} from '@angular/router';
 
 import {PageNotFoundComponent} from './page-not-found/page-not-found.component';
 
@@ -9,7 +10,8 @@ import {PageNotFoundComponent} from './page-not-found/page-not-found.component';
   ],
   exports: [],
   imports: [
-    CommonModule
+    CommonModule,
+    RouterModule
   ]
 })
 export class LayoutsModule {

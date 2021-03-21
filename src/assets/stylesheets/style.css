@@ -2353,9 +2353,8 @@ body.IE .login-wrap .container, body.IE .register-page-wrap .container {
 
 .error-page h1 {
   font-size: 210px;
-  text-shadow: 2px 2px 0 #181f48, 4px 4px 0 #fff, 8px 8px 0 #181f48;
   line-height: 1;
-  color: #181f48
+  color: #FF4141
 }
 
 .error-page h3 {
