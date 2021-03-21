@@ -22,6 +22,6 @@ export class HeaderComponent extends BaseComponent {
   }
 
   logout() {
-    this.authService.logout().finally(() => this.router.navigate([APP_ROUTES.AUTH_LOGIN]));
+    this.authService.logout();
   }
 }

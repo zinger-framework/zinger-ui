@@ -31,7 +31,7 @@ export class ApiService implements HttpInterceptor {
     return next.handle(request)
       .pipe(
         map(event => {
-          if (event['body'] != null && event['body']['message'] != null && event['body']['message'].toLowerCase() != 'success')
+          if (event['body'] != null && event['body']['message'] != null && event['body']['message'] != 'success')
             this.toastr.success(event['body']['message']);
           return event;
         }),
@@ -43,7 +43,7 @@ export class ApiService implements HttpInterceptor {
             } else if (error.status == 401) {
               switch (error.error.reason) {
                 case 'UNAUTHORIZED': {
-                  if (request.url != API_ENDPOINTS.ADMIN_URL + API_ENDPOINTS.AUTH_LOGOUT) this.logout();
+                  this.logout();
                   errorMsg = error.error.message;
                 }
                 case 'OTP_UNVERIFIED': {
@@ -104,6 +104,7 @@ export class ApiService implements HttpInterceptor {
 
   logout() {
     this.jwtService.destroyToken();
+    this.router.navigate([APP_ROUTES.AUTH_LOGIN]);
   }
 
   private setHeaders(path: string): HttpHeaders {
