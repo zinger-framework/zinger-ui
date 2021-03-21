@@ -90,7 +90,7 @@ export class LoginComponent extends BaseComponent {
     this.authService.logout().finally(() => {
       this.wizard.goToStep(0);
       this.loginForm.reset({user_type: 'Admin', className: 'login'});
-      this.otpForm.reset({ className: 'otp'});
+      this.otpForm.reset({className: 'otp'});
     });
   }
 
