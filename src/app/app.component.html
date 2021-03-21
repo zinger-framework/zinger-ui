@@ -1,6 +1,8 @@
-<app-private *ngIf="jwtService.isLoggedIn(); else unauthorized" class="header-white sidebar-light">
+<app-private *ngIf="jwtService.isLoggedIn(); else unauthorized" class="header-white sidebar-light private">
 </app-private>
 <ng-template #unauthorized>
-  <app-public></app-public>
+  <app-public class="public"></app-public>
 </ng-template>
-<router-outlet></router-outlet>
+<div class="main-container">
+  <router-outlet></router-outlet>
+</div>

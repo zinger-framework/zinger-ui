@@ -1,0 +1,7 @@
+.private + div.main-container {
+  padding: 100px 30px 20px 310px;
+}
+
+.public + div.main-container {
+  padding: 100px 0 0 0;
+}
