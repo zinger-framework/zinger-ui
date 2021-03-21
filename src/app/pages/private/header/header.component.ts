@@ -1,8 +1,5 @@
 import {Component, Input} from '@angular/core';
 import {AuthService} from "../../../core/service/auth.service";
-import {JwtService} from "../../../core/service/jwt.service";
-import {Router} from "@angular/router";
-import {APP_ROUTES} from "../../../core/utils/constants.utils";
 import {BaseComponent} from "../../../base.component";
 
 @Component({
@@ -13,12 +10,12 @@ import {BaseComponent} from "../../../base.component";
 export class HeaderComponent extends BaseComponent {
   @Input() name: string;
 
-  constructor(private authService: AuthService, private jwtService: JwtService, private router: Router) {
+  constructor(private authService: AuthService) {
     super();
   }
 
   ngOnInit(): void {
-    this.name = 'Logesh';
+    this.name = 'User'; // TODO: Replace with actual user_name - Logesh
   }
 
   logout() {
