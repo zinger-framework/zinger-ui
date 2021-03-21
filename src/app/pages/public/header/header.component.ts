@@ -1,4 +1,5 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input} from '@angular/core';
+import {BaseComponent} from '../../../base.component';
 import {NavigationEnd, Router, RouterEvent} from '@angular/router';
 import {filter} from 'rxjs/operators';
 import {APP_ROUTES} from "../../../core/utils/constants.utils";
@@ -8,10 +9,11 @@ import {APP_ROUTES} from "../../../core/utils/constants.utils";
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent extends BaseComponent {
   @Input() navData: any;
 
   constructor(private route: Router) {
+    super();
     route.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe(event => {
       if (event instanceof RouterEvent) {
         if (event.url.includes('login')) {

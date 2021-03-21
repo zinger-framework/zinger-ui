@@ -21,7 +21,7 @@
       <form-input inputType="email" name="email" placeholder="hello@example.com"></form-input>
       <form-input inputType="password" name="password" placeholder="**********"></form-input>
 
-      <div class="float-right pb-3"><a [routerLink]="redirectToForgotPassword()">Forgot Password?</a></div>
+      <div class="float-right pb-3"><a [routerLink]="getRoute('AUTH_FORGOT_PASSWORD')">Forgot Password?</a></div>
 
       <input [disabled]="!this.loginForm.valid" class="btn btn-primary btn-lg btn-block" type="submit"
              value="Login Now"/>

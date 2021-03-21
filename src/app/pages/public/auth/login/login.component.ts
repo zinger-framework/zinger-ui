@@ -1,4 +1,5 @@
-import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
+import {BaseComponent} from '../../../../base.component';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {ExtendedFormControl} from '../../../../core/utils/extended-form-control.utils';
@@ -15,7 +16,7 @@ import {ToastrService} from 'ngx-toastr';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit, AfterViewInit {
+export class LoginComponent extends BaseComponent {
   loginForm: FormGroup;
   otpForm: FormGroup;
 
@@ -24,6 +25,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
 
   constructor(public authService: AuthService, public jwtService: JwtService, private localStorageService: LocalStorageService,
               private fb: FormBuilder, private router: Router, private toastr: ToastrService) {
+    super();
     this.loginForm = this.fb.group({
       user_type: new ExtendedFormControl('Admin', [Validators.required], 'user_type'),
       email: new ExtendedFormControl('', [Validators.required, Validators.pattern(EMAIL_REGEX)], 'email'),
@@ -89,10 +91,6 @@ export class LoginComponent implements OnInit, AfterViewInit {
       this.wizard.goToStep(0);
       this.loginForm.reset({user_type: 'Admin', className: 'login'});
     });
-  }
-
-  redirectToForgotPassword() {
-    return APP_ROUTES.AUTH_FORGOT_PASSWORD;
   }
 
   isPasswordAuthenticated() {

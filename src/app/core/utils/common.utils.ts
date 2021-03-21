@@ -72,4 +72,3 @@ export function buildMessage(error: ValidationErrors, label: string): string {
     return Object.values(error)[0];
   }
 }
-
