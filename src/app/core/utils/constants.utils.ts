@@ -5,7 +5,9 @@ export const API_ENDPOINTS = {
   AUTH_LOGIN: 'v1/auth/login',
   AUTH_VERIFY_OTP: 'v1/auth/verify_otp',
   AUTH_LOGOUT: 'v1/auth/logout',
-  AUTH_OTP_LOGIN: 'v1/auth/otp/login'
+  AUTH_OTP_LOGIN: 'v1/auth/otp/login',
+  USER_PROFILE:'v1/user_profile',
+  USER_PROFILE_RESET_PASSWORD:'v1/user_profile/reset_password'
 };
 
 export const APP_ROUTES = {
