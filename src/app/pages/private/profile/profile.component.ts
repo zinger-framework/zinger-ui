@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnChanges, SimpleChanges} from '@angular/core';
 import {BaseComponent} from "../../../base.component";
 import {ProfileService} from "../../../core/service/profile.service"
 import {ToastrService} from "ngx-toastr";
@@ -13,7 +13,7 @@ import {handleError} from "../../../core/utils/common.utils";
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css']
 })
-export class ProfileComponent extends BaseComponent {
+export class ProfileComponent extends BaseComponent{
   name: string;
   email: string;
   mobile: string;
@@ -21,6 +21,7 @@ export class ProfileComponent extends BaseComponent {
   selectedRole: string;
   profileForm: FormGroup;
   resetPwdForm: FormGroup;
+  profileApiResponse: JSON;
   roles = ['Admin', 'Manager', 'Delivery'];
 
   constructor(private profileService: ProfileService,private fb: FormBuilder,private toastr: ToastrService) {
@@ -30,7 +31,7 @@ export class ProfileComponent extends BaseComponent {
       name: new ExtendedFormControl('', [Validators.required],'name'),
       mobile: new ExtendedFormControl('', [Validators.required],'mobile'),
       email: new ExtendedFormControl('', [Validators.required,Validators.pattern(EMAIL_REGEX)],'email'),
-      two_fa: new ExtendedFormControl('', [Validators.required],'two_fa'),
+      two_fa_enabled: new ExtendedFormControl('', [Validators.required],'two_fa'),
       role: new ExtendedFormControl('', [Validators.required],'role'),
       className: 'profile'
     })
@@ -56,7 +57,7 @@ export class ProfileComponent extends BaseComponent {
         this.profileForm.get('name').setValue(response['data']['name']);
         this.profileForm.get('mobile').setValue("+91 "+response['data']['mobile']);
         this.profileForm.get('email').setValue(response['data']['email']);
-        this.profileForm.get('two_fa').setValue(response['data']['two_fa_enabled']);
+        this.profileForm.get('two_fa_enabled').setValue(response['data']['two_fa_enabled']);
         this.profileForm.get('role').setValue('Employee');
       })
       .catch(error => {
@@ -66,6 +67,7 @@ export class ProfileComponent extends BaseComponent {
         $('form.profile div.form-group-mobile input').attr('readonly', true);
         $('form.profile div.form-group-email input').attr('readonly', true);
         $('form.profile div.form-group-role input').attr('readonly', true);
+        this.profileApiResponse = this.profileForm.value;
       })
   }
 
@@ -80,6 +82,12 @@ export class ProfileComponent extends BaseComponent {
   }
 
   updateProfile(){
+    let requestObj = {};
+    Object.keys(this.profileForm.value).map(k=> {
+      if(this.profileForm.value[k]!=this.profileApiResponse[k])
+        requestObj[k] = this.profileForm.value[k]
+    });
+    // console.log(requestObj)
   }
 
   updateMobile(){

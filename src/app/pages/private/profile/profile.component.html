@@ -35,7 +35,7 @@
 
             <div class="form-group">
               <label>2FA Enabled</label><br>
-              <ui-switch formControlName="two_fa" (click)="updateProfile()" ></ui-switch>
+              <ui-switch formControlName="two_fa_enabled" (click)="updateProfile()" ></ui-switch>
             </div>
 
             <input [disabled]="!this.profileForm.valid"  class="btn btn-primary" type="submit" value="Update Profile">
