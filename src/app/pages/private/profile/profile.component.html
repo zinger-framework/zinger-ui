@@ -25,20 +25,20 @@
             <form-input inputType="text" name="name" placeholder="your name"></form-input>
 
             <label>Email Address</label>
-            <form-input (click)="updateEmail()" inputType="email" name="email" placeholder="hello@example.com"></form-input>
+            <form-input inputType="email" name="email" placeholder="hello@example.com"></form-input>
 
             <label>Mobile Number</label>
-            <form-input (click)="updateMobile()" inputType="text" name="mobile" placeholder="+91 9940328793"></form-input>
+            <form-input inputType="text" name="mobile" placeholder="+91 9940328793"></form-input>
 
             <label>Role</label>
             <form-input inputType="text" name="role" placeholder="employee"></form-input>
 
             <div class="form-group">
               <label>2FA Enabled</label><br>
-              <ui-switch formControlName="two_fa_enabled" (click)="updateProfile()" ></ui-switch>
+              <ui-switch (click)="updateTwoFa()" formControlName="two_fa_enabled"></ui-switch>
             </div>
 
-            <input [disabled]="!this.profileForm.valid"  class="btn btn-primary" type="submit" value="Update Profile">
+            <input [disabled]="!this.profileForm.valid" class="btn btn-primary" type="submit" value="Update Profile">
           </form>
         </div>
       </div>
@@ -46,7 +46,7 @@
     <div class="col-xl-6 col-lg-6 col-md-6 col-sm-10 mb-20">
       <div class="card-box overflow-hidden">
         <div class="profile-setting">
-          <form class="col-md-12 pd-20 reset-password" [formGroup]="resetPwdForm" (ngSubmit)="updatePassword()">
+          <form (ngSubmit)="updatePassword()" [formGroup]="resetPwdForm" class="col-md-12 pd-20 reset-password">
             <div class="form-feedback has-danger padding-bottom-10 text-center"></div>
 
             <label>Current Password</label>

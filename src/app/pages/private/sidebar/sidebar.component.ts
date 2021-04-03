@@ -7,7 +7,7 @@ import {BaseComponent} from "../../../base.component";
   styleUrls: ['./sidebar.component.css']
 })
 export class SidebarComponent extends BaseComponent {
-  
+
   constructor() {
     super();
   }

@@ -7,16 +7,20 @@ import {API_ENDPOINTS} from '../utils/constants.utils';
 })
 export class ProfileService extends ApiService {
 
-  getProfile(){
-    return this.get(API_ENDPOINTS.USER_PROFILE)
+  getProfile() {
+    return this.get(API_ENDPOINTS.USER_PROFILE);
   }
 
-  updatePassword(current_pwd, new_pwd, confirm_pwd){
+  updateProfile(request_body) {
+    return this.post(API_ENDPOINTS.USER_PROFILE_MODIFY, request_body);
+  }
+
+  updatePassword(current_pwd, new_pwd, confirm_pwd) {
     const requestBody = {
       current_password: current_pwd,
       new_password: new_pwd,
       confirm_password: confirm_pwd
     };
-    return this.post(API_ENDPOINTS.USER_PROFILE_RESET_PASSWORD,requestBody)
+    return this.post(API_ENDPOINTS.USER_PROFILE_RESET_PASSWORD, requestBody);
   }
 }

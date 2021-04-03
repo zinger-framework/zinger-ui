@@ -12,7 +12,7 @@ import {SidebarComponent} from './sidebar/sidebar.component';
 import {DashboardComponent} from './dashboard/dashboard.component';
 import {HeaderComponent} from './header/header.component';
 import {ProfileComponent} from './profile/profile.component';
-import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {ReactiveFormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [
