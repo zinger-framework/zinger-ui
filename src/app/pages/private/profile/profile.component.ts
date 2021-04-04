@@ -87,8 +87,9 @@ export class ProfileComponent extends BaseComponent {
         if (this.profileForm.get('two_fa_enabled').value == true) {
           this.profileService.logout();
         }
-      }).catch(error => {
-      handleError(error, this.profileForm);
+      })
+      .catch(error => {
+        handleError(error, this.profileForm);
     })
   }
 
