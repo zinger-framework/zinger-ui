@@ -16,4 +16,5 @@ export class FormInputComponent {
   @Input() inputType: string;
   @Input() placeholder: string;
   @Input() name: string;
+  @Input() readonly: boolean = false;
 }

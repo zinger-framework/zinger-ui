@@ -26,3 +26,5 @@ export const SESSION_KEY = {
 export const PASSWORD_LENGTH = 6;
 export const EMAIL_REGEX = /^\S+@\S+\.[a-z]+$/i;
 export const OTP_REGEX = /^[0-9]{6}$/g;
+export const MOBILE_REGEX = /^\+[0-9]{2} [0-9]{10}$/g;
+export const NAME_REGEX = /^[A-z ]+$/i;

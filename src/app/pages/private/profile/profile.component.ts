@@ -4,7 +4,7 @@ import {ProfileService} from "../../../core/service/profile.service"
 import {ToastrService} from "ngx-toastr";
 import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ExtendedFormControl} from "../../../core/utils/extended-form-control.utils";
-import {EMAIL_REGEX, PASSWORD_LENGTH} from "../../../core/utils/constants.utils";
+import {EMAIL_REGEX, MOBILE_REGEX, NAME_REGEX, PASSWORD_LENGTH} from "../../../core/utils/constants.utils";
 import $ from 'jquery';
 import {handleError} from "../../../core/utils/common.utils";
 
@@ -22,13 +22,12 @@ export class ProfileComponent extends BaseComponent {
   profileForm: FormGroup;
   resetPwdForm: FormGroup;
   profileApiResponse: JSON;
-  roles = ['Admin', 'Manager', 'Delivery'];
 
   constructor(private profileService: ProfileService, private fb: FormBuilder, private toastr: ToastrService) {
     super();
     this.profileForm = this.fb.group({
-      name: new ExtendedFormControl('', [Validators.required], 'name'),
-      mobile: new ExtendedFormControl('', [Validators.required], 'mobile'),
+      name: new ExtendedFormControl('', [Validators.required, Validators.pattern(NAME_REGEX)], 'name'),
+      mobile: new ExtendedFormControl('', [Validators.required, Validators.pattern(MOBILE_REGEX)], 'mobile'),
       email: new ExtendedFormControl('', [Validators.required, Validators.pattern(EMAIL_REGEX)], 'email'),
       two_fa_enabled: new ExtendedFormControl('', [Validators.required], 'two_fa'),
       role: new ExtendedFormControl('', [Validators.required], 'role'),
@@ -62,9 +61,6 @@ export class ProfileComponent extends BaseComponent {
         handleError(error, this.profileForm)
       })
       .finally(() => {
-        $('form.profile div.form-group-mobile input').attr('readonly', true);
-        $('form.profile div.form-group-email input').attr('readonly', true);
-        $('form.profile div.form-group-role input').attr('readonly', true);
         this.profileApiResponse = this.profileForm.value;
       })
   }
@@ -79,14 +75,10 @@ export class ProfileComponent extends BaseComponent {
       });
   }
 
-  updateTwoFa() {
+  updateTwoFactor() {
     this.profileService.updateProfile({two_fa_enabled: this.profileForm.get('two_fa_enabled').value})
       .then(response => {
-        this.profileForm.get('two_fa_enabled').setValue(response['data']['two_fa_enabled']);
-        this.profileApiResponse = this.profileForm.value;
-        if (this.profileForm.get('two_fa_enabled').value == true) {
-          this.profileService.logout();
-        }
+        this.updateProfileForm(response);
       })
       .catch(error => {
         handleError(error, this.profileForm);
@@ -100,20 +92,24 @@ export class ProfileComponent extends BaseComponent {
         requestObj[k] = this.profileForm.get(k).value
     });
 
-    if (Object.keys(requestObj).length == 0) {
-      this.toastr.show('No Fields Updated')
-      return;
-    }
+    if (Object.keys(requestObj).length == 0) return;
 
     this.profileService.updateProfile(requestObj)
       .then(response => {
-        Object.keys(response['data']).map(k => {
-          this.profileForm.get(k).setValue(response['data'][k]);
-        })
-        this.profileApiResponse = this.profileForm.value;
+        this.updateProfileForm(response);
       })
       .catch(error => {
         handleError(error, this.profileForm)
       });
+  }
+
+  updateProfileForm(response){
+    Object.keys(response['data']).map(k => {
+      this.profileForm.get(k).setValue(response['data'][k]);
+    })
+    this.profileApiResponse = this.profileForm.value;
+    if (this.profileForm.get('two_fa_enabled').value == true) {
+      this.profileService.logout();
+    }
   }
 }
