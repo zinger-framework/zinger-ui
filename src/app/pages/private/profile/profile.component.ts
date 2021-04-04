@@ -5,7 +5,6 @@ import {ToastrService} from "ngx-toastr";
 import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ExtendedFormControl} from "../../../core/utils/extended-form-control.utils";
 import {EMAIL_REGEX, MOBILE_REGEX, NAME_REGEX, PASSWORD_LENGTH} from "../../../core/utils/constants.utils";
-import $ from 'jquery';
 import {handleError} from "../../../core/utils/common.utils";
 
 @Component({
@@ -51,10 +50,9 @@ export class ProfileComponent extends BaseComponent {
   ngOnInit(): void {
     this.profileService.getProfile()
       .then(response => {
-        this.profileForm.get('name').setValue(response['data']['name']);
-        this.profileForm.get('mobile').setValue("+91 " + response['data']['mobile']);
-        this.profileForm.get('email').setValue(response['data']['email']);
-        this.profileForm.get('two_fa_enabled').setValue(response['data']['two_fa_enabled']);
+        Object.keys(response['data']).map(k => {
+          this.profileForm.get(k).setValue(response['data'][k]);
+        })
         this.profileForm.get('role').setValue('Employee');
       })
       .catch(error => {
