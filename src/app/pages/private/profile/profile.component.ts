@@ -50,16 +50,10 @@ export class ProfileComponent extends BaseComponent {
   ngOnInit(): void {
     this.profileService.getProfile()
       .then(response => {
-        Object.keys(response['data']).map(k => {
-          this.profileForm.get(k).setValue(response['data'][k]);
-        })
-        this.profileForm.get('role').setValue('Employee');
+        this.updateProfileForm(response,true);
       })
       .catch(error => {
-        handleError(error, this.profileForm)
-      })
-      .finally(() => {
-        this.profileApiResponse = this.profileForm.value;
+        handleError(error, this.profileForm);
       })
   }
 
@@ -69,7 +63,7 @@ export class ProfileComponent extends BaseComponent {
         this.profileService.logout();
       })
       .catch(error => {
-        handleError(error, this.resetPwdForm)
+        handleError(error, this.resetPwdForm);
       });
   }
 
@@ -101,11 +95,15 @@ export class ProfileComponent extends BaseComponent {
       });
   }
 
-  updateProfileForm(response){
+  updateProfileForm(response,initialization = false){
     Object.keys(response['data']).map(k => {
       this.profileForm.get(k).setValue(response['data'][k]);
     })
     this.profileApiResponse = this.profileForm.value;
+    if(initialization){
+      this.profileForm.get('role').setValue('Employee');
+      return;
+    }
     if (this.profileForm.get('two_fa_enabled').value == true) {
       this.profileService.logout();
     }
