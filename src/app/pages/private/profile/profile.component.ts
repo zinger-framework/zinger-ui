@@ -1,7 +1,6 @@
 import {Component} from '@angular/core';
 import {BaseComponent} from "../../../base.component";
 import {ProfileService} from "../../../core/service/profile.service"
-import {ToastrService} from "ngx-toastr";
 import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ExtendedFormControl} from "../../../core/utils/extended-form-control.utils";
 import {EMAIL_REGEX, MOBILE_REGEX, NAME_REGEX, PASSWORD_LENGTH} from "../../../core/utils/constants.utils";
@@ -13,23 +12,17 @@ import {handleError} from "../../../core/utils/common.utils";
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent extends BaseComponent {
-  name: string;
-  email: string;
-  mobile: string;
-  enable: boolean;
-  selectedRole: string;
   profileForm: FormGroup;
   resetPwdForm: FormGroup;
   profileApiResponse: JSON;
 
-  constructor(private profileService: ProfileService, private fb: FormBuilder, private toastr: ToastrService) {
+  constructor(private profileService: ProfileService, private fb: FormBuilder) {
     super();
     this.profileForm = this.fb.group({
       name: new ExtendedFormControl('', [Validators.required, Validators.pattern(NAME_REGEX)], 'name'),
       mobile: new ExtendedFormControl('', [Validators.required, Validators.pattern(MOBILE_REGEX)], 'mobile'),
       email: new ExtendedFormControl('', [Validators.required, Validators.pattern(EMAIL_REGEX)], 'email'),
       two_fa_enabled: new ExtendedFormControl('', [Validators.required], 'two_fa'),
-      role: new ExtendedFormControl('', [Validators.required], 'role'),
       className: 'profile'
     })
 
@@ -50,7 +43,7 @@ export class ProfileComponent extends BaseComponent {
   ngOnInit(): void {
     this.profileService.getProfile()
       .then(response => {
-        this.updateProfileForm(response,true);
+        this.updateProfileForm(response, true);
       })
       .catch(error => {
         handleError(error, this.profileForm);
@@ -74,7 +67,7 @@ export class ProfileComponent extends BaseComponent {
       })
       .catch(error => {
         handleError(error, this.profileForm);
-    })
+      })
   }
 
   updateProfile() {
@@ -95,16 +88,14 @@ export class ProfileComponent extends BaseComponent {
       });
   }
 
-  updateProfileForm(response,initialization = false){
+  updateProfileForm(response, initialization = false) {
     Object.keys(response['data']).map(k => {
       this.profileForm.get(k).setValue(response['data'][k]);
     })
+
     this.profileApiResponse = this.profileForm.value;
-    if(initialization){
-      this.profileForm.get('role').setValue('Employee');
-      return;
-    }
-    if (this.profileForm.get('two_fa_enabled').value == true) {
+
+    if (this.profileForm.get('two_fa_enabled').value == true && !initialization) {
       this.profileService.logout();
     }
   }
