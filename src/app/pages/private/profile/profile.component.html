@@ -18,55 +18,69 @@
     <div class="col-xl-6 col-lg-6 col-md-6 col-sm-10 mb-20">
       <div class="card-box overflow-hidden">
         <div class="profile-setting">
-          <form class="col-md-12 pd-20">
-            <div class="form-group">
-              <label>Full Name</label>
-              <input class="form-control form-control-lg" type="text" value="{{name}}">
-            </div>
-            <div class="form-group">
-              <label>Email Address</label>
-              <input class="form-control form-control-lg" disabled type="email" value="{{email}}">
-            </div>
-            <div class="form-group">
-              <label>Mobile Number</label>
-              <input class="form-control form-control-lg" disabled type="text" value="+91 {{mobile}}">
-            </div>
-            <div class="form-group">
-              <label>Role</label>
-              <ng-select [(ngModel)]="selectedRole" [clearable]="false" [searchable]="false" disabled name="role">
-                <ng-option *ngFor="let role of roles" [value]="role">{{role}}</ng-option>
-              </ng-select>
-            </div>
+          <form (ngSubmit)="updateProfile()" [formGroup]="profileForm" class="col-md-12 pd-20 profile">
+            <div class="form-feedback has-danger padding-bottom-10 text-center"></div>
+
+            <label>Name</label>
+            <form-input inputType="text" name="name" placeholder="Logesh"></form-input>
+
+            <label>Email Address</label>
+            <form-input inputType="email" name="email" placeholder="hello@example.com" readonly="true"></form-input>
+
+            <label>Mobile Number</label>
+            <form-input inputType="text" name="mobile" placeholder="9884098840"></form-input>
+
             <div class="form-group">
               <label>2FA Enabled</label><br>
-              <ui-switch [(ngModel)]="enable" name="tfa_enabled"></ui-switch>
+              <ui-switch (click)="updateTwoFactor()" formControlName="two_fa_enabled"></ui-switch>
             </div>
-            <div class="form-group mb-0">
-              <input class="btn btn-primary" type="submit" value="Update Profile">
-            </div>
+            <input [disabled]="!this.profileForm.valid" class="btn btn-primary" type="submit" value="Update Profile">
           </form>
         </div>
       </div>
+
+      <ng-template #verifyMobileModal let-modal>
+        <form (ngSubmit)="verifyMobile()" [formGroup]="verifyMobileForm" class="verify-mobile p-2">
+          <div class="modal-header">
+            <h4 class="modal-title" id="modal-basic-title">Verify Mobile Number</h4>
+            <button (click)="modal.dismiss()" aria-label="Close" class="close" type="button">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+
+          <div class="modal-body">
+            <label>OTP</label>
+            <form-input inputType="password" name="otp" placeholder="******"></form-input>
+            <div class="pb-3 resend-otp">
+              <div class="float-right"><span (click)="this.sendOtp()">Resend OTP</span></div>
+            </div>
+          </div>
+          <div class="form-feedback has-danger mt-1 mb-1 text-center"></div>
+
+          <div class="modal-footer">
+            <input [disabled]="!this.verifyMobileForm.valid || this.authToken.length == 0" class="btn btn-primary"
+                   type="submit" value="Verify">
+          </div>
+        </form>
+      </ng-template>
     </div>
+
     <div class="col-xl-6 col-lg-6 col-md-6 col-sm-10 mb-20">
       <div class="card-box overflow-hidden">
         <div class="profile-setting">
-          <form class="col-md-12 pd-20">
-            <div class="form-group">
-              <label>Current Password</label>
-              <input class="form-control form-control-lg" type="password">
-            </div>
-            <div class="form-group">
-              <label>New Password</label>
-              <input class="form-control form-control-lg" type="password">
-            </div>
-            <div class="form-group">
-              <label>Confirm Password</label>
-              <input class="form-control form-control-lg" type="password">
-            </div>
-            <div class="form-group mb-0">
-              <input class="btn btn-primary" type="submit" value="Change Password">
-            </div>
+          <form (ngSubmit)="updatePassword()" [formGroup]="resetPwdForm" class="col-md-12 pd-20 reset-password">
+            <div class="form-feedback has-danger padding-bottom-10 text-center"></div>
+
+            <label>Current Password</label>
+            <form-input inputType="password" name="current_password" placeholder="**********"></form-input>
+
+            <label>New Password</label>
+            <form-input inputType="password" name="new_password" placeholder="**********"></form-input>
+
+            <label>Confirm Password</label>
+            <form-input inputType="password" name="confirm_password" placeholder="**********"></form-input>
+
+            <input [disabled]="!this.resetPwdForm.valid" class="btn btn-primary" type="submit" value="Change Password">
           </form>
         </div>
       </div>

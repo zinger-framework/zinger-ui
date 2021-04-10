@@ -12,6 +12,7 @@ import {SidebarComponent} from './sidebar/sidebar.component';
 import {DashboardComponent} from './dashboard/dashboard.component';
 import {HeaderComponent} from './header/header.component';
 import {ProfileComponent} from './profile/profile.component';
+import {ReactiveFormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import {ProfileComponent} from './profile/profile.component';
     SharedModule,
     NgApexchartsModule,
     UiSwitchModule,
-    NgSelectModule
+    NgSelectModule,
+    ReactiveFormsModule
   ]
 })
 export class PrivateModule {
