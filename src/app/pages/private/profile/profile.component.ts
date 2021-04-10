@@ -19,7 +19,7 @@ export class ProfileComponent extends BaseComponent {
   resetPwdForm: FormGroup;
   profileApiResponse: JSON;
   authToken = '';
-  @ViewChild('verifyMobileModal', {read: TemplateRef}) otpModal: TemplateRef<any>;
+  @ViewChild('verifyMobileModal', {read: TemplateRef}) verifyMobileModal: TemplateRef<any>;
 
   constructor(private profileService: ProfileService, private authService: AuthService, private fb: FormBuilder, private modalService: NgbModal) {
     super();
@@ -33,7 +33,7 @@ export class ProfileComponent extends BaseComponent {
 
     this.verifyMobileForm = this.fb.group({
       otp: new ExtendedFormControl('', [Validators.required, Validators.pattern(OTP_REGEX)], 'otp'),
-      className: 'verifyMobileForm'
+      className: 'verify_mobile'
     })
 
     this.resetPwdForm = this.fb.group({
@@ -120,9 +120,10 @@ export class ProfileComponent extends BaseComponent {
   }
 
   showOTPForm() {
-    this.verifyMobileForm.reset({className: 'otp'});
-    this.sendOtp()
-    this.modalService.open(this.otpModal, {centered: true});
+    this.verifyMobileForm.reset({className: 'verify_mobile'});
+    this.authToken = '';
+    this.sendOtp();
+    this.modalService.open(this.verifyMobileModal, {centered: true});
   }
 
   sendOtp() {
