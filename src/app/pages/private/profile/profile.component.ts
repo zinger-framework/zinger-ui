@@ -33,7 +33,7 @@ export class ProfileComponent extends BaseComponent {
 
     this.verifyMobileForm = this.fb.group({
       otp: new ExtendedFormControl('', [Validators.required, Validators.pattern(OTP_REGEX)], 'otp'),
-      className: 'verify_mobile'
+      className: 'verify-mobile'
     })
 
     this.resetPwdForm = this.fb.group({
@@ -120,7 +120,7 @@ export class ProfileComponent extends BaseComponent {
   }
 
   showOTPForm() {
-    this.verifyMobileForm.reset({className: 'verify_mobile'});
+    this.verifyMobileForm.reset({className: 'verify-mobile'});
     this.authToken = '';
     this.sendOtp();
     this.modalService.open(this.verifyMobileModal, {centered: true});

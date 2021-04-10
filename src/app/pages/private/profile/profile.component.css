@@ -1,8 +1,8 @@
-form.otp div.resend-otp span {
+form.verify-mobile div.resend-otp span {
   color: #555;
   cursor: pointer;
 }
 
-form.otp div.resend-otp span:hover {
+form.verify-mobile div.resend-otp span:hover {
   color: #FF4141;
 }

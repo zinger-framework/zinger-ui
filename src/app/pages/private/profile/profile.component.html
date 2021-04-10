@@ -40,7 +40,7 @@
       </div>
 
       <ng-template #verifyMobileModal let-modal>
-        <form (ngSubmit)="verifyMobile()" [formGroup]="verifyMobileForm" class="verify_mobile p-2">
+        <form (ngSubmit)="verifyMobile()" [formGroup]="verifyMobileForm" class="verify-mobile p-2">
           <div class="modal-header">
             <h4 class="modal-title" id="modal-basic-title">Verify Mobile Number</h4>
             <button (click)="modal.dismiss()" aria-label="Close" class="close" type="button">
@@ -58,7 +58,7 @@
           <div class="form-feedback has-danger mt-1 mb-1 text-center"></div>
 
           <div class="modal-footer">
-            <input [disabled]="!this.verifyMobileForm.valid || this.authToken.length==0" class="btn btn-primary"
+            <input [disabled]="!this.verifyMobileForm.valid || this.authToken.length == 0" class="btn btn-primary"
                    type="submit" value="Verify">
           </div>
         </form>
