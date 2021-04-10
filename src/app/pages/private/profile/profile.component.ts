@@ -101,7 +101,7 @@ export class ProfileComponent extends BaseComponent {
       })
       .catch(error => {
         let reason = error['error']['reason']
-        let form = (reason != null && typeof reason == "object" && reason['otp'] != null) ? this.otpForm : this.profileForm;
+        let form = (reason != null && typeof reason == 'object' && reason['otp'] != null) ? this.otpForm : this.profileForm;
         if (form == this.profileForm) this.modalService.dismissAll();
         handleError(error, form);
       });
