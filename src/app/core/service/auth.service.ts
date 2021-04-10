@@ -38,6 +38,13 @@ export class AuthService extends ApiService {
     return this.post(API_ENDPOINTS.AUTH_VERIFY_OTP, requestBody);
   }
 
+  verifyMobile(mobile) {
+    const requestBody = {
+      mobile: mobile
+    }
+    return this.post(API_ENDPOINTS.AUTH_OTP_VERIFY_MOBILE, requestBody);
+  }
+
   resendOtp() {
     return this.post(API_ENDPOINTS.AUTH_OTP_LOGIN)
   }

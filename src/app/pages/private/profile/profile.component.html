@@ -28,17 +28,43 @@
             <form-input inputType="email" name="email" placeholder="hello@example.com" readonly="true"></form-input>
 
             <label>Mobile Number</label>
-            <form-input inputType="text" name="mobile" placeholder="9884098840" readonly="true"></form-input>
+            <form-input inputType="text" name="mobile" placeholder="9884098840"></form-input>
 
             <div class="form-group">
               <label>2FA Enabled</label><br>
               <ui-switch (click)="updateTwoFactor()" formControlName="two_fa_enabled"></ui-switch>
             </div>
-
             <input [disabled]="!this.profileForm.valid" class="btn btn-primary" type="submit" value="Update Profile">
           </form>
         </div>
       </div>
+
+      <ng-template #content let-modal>
+        <form (ngSubmit)="updateMobile()" [formGroup]="otpForm" class="otp p-2">
+
+          <div class="form-feedback has-danger padding-bottom-10 text-center"></div>
+
+          <div class="modal-header">
+            <h4 class="modal-title" id="modal-basic-title">Update Mobile Number</h4>
+            <button (click)="modal.dismiss()" aria-label="Close" class="close" type="button">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+
+          <div class="modal-body">
+            <label>OTP</label>
+            <form-input inputType="text" name="otp" placeholder="123456"></form-input>
+            <div class="pb-3 resend-otp">
+              <div class="float-right"><span (click)="this.sendOtp()">Resend OTP</span></div>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <input [disabled]="!this.otpForm.valid" class="btn btn-primary" type="submit" value="Update">
+          </div>
+        </form>
+      </ng-template>
+
     </div>
     <div class="col-xl-6 col-lg-6 col-md-6 col-sm-10 mb-20">
       <div class="card-box overflow-hidden">
