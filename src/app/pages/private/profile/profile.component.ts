@@ -1,10 +1,12 @@
-import {Component} from '@angular/core';
+import {Component, TemplateRef, ViewChild} from '@angular/core';
 import {BaseComponent} from "../../../base.component";
 import {ProfileService} from "../../../core/service/profile.service"
 import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ExtendedFormControl} from "../../../core/utils/extended-form-control.utils";
-import {EMAIL_REGEX, MOBILE_REGEX, NAME_REGEX, PASSWORD_LENGTH} from "../../../core/utils/constants.utils";
+import {EMAIL_REGEX, MOBILE_REGEX, NAME_REGEX, OTP_REGEX, PASSWORD_LENGTH} from "../../../core/utils/constants.utils";
 import {handleError} from "../../../core/utils/common.utils";
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {AuthService} from "../../../core/service/auth.service";
 
 @Component({
   selector: 'app-profile',
@@ -13,10 +15,13 @@ import {handleError} from "../../../core/utils/common.utils";
 })
 export class ProfileComponent extends BaseComponent {
   profileForm: FormGroup;
+  verifyMobileForm: FormGroup;
   resetPwdForm: FormGroup;
   profileApiResponse: JSON;
+  authToken = '';
+  @ViewChild('verifyMobileModal', {read: TemplateRef}) verifyMobileModal: TemplateRef<any>;
 
-  constructor(private profileService: ProfileService, private fb: FormBuilder) {
+  constructor(private profileService: ProfileService, private authService: AuthService, private fb: FormBuilder, private modalService: NgbModal) {
     super();
     this.profileForm = this.fb.group({
       name: new ExtendedFormControl('', [Validators.required, Validators.pattern(NAME_REGEX)], 'name'),
@@ -24,6 +29,11 @@ export class ProfileComponent extends BaseComponent {
       email: new ExtendedFormControl('', [Validators.required, Validators.pattern(EMAIL_REGEX)], 'email'),
       two_fa_enabled: new ExtendedFormControl('', [Validators.required], 'two_fa'),
       className: 'profile'
+    })
+
+    this.verifyMobileForm = this.fb.group({
+      otp: new ExtendedFormControl('', [Validators.required, Validators.pattern(OTP_REGEX)], 'otp'),
+      className: 'verify-mobile'
     })
 
     this.resetPwdForm = this.fb.group({
@@ -70,21 +80,30 @@ export class ProfileComponent extends BaseComponent {
       })
   }
 
-  updateProfile() {
+  verifyMobile() {
+    this.updateProfile({auth_token: this.authToken, otp: this.verifyMobileForm.get('otp').value})
+  }
+
+  updateProfile(options = {}) {
     let requestObj = {};
-    Object.keys(this.profileForm.value).map(k => {
-      if (this.profileForm.value[k] != this.profileApiResponse[k])
-        requestObj[k] = this.profileForm.get(k).value
-    });
+
+    Object.keys(this.profileForm.value)
+      .filter(k => this.profileForm.value[k] != this.profileApiResponse[k])
+      .map(k => requestObj[k] = this.profileForm.get(k).value)
 
     if (Object.keys(requestObj).length == 0) return;
+    if (requestObj['mobile'] != null && options['otp'] == null) return this.showOTPForm();
 
-    this.profileService.updateProfile(requestObj)
+    this.profileService.updateProfile(Object.assign(requestObj, options))
       .then(response => {
         this.updateProfileForm(response);
+        this.modalService.dismissAll();
       })
       .catch(error => {
-        handleError(error, this.profileForm)
+        let reason = error['error']['reason']
+        let form = (reason != null && typeof reason == 'object' && reason['otp'] != null) ? this.verifyMobileForm : this.profileForm;
+        if (form == this.profileForm) this.modalService.dismissAll();
+        handleError(error, form);
       });
   }
 
@@ -98,5 +117,22 @@ export class ProfileComponent extends BaseComponent {
     if (this.profileForm.get('two_fa_enabled').value == true && !initialization) {
       this.profileService.logout();
     }
+  }
+
+  showOTPForm() {
+    this.verifyMobileForm.reset({className: 'verify-mobile'});
+    this.authToken = '';
+    this.sendOtp();
+    this.modalService.open(this.verifyMobileModal, {centered: true});
+  }
+
+  sendOtp() {
+    this.authService.verifyMobile(this.profileForm.get('mobile').value)
+      .then(response => {
+        this.authToken = response['data']['auth_token'];
+      })
+      .catch(error => {
+        handleError(error, this.verifyMobileForm);
+      })
   }
 }

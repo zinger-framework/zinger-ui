@@ -1,0 +1,8 @@
+form.verify-mobile div.resend-otp span {
+  color: #555;
+  cursor: pointer;
+}
+
+form.verify-mobile div.resend-otp span:hover {
+  color: #FF4141;
+}
