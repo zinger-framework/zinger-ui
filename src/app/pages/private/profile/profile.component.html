@@ -39,13 +39,11 @@
         </div>
       </div>
 
-      <ng-template #content let-modal>
-        <form (ngSubmit)="updateMobile()" [formGroup]="otpForm" class="otp p-2">
-
+      <ng-template #verifyMobileModal let-modal>
+        <form (ngSubmit)="verifyMobile()" [formGroup]="verifyMobileForm" class="otp p-2">
           <div class="form-feedback has-danger padding-bottom-10 text-center"></div>
-
           <div class="modal-header">
-            <h4 class="modal-title" id="modal-basic-title">Update Mobile Number</h4>
+            <h4 class="modal-title" id="modal-basic-title">Verify Mobile Number</h4>
             <button (click)="modal.dismiss()" aria-label="Close" class="close" type="button">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -53,19 +51,19 @@
 
           <div class="modal-body">
             <label>OTP</label>
-            <form-input inputType="text" name="otp" placeholder="123456"></form-input>
+            <form-input inputType="password" name="otp" placeholder="******"></form-input>
             <div class="pb-3 resend-otp">
               <div class="float-right"><span (click)="this.sendOtp()">Resend OTP</span></div>
             </div>
           </div>
 
           <div class="modal-footer">
-            <input [disabled]="!this.otpForm.valid" class="btn btn-primary" type="submit" value="Update">
+            <input [disabled]="!this.verifyMobileForm.valid" class="btn btn-primary" type="submit" value="Verify">
           </div>
         </form>
       </ng-template>
-
     </div>
+
     <div class="col-xl-6 col-lg-6 col-md-6 col-sm-10 mb-20">
       <div class="card-box overflow-hidden">
         <div class="profile-setting">

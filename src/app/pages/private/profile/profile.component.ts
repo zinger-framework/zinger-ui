@@ -15,11 +15,11 @@ import {AuthService} from "../../../core/service/auth.service";
 })
 export class ProfileComponent extends BaseComponent {
   profileForm: FormGroup;
-  otpForm: FormGroup;
+  verifyMobileForm: FormGroup;
   resetPwdForm: FormGroup;
   profileApiResponse: JSON;
   authToken = '';
-  @ViewChild('content', {read: TemplateRef}) otpModal: TemplateRef<any>;
+  @ViewChild('verifyMobileModal', {read: TemplateRef}) otpModal: TemplateRef<any>;
 
   constructor(private profileService: ProfileService, private authService: AuthService, private fb: FormBuilder, private modalService: NgbModal) {
     super();
@@ -31,9 +31,9 @@ export class ProfileComponent extends BaseComponent {
       className: 'profile'
     })
 
-    this.otpForm = this.fb.group({
+    this.verifyMobileForm = this.fb.group({
       otp: new ExtendedFormControl('', [Validators.required, Validators.pattern(OTP_REGEX)], 'otp'),
-      className: 'otp'
+      className: 'verifyMobileForm'
     })
 
     this.resetPwdForm = this.fb.group({
@@ -80,8 +80,8 @@ export class ProfileComponent extends BaseComponent {
       })
   }
 
-  updateMobile() {
-    this.updateProfile({auth_token: this.authToken, otp: this.otpForm.get('otp').value})
+  verifyMobile() {
+    this.updateProfile({auth_token: this.authToken, otp: this.verifyMobileForm.get('otp').value})
   }
 
   updateProfile(options = {}) {
@@ -101,7 +101,7 @@ export class ProfileComponent extends BaseComponent {
       })
       .catch(error => {
         let reason = error['error']['reason']
-        let form = (reason != null && typeof reason == 'object' && reason['otp'] != null) ? this.otpForm : this.profileForm;
+        let form = (reason != null && typeof reason == 'object' && reason['otp'] != null) ? this.verifyMobileForm : this.profileForm;
         if (form == this.profileForm) this.modalService.dismissAll();
         handleError(error, form);
       });
@@ -120,13 +120,9 @@ export class ProfileComponent extends BaseComponent {
   }
 
   showOTPForm() {
-    this.otpForm.reset({className: 'otp'});
+    this.verifyMobileForm.reset({className: 'otp'});
     this.sendOtp()
-    this.modalService.open(this.otpModal, {centered: true}).result
-      .then(result => {
-      }, reason => {
-        this.profileForm.get('mobile').setValue(this.profileApiResponse['mobile'])
-      });
+    this.modalService.open(this.otpModal, {centered: true});
   }
 
   sendOtp() {
@@ -135,7 +131,7 @@ export class ProfileComponent extends BaseComponent {
         this.authToken = response['data']['auth_token'];
       })
       .catch(error => {
-        handleError(error, this.otpForm);
+        handleError(error, this.verifyMobileForm);
       })
   }
 }
