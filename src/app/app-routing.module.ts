@@ -8,6 +8,7 @@ import {ProfileComponent} from './pages/private/profile/profile.component';
 import {DashboardComponent} from './pages/private/dashboard/dashboard.component';
 import {PageNotFoundComponent} from './layouts/page-not-found/page-not-found.component';
 import {AuthGuardService} from "./core/service/auth-guard.service";
+import {SignupComponent} from "./pages/public/auth/signup/signup.component";
 
 const routes: Routes = [
   {path: 'profile', component: ProfileComponent, canActivate: [AuthGuardService]},
@@ -15,7 +16,8 @@ const routes: Routes = [
   {
     path: 'auth', component: AuthComponent, children: [
       {path: 'login', component: LoginComponent, canActivate: [AuthGuardService], data: {page: 'PUBLIC'}},
-      {path: 'forgot_password', component: ForgotPasswordComponent, canActivate: [AuthGuardService], data: {page: 'PUBLIC'}}
+      {path: 'forgot_password', component: ForgotPasswordComponent, canActivate: [AuthGuardService], data: {page: 'PUBLIC'}},
+      {path: 'signup', component: SignupComponent, canActivate: [AuthGuardService], data: {page: 'PUBLIC'}}
     ]
   },
   {path: '**', component: PageNotFoundComponent}

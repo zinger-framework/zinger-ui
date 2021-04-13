@@ -2,11 +2,13 @@ export const API_ENDPOINTS = {
   ADMIN_URL: 'http://admin.zinger.pw/',
   AUTH_RESET_PASSWORD: 'v1/auth/reset_password',
   AUTH_LOGIN: 'v1/auth/login',
+  AUTH_SIGNUP: 'v1/auth/signup',
   AUTH_VERIFY_OTP: 'v1/auth/verify_otp',
   AUTH_LOGOUT: 'v1/auth/logout',
   AUTH_OTP_LOGIN: 'v1/auth/otp/login',
   AUTH_OTP_VERIFY_MOBILE: 'v1/auth/otp/verify_mobile',
   AUTH_OTP_FORGOT_PASSWORD: 'v1/auth/otp/forgot_password',
+  AUTH_OTP_SIGNUP: '/v1/auth/otp/signup',
   USER_PROFILE: 'v1/user_profile',
   USER_PROFILE_RESET_PASSWORD: 'v1/user_profile/reset_password',
   USER_PROFILE_MODIFY: 'v1/user_profile/modify'

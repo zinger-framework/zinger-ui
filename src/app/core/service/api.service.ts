@@ -21,7 +21,7 @@ import {ToastrService} from 'ngx-toastr';
 })
 export class ApiService implements HttpInterceptor {
   private publicAPIs = [API_ENDPOINTS.AUTH_OTP_FORGOT_PASSWORD, API_ENDPOINTS.AUTH_RESET_PASSWORD,
-    API_ENDPOINTS.AUTH_LOGIN];
+    API_ENDPOINTS.AUTH_LOGIN, API_ENDPOINTS.AUTH_OTP_SIGNUP, API_ENDPOINTS.AUTH_SIGNUP];
   private loginOtpAPIs = [API_ENDPOINTS.AUTH_OTP_LOGIN, API_ENDPOINTS.AUTH_VERIFY_OTP, API_ENDPOINTS.AUTH_LOGOUT];
 
   constructor(private http: HttpClient, private router: Router, protected jwtService: JwtService, private toastr: ToastrService) {
