@@ -4556,3 +4556,41 @@ body.IE .login-wrap .container, body.IE .register-page-wrap .container {
     font-size: 16px
   }
 }
+
+.file-input input{
+  border: none
+}
+
+.close-button {
+  cursor: pointer;
+  position: absolute;
+  width: 150px;
+  z-index: 2;
+}
+
+.close-button button{
+  display:block;
+  width:15px;
+  height:15px;
+  border-width:1px;
+  border-style: solid;
+  border-color: black;
+  border-radius:100%;
+  background: -webkit-linear-gradient(-45deg, transparent 0%, transparent 46%, black 46%,  black 56%,transparent 56%, transparent 100%), -webkit-linear-gradient(45deg, transparent 0%, transparent 46%, black 46%,  black 56%,transparent 56%, transparent 100%);
+  box-shadow:0px 0px 5px 2px rgba(0,0,0,0.5);
+  transition: all 0.3s ease;
+}
+
+.img-preview {
+  display: inline-block;
+  position: relative;
+}
+.img-preview i {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+input[type="file"] {
+  display: none;
+}

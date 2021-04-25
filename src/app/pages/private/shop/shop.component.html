@@ -17,7 +17,8 @@
 
 
   <form (ngSubmit)="addShop()" [formGroup]="addShopForm" class="addShopForm">
-    <ngb-accordion activeIds="ngb-panel-0">
+    <div class="form-feedback has-danger padding-bottom-10 text-center"></div>
+    <ngb-accordion activeIds="ngb-panel-0" (panelChange)="beforeChange($event)">
 
       <ngb-panel title="Basic Information">
         <ng-template ngbPanelContent>
@@ -30,7 +31,7 @@
             <div class="col-md-6 col-lg-6">
               <div class="form-group">
                 <label>Category</label>
-                <ng-select formControlName="category" [clearable]="false" [searchable]="false" disabled name="category">
+                <ng-select formControlName="category" [clearable]="false" [searchable]="false" name="category">
                   <ng-option *ngFor="let category of categories" [value]="category">{{category}}</ng-option>
                 </ng-select>
               </div>
@@ -50,14 +51,15 @@
           </div>
 
           <div class="row">
+
             <div class="col-md-6 col-lg-6">
-              <label>Mobile</label>
-              <form-input inputType="text" name="mobile" placeholder="9884098840"></form-input>
+              <label>Shop Description</label>
+              <form-input inputType="text" name="description" placeholder="We serve tasty Biriyani"></form-input>
             </div>
 
             <div class="col-md-6 col-lg-6">
-              <label>Telephone</label>
-              <form-input inputType="text" name="telephone" placeholder="25745743"></form-input>
+              <label>Mobile</label>
+              <form-input inputType="text" name="mobile" placeholder="9884098840"></form-input>
             </div>
           </div>
 
@@ -65,6 +67,11 @@
             <div class="col-md-6 col-lg-6">
               <label>Email</label>
               <form-input inputType="text" name="email" placeholder="john@gmail.com"></form-input>
+            </div>
+
+            <div class="col-md-6 col-lg-6">
+              <label>Telephone</label>
+              <form-input inputType="text" name="telephone" placeholder="25745743"></form-input>
             </div>
           </div>
 
@@ -94,7 +101,7 @@
 
             <div class="form-group col-md-6 col-lg-6">
               <label>State</label>
-              <ng-select formControlName="state" [clearable]="false" [searchable]="false" disabled name="state">
+              <ng-select formControlName="state" [clearable]="false" [searchable]="false" name="state">
                 <ng-option *ngFor="let state of states" [value]="state">{{state}}</ng-option>
               </ng-select>
             </div>
@@ -127,22 +134,85 @@
         </ng-template>
       </ngb-panel>
 
-      <ngb-panel title="Pictures">
+      <ngb-panel title="Pictures" id="photoPanel">
         <ng-template ngbPanelContent>
           <div class="row">
-            <div class="col-md-6 col-lg-6">
-              <label>Icon</label>
-              <form-input inputType="file" name="icon" placeholder="Attach shop icon" class="file-input"></form-input>
-            </div>
+            <div class="col-md-12 col-lg-12">
+              <label>Upload Icon</label>
+              <i class="icon-copy ml-3 fa fa-2x fa-upload" onclick="document.getElementById('icon').click();" aria-hidden="true"></i>
 
-            <div class="col-md-6 col-lg-6">
-              <label>Cover Photos</label>
-              <form-input inputType="file" name="cover_photos" placeholder="Attach shop cover photos" multiple="true" class="file-input"></form-input>
+              <form-input inputType="file" name="icon" placeholder="Attach shop icon" class="file-input" (change)="onFileChange($event,'icon')"></form-input>
+              <div *ngIf="iconSrc">
+                <image-preview [imageSrc]="iconSrc" [imageName]="iconName"
+                               (deleteImageEvent)="previewDeleted($event,'icon')"></image-preview>
+              </div>
             </div>
           </div>
+
+          <br>
+          <div class="row">
+            <div class="col-md-12 col-lg-12">
+              <label>Upload Cover Photos</label>
+              <i class="icon-copy ml-3 fa fa-2x fa-upload" onclick="document.getElementById('cover_photos').click();" aria-hidden="true"></i>
+
+              <form-input inputType="file" name="cover_photos" placeholder="Attach shop cover photos" multiple="true" class="file-input" (change)="onFileChange($event,'cover')"></form-input>
+              <div class="row">
+                <div *ngFor="let imgSrc of coverImgSrcList; let i=index">
+                  <image-preview [imageSrc]="imgSrc" [imageName]="coverImgNameList[i]"
+                                 (deleteImageEvent)="previewDeleted($event,'cover')"></image-preview>
+                </div>
+              </div>
+            </div>
+          </div>
+
         </ng-template>
       </ngb-panel>
 
+      <ngb-panel title="Payment Information">
+        <ng-template ngbPanelContent>
+
+          <div class="row">
+            <div class="col-md-6 col-lg-6">
+              <label>Account Number</label>
+              <form-input inputType="text" name="account_number" placeholder="99889000292"></form-input>
+            </div>
+
+            <div class="col-md-6 col-lg-6">
+              <label>Account Holder Name</label>
+              <form-input inputType="text" name="account_holder_name" placeholder="John Doe"></form-input>
+            </div>
+
+          </div>
+
+          <div class="row">
+            <div class="col-md-6 col-lg-6">
+              <label>IFSC Code</label>
+              <form-input inputType="text" name="ifsc_code" placeholder="SBIN0021745"></form-input>
+            </div>
+
+            <div class="col-md-6 col-lg-6">
+              <label>PAN Number</label>
+              <form-input inputType="text" name="pan_number" placeholder="BYHKL628"></form-input>
+            </div>
+
+          </div>
+
+          <div class="row">
+            <div class="col-md-6 col-lg-6">
+              <label>GST Number</label>
+              <form-input inputType="text" name="gst_number" placeholder="09AAACS4457Q1ZO"></form-input>
+            </div>
+          </div>
+
+        </ng-template>
+      </ngb-panel>
     </ngb-accordion>
+
+    <div class="row">
+      <div class="col-md-6 col-lg-6 ml-1 p-3">
+        <input [disabled]="!this.addShopForm.valid" class="btn btn-primary btn-block" type="submit" value="Submit">
+      </div>
+    </div>
   </form>
+
 </div>

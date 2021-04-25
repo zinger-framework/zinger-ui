@@ -13,6 +13,8 @@ import {DashboardComponent} from './dashboard/dashboard.component';
 import {HeaderComponent} from './header/header.component';
 import {ProfileComponent} from './profile/profile.component';
 import {ReactiveFormsModule} from "@angular/forms";
+import {ShopComponent} from './shop/shop.component';
+import {NgbAccordionModule} from "@ng-bootstrap/ng-bootstrap";
 
 @NgModule({
   declarations: [
@@ -20,7 +22,8 @@ import {ReactiveFormsModule} from "@angular/forms";
     SidebarComponent,
     DashboardComponent,
     HeaderComponent,
-    ProfileComponent
+    ProfileComponent,
+    ShopComponent
   ],
   exports: [
     PrivateComponent
@@ -32,7 +35,8 @@ import {ReactiveFormsModule} from "@angular/forms";
     NgApexchartsModule,
     UiSwitchModule,
     NgSelectModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgbAccordionModule
   ]
 })
 export class PrivateModule {
