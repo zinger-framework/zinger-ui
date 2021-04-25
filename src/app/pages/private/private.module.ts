@@ -13,7 +13,7 @@ import {DashboardComponent} from './dashboard/dashboard.component';
 import {HeaderComponent} from './header/header.component';
 import {ProfileComponent} from './profile/profile.component';
 import {ReactiveFormsModule} from "@angular/forms";
-import {ShopComponent} from './shop/shop.component';
+import {ShopDetailsComponent} from './shop-details/shop-details.component';
 import {NgbAccordionModule} from "@ng-bootstrap/ng-bootstrap";
 
 @NgModule({
@@ -23,7 +23,7 @@ import {NgbAccordionModule} from "@ng-bootstrap/ng-bootstrap";
     DashboardComponent,
     HeaderComponent,
     ProfileComponent,
-    ShopComponent
+    ShopDetailsComponent
   ],
   exports: [
     PrivateComponent

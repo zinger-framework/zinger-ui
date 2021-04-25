@@ -9,12 +9,12 @@ import {DashboardComponent} from './pages/private/dashboard/dashboard.component'
 import {PageNotFoundComponent} from './layouts/page-not-found/page-not-found.component';
 import {AuthGuardService} from "./core/service/auth-guard.service";
 import {SignupComponent} from "./pages/public/auth/signup/signup.component";
-import {ShopComponent} from "./pages/private/shop/shop.component";
+import {ShopDetailsComponent} from "./pages/private/shop-details/shop-details.component";
 
 const routes: Routes = [
   {path: 'profile', component: ProfileComponent, canActivate: [AuthGuardService]},
   {path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuardService]},
-  {path: 'shop', component: ShopComponent, canActivate: [AuthGuardService]},
+  {path: 'shop', component: ShopDetailsComponent, canActivate: [AuthGuardService]},
   {
     path: 'auth', component: AuthComponent, children: [
       {path: 'login', component: LoginComponent, canActivate: [AuthGuardService], data: {page: 'PUBLIC'}},
