@@ -7,6 +7,7 @@ import {ToastrService} from "ngx-toastr";
 import $ from 'jquery';
 import {setErrorMessage} from "../../../core/utils/common.utils";
 import {ShopService} from "../../../core/service/shop.service";
+import {ActivatedRoute, Router} from "@angular/router";
 
 
 @Component({
@@ -15,7 +16,7 @@ import {ShopService} from "../../../core/service/shop.service";
   styleUrls: ['./shop-details.component.css']
 })
 export class ShopDetailsComponent implements OnInit {
-  @Input() formType = 'ADD NEW SHOP'
+  current_route = ''
   shopDetailsForm: FormGroup;
   categories = ['GROCERY', 'CAFE', 'RESTAURANT']
   states = ['Tamil Nadu', 'Kerala', 'Andhra Pradesh', 'Karnataka']
@@ -25,7 +26,10 @@ export class ShopDetailsComponent implements OnInit {
   coverImgNameList = []
   url: any = ''
 
-  constructor(private fb: FormBuilder, private toastr: ToastrService, private shopService: ShopService) {
+  constructor(private fb: FormBuilder, private toastr: ToastrService, private shopService: ShopService,private route:ActivatedRoute, private router:Router) {
+    if(this.current_route=='/updateShop'){
+      console.log("Fetch shop details")
+    }
     this.shopDetailsForm = this.fb.group({
       shop_name: new ExtendedFormControl('', [Validators.required, Validators.pattern(NAME_REGEX)], 'shop_name'),
       category: new ExtendedFormControl('', [Validators.required], 'category'),
@@ -58,10 +62,15 @@ export class ShopDetailsComponent implements OnInit {
   }
 
   submitShopDetails() {
-    if(this.formType=='ADD NEW SHOP')
-      this.shopService.addNewShop()
-    else if(this.formType=='UPDATE SHOP DETAILS')
-      this.shopService.updateShopDetails()
+    let formData = this.shopDetailsForm.value
+    formData['icon'] = this.iconSrc
+    formData['cover_photos'] = this.coverImgSrcList
+    if(this.current_route=='/addShop'){
+      this.shopService.addNewShop(formData)
+    }
+    else if(this.current_route=='/updateShop'){
+      this.shopService.updateShopDetails(formData)
+    }
   }
 
   browseFiles(imgType) {
@@ -128,6 +137,7 @@ export class ShopDetailsComponent implements OnInit {
   }
 
   canSubmitForm() {
-    return this.shopDetailsForm.valid && this.iconSrc.length > 0 && this.coverImgSrcList.length > 0
+    return true
+    // return this.shopDetailsForm.valid && this.iconSrc.length > 0 && this.coverImgSrcList.length > 0
   }
 }

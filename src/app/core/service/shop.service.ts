@@ -6,11 +6,11 @@ import {ApiService} from './api.service';
 })
 export class ShopService extends ApiService {
 
-  addNewShop() {
+  addNewShop(request_body) {
     console.log("Add Shop API will be called")
   }
 
-  updateShopDetails() {
+  updateShopDetails(request_body) {
     console.log("Update Shop will be called")
   }
 }
