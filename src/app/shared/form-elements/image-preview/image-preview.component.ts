@@ -18,7 +18,7 @@ export class ImagePreviewComponent implements OnInit {
   }
 
   deleteImage(){
-    this.toast.show("Image deleted")
+    this.toast.info("Image deleted")
     this.deleteImageEvent.emit(this.imageName)
   }
 

@@ -4581,11 +4581,12 @@ body.IE .login-wrap .container, body.IE .register-page-wrap .container {
   transition: all 0.3s ease;
 }
 
-.img-preview {
+.image-preview {
   display: inline-block;
   position: relative;
+  text-align: center;
 }
-.img-preview i {
+.image-preview i {
   position: absolute;
   top: 0;
   right: 0;
@@ -4593,4 +4594,16 @@ body.IE .login-wrap .container, body.IE .register-page-wrap .container {
 
 input[type="file"] {
   display: none;
+}
+
+.card-header h6{
+  color: #FF4141;
+}
+
+.card-header button{
+  color: #FF4141;
+}
+
+.card-header button:hover{
+  color: #FF4141;
 }

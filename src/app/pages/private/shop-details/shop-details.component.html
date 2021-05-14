@@ -20,7 +20,14 @@
     <div class="form-feedback has-danger padding-bottom-10 text-center"></div>
     <ngb-accordion activeIds="ngb-panel-0" (panelChange)="beforeChange($event)">
 
-      <ngb-panel title="Basic Information">
+      <ngb-panel>
+        <ng-template ngbPanelHeader let-opened="opened" class="panel-header">
+          <div class="d-flex">
+            <button ngbPanelToggle class="btn p-2"><i class="icon-copy fa fa-{{ opened ? 'minus' : 'plus'  }} mb-2" aria-hidden="true"></i></button>
+            <h6 class="mt-2 pt-1">Basic Information</h6>
+          </div>
+        </ng-template>
+
         <ng-template ngbPanelContent>
           <div class="row">
             <div class="col-md-6 col-lg-6">
@@ -29,11 +36,11 @@
             </div>
 
             <div class="col-md-6 col-lg-6">
-              <div class="form-group">
+              <div class="form-group form-group-category">
                 <label>Category</label>
-                <ng-select formControlName="category" [clearable]="false" [searchable]="false" name="category">
-                  <ng-option *ngFor="let category of categories" [value]="category">{{category}}</ng-option>
+                <ng-select formControlName="category" [clearable]="false" [searchable]="false" [items]="categories" placeholder="Select">
                 </ng-select>
+                <div class="form-control-feedback has-danger"></div>
               </div>
             </div>
           </div>
@@ -41,7 +48,7 @@
           <div class="row">
             <div class="col-md-6 col-lg-6">
               <label>Opening Time</label>
-              <form-input inputType="time" name="openingTime" value="9:00 AM"></form-input>
+              <form-input inputType="time" name="openingTime" value="13:10"></form-input>
             </div>
 
             <div class="col-md-6 col-lg-6">
@@ -53,7 +60,7 @@
           <div class="row">
             <div class="col-md-6 col-lg-6">
               <label>Shop Description</label>
-              <form-input inputType="text" name="description" placeholder="We serve tasty Biriyani"></form-input>
+              <form-input inputType="text" name="description" placeholder="Describe your restaurant in less than 150 words"></form-input>
             </div>
 
             <div class="col-md-6 col-lg-6">
@@ -76,53 +83,53 @@
         </ng-template>
       </ngb-panel>
 
-      <ngb-panel title="Contact Information">
+      <ngb-panel>
+        <ng-template ngbPanelHeader let-opened="opened">
+          <div class="d-flex">
+            <button ngbPanelToggle class="btn p-2"><i class="icon-copy fa fa-{{ opened ? 'minus' : 'plus'  }} mb-2" aria-hidden="true"></i></button>
+            <h6 class="mt-2 pt-1">Contact Information</h6>
+          </div>
+        </ng-template>
+
         <ng-template ngbPanelContent>
           <div class="row">
             <div class="col-md-6 col-lg-6">
               <label>Address Line 1</label>
-              <form-input inputType="text" name="address_line_1" placeholder="Address Line 1"></form-input>
+              <form-input inputType="text" name="address_line_1" placeholder="No 226, Eden Gardens"></form-input>
             </div>
 
             <div class="col-md-6 col-lg-6">
               <label>Address Line 2</label>
-              <form-input inputType="text" name="address_line_2" placeholder="Address Line 2"></form-input>
+              <form-input inputType="text" name="address_line_2" placeholder="Nehru Street, Anna Nagar"></form-input>
             </div>
           </div>
 
           <div class="row">
             <div class="col-md-6 col-lg-6">
               <label>City</label>
-              <form-input inputType="text" name="city" placeholder="Enter City"></form-input>
+              <form-input inputType="text" name="city" placeholder="Chennai"></form-input>
             </div>
 
-            <div class="form-group col-md-6 col-lg-6">
+            <div class="form-group form-group-state col-md-6 col-lg-6">
               <label>State</label>
-              <ng-select formControlName="state" [clearable]="false" [searchable]="false" name="state">
+              <ng-select formControlName="state" [clearable]="false" [searchable]="false" placeholder="Select">
                 <ng-option *ngFor="let state of states" [value]="state">{{state}}</ng-option>
               </ng-select>
+              <div class="form-control-feedback has-danger"></div>
             </div>
           </div>
 
           <div class="row">
-            <div class="col-md-6 col-lg-6">
-              <label>Country</label>
-              <form-input inputType="text" name="country" placeholder="India"></form-input>
-            </div>
-
             <div class="col-md-6 col-lg-6">
               <label>Pincode</label>
               <form-input inputType="text" name="pincode" placeholder="600078"></form-input>
             </div>
-          </div>
-
-          <div class="row">
-            <div class="col-md-6 col-lg-6">
+            <div class="col-md-3 col-lg-3">
               <label>Latitude</label>
               <form-input inputType="text" name="latitude" placeholder="99.87"></form-input>
             </div>
 
-            <div class="col-md-6 col-lg-6">
+            <div class="col-md-3 col-lg-3">
               <label>Longitude</label>
               <form-input inputType="text" name="longitude" placeholder="98.57"></form-input>
             </div>
@@ -130,40 +137,61 @@
         </ng-template>
       </ngb-panel>
 
-      <ngb-panel title="Pictures" id="photoPanel">
-        <ng-template ngbPanelContent>
-          <div class="row">
-            <div class="col-md-12 col-lg-12">
-              <label>Upload Icon</label>
-              <i (click)="browseFiles('icon')" aria-hidden="true" class="icon-copy ml-3 fa fa-2x fa-upload"></i>
+      <ngb-panel id="photoPanel">
+        <ng-template ngbPanelHeader let-opened="opened">
+          <div class="d-flex">
+            <button ngbPanelToggle class="btn p-2"><i class="icon-copy fa fa-{{ opened ? 'minus' : 'plus'  }} mb-2" aria-hidden="true"></i></button>
+            <h6 class="mt-2 pt-1">Media Information</h6>
+          </div>
+        </ng-template>
 
-              <form-input inputType="file" name="icon" placeholder="Attach shop icon" class="file-input" (change)="onFileChange($event,'icon')"></form-input>
-              <div *ngIf="iconSrc">
+        <ng-template ngbPanelContent>
+          <div class="row m-1 min-height-200px">
+            <div class="col-md-12 col-lg-12">
+              <label>Icon</label>
+              <br>
+              <div *ngIf="iconSrc; else placeholderimage">
                 <image-preview [imageSrc]="iconSrc" [imageName]="iconName"
                                (deleteImageEvent)="previewDeleted($event,'icon')"></image-preview>
               </div>
+              <ng-template #placeholderimage>
+                <div class="mt-3">
+                  <img (click)="browseFiles('icon')" src="/assets/images/upload-image.png" alt="upload image"/>
+                </div>
+              </ng-template>
+              <form-input inputType="file" name="icon" placeholder="Attach shop icon" class="file-input" (change)="onFileChange($event,'icon')"></form-input>
+              <span class="small">Size of icon must be less than 1 MB. Height and width must be less than 512px</span>
             </div>
           </div>
 
-          <div class="row">
+          <div class="row mt-2 m-1 min-height-200px">
             <div class="col-md-12 col-lg-12">
               <label>Upload Cover Photos</label>
-              <i (click)="browseFiles('cover_photos')" aria-hidden="true" class="icon-copy ml-3 fa fa-2x fa-upload"></i>
-
-              <form-input (change)="onFileChange($event,'cover_photos')" class="file-input" inputType="file" multiple="true"
-                          name="cover_photos" placeholder="Attach shop cover photos"></form-input>
-              <div class="row">
+              <br>
+              <div class="row ml-1">
                 <div *ngFor="let imgSrc of coverImgSrcList; let i=index">
                   <image-preview [imageSrc]="imgSrc" [imageName]="coverImgNameList[i]"
                                  (deleteImageEvent)="previewDeleted($event,'cover_photos')"></image-preview>
                 </div>
+                <div class="mt-3 ml-2" *ngIf="coverImgSrcList.length<5">
+                  <img (click)="browseFiles('cover_photos')" src="/assets/images/upload-image.png" alt="upload image"/>
+                </div>
               </div>
+              <form-input (change)="onFileChange($event,'cover_photos')" class="file-input" inputType="file" multiple="true"
+                          name="cover_photos" placeholder="Attach shop cover photos"></form-input>
+              <span class="small">Size of cover photo than must be less than 1 MB. Maximum of 5 photos can be uploaded. Height and width must be less than 1024px</span>
             </div>
           </div>
         </ng-template>
       </ngb-panel>
 
-      <ngb-panel title="Payment Information">
+      <ngb-panel>
+        <ng-template ngbPanelHeader let-opened="opened">
+          <div class="d-flex">
+            <button ngbPanelToggle class="btn p-2"><i class="icon-copy fa fa-{{ opened ? 'minus' : 'plus'  }} mb-2" aria-hidden="true"></i></button>
+            <h6 class="mt-2 pt-1">Payment Information</h6>
+          </div>
+        </ng-template>
         <ng-template ngbPanelContent>
           <div class="row">
             <div class="col-md-6 col-lg-6">
@@ -185,7 +213,7 @@
 
             <div class="col-md-6 col-lg-6">
               <label>PAN Number</label>
-              <form-input inputType="text" name="pan_number" placeholder="BYHKL628"></form-input>
+              <form-input inputType="text" name="pan_number" placeholder="BYHKL3197Z"></form-input>
             </div>
           </div>
 
@@ -200,9 +228,22 @@
       </ngb-panel>
     </ngb-accordion>
 
-    <div class="row">
-      <div class="col-6 mt-3">
-        <input [disabled]="!canSubmitForm()" class="btn btn-primary btn-block" type="submit" value="Submit">
+    <div class="mt-1" *ngIf="this.current_route==this.ADD_SHOP">
+        <input type="checkbox" value="Accept Terms and Conditions" class="m-1">
+        <label>Accept Terms and Conditions</label>
+    </div>
+
+    <div class="row m-0 p-0">
+      <div class="col-6 mt-3 row">
+      </div>
+      <div class="col-6 mt-3 ml-4 pl-4 mr-0 pr-0 row">
+        <div class="col-4"></div>
+        <div class="col-4">
+          <input class="btn btn-outline-primary btn-block" (click)="saveLater()"  value="Save Later">
+        </div>
+        <div class="col-4 mr-0 pr-0">
+          <input [disabled]="!canSubmitForm()" class="btn btn-primary btn-block" type="submit" value="Submit">
+        </div>
       </div>
     </div>
   </form>

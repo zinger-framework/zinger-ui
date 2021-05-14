@@ -18,7 +18,9 @@ export const APP_ROUTES = {
   DASHBOARD: '/dashboard',
   AUTH_LOGIN: '/auth/login',
   AUTH_FORGOT_PASSWORD: '/auth/forgot_password',
-  AUTH_SIGNUP: '/auth/signup'
+  AUTH_SIGNUP: '/auth/signup',
+  ADD_SHOP: '/addShop',
+  UPDATE_SHOP: '/updateShop'
 };
 
 export const SESSION_KEY = {
