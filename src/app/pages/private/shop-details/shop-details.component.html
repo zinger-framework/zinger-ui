@@ -77,7 +77,7 @@
 
             <div class="col-md-6 col-lg-6">
               <label>Tags</label>
-              <form-input inputType="text" name="tags" placeholder="Please enter tags separated by comma"></form-input>
+              <form-input inputType="text" name="tags" placeholder="Chinese,Tandoori,Biriyani,Dessert"></form-input>
             </div>
           </div>
 
@@ -168,7 +168,7 @@
         <ng-template ngbPanelContent>
           <div class="row m-1 min-height-200px">
             <div class="col-md-12 col-lg-12">
-              <label>Icon</label>
+              <label>Upload Icon</label>
               <br>
               <div *ngIf="iconSrc; else placeholderimage">
                 <image-preview [imageSrc]="iconSrc" [imageName]="iconName"
@@ -176,11 +176,11 @@
               </div>
               <ng-template #placeholderimage>
                 <div class="mt-3">
-                  <img (click)="browseFiles('icon')" src="/assets/images/upload-image.png" alt="upload image"/>
+                  <img class="half-opacity" (click)="browseFiles('icon')" src="/assets/images/upload-image.png" alt="upload image"/>
                 </div>
               </ng-template>
               <form-input inputType="file" name="icon" placeholder="Attach shop icon" class="file-input" (change)="onFileChange($event,'icon')"></form-input>
-              <span class="small text-light-gray">Size of icon must be less than 1 MB. Height and width must be less than 512px</span>
+              <span class="small text-light-gray">Requirements<br>&emsp;Image: < 1 MB <br>&emsp;Dimensions: 512*512 px </span>
             </div>
           </div>
 
@@ -194,12 +194,12 @@
                                  (deleteImageEvent)="previewDeleted($event,'cover_photos')"></image-preview>
                 </div>
                 <div class="mt-3 ml-2" *ngIf="coverImgSrcList.length<5">
-                  <img (click)="browseFiles('cover_photos')" src="/assets/images/upload-image.png" alt="upload image"/>
+                  <img class="half-opacity" (click)="browseFiles('cover_photos')" src="/assets/images/upload-image.png" alt="upload image"/>
                 </div>
               </div>
               <form-input (change)="onFileChange($event,'cover_photos')" class="file-input" inputType="file" multiple="true"
                           name="cover_photos" placeholder="Attach shop cover photos"></form-input>
-              <span class="small text-light-gray">Size of cover photo than must be less than 1 MB. Maximum of 5 photos can be uploaded. Height and width must be less than 1024px</span>
+              <span class="small text-light-gray">Requirements<br>&emsp;Image size: < 1 MB <br>&emsp;Dimensions: 1024*500 px<br>&emsp;Maximum Limit: 5 photos</span>
             </div>
           </div>
         </ng-template>
@@ -248,9 +248,10 @@
     </ngb-accordion>
 
     <div class="m-1" *ngIf="this.current_route==this.ADD_SHOP">
-        <input (click)="acceptTermsAndConditions()"  type="checkbox" value="Accept Terms and Conditions" class="m-1 p-1">
-      <label class="small text-light-gray">Click here to indicate that you have read and agree to the terms presented in the <a href='#'> Terms and Conditions </a> agreement including our Cookie Use</label>
-<!--        <label class="small text-light-gray">By clicking the checkbox, you agree to our Terms and that you have read our <a href='#'>Terms</a> and <a href='#'>Data Use Policy</a>, including our Cookie Use</label>-->
+      <div class="custom-control custom-checkbox mt-4">
+        <input (click)="acceptTermsAndConditions()" type="checkbox" class="custom-control-input" id="customCheck1">
+        <label class="custom-control-label" for="customCheck1">I have read and agreed to the <a href="#">terms and conditions</a> and <a href="#"> privacy policy</a></label>
+      </div>
     </div>
 
     <div class="row m-0 p-0">

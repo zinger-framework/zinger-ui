@@ -4609,11 +4609,11 @@ input[type="file"] {
 }
 
 .card-header i{
-  color: #FF4141;
+  color: grey;
 }
 
 .card-header i:hover{
-  color: #FF4141;
+  color: grey;
 }
 .ng-select .ng-select-container .ng-value-container .ng-placeholder{
   font-size: 16px;
@@ -4629,4 +4629,8 @@ textarea{
 textarea::placeholder {
   padding-top: 10px;
   padding-left: 20px;
+}
+
+.half-opacity{
+  opacity: 0.5;
 }

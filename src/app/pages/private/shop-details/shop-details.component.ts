@@ -28,7 +28,7 @@ export class ShopDetailsComponent implements OnInit {
   current_route = ''
   shopDetailsForm: FormGroup;
   termsAndCondition = false;
-  categories = ['GROCERY', 'CAFE', 'RESTAURANT','OTHERS']
+  categories = ['GROCERY', 'PHARMACY', 'RESTAURANT','OTHERS']
   states = ['Tamil Nadu', 'Kerala', 'Andhra Pradesh', 'Karnataka']
   iconSrc = ''
   iconName = ''
@@ -111,10 +111,10 @@ export class ShopDetailsComponent implements OnInit {
               this.toastr.error('Image size must be less than 1 MB')
               return;
             }
-            if (imgType == 'icon' && img.naturalWidth<=512 && img.naturalHeight<=512) {
+            if (imgType == 'icon' && img.naturalWidth==512 && img.naturalHeight==512) {
               this.iconSrc = base64ImgSrc;
               this.iconName = file[i].name;
-            } else if (imgType == 'cover_photos' && img.naturalWidth>=400 && img.naturalHeight>=150) {
+            } else if (imgType == 'cover_photos' && img.naturalWidth==1024 && img.naturalHeight==500) {
               this.coverImgSrcList.push(base64ImgSrc)
               this.coverImgNameList.push(file[i].name)
             }else{
@@ -136,6 +136,7 @@ export class ShopDetailsComponent implements OnInit {
       this.shopDetailsForm.get(type).setValue('')
       setErrorMessage('Icon cannot be empty', 'shopDetailsForm', 'icon')
     } else if (type == 'cover_photos') {
+      this.shopDetailsForm.get(type).setValue('')
       let index = this.coverImgNameList.findIndex(x => x == previewName)
       if(index>=0){
         this.coverImgNameList = this.coverImgNameList.filter(x => x != previewName)
