@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, Input, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, NgZone, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {ExtendedFormControl} from "../../../core/utils/extended-form-control.utils";
 import {
@@ -36,7 +36,7 @@ export class ShopDetailsComponent implements OnInit {
   url: any = ''
   readonly ADD_SHOP = APP_ROUTES.ADD_SHOP
 
-  constructor(private fb: FormBuilder, private toastr: ToastrService, private shopService: ShopService,private route:ActivatedRoute, private router:Router) {
+  constructor(private fb: FormBuilder, private toastr: ToastrService, private shopService: ShopService,private zone: NgZone, private router:Router) {
     this.current_route = this.router.url;
     this.shopDetailsForm = this.fb.group({
       shop_name: new ExtendedFormControl('', [Validators.required, Validators.pattern(NAME_REGEX)], 'shop_name'),
@@ -45,8 +45,8 @@ export class ShopDetailsComponent implements OnInit {
       mobile: new ExtendedFormControl('', [Validators.required, Validators.pattern(MOBILE_REGEX)], 'mobile'),
       telephone: new ExtendedFormControl('', [], 'telephone'),
       email: new ExtendedFormControl('', [Validators.required, Validators.pattern(EMAIL_REGEX)], 'email'),
-      openingTime: new ExtendedFormControl('', [Validators.required], 'openingTime'),
-      closingTime: new ExtendedFormControl('', [Validators.required], 'closingTime'),
+      openingTime: new ExtendedFormControl('9:30 AM', [Validators.required], 'openingTime'),
+      closingTime: new ExtendedFormControl('9:30 PM', [Validators.required], 'closingTime'),
       address_line_1: new ExtendedFormControl('', [Validators.required], 'address_line_1'),
       address_line_2: new ExtendedFormControl('', [Validators.required], 'address_line_2'),
       city: new ExtendedFormControl('', [Validators.required], 'city'),
@@ -112,7 +112,7 @@ export class ShopDetailsComponent implements OnInit {
             if (imgType == 'icon' && img.naturalWidth<=512 && img.naturalHeight<=512) {
               this.iconSrc = base64ImgSrc;
               this.iconName = file[i].name;
-            } else if (imgType == 'cover_photos') {
+            } else if (imgType == 'cover_photos' && img.naturalWidth>=400 && img.naturalHeight>=150) {
               this.coverImgSrcList.push(base64ImgSrc)
               this.coverImgNameList.push(file[i].name)
             }else{
@@ -145,12 +145,12 @@ export class ShopDetailsComponent implements OnInit {
     }
   }
 
-  beforeChange($event: NgbPanelChangeEvent) {
-    Object.keys(this.shopDetailsForm.controls).forEach(field => {
-      const control = this.shopDetailsForm.get(field);
-      control.updateValueAndValidity();
-      console.log('')
-    });
+  beforeChange($event: NgbPanelChangeEvent, acc) {
+
+    if (!acc.isExpanded($event.panelId)) {
+      console.log("expanded "+$event.panelId)
+    }
+
     if ($event.panelId === 'photoPanel' && $event.nextState === false) {
       this.shopDetailsForm.get('icon').setValue('')
       this.shopDetailsForm.get('cover_photos').setValue('')
@@ -164,6 +164,21 @@ export class ShopDetailsComponent implements OnInit {
   }
 
   saveLater(){
+  }
 
+  expandPanel(acc,panelId){
+    if(acc.isExpanded(panelId)){
+      acc.collapse(panelId)
+    }
+    else{
+      acc.expand(panelId)
+      this.zone.onMicrotaskEmpty.asObservable().pipe()
+        .subscribe(() => {
+          Object.keys(this.shopDetailsForm.controls).forEach(field => {
+            const control = this.shopDetailsForm.get(field);
+            control.updateValueAndValidity();
+          });
+        });
+    }
   }
 }

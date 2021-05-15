@@ -18,12 +18,12 @@
 
   <form (ngSubmit)="submitShopDetails()" [formGroup]="shopDetailsForm" class="shopDetailsForm">
     <div class="form-feedback has-danger padding-bottom-10 text-center"></div>
-    <ngb-accordion activeIds="ngb-panel-0" (panelChange)="beforeChange($event)">
+    <ngb-accordion #acc="ngbAccordion" activeIds="ngb-panel-0" (panelChange)="beforeChange($event, acc)">
 
-      <ngb-panel>
+      <ngb-panel id="basicInfoPanel">
         <ng-template ngbPanelHeader let-opened="opened" class="panel-header">
-          <div class="d-flex">
-            <button ngbPanelToggle class="btn p-2"><i class="icon-copy fa fa-{{ opened ? 'minus' : 'plus'  }} mb-2" aria-hidden="true"></i></button>
+          <div (click)="expandPanel(acc,'basicInfoPanel')" class="d-flex">
+            <div class="btn p-2"><i class="icon-copy fa fa-{{ opened ? 'minus' : 'plus'  }} mb-2" aria-hidden="true"></i></div>
             <h6 class="mt-2 pt-1">Basic Information</h6>
           </div>
         </ng-template>
@@ -47,13 +47,24 @@
 
           <div class="row">
             <div class="col-md-6 col-lg-6">
-              <label>Opening Time</label>
-              <form-input inputType="time" name="openingTime" value="13:10"></form-input>
+              <div class="form-group form-group-openingTime">
+                <label>Opening Time</label>
+                <br>
+                <input formControlName="openingTime" placeholder="09:30 AM" aria-label="12hr format" [ngxTimepicker]="openingTime" class="form-control form-control-lg">
+                <ngx-material-timepicker #openingTime></ngx-material-timepicker>
+                <div class="form-control-feedback has-danger"></div>
+              </div>
             </div>
 
+
             <div class="col-md-6 col-lg-6">
-              <label>Closing Time</label>
-              <form-input inputType="time" name="closingTime" value="9:00 PM"></form-input>
+              <div class="form-group form-group-closingTime">
+                <label>Closing Time</label>
+                <br>
+                <input formControlName="closingTime" placeholder="09:30 PM" aria-label="12hr format" [ngxTimepicker]="closingTime" class="form-control form-control-lg">
+                <ngx-material-timepicker #closingTime></ngx-material-timepicker>
+                <div class="form-control-feedback has-danger"></div>
+              </div>
             </div>
           </div>
 
@@ -83,10 +94,10 @@
         </ng-template>
       </ngb-panel>
 
-      <ngb-panel>
+      <ngb-panel id="contactInfoPanel">
         <ng-template ngbPanelHeader let-opened="opened">
-          <div class="d-flex">
-            <button ngbPanelToggle class="btn p-2"><i class="icon-copy fa fa-{{ opened ? 'minus' : 'plus'  }} mb-2" aria-hidden="true"></i></button>
+          <div (click)="expandPanel(acc,'contactInfoPanel')"  class="d-flex">
+            <div class="btn p-2"><i class="icon-copy fa fa-{{ opened ? 'minus' : 'plus'  }} mb-2" aria-hidden="true"></i></div>
             <h6 class="mt-2 pt-1">Contact Information</h6>
           </div>
         </ng-template>
@@ -137,10 +148,10 @@
         </ng-template>
       </ngb-panel>
 
-      <ngb-panel id="photoPanel">
+      <ngb-panel id="mediaInfoPanel">
         <ng-template ngbPanelHeader let-opened="opened">
-          <div class="d-flex">
-            <button ngbPanelToggle class="btn p-2"><i class="icon-copy fa fa-{{ opened ? 'minus' : 'plus'  }} mb-2" aria-hidden="true"></i></button>
+          <div (click)="expandPanel(acc,'mediaInfoPanel')" class="d-flex">
+            <div class="btn p-2"><i class="icon-copy fa fa-{{ opened ? 'minus' : 'plus'  }} mb-2" aria-hidden="true"></i></div>
             <h6 class="mt-2 pt-1">Media Information</h6>
           </div>
         </ng-template>
@@ -185,10 +196,10 @@
         </ng-template>
       </ngb-panel>
 
-      <ngb-panel>
+      <ngb-panel id="paymentInfoPanel">
         <ng-template ngbPanelHeader let-opened="opened">
-          <div class="d-flex">
-            <button ngbPanelToggle class="btn p-2"><i class="icon-copy fa fa-{{ opened ? 'minus' : 'plus'  }} mb-2" aria-hidden="true"></i></button>
+          <div (click)="expandPanel(acc,'paymentInfoPanel')" class="d-flex">
+            <div class="btn p-2"><i class="icon-copy fa fa-{{ opened ? 'minus' : 'plus'  }} mb-2" aria-hidden="true"></i></div>
             <h6 class="mt-2 pt-1">Payment Information</h6>
           </div>
         </ng-template>
