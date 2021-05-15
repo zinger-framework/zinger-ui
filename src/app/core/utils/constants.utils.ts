@@ -37,3 +37,5 @@ export const BANK_ACCOUNT_NUMBER_REGEX = /^\d{9,18}$/i;
 export const IFSC_REGEX = /^[A-Z]{4}0[A-Z0-9]{6}$/g;
 export const PAN_REGEX = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/g;
 export const GST_REGEX = /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/g;
+export const PINCODE_REGEX = /^[1-9]{1}[0-9]{5}$/g
+export const LATLNG_REGEX = /^[0-9]{1,2}[.][0-9]{1,2}$/i

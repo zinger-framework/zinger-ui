@@ -6,10 +6,10 @@ import {
   BANK_ACCOUNT_NUMBER_REGEX,
   EMAIL_REGEX,
   GST_REGEX,
-  IFSC_REGEX,
+  IFSC_REGEX, LATLNG_REGEX,
   MOBILE_REGEX,
   NAME_REGEX,
-  PAN_REGEX
+  PAN_REGEX, PINCODE_REGEX
 } from "../../../core/utils/constants.utils";
 import {NgbPanelChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 import {ToastrService} from "ngx-toastr";
@@ -27,7 +27,8 @@ import {ActivatedRoute, Router} from "@angular/router";
 export class ShopDetailsComponent implements OnInit {
   current_route = ''
   shopDetailsForm: FormGroup;
-  categories = ['GROCERY', 'CAFE', 'RESTAURANT']
+  termsAndCondition = false;
+  categories = ['GROCERY', 'CAFE', 'RESTAURANT','OTHERS']
   states = ['Tamil Nadu', 'Kerala', 'Andhra Pradesh', 'Karnataka']
   iconSrc = ''
   iconName = ''
@@ -41,7 +42,8 @@ export class ShopDetailsComponent implements OnInit {
     this.shopDetailsForm = this.fb.group({
       shop_name: new ExtendedFormControl('', [Validators.required, Validators.pattern(NAME_REGEX)], 'shop_name'),
       category: new ExtendedFormControl(null, [Validators.required], 'category'),
-      description: new ExtendedFormControl('', [Validators.required,Validators.maxLength(150)], 'description'),
+      description: new ExtendedFormControl('', [Validators.required,Validators.maxLength(250)], 'description'),
+      tags: new ExtendedFormControl('', [Validators.required,Validators.maxLength(100)], 'tags'),
       mobile: new ExtendedFormControl('', [Validators.required, Validators.pattern(MOBILE_REGEX)], 'mobile'),
       telephone: new ExtendedFormControl('', [], 'telephone'),
       email: new ExtendedFormControl('', [Validators.required, Validators.pattern(EMAIL_REGEX)], 'email'),
@@ -52,9 +54,9 @@ export class ShopDetailsComponent implements OnInit {
       city: new ExtendedFormControl('', [Validators.required], 'city'),
       state: new ExtendedFormControl(null, [Validators.required], 'state'),
       country: new ExtendedFormControl('', [Validators.required], 'country'),
-      pincode: new ExtendedFormControl('', [Validators.required], 'pincode'),
-      latitude: new ExtendedFormControl('', [Validators.required], 'latitude'),
-      longitude: new ExtendedFormControl('', [Validators.required], 'longitude'),
+      pincode: new ExtendedFormControl('', [Validators.required,Validators.pattern(PINCODE_REGEX)], 'pincode'),
+      latitude: new ExtendedFormControl('', [Validators.required,Validators.pattern(LATLNG_REGEX)], 'latitude'),
+      longitude: new ExtendedFormControl('', [Validators.required,Validators.pattern(LATLNG_REGEX)], 'longitude'),
       icon: new ExtendedFormControl('', [], 'icon'),
       cover_photos: new ExtendedFormControl('', [], 'cover_photos'),
       account_number: new ExtendedFormControl('', [Validators.required, Validators.pattern(BANK_ACCOUNT_NUMBER_REGEX)], 'account_number'),
@@ -146,11 +148,6 @@ export class ShopDetailsComponent implements OnInit {
   }
 
   beforeChange($event: NgbPanelChangeEvent, acc) {
-
-    if (!acc.isExpanded($event.panelId)) {
-      console.log("expanded "+$event.panelId)
-    }
-
     if ($event.panelId === 'photoPanel' && $event.nextState === false) {
       this.shopDetailsForm.get('icon').setValue('')
       this.shopDetailsForm.get('cover_photos').setValue('')
@@ -159,11 +156,19 @@ export class ShopDetailsComponent implements OnInit {
 
   canSubmitForm() {
     // if addShop check if the terms and condition box is set to true
-    return true
+    if(this.current_route=='/addShop'){
+      return true && this.termsAndCondition
+    }
+    else
+      return true;
     // return this.shopDetailsForm.valid && this.iconSrc.length > 0 && this.coverImgSrcList.length > 0
   }
 
   saveLater(){
+  }
+
+  acceptTermsAndConditions(){
+    this.termsAndCondition = !this.termsAndCondition;
   }
 
   expandPanel(acc,panelId){

@@ -36,8 +36,8 @@
             </div>
 
             <div class="col-md-6 col-lg-6">
+              <label>Category</label>
               <div class="form-group form-group-category">
-                <label>Category</label>
                 <ng-select formControlName="category" [clearable]="false" [searchable]="false" [items]="categories" placeholder="Select">
                 </ng-select>
                 <div class="form-control-feedback has-danger"></div>
@@ -47,9 +47,8 @@
 
           <div class="row">
             <div class="col-md-6 col-lg-6">
+              <label>Opening Time</label>
               <div class="form-group form-group-openingTime">
-                <label>Opening Time</label>
-                <br>
                 <input formControlName="openingTime" placeholder="09:30 AM" aria-label="12hr format" [ngxTimepicker]="openingTime" class="form-control form-control-lg">
                 <ngx-material-timepicker #openingTime></ngx-material-timepicker>
                 <div class="form-control-feedback has-danger"></div>
@@ -58,9 +57,8 @@
 
 
             <div class="col-md-6 col-lg-6">
+              <label>Closing Time</label>
               <div class="form-group form-group-closingTime">
-                <label>Closing Time</label>
-                <br>
                 <input formControlName="closingTime" placeholder="09:30 PM" aria-label="12hr format" [ngxTimepicker]="closingTime" class="form-control form-control-lg">
                 <ngx-material-timepicker #closingTime></ngx-material-timepicker>
                 <div class="form-control-feedback has-danger"></div>
@@ -71,21 +69,31 @@
           <div class="row">
             <div class="col-md-6 col-lg-6">
               <label>Shop Description</label>
-              <form-input inputType="text" name="description" placeholder="Describe your restaurant in less than 150 words"></form-input>
+              <div class="form-group form-group-description">
+                <textarea formControlName="description"  cols="55" rows="2" placeholder="Describe your restaurant in less than 250 words"></textarea>
+                <div class="form-control-feedback has-danger"></div>
+              </div>
             </div>
 
             <div class="col-md-6 col-lg-6">
-              <label>Mobile</label>
-              <form-input inputType="text" name="mobile" placeholder="9884098840"></form-input>
+              <label>Tags</label>
+              <form-input inputType="text" name="tags" placeholder="Please enter tags separated by comma"></form-input>
             </div>
           </div>
 
           <div class="row">
             <div class="col-md-6 col-lg-6">
+              <label>Mobile</label>
+              <form-input inputType="text" name="mobile" placeholder="9884098840"></form-input>
+            </div>
+
+            <div class="col-md-6 col-lg-6">
               <label>Email</label>
               <form-input inputType="text" name="email" placeholder="john@gmail.com"></form-input>
             </div>
+          </div>
 
+          <div class="row">
             <div class="col-md-6 col-lg-6">
               <label>Telephone</label>
               <form-input inputType="text" name="telephone" placeholder="25745743"></form-input>
@@ -121,12 +129,14 @@
               <form-input inputType="text" name="city" placeholder="Chennai"></form-input>
             </div>
 
-            <div class="form-group form-group-state col-md-6 col-lg-6">
+            <div class="col-md-6 col-lg-6">
               <label>State</label>
-              <ng-select formControlName="state" [clearable]="false" [searchable]="false" placeholder="Select">
-                <ng-option *ngFor="let state of states" [value]="state">{{state}}</ng-option>
-              </ng-select>
-              <div class="form-control-feedback has-danger"></div>
+              <div class="form-group form-group-state">
+                <ng-select formControlName="state" [clearable]="false" [searchable]="false" placeholder="Select">
+                  <ng-option *ngFor="let state of states" [value]="state">{{state}}</ng-option>
+                </ng-select>
+                <div class="form-control-feedback has-danger"></div>
+              </div>
             </div>
           </div>
 
@@ -139,7 +149,6 @@
               <label>Latitude</label>
               <form-input inputType="text" name="latitude" placeholder="99.87"></form-input>
             </div>
-
             <div class="col-md-3 col-lg-3">
               <label>Longitude</label>
               <form-input inputType="text" name="longitude" placeholder="98.57"></form-input>
@@ -171,7 +180,7 @@
                 </div>
               </ng-template>
               <form-input inputType="file" name="icon" placeholder="Attach shop icon" class="file-input" (change)="onFileChange($event,'icon')"></form-input>
-              <span class="small">Size of icon must be less than 1 MB. Height and width must be less than 512px</span>
+              <span class="small text-light-gray">Size of icon must be less than 1 MB. Height and width must be less than 512px</span>
             </div>
           </div>
 
@@ -190,7 +199,7 @@
               </div>
               <form-input (change)="onFileChange($event,'cover_photos')" class="file-input" inputType="file" multiple="true"
                           name="cover_photos" placeholder="Attach shop cover photos"></form-input>
-              <span class="small">Size of cover photo than must be less than 1 MB. Maximum of 5 photos can be uploaded. Height and width must be less than 1024px</span>
+              <span class="small text-light-gray">Size of cover photo than must be less than 1 MB. Maximum of 5 photos can be uploaded. Height and width must be less than 1024px</span>
             </div>
           </div>
         </ng-template>
@@ -211,8 +220,8 @@
             </div>
 
             <div class="col-md-6 col-lg-6">
-              <label>Account Holder Name</label>
-              <form-input inputType="text" name="account_holder_name" placeholder="John Doe"></form-input>
+              <label>PAN Number</label>
+              <form-input inputType="text" name="pan_number" placeholder="BYHKL3197Z"></form-input>
             </div>
           </div>
 
@@ -221,17 +230,16 @@
               <label>IFSC Code</label>
               <form-input inputType="text" name="ifsc_code" placeholder="SBIN0021745"></form-input>
             </div>
-
             <div class="col-md-6 col-lg-6">
-              <label>PAN Number</label>
-              <form-input inputType="text" name="pan_number" placeholder="BYHKL3197Z"></form-input>
+              <label>GST Number</label>
+              <form-input inputType="text" name="gst_number" placeholder="09AAACS4457Q1ZO"></form-input>
             </div>
           </div>
 
           <div class="row">
             <div class="col-md-6 col-lg-6">
-              <label>GST Number</label>
-              <form-input inputType="text" name="gst_number" placeholder="09AAACS4457Q1ZO"></form-input>
+              <label>Account Holder Name</label>
+              <form-input inputType="text" name="account_holder_name" placeholder="John Doe"></form-input>
             </div>
           </div>
 
@@ -239,9 +247,10 @@
       </ngb-panel>
     </ngb-accordion>
 
-    <div class="mt-1" *ngIf="this.current_route==this.ADD_SHOP">
-        <input type="checkbox" value="Accept Terms and Conditions" class="m-1">
-        <label>Accept Terms and Conditions</label>
+    <div class="m-1" *ngIf="this.current_route==this.ADD_SHOP">
+        <input (click)="acceptTermsAndConditions()"  type="checkbox" value="Accept Terms and Conditions" class="m-1 p-1">
+      <label class="small text-light-gray">Click here to indicate that you have read and agree to the terms presented in the <a href='#'> Terms and Conditions </a> agreement including our Cookie Use</label>
+<!--        <label class="small text-light-gray">By clicking the checkbox, you agree to our Terms and that you have read our <a href='#'>Terms</a> and <a href='#'>Data Use Policy</a>, including our Cookie Use</label>-->
     </div>
 
     <div class="row m-0 p-0">
