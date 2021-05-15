@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col-md-12 col-sm-12">
         <div class="title">
-          <h4>Add Shop</h4>
+          <h4>Register Shop</h4>
         </div>
         <nav aria-label="breadcrumb" role="navigation">
           <ol class="breadcrumb">
@@ -176,7 +176,7 @@
               </div>
               <ng-template #placeholderimage>
                 <div class="mt-3">
-                  <img class="half-opacity" (click)="browseFiles('icon')" src="/assets/images/upload-image.png" alt="upload image"/>
+                  <img class="opacity-50" (click)="browseFiles('icon')" src="/assets/images/upload-image.png" alt="upload image"/>
                 </div>
               </ng-template>
               <form-input inputType="file" name="icon" placeholder="Attach shop icon" class="file-input" (change)="onFileChange($event,'icon')"></form-input>
@@ -194,7 +194,7 @@
                                  (deleteImageEvent)="previewDeleted($event,'cover_photos')"></image-preview>
                 </div>
                 <div class="mt-3 ml-3" *ngIf="coverImgSrcList.length<5">
-                  <img class="half-opacity" (click)="browseFiles('cover_photos')" src="/assets/images/upload-image.png" alt="upload image"/>
+                  <img class="opacity-50" (click)="browseFiles('cover_photos')" src="/assets/images/upload-image.png" alt="upload image"/>
                 </div>
               </div>
               <form-input (change)="onFileChange($event,'cover_photos')" class="file-input" inputType="file" multiple="true"
@@ -259,7 +259,7 @@
       <div class="col-6 ml-4 pl-4 mr-0 pr-0 row">
         <div class="col-6"></div>
         <div class="col-6 mr-0 pr-0">
-          <input [disabled]="!canSubmitForm()" class="btn btn-primary btn-block" type="submit" value="Submit">
+          <input [disabled]="!canSubmitForm()" class="btn btn-primary btn-block" type="submit" value="Register">
         </div>
       </div>
     </div>
