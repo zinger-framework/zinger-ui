@@ -1,5 +1,5 @@
 <div class="image-preview m-2">
-  <img height=100 width=100 [src]="imageSrc" alt="preview-image" />
+  <img [height]="height" [width]="width" [src]="imageSrc" alt="preview-image" />
   <i class="icon-copy fa fa-close close" aria-hidden="true" (click)="deleteImage()"></i>
   <br>
   <span class="ml-2 small">{{imageName}}</span>

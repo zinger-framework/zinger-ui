@@ -32,7 +32,7 @@
           <div class="row">
             <div class="col-md-6 col-lg-6">
               <label>Shop Name</label>
-              <form-input inputType="text" name="shop_name" placeholder="Shop Name"></form-input>
+              <form-input inputType="text" name="shop_name" placeholder="Domino's Pizza"></form-input>
             </div>
 
             <div class="col-md-6 col-lg-6">
@@ -68,35 +68,35 @@
 
           <div class="row">
             <div class="col-md-6 col-lg-6">
-              <label>Shop Description</label>
-              <div class="form-group form-group-description">
-                <textarea formControlName="description"  cols="55" rows="2" placeholder="Describe your restaurant in less than 250 words"></textarea>
-                <div class="form-control-feedback has-danger"></div>
-              </div>
-            </div>
-
-            <div class="col-md-6 col-lg-6">
-              <label>Tags</label>
-              <form-input inputType="text" name="tags" placeholder="Chinese,Tandoori,Biriyani,Dessert"></form-input>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-md-6 col-lg-6">
               <label>Mobile</label>
               <form-input inputType="text" name="mobile" placeholder="9884098840"></form-input>
             </div>
 
             <div class="col-md-6 col-lg-6">
-              <label>Email</label>
-              <form-input inputType="text" name="email" placeholder="john@gmail.com"></form-input>
+              <label>Telephone</label>
+              <form-input inputType="text" name="telephone" placeholder="25745743"></form-input>
             </div>
           </div>
 
           <div class="row">
             <div class="col-md-6 col-lg-6">
-              <label>Telephone</label>
-              <form-input inputType="text" name="telephone" placeholder="25745743"></form-input>
+              <label>Shop Description</label>
+              <div class="form-group form-group-description">
+                <textarea rows="6" formControlName="description" placeholder="Describe your restaurant in less than 250 words"></textarea>
+                <div class="form-control-feedback has-danger"></div>
+              </div>
+            </div>
+
+            <div class="col-md-6 col-lg-6">
+              <div>
+                <label>Email</label>
+                <form-input inputType="text" name="email" placeholder="john@gmail.com"></form-input>
+              </div>
+
+              <div>
+                <label>Tags</label>
+                <form-input inputType="text" name="tags" placeholder="Chinese, Tandoori, Biriyani, Dessert"></form-input>
+              </div>
             </div>
           </div>
         </ng-template>
@@ -171,7 +171,7 @@
               <label>Upload Icon</label>
               <br>
               <div *ngIf="iconSrc; else placeholderimage">
-                <image-preview [imageSrc]="iconSrc" [imageName]="iconName"
+                <image-preview imageType="icon" [imageSrc]="iconSrc" [imageName]="iconName"
                                (deleteImageEvent)="previewDeleted($event,'icon')"></image-preview>
               </div>
               <ng-template #placeholderimage>
@@ -188,12 +188,12 @@
             <div class="col-md-12 col-lg-12">
               <label>Upload Cover Photos</label>
               <br>
-              <div class="row ml-1">
+              <div class="row">
                 <div *ngFor="let imgSrc of coverImgSrcList; let i=index">
-                  <image-preview [imageSrc]="imgSrc" [imageName]="coverImgNameList[i]"
+                  <image-preview imageType="cover_photos" [imageSrc]="imgSrc" [imageName]="coverImgNameList[i]"
                                  (deleteImageEvent)="previewDeleted($event,'cover_photos')"></image-preview>
                 </div>
-                <div class="mt-3 ml-2" *ngIf="coverImgSrcList.length<5">
+                <div class="mt-3 ml-3" *ngIf="coverImgSrcList.length<5">
                   <img class="half-opacity" (click)="browseFiles('cover_photos')" src="/assets/images/upload-image.png" alt="upload image"/>
                 </div>
               </div>
@@ -255,14 +255,10 @@
     </div>
 
     <div class="row m-0 p-0">
-      <div class="col-6 mt-3 row">
-      </div>
-      <div class="col-6 mt-3 ml-4 pl-4 mr-0 pr-0 row">
-        <div class="col-4"></div>
-        <div class="col-4">
-          <input class="btn btn-outline-primary btn-block" (click)="saveLater()"  value="Save Later">
-        </div>
-        <div class="col-4 mr-0 pr-0">
+      <div class="col-6 row"></div>
+      <div class="col-6 ml-4 pl-4 mr-0 pr-0 row">
+        <div class="col-6"></div>
+        <div class="col-6 mr-0 pr-0">
           <input [disabled]="!canSubmitForm()" class="btn btn-primary btn-block" type="submit" value="Submit">
         </div>
       </div>
