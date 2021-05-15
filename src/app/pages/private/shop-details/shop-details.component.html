@@ -82,7 +82,7 @@
             <div class="col-md-6 col-lg-6">
               <label>Shop Description</label>
               <div class="form-group form-group-description">
-                <textarea rows="6" formControlName="description" placeholder="Describe your restaurant in less than 250 words"></textarea>
+                <textarea rows="6" formControlName="description" placeholder="Describe your restaurant in less than 250 words" class="form-control form-control-lg"></textarea>
                 <div class="form-control-feedback has-danger"></div>
               </div>
             </div>
@@ -180,11 +180,11 @@
                 </div>
               </ng-template>
               <form-input inputType="file" name="icon" placeholder="Attach shop icon" class="file-input" (change)="onFileChange($event,'icon')"></form-input>
-              <span class="small text-light-gray">Requirements<br>&emsp;Image: < 1 MB <br>&emsp;Dimensions: 512*512 px </span>
+              <span class="small text-light-gray">• Image size: < 1 MB <br>• Image type: JPG, PNG<br>• Dimensions: 512x512 px</span>
             </div>
           </div>
 
-          <div class="row mt-2 m-1 min-height-200px">
+          <div class="row mt-4 m-1 min-height-200px">
             <div class="col-md-12 col-lg-12">
               <label>Upload Cover Photos</label>
               <br>
@@ -199,7 +199,7 @@
               </div>
               <form-input (change)="onFileChange($event,'cover_photos')" class="file-input" inputType="file" multiple="true"
                           name="cover_photos" placeholder="Attach shop cover photos"></form-input>
-              <span class="small text-light-gray">Requirements<br>&emsp;Image size: < 1 MB <br>&emsp;Dimensions: 1024*500 px<br>&emsp;Maximum Limit: 5 photos</span>
+              <span class="small text-light-gray">• Image size: < 1 MB <br>• Image type: JPG, PNG<br>• Dimensions: 1024x500 px<br>• Maximum limit: 5 images</span>
             </div>
           </div>
         </ng-template>
