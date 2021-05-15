@@ -4600,10 +4600,14 @@ input[type="file"] {
   color: #FF4141;
 }
 
-.card-header button{
+.card-header div:hover{
+  cursor: pointer;
+}
+
+.card-header i{
   color: #FF4141;
 }
 
-.card-header button:hover{
+.card-header i:hover{
   color: #FF4141;
 }
