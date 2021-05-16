@@ -40,7 +40,10 @@ export function setErrorMessage(message: string, className: string, fieldKey = '
     else
       $(`form.${className} div.form-group-${fieldKey} textarea`)[0].classList.add('form-control-danger');
   } else {
-    $(`form.${className} div.form-feedback`)[0].innerHTML = message;
+    if($(`form.${className} div.form-feedback`)[0]!=null)
+      $(`form.${className} div.form-feedback`)[0].innerHTML = message;
+    else
+      console.log("form-feedback not found in "+className+" "+fieldKey+" "+message)
   }
 }
 
@@ -52,7 +55,10 @@ export function clearErrorMessage(className: string, fieldKey = '') {
     else
       $(`form.${className} div.form-group-${fieldKey} textarea`)[0].classList.remove('form-control-danger');
   }
-  $(`form.${className} div.form-feedback`)[0].innerHTML = '';
+  if($(`form.${className} div.form-feedback`)[0]!=null)
+    $(`form.${className} div.form-feedback`)[0].innerHTML = '';
+  else
+    console.log("form-feedback not found in "+className+" "+fieldKey)
 }
 
 export function buildMessage(error: ValidationErrors, label: string): string {

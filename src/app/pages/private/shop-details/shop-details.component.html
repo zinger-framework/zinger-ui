@@ -32,7 +32,7 @@
           <div class="row">
             <div class="col-md-6 col-lg-6">
               <label>Shop Name</label>
-              <form-input inputType="text" name="shop_name" placeholder="Domino's Pizza"></form-input>
+              <form-input inputType="text" name="name" placeholder="Domino's Pizza"></form-input>
             </div>
 
             <div class="col-md-6 col-lg-6">
@@ -48,8 +48,8 @@
           <div class="row">
             <div class="col-md-6 col-lg-6">
               <label>Opening Time</label>
-              <div class="form-group form-group-openingTime">
-                <input formControlName="openingTime" placeholder="09:30 AM" aria-label="12hr format" [ngxTimepicker]="openingTime" class="form-control form-control-lg">
+              <div class="form-group form-group-opening_time">
+                <input formControlName="opening_time" placeholder="09:30 AM" aria-label="12hr format" [format]="24" [ngxTimepicker]="openingTime" class="form-control form-control-lg">
                 <ngx-material-timepicker #openingTime></ngx-material-timepicker>
                 <div class="form-control-feedback has-danger"></div>
               </div>
@@ -58,8 +58,8 @@
 
             <div class="col-md-6 col-lg-6">
               <label>Closing Time</label>
-              <div class="form-group form-group-closingTime">
-                <input formControlName="closingTime" placeholder="09:30 PM" aria-label="12hr format" [ngxTimepicker]="closingTime" class="form-control form-control-lg">
+              <div class="form-group form-group-closing_time">
+                <input formControlName="closing_time" placeholder="09:30 PM" [format]="24" aria-label="12hr format" [ngxTimepicker]="closingTime" class="form-control form-control-lg">
                 <ngx-material-timepicker #closingTime></ngx-material-timepicker>
                 <div class="form-control-feedback has-danger"></div>
               </div>
@@ -221,25 +221,25 @@
 
             <div class="col-md-6 col-lg-6">
               <label>PAN Number</label>
-              <form-input inputType="text" name="pan_number" placeholder="BYHKL3197Z"></form-input>
+              <form-input inputType="text" name="pan" placeholder="BYHKL3197Z"></form-input>
             </div>
           </div>
 
           <div class="row">
             <div class="col-md-6 col-lg-6">
               <label>IFSC Code</label>
-              <form-input inputType="text" name="ifsc_code" placeholder="SBIN0021745"></form-input>
+              <form-input inputType="text" name="account_ifsc" placeholder="SBIN0021745"></form-input>
             </div>
             <div class="col-md-6 col-lg-6">
               <label>GST Number</label>
-              <form-input inputType="text" name="gst_number" placeholder="09AAACS4457Q1ZO"></form-input>
+              <form-input inputType="text" name="gst" placeholder="09AAACS4457Q1ZO"></form-input>
             </div>
           </div>
 
           <div class="row">
             <div class="col-md-6 col-lg-6">
               <label>Account Holder Name</label>
-              <form-input inputType="text" name="account_holder_name" placeholder="John Doe"></form-input>
+              <form-input inputType="text" name="account_holder" placeholder="John Doe"></form-input>
             </div>
           </div>
 

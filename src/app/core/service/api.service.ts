@@ -94,11 +94,23 @@ export class ApiService implements HttpInterceptor {
     ).toPromise();
   }
 
-  delete(path) {
-    return this.http.delete(
-      `${API_ENDPOINTS.ADMIN_URL}${path}`,
-      {headers: this.setHeaders(path)}
+  sendFormData(path: string, body: Object){
+    return this.http.post(
+      `${API_ENDPOINTS.ADMIN_URL}${path}`, body,
+      {headers: this.setHeaders(path,null)}
     ).toPromise();
+  }
+
+  delete(path,body: Object = {}) {
+    // return this.http.delete(
+    //   `${API_ENDPOINTS.ADMIN_URL}${path}`,
+    //   {headers: this.setHeaders(path)}
+    // ).toPromise();
+
+    return this.http.request('DELETE', `${API_ENDPOINTS.ADMIN_URL}${path}`, {
+      headers: this.setHeaders(path),
+      body: body
+    }).toPromise();
   }
 
   logout() {
@@ -107,10 +119,11 @@ export class ApiService implements HttpInterceptor {
   }
 
   private setHeaders(path: string,contentType = 'application/json'): HttpHeaders {
-    const headersConfig = {
-      'Content-Type': contentType,
-      'Accept': 'application/json'
-    };
+    const headersConfig = {}
+    if(contentType!=null)
+      headersConfig['Content-Type'] = contentType
+    headersConfig['Accept']  = 'application/json'
+
 
     let setAuthToken;
     if (this.loginOtpAPIs.includes(path)) {

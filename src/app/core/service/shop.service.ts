@@ -20,6 +20,21 @@ export class ShopService extends ApiService {
   }
 
   uploadIcon(shopId,requestBody){
-    return this.post(API_ENDPOINTS.SHOP+'/'+shopId+'/icon',requestBody,'multipart/form-data')
+    return this.sendFormData(API_ENDPOINTS.SHOP+'/'+shopId+'/icon',requestBody)
+  }
+
+  uploadCover(shopId,requestBody){
+    return this.sendFormData(API_ENDPOINTS.SHOP+'/'+shopId+'/cover_photo',requestBody)
+  }
+
+  deleteIcon(shopId){
+    return this.delete(API_ENDPOINTS.SHOP+'/'+shopId+'/icon')
+  }
+
+  deleteCover(shopId,imageIndex){
+    let requestBody = {
+      index: imageIndex
+    }
+    return this.delete(API_ENDPOINTS.SHOP+'/'+shopId+'/cover_photo',requestBody)
   }
 }
