@@ -1,16 +1,25 @@
 import {Injectable} from '@angular/core';
 import {ApiService} from './api.service';
+import {API_ENDPOINTS} from "../utils/constants.utils";
 
 @Injectable({
   providedIn: 'root'
 })
 export class ShopService extends ApiService {
 
-  addNewShop(request_body) {
-    console.log("Add Shop API will be called")
+  addNewShop() {
+    return this.get(API_ENDPOINTS.SHOP_NEW);
   }
 
-  updateShopDetails(request_body) {
-    console.log("Update Shop will be called")
+  getShopDetails(shopId){
+    return this.get(API_ENDPOINTS.SHOP+'/'+shopId);
+  }
+
+  updateShopDetails(shopId,requestBody) {
+    return this.post(API_ENDPOINTS.SHOP+'/'+shopId, requestBody);
+  }
+
+  uploadIcon(shopId,requestBody){
+    return this.post(API_ENDPOINTS.SHOP+'/'+shopId+'/icon',requestBody,'multipart/form-data')
   }
 }

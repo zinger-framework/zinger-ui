@@ -86,11 +86,11 @@ export class ApiService implements HttpInterceptor {
     ).toPromise();
   }
 
-  post(path: string, body: Object = {}) {
+  post(path: string, body: Object, contentType = 'application/json') {
     return this.http.post(
       `${API_ENDPOINTS.ADMIN_URL}${path}`,
       JSON.stringify(body),
-      {headers: this.setHeaders(path)}
+      {headers: this.setHeaders(path,contentType)}
     ).toPromise();
   }
 
@@ -106,9 +106,9 @@ export class ApiService implements HttpInterceptor {
     this.router.navigate([APP_ROUTES.AUTH_LOGIN]);
   }
 
-  private setHeaders(path: string): HttpHeaders {
+  private setHeaders(path: string,contentType = 'application/json'): HttpHeaders {
     const headersConfig = {
-      'Content-Type': 'application/json',
+      'Content-Type': contentType,
       'Accept': 'application/json'
     };
 

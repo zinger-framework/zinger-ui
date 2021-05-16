@@ -14,7 +14,7 @@ import {ShopDetailsComponent} from "./pages/private/shop-details/shop-details.co
 const routes: Routes = [
   {path: 'profile', component: ProfileComponent, canActivate: [AuthGuardService]},
   {path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuardService]},
-  {path: 'addShop', component: ShopDetailsComponent, canActivate: [AuthGuardService]},
+  {path: 'shop/:id', component: ShopDetailsComponent, canActivate: [AuthGuardService]},
   {path: 'updateShop', component: ShopDetailsComponent, canActivate: [AuthGuardService]},
   {
     path: 'auth', component: AuthComponent, children: [

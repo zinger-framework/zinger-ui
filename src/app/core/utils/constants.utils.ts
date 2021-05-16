@@ -11,7 +11,9 @@ export const API_ENDPOINTS = {
   AUTH_OTP_SIGNUP: '/v1/auth/otp/signup',
   USER_PROFILE: 'v1/user_profile',
   USER_PROFILE_RESET_PASSWORD: 'v1/user_profile/reset_password',
-  USER_PROFILE_MODIFY: 'v1/user_profile/modify'
+  USER_PROFILE_MODIFY: 'v1/user_profile/modify',
+  SHOP_NEW: 'v1/shop/new',
+  SHOP: 'v1/shop',
 };
 
 export const APP_ROUTES = {
@@ -19,8 +21,7 @@ export const APP_ROUTES = {
   AUTH_LOGIN: '/auth/login',
   AUTH_FORGOT_PASSWORD: '/auth/forgot_password',
   AUTH_SIGNUP: '/auth/signup',
-  ADD_SHOP: '/addShop',
-  UPDATE_SHOP: '/updateShop'
+  SHOP: '/shop'
 };
 
 export const SESSION_KEY = {

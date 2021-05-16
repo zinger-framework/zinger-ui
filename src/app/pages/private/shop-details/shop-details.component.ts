@@ -25,7 +25,7 @@ import {ActivatedRoute, Router} from "@angular/router";
   styleUrls: ['./shop-details.component.css']
 })
 export class ShopDetailsComponent implements OnInit {
-  current_route = ''
+  form_type = ''
   shopDetailsForm: FormGroup;
   termsAndCondition = false;
   categories = ['GROCERY', 'PHARMACY', 'RESTAURANT','OTHERS']
@@ -35,10 +35,23 @@ export class ShopDetailsComponent implements OnInit {
   coverImgSrcList = []
   coverImgNameList = []
   url: any = ''
-  readonly ADD_SHOP = APP_ROUTES.ADD_SHOP
+  shopId: number;
 
-  constructor(private fb: FormBuilder, private toastr: ToastrService, private shopService: ShopService,private zone: NgZone, private router:Router) {
-    this.current_route = this.router.url;
+  constructor(private fb: FormBuilder, private toastr: ToastrService, private shopService: ShopService,private zone: NgZone,private route: ActivatedRoute, private router:Router) {
+    this.route.params.subscribe(params => this.shopId = params['id']);
+    if(history.state['shop']!=null){
+      this.form_type = 'NEW_SHOP'
+      this.initializeForm(history.state['shop'])
+    }else{
+      this.form_type = 'UPDATE_SHOP'
+      this.shopService.getShopDetails(this.shopId)
+        .then(response => this.initializeForm(response['data']))
+        .catch(error => {
+          this.toastr.error(error['error']['message']);
+          this.router.navigate([APP_ROUTES.DASHBOARD])
+        })
+    }
+
     this.shopDetailsForm = this.fb.group({
       shop_name: new ExtendedFormControl('', [Validators.required, Validators.pattern(NAME_REGEX)], 'shop_name'),
       category: new ExtendedFormControl(null, [Validators.required], 'category'),
@@ -71,16 +84,15 @@ export class ShopDetailsComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  initializeForm(shopData){
+    console.log("Got Shop data")
+    console.log(shopData)
+  }
+
   submitShopDetails() {
     let formData = this.shopDetailsForm.value
     formData['icon'] = this.iconSrc
     formData['cover_photos'] = this.coverImgSrcList
-    if(this.current_route=='/addShop'){
-      this.shopService.addNewShop(formData)
-    }
-    else if(this.current_route=='/updateShop'){
-      this.shopService.updateShopDetails(formData)
-    }
   }
 
   browseFiles(imgType) {
@@ -98,6 +110,17 @@ export class ShopDetailsComponent implements OnInit {
         } else if (imgType == 'cover_photos' && this.coverImgSrcList.length >= 5) {
           this.toastr.error('Maximum of 5 cover photos can be uploaded')
         }
+
+        let formData = new FormData();
+        formData.append("icon_file",file[i]);
+        formData.append("icon_file2",'test');
+        this.shopService.uploadIcon(this.shopId,formData)
+          .then(response => {
+            console.log(response)
+          })
+          .then(error => {
+            console.log(error)
+          })
 
         const reader = new FileReader();
         reader.readAsDataURL(file[i]);
@@ -157,7 +180,7 @@ export class ShopDetailsComponent implements OnInit {
 
   canSubmitForm() {
     // if addShop check if the terms and condition box is set to true
-    if(this.current_route=='/addShop'){
+    if(this.form_type=='NEW_SHOP'){
       return true && this.termsAndCondition
     }
     else
