@@ -28,6 +28,7 @@ export class ShopDetailsComponent implements OnInit {
   form_type = ''
   form_status = ''
   shopDetailsForm: FormGroup;
+  shopDetailsInitialValue = {}
   termsAndCondition = false;
   categories = ['GROCERY', 'PHARMACY', 'RESTAURANT','OTHERS']
   states = ['Tamil Nadu', 'Kerala', 'Andhra Pradesh', 'Karnataka']
@@ -54,7 +55,6 @@ export class ShopDetailsComponent implements OnInit {
       address_line_2: new ExtendedFormControl('', [Validators.required], 'address_line_2'),
       city: new ExtendedFormControl('', [Validators.required], 'city'),
       state: new ExtendedFormControl(null, [Validators.required], 'state'),
-      country: new ExtendedFormControl('', [Validators.required], 'country'),
       pincode: new ExtendedFormControl('', [Validators.required,Validators.pattern(PINCODE_REGEX)], 'pincode'),
       latitude: new ExtendedFormControl('', [Validators.required,Validators.pattern(LATLNG_REGEX)], 'latitude'),
       longitude: new ExtendedFormControl('', [Validators.required,Validators.pattern(LATLNG_REGEX)], 'longitude'),
@@ -132,7 +132,7 @@ export class ShopDetailsComponent implements OnInit {
         console.log("Null data: "+field+" "+shopData[field])
       }
     });
-
+    this.shopDetailsInitialValue = this.shopDetailsForm.value
   }
 
   submitShopDetails() {
@@ -142,11 +142,50 @@ export class ShopDetailsComponent implements OnInit {
     console.log(this.shopDetailsForm.value)
     console.log("Submitted")
 
+    let  requestBody = {}
     if(this.form_type=='NEW_SHOP'){
-
+      Object.keys(this.shopDetailsForm.value).forEach(key => {
+        if(key =='latitude'){
+          requestBody['lat']  = this.shopDetailsForm.value[key]
+        }else if(key =='longitude'){
+          requestBody['lng']  = this.shopDetailsForm.value[key]
+        }else if(key=='address_line_1'){
+          requestBody['street']  = this.shopDetailsForm.value[key]
+        }else if(key=='address_line_2'){
+          requestBody['area']  = this.shopDetailsForm.value[key]
+        }else if(key=='tags'){
+          requestBody['tags']  = this.shopDetailsForm.value[key].split(',')
+        } else if(key=='cover_photos' || key=='icon'){
+          console.log('continue')
+        } else{
+          requestBody[key] = this.shopDetailsForm.value[key]
+        }
+      })
+      console.log(requestBody)
     }else if(this.form_type=='UPDATE_SHOP'){
-
+      Object.keys(this.shopDetailsForm.value).forEach(key => {
+        if(this.shopDetailsInitialValue[key]!=this.shopDetailsForm.value[key]){
+          if(key =='latitude'){
+            requestBody['lat']  = this.shopDetailsForm.value[key]
+          }else if(key =='longitude'){
+            requestBody['lng']  = this.shopDetailsForm.value[key]
+          }else if(key=='address_line_1'){
+            requestBody['street']  = this.shopDetailsForm.value[key]
+          }else if(key=='address_line_2'){
+            requestBody['area']  = this.shopDetailsForm.value[key]
+          }else if(key=='tags'){
+            requestBody['tags']  = this.shopDetailsForm.value[key].split(',')
+          } else if(key=='cover_photos' || key=='icon'){
+            console.log('continue')
+          } else{
+            requestBody[key] = this.shopDetailsForm.value[key]
+          }
+        }
+      })
     }
+    this.shopService.updateShopDetails(this.shopId,requestBody)
+      .then(response => console.log(response))
+      .catch(error => console.log(error));
   }
 
   browseFiles(imgType) {
@@ -210,9 +249,6 @@ export class ShopDetailsComponent implements OnInit {
     }
   }
 
-  uploadPhotos(){
-  }
-
   previewDeleted(previewName,type){
     if (type == 'icon') {
       this.shopService.deleteIcon(this.shopId)
@@ -250,13 +286,11 @@ export class ShopDetailsComponent implements OnInit {
 
   canSubmitForm() {
     if(this.form_type=='NEW_SHOP'){
-      return this.termsAndCondition && this.shopDetailsForm.valid && this.iconSrc.length > 0 && this.coverImgSrcList.length > 0
+      return true;
+      // return this.termsAndCondition && this.shopDetailsForm.valid && this.iconSrc.length > 0 && this.coverImgSrcList.length > 0
     }
     else
       return true;
-  }
-
-  saveLater(){
   }
 
   acceptTermsAndConditions(){

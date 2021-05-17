@@ -16,7 +16,7 @@ export class ShopService extends ApiService {
   }
 
   updateShopDetails(shopId,requestBody) {
-    return this.post(API_ENDPOINTS.SHOP+'/'+shopId, requestBody);
+    return this.put(API_ENDPOINTS.SHOP+'/'+shopId, requestBody);
   }
 
   uploadIcon(shopId,requestBody){
