@@ -29,12 +29,12 @@
         <ng-template ngbPanelContent>
           <div class="row">
             <div class="col-md-6 col-lg-6">
-              <label>Shop Name</label>
+              <label class="required">Shop Name</label>
               <form-input inputType="text" name="name" placeholder="Domino's Pizza"></form-input>
             </div>
 
             <div class="col-md-6 col-lg-6">
-              <label>Category</label>
+              <label class="required">Category</label>
               <div class="form-group form-group-category">
                 <ng-select formControlName="category" [clearable]="false" [searchable]="false" [items]="categories" placeholder="Select">
                 </ng-select>
@@ -45,7 +45,7 @@
 
           <div class="row">
             <div class="col-md-6 col-lg-6">
-              <label>Opening Time</label>
+              <label class="required">Opening Time</label>
               <div class="form-group form-group-opening_time">
                 <input formControlName="opening_time" placeholder="09:30 AM" aria-label="12hr format" [format]="24" [ngxTimepicker]="openingTime" class="form-control form-control-lg">
                 <ngx-material-timepicker #openingTime></ngx-material-timepicker>
@@ -55,7 +55,7 @@
 
 
             <div class="col-md-6 col-lg-6">
-              <label>Closing Time</label>
+              <label class="required">Closing Time</label>
               <div class="form-group form-group-closing_time">
                 <input formControlName="closing_time" placeholder="09:30 PM" [format]="24" aria-label="12hr format" [ngxTimepicker]="closingTime" class="form-control form-control-lg">
                 <ngx-material-timepicker #closingTime></ngx-material-timepicker>
@@ -66,7 +66,7 @@
 
           <div class="row">
             <div class="col-md-6 col-lg-6">
-              <label>Mobile</label>
+              <label class="required">Mobile</label>
               <form-input inputType="text" name="mobile" placeholder="9884098840"></form-input>
             </div>
 
@@ -78,7 +78,7 @@
 
           <div class="row">
             <div class="col-md-6 col-lg-6">
-              <label>Shop Description</label>
+              <label class="required">Shop Description</label>
               <div class="form-group form-group-description">
                 <textarea rows="6" formControlName="description" placeholder="Describe your restaurant in less than 250 words" class="form-control form-control-lg"></textarea>
                 <div class="form-control-feedback has-danger"></div>
@@ -87,12 +87,12 @@
 
             <div class="col-md-6 col-lg-6">
               <div>
-                <label>Email</label>
+                <label class="required">Email</label>
                 <form-input inputType="text" name="email" placeholder="john@gmail.com"></form-input>
               </div>
 
               <div>
-                <label>Tags</label>
+                <label class="required">Tags</label>
                 <form-input inputType="text" name="tags" placeholder="Chinese, Tandoori, Biriyani, Dessert"></form-input>
               </div>
             </div>
@@ -109,24 +109,24 @@
         <ng-template ngbPanelContent>
           <div class="row">
             <div class="col-md-6 col-lg-6">
-              <label>Address Line 1</label>
+              <label class="required">Address Line 1</label>
               <form-input inputType="text" name="address_line_1" placeholder="No 226, Eden Gardens"></form-input>
             </div>
 
             <div class="col-md-6 col-lg-6">
-              <label>Address Line 2</label>
+              <label class="required">Address Line 2</label>
               <form-input inputType="text" name="address_line_2" placeholder="Nehru Street, Anna Nagar"></form-input>
             </div>
           </div>
 
           <div class="row">
             <div class="col-md-6 col-lg-6">
-              <label>City</label>
+              <label class="required">City</label>
               <form-input inputType="text" name="city" placeholder="Chennai"></form-input>
             </div>
 
             <div class="col-md-6 col-lg-6">
-              <label>State</label>
+              <label class="required">State</label>
               <div class="form-group form-group-state">
                 <ng-select formControlName="state" [clearable]="false" [searchable]="false" placeholder="Select">
                   <ng-option *ngFor="let state of states" [value]="state">{{state}}</ng-option>
@@ -138,15 +138,15 @@
 
           <div class="row">
             <div class="col-md-6 col-lg-6">
-              <label>Pincode</label>
+              <label class="required">Pincode</label>
               <form-input inputType="text" name="pincode" placeholder="600078"></form-input>
             </div>
             <div class="col-md-3 col-lg-3">
-              <label>Latitude</label>
+              <label class="required">Latitude</label>
               <form-input inputType="text" name="latitude" placeholder="99.87"></form-input>
             </div>
             <div class="col-md-3 col-lg-3">
-              <label>Longitude</label>
+              <label class="required">Longitude</label>
               <form-input inputType="text" name="longitude" placeholder="98.57"></form-input>
             </div>
           </div>
@@ -162,7 +162,7 @@
         <ng-template ngbPanelContent>
           <div class="row m-1 min-height-200px">
             <div class="col-md-12 col-lg-12">
-              <label>Upload Icon</label>
+              <label class="required">Upload Icon</label>
               <br>
               <div *ngIf="iconSrc; else placeholderimage">
                 <image-preview imageType="icon" [imageSrc]="iconSrc" [imageName]="iconName"
@@ -181,7 +181,7 @@
 
           <div class="row mt-4 m-1 min-height-200px">
             <div class="col-md-12 col-lg-12">
-              <label>Upload Cover Photos</label>
+              <label class="required">Upload Cover Photos</label>
               <br>
               <div class="row">
                 <div *ngFor="let imgSrc of coverImgSrcList; let i=index">
@@ -210,19 +210,19 @@
         <ng-template ngbPanelContent>
           <div class="row">
             <div class="col-md-6 col-lg-6">
-              <label>Account Number</label>
+              <label class="required">Account Number</label>
               <form-input inputType="text" name="account_number" placeholder="99889000292"></form-input>
             </div>
 
             <div class="col-md-6 col-lg-6">
-              <label>PAN Number</label>
+              <label class="required">PAN Number</label>
               <form-input inputType="text" name="pan" placeholder="BYHKL3197Z"></form-input>
             </div>
           </div>
 
           <div class="row">
             <div class="col-md-6 col-lg-6">
-              <label>IFSC Code</label>
+              <label class="required">IFSC Code</label>
               <form-input inputType="text" name="account_ifsc" placeholder="SBIN0021745"></form-input>
             </div>
             <div class="col-md-6 col-lg-6">
@@ -233,7 +233,7 @@
 
           <div class="row">
             <div class="col-md-6 col-lg-6">
-              <label>Account Holder Name</label>
+              <label class="required">Account Holder Name</label>
               <form-input inputType="text" name="account_holder" placeholder="John Doe"></form-input>
             </div>
           </div>
@@ -250,14 +250,6 @@
       </div>
     </div>
 
-    <div class="row m-0 p-0 mt-2">
-      <div class="col-6 row"></div>
-      <div class="col-6 ml-4 pl-4 mr-0 pr-0 row">
-        <div class="col-6"></div>
-        <div class="col-6 mr-0 pr-0">
-          <input [disabled]="!canSubmitForm()" class="btn btn-primary btn-block" type="submit" value="Register">
-        </div>
-      </div>
-    </div>
+    <input [disabled]="!canSubmitForm()" class="btn btn-primary mt-3" type="submit" value="Register">
   </form>
 </div>
