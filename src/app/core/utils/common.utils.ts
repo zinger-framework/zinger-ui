@@ -40,7 +40,6 @@ export function setErrorMessage(message: string, className: string, fieldKey = '
     else
       $(`form.${className} div.form-group-${fieldKey} textarea`)[0].classList.add('form-control-danger');
   } else {
-    if($(`form.${className} div.form-feedback`)[0]!=null)
       $(`form.${className} div.form-feedback`)[0].innerHTML = message;
   }
 }
@@ -53,8 +52,7 @@ export function clearErrorMessage(className: string, fieldKey = '') {
     else
       $(`form.${className} div.form-group-${fieldKey} textarea`)[0].classList.remove('form-control-danger');
   }
-  if($(`form.${className} div.form-feedback`)[0]!=null)
-    $(`form.${className} div.form-feedback`)[0].innerHTML = '';
+  $(`form.${className} div.form-feedback`)[0].innerHTML = '';
 }
 
 export function buildMessage(error: ValidationErrors, label: string): string {

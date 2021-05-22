@@ -73,7 +73,9 @@ export class ShopDetailsComponent extends BaseComponent implements AfterViewChec
       gst: new ExtendedFormControl('', [Validators.pattern(GST_REGEX)], 'gst'),
       className: 'shopDetailsForm'
     });
+  }
 
+  ngOnInit(): void {
     if(history.state['shop']!=null){
       this.initializeForm(history.state['shop'])
     }else{
@@ -84,9 +86,6 @@ export class ShopDetailsComponent extends BaseComponent implements AfterViewChec
           this.router.navigate([APP_ROUTES.DASHBOARD])
         })
     }
-  }
-
-  ngOnInit(): void {
   }
 
   ngAfterViewChecked() {
@@ -101,16 +100,15 @@ export class ShopDetailsComponent extends BaseComponent implements AfterViewChec
     Object.keys(shopData).forEach(field => {
       if (shopData[field] != null) {
         if (field == 'address') {
-          // if (shopData['lat'] != null && shopData['lng'] != null || true) {
-            this.shopDetailsForm.get('address_line_1').setValue(shopData[field]['street'])
-            this.shopDetailsForm.get('address_line_2').setValue(shopData[field]['area'])
-            this.shopDetailsForm.get('city').setValue(shopData[field]['city'])
-            this.shopDetailsForm.get('state').setValue(shopData[field]['state'])
-            this.shopDetailsForm.get('pincode').setValue(shopData[field]['pincode'])
-            //todo 0.0 must not be initialized
+          if (shopData[field]['lat'] != null && shopData[field]['lng'] != undefined && shopData[field]['lat'] != 0 && shopData[field]['lng'] != 0 ) {
             this.shopDetailsForm.get('latitude').setValue(shopData[field]['lat'])
             this.shopDetailsForm.get('longitude').setValue(shopData[field]['lng'])
-          // }
+          }
+          this.shopDetailsForm.get('address_line_1').setValue(shopData[field]['street'])
+          this.shopDetailsForm.get('address_line_2').setValue(shopData[field]['area'])
+          this.shopDetailsForm.get('city').setValue(shopData[field]['city'])
+          this.shopDetailsForm.get('state').setValue(shopData[field]['state'])
+          this.shopDetailsForm.get('pincode').setValue(shopData[field]['pincode'])
         }
         else if(field=='payment'){
           Object.keys(shopData[field]).forEach(payment_field => {
@@ -257,7 +255,6 @@ export class ShopDetailsComponent extends BaseComponent implements AfterViewChec
     if ($event.panelId === 'photoPanel' && $event.nextState === false) {
       this.shopDetailsForm.get('icon').setValue('')
       this.shopDetailsForm.get('cover_photos').setValue('')
-      console.log("before expand called")
     }
   }
 
