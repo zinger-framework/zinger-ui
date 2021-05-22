@@ -41,7 +41,6 @@ export class ShopDetailsComponent extends BaseComponent {
   iconSrc = ''
   iconName = ''
   coverImgSrcList = []
-  coverImgNameList = []
   shopId: number;
 
   constructor(private fb: FormBuilder, private toastr: ToastrService, private shopService: ShopService, private route: ActivatedRoute, private router:Router) {
@@ -205,7 +204,6 @@ export class ShopDetailsComponent extends BaseComponent {
   }
 
   deleteCoverImage(previewName,index){
-    this.coverImgNameList = this.coverImgNameList.filter(x => x != previewName)
     let deletedImgSrc = this.coverImgSrcList[index];
     this.coverImgSrcList = this.coverImgSrcList.filter(x => x != deletedImgSrc)
   }
@@ -238,8 +236,6 @@ export class ShopDetailsComponent extends BaseComponent {
             this.toastr.error(error['error']['message'])
           })
       }
-      if(this.coverImgNameList.length == 0)
-        setErrorMessage('Cover Photos cannot be empty', 'shopDetailsForm', 'cover_photos')
     }
   }
 
