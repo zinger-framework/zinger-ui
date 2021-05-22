@@ -1,36 +1,30 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, NgZone, OnInit} from '@angular/core';
+import {AfterViewChecked, ChangeDetectionStrategy, Component, NgZone} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {ExtendedFormControl} from "../../../core/utils/extended-form-control.utils";
-import {
-  APP_ROUTES,
-  BANK_ACCOUNT_NUMBER_REGEX,
-  EMAIL_REGEX,
-  GST_REGEX,
-  IFSC_REGEX, LATLNG_REGEX,
-  MOBILE_REGEX,
-  NAME_REGEX,
-  PAN_REGEX, PINCODE_REGEX
-} from "../../../core/utils/constants.utils";
+import {ALPHABET_REGEX, APP_ROUTES, BANK_ACCOUNT_NUMBER_REGEX, EMAIL_REGEX, GST_REGEX, IFSC_REGEX, LATLNG_REGEX,
+  MOBILE_REGEX, NAME_REGEX, PAN_REGEX, PINCODE_REGEX} from "../../../core/utils/constants.utils";
 import {NgbPanelChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 import {ToastrService} from "ngx-toastr";
 import $ from 'jquery';
 import {setErrorMessage} from "../../../core/utils/common.utils";
 import {ShopService} from "../../../core/service/shop.service";
 import {ActivatedRoute, Router} from "@angular/router";
+import {BaseComponent} from "../../../base.component";
 
 
 @Component({
   selector: 'app-shop',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './shop-details.component.html',
   styleUrls: ['./shop-details.component.css']
 })
-export class ShopDetailsComponent implements OnInit {
+export class ShopDetailsComponent extends BaseComponent implements AfterViewChecked {
   form_type = ''
   form_status = ''
   shopDetailsForm: FormGroup;
   shopDetailsInitialValue = {}
   termsAndCondition = false;
-  categories = ['GROCERY', 'PHARMACY', 'RESTAURANT','OTHERS']
+  categories = ['GROCERY', 'PHARMACY', 'RESTAURANT', 'OTHERS']
   states = ['Tamil Nadu', 'Kerala', 'Andhra Pradesh', 'Karnataka']
   iconSrc = ''
   iconName = ''
@@ -40,12 +34,13 @@ export class ShopDetailsComponent implements OnInit {
   shopId: number;
 
   constructor(private fb: FormBuilder, private toastr: ToastrService, private shopService: ShopService,private zone: NgZone,private route: ActivatedRoute, private router:Router) {
+    super();
     this.route.params.subscribe(params => this.shopId = params['id']);
     this.shopDetailsForm = this.fb.group({
       name: new ExtendedFormControl('', [Validators.required, Validators.pattern(NAME_REGEX)], 'name'),
       category: new ExtendedFormControl(null, [Validators.required], 'category'),
-      description: new ExtendedFormControl('', [Validators.required,Validators.maxLength(250)], 'description'),
-      tags: new ExtendedFormControl('', [Validators.required,Validators.maxLength(100)], 'tags'),
+      description: new ExtendedFormControl('', [Validators.required, Validators.maxLength(250)], 'description'),
+      tags: new ExtendedFormControl('', [Validators.required, Validators.maxLength(100)], 'tags'),
       mobile: new ExtendedFormControl('', [Validators.required, Validators.pattern(MOBILE_REGEX)], 'mobile'),
       telephone: new ExtendedFormControl('', [], 'telephone'),
       email: new ExtendedFormControl('', [Validators.required, Validators.pattern(EMAIL_REGEX)], 'email'),
@@ -53,11 +48,11 @@ export class ShopDetailsComponent implements OnInit {
       closing_time: new ExtendedFormControl('21:30', [Validators.required], 'closing_time'),
       address_line_1: new ExtendedFormControl('', [Validators.required], 'address_line_1'),
       address_line_2: new ExtendedFormControl('', [Validators.required], 'address_line_2'),
-      city: new ExtendedFormControl('', [Validators.required], 'city'),
+      city: new ExtendedFormControl('', [Validators.required, Validators.pattern(ALPHABET_REGEX)], 'city'),
       state: new ExtendedFormControl(null, [Validators.required], 'state'),
-      pincode: new ExtendedFormControl('', [Validators.required,Validators.pattern(PINCODE_REGEX)], 'pincode'),
-      latitude: new ExtendedFormControl('', [Validators.required,Validators.pattern(LATLNG_REGEX)], 'latitude'),
-      longitude: new ExtendedFormControl('', [Validators.required,Validators.pattern(LATLNG_REGEX)], 'longitude'),
+      pincode: new ExtendedFormControl('', [Validators.required, Validators.pattern(PINCODE_REGEX)], 'pincode'),
+      latitude: new ExtendedFormControl('', [Validators.required, Validators.pattern(LATLNG_REGEX)], 'latitude'),
+      longitude: new ExtendedFormControl('', [Validators.required, Validators.pattern(LATLNG_REGEX)], 'longitude'),
       icon: new ExtendedFormControl('', [], 'icon'),
       cover_photos: new ExtendedFormControl('', [], 'cover_photos'),
       account_number: new ExtendedFormControl('', [Validators.required, Validators.pattern(BANK_ACCOUNT_NUMBER_REGEX)], 'account_number'),
@@ -69,10 +64,8 @@ export class ShopDetailsComponent implements OnInit {
     });
 
     if(history.state['shop']!=null){
-      this.form_type = 'NEW_SHOP'
       this.initializeForm(history.state['shop'])
     }else{
-      this.form_type = 'UPDATE_SHOP'
       this.shopService.getShopDetails(this.shopId)
         .then(response => this.initializeForm(response['data']['shop']))
         .catch(error => {
@@ -85,14 +78,21 @@ export class ShopDetailsComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  initializeForm(shopData){
+  ngAfterViewChecked() {
+    Object.keys(this.shopDetailsForm.controls).forEach(field => {
+      const control = this.shopDetailsForm.get(field);
+      control.updateValueAndValidity();
+    });
+  }
+
+  initializeForm(shopData) {
     console.log("Got Shop data")
     console.log(shopData)
     Object.keys(shopData).forEach(field => {
 
-      if(shopData[field]!=null){
-        if(field=='address'){
-          if(shopData['lat']!=0.0 && shopData['lng']!=0.0){
+      if (shopData[field] != null) {
+        if (field == 'address') {
+          if (shopData['lat'] != 0.0 && shopData['lng'] != 0.0) {
             this.shopDetailsForm.get('address_line_1').setValue(shopData[field]['street'])
             this.shopDetailsForm.get('address_line_2').setValue(shopData[field]['area'])
             this.shopDetailsForm.get('city').setValue(shopData[field]['city'])
@@ -123,69 +123,16 @@ export class ShopDetailsComponent implements OnInit {
         else if(field=='id'){
           this.shopId = shopData[field]
         }else{
-          if(this.shopDetailsForm.get(field)!=null)
+          if (this.shopDetailsForm.get(field) != null) {
             this.shopDetailsForm.get(field).setValue(shopData[field])
-          else
-            console.log("wrong field "+field)
+          } else
+            console.log("wrong field " + field)
         }
       }else{
         console.log("Null data: "+field+" "+shopData[field])
       }
     });
     this.shopDetailsInitialValue = this.shopDetailsForm.value
-  }
-
-  submitShopDetails() {
-    let formData = this.shopDetailsForm.value
-    formData['icon'] = this.iconSrc
-    formData['cover_photos'] = this.coverImgSrcList
-    console.log(this.shopDetailsForm.value)
-    console.log("Submitted")
-
-    let  requestBody = {}
-    if(this.form_type=='NEW_SHOP'){
-      Object.keys(this.shopDetailsForm.value).forEach(key => {
-        if(key =='latitude'){
-          requestBody['lat']  = this.shopDetailsForm.value[key]
-        }else if(key =='longitude'){
-          requestBody['lng']  = this.shopDetailsForm.value[key]
-        }else if(key=='address_line_1'){
-          requestBody['street']  = this.shopDetailsForm.value[key]
-        }else if(key=='address_line_2'){
-          requestBody['area']  = this.shopDetailsForm.value[key]
-        }else if(key=='tags'){
-          requestBody['tags']  = this.shopDetailsForm.value[key].split(',')
-        } else if(key=='cover_photos' || key=='icon'){
-          console.log('continue')
-        } else{
-          requestBody[key] = this.shopDetailsForm.value[key]
-        }
-      })
-      console.log(requestBody)
-    }else if(this.form_type=='UPDATE_SHOP'){
-      Object.keys(this.shopDetailsForm.value).forEach(key => {
-        if(this.shopDetailsInitialValue[key]!=this.shopDetailsForm.value[key]){
-          if(key =='latitude'){
-            requestBody['lat']  = this.shopDetailsForm.value[key]
-          }else if(key =='longitude'){
-            requestBody['lng']  = this.shopDetailsForm.value[key]
-          }else if(key=='address_line_1'){
-            requestBody['street']  = this.shopDetailsForm.value[key]
-          }else if(key=='address_line_2'){
-            requestBody['area']  = this.shopDetailsForm.value[key]
-          }else if(key=='tags'){
-            requestBody['tags']  = this.shopDetailsForm.value[key].split(',')
-          } else if(key=='cover_photos' || key=='icon'){
-            console.log('continue')
-          } else{
-            requestBody[key] = this.shopDetailsForm.value[key]
-          }
-        }
-      })
-    }
-    this.shopService.updateShopDetails(this.shopId,requestBody)
-      .then(response => console.log(response))
-      .catch(error => console.log(error));
   }
 
   browseFiles(imgType) {
@@ -263,8 +210,8 @@ export class ShopDetailsComponent implements OnInit {
     } else if (type == 'cover_photos') {
       this.shopDetailsForm.get(type).setValue('')
       let index = this.coverImgSrcList.findIndex(x => x == previewName)
-      if(index>=0){
-        this.shopService.deleteCover(this.shopId,index)
+      if (index >= 0) {
+        this.shopService.deleteCover(this.shopId, index)
           .then(response => {
             this.coverImgNameList = this.coverImgNameList.filter(x => x != previewName)
             let deletedImgSrc = this.coverImgSrcList[index];
@@ -285,31 +232,79 @@ export class ShopDetailsComponent implements OnInit {
   }
 
   canSubmitForm() {
-    if(this.form_type=='NEW_SHOP'){
-      return true;
-      // return this.termsAndCondition && this.shopDetailsForm.valid && this.iconSrc.length > 0 && this.coverImgSrcList.length > 0
-    }
-    else
+    if (this.form_status == 'DRAFT') {
+      return this.termsAndCondition && this.shopDetailsForm.valid && this.iconSrc.length > 0 && this.coverImgSrcList.length > 0
+    } else
       return true;
   }
 
-  acceptTermsAndConditions(){
+  submitShopDetails() {
+    let formData = this.shopDetailsForm.value
+    formData['icon'] = this.iconSrc
+    formData['cover_photos'] = this.coverImgSrcList
+    console.log(this.shopDetailsForm.value)
+    console.log("Submitted")
+
+    let requestBody = {}
+    if (this.form_status == 'DRAFT') {
+      Object.keys(this.shopDetailsForm.value).forEach(key => {
+        if (key == 'latitude') {
+          requestBody['lat'] = this.shopDetailsForm.value[key]
+        } else if (key == 'longitude') {
+          requestBody['lng'] = this.shopDetailsForm.value[key]
+        } else if (key == 'address_line_1') {
+          requestBody['street'] = this.shopDetailsForm.value[key]
+        } else if (key == 'address_line_2') {
+          requestBody['area'] = this.shopDetailsForm.value[key]
+        } else if (key == 'tags') {
+          requestBody['tags'] = this.shopDetailsForm.value[key].split(',')
+        } else if (key == 'cover_photos' || key == 'icon') {
+          console.log('continue')
+        } else {
+          requestBody[key] = this.shopDetailsForm.value[key]
+        }
+      })
+      console.log(requestBody)
+    } else if (this.form_status != 'DRAFT') {
+      Object.keys(this.shopDetailsForm.value).forEach(key => {
+        if (this.shopDetailsInitialValue[key] != this.shopDetailsForm.value[key]) {
+          if (key == 'latitude') {
+            requestBody['lat'] = this.shopDetailsForm.value[key]
+          } else if (key == 'longitude') {
+            requestBody['lng'] = this.shopDetailsForm.value[key]
+          } else if (key == 'address_line_1') {
+            requestBody['street'] = this.shopDetailsForm.value[key]
+          } else if (key == 'address_line_2') {
+            requestBody['area'] = this.shopDetailsForm.value[key]
+          } else if (key == 'tags') {
+            requestBody['tags'] = this.shopDetailsForm.value[key].split(',')
+          } else if (key == 'cover_photos' || key == 'icon') {
+            console.log('continue')
+          } else {
+            requestBody[key] = this.shopDetailsForm.value[key]
+          }
+        }
+      })
+    }
+    this.shopService.updateShopDetails(this.shopId, requestBody)
+      .then(response => {
+        console.log(response)
+        this.initializeForm(response['data']['shop'])
+      })
+      .catch(error => console.log(error));
+  }
+
+  acceptTermsAndConditions() {
     this.termsAndCondition = !this.termsAndCondition;
   }
 
-  expandPanel(acc,panelId){
-    if(acc.isExpanded(panelId)){
+  expandPanel(acc, panelId) {
+    console.log("expand called: " + panelId)
+    if (acc.isExpanded(panelId)) {
       acc.collapse(panelId)
     }
     else{
       acc.expand(panelId)
-      this.zone.onMicrotaskEmpty.asObservable().pipe()
-        .subscribe(() => {
-          Object.keys(this.shopDetailsForm.controls).forEach(field => {
-            const control = this.shopDetailsForm.get(field);
-            control.updateValueAndValidity();
-          });
-        });
     }
   }
 }

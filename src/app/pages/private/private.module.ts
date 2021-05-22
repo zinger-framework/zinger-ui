@@ -16,6 +16,7 @@ import {ReactiveFormsModule} from "@angular/forms";
 import {ShopDetailsComponent} from './shop-details/shop-details.component';
 import {NgbAccordionModule} from "@ng-bootstrap/ng-bootstrap";
 import {NgxMaterialTimepickerModule} from "ngx-material-timepicker";
+import {PublicModule} from "../public/public.module";
 
 @NgModule({
   declarations: [
@@ -30,15 +31,16 @@ import {NgxMaterialTimepickerModule} from "ngx-material-timepicker";
     PrivateComponent
   ],
     imports: [
-        CommonModule,
-        RouterModule,
-        SharedModule,
-        NgApexchartsModule,
-        UiSwitchModule,
-        NgSelectModule,
-        ReactiveFormsModule,
-        NgbAccordionModule,
-        NgxMaterialTimepickerModule
+      CommonModule,
+      RouterModule,
+      SharedModule,
+      NgApexchartsModule,
+      UiSwitchModule,
+      NgSelectModule,
+      ReactiveFormsModule,
+      NgbAccordionModule,
+      NgxMaterialTimepickerModule,
+      PublicModule
     ]
 })
 export class PrivateModule {

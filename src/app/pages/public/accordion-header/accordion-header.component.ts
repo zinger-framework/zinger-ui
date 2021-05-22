@@ -1,13 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 
 @Component({
-  selector: 'app-accordion-header',
+  selector: 'accordion-header',
   templateUrl: './accordion-header.component.html',
   styleUrls: ['./accordion-header.component.css']
 })
 export class AccordionHeaderComponent implements OnInit {
 
-  constructor() { }
+  @Input() title: string;
+  @Input() opened: string;
+
+  constructor() {
+  }
 
   ngOnInit(): void {
   }

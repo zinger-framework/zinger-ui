@@ -22,10 +22,8 @@
 
       <ngb-panel id="basicInfoPanel">
         <ng-template ngbPanelHeader let-opened="opened" class="panel-header">
-          <div (click)="expandPanel(acc,'basicInfoPanel')" class="d-flex">
-            <div class="btn p-2"><i class="icon-copy fa fa-{{ opened ? 'minus' : 'plus'  }} mb-2" aria-hidden="true"></i></div>
-            <h6 class="mt-2 pt-1">Basic Information</h6>
-          </div>
+          <accordion-header (click)="expandPanel(acc,'basicInfoPanel')" [opened]="opened"
+                            title='Basic Information'></accordion-header>
         </ng-template>
 
         <ng-template ngbPanelContent>
@@ -103,11 +101,9 @@
       </ngb-panel>
 
       <ngb-panel id="contactInfoPanel">
-        <ng-template ngbPanelHeader let-opened="opened">
-          <div (click)="expandPanel(acc,'contactInfoPanel')"  class="d-flex">
-            <div class="btn p-2"><i class="icon-copy fa fa-{{ opened ? 'minus' : 'plus'  }} mb-2" aria-hidden="true"></i></div>
-            <h6 class="mt-2 pt-1">Contact Information</h6>
-          </div>
+        <ng-template class="panel-header" let-opened="opened" ngbPanelHeader>
+          <accordion-header (click)="expandPanel(acc,'contactInfoPanel')" [opened]="opened"
+                            title='Contact Information'></accordion-header>
         </ng-template>
 
         <ng-template ngbPanelContent>
@@ -158,11 +154,9 @@
       </ngb-panel>
 
       <ngb-panel id="mediaInfoPanel">
-        <ng-template ngbPanelHeader let-opened="opened">
-          <div (click)="expandPanel(acc,'mediaInfoPanel')" class="d-flex">
-            <div class="btn p-2"><i class="icon-copy fa fa-{{ opened ? 'minus' : 'plus'  }} mb-2" aria-hidden="true"></i></div>
-            <h6 class="mt-2 pt-1">Media Information</h6>
-          </div>
+        <ng-template class="panel-header" let-opened="opened" ngbPanelHeader>
+          <accordion-header (click)="expandPanel(acc,'mediaInfoPanel')" [opened]="opened"
+                            title='Media Information'></accordion-header>
         </ng-template>
 
         <ng-template ngbPanelContent>
@@ -175,8 +169,9 @@
                                (deleteImageEvent)="previewDeleted($event,'icon')"></image-preview>
               </div>
               <ng-template #placeholderimage>
-                <div class="mt-3">
-                  <img class="opacity-50" (click)="browseFiles('icon')" src="/assets/images/upload-image.png" alt="upload image"/>
+                <div class="mt-3 cursor-pointer">
+                  <img (click)="browseFiles('icon')" alt="upload image" class="opacity-50"
+                       src="/assets/images/upload-image.png"/>
                 </div>
               </ng-template>
               <form-input inputType="file" name="icon" placeholder="Attach shop icon" class="file-input" (change)="onFileChange($event,'icon')"></form-input>
@@ -193,8 +188,9 @@
                   <image-preview imageType="cover_photos" [imageSrc]="imgSrc" [imageName]="coverImgNameList[i]"
                                  (deleteImageEvent)="previewDeleted($event,'cover_photos')"></image-preview>
                 </div>
-                <div class="mt-3 ml-3" *ngIf="coverImgSrcList.length<5">
-                  <img class="opacity-50" (click)="browseFiles('cover_photos')" src="/assets/images/upload-image.png" alt="upload image"/>
+                <div *ngIf="coverImgSrcList.length<5" class="mt-3 ml-3 cursor-pointer">
+                  <img (click)="browseFiles('cover_photos')" alt="upload image" class="opacity-50"
+                       src="/assets/images/upload-image.png"/>
                 </div>
               </div>
               <form-input (change)="onFileChange($event,'cover_photos')" class="file-input" inputType="file" multiple="true"
@@ -206,12 +202,11 @@
       </ngb-panel>
 
       <ngb-panel id="paymentInfoPanel">
-        <ng-template ngbPanelHeader let-opened="opened">
-          <div (click)="expandPanel(acc,'paymentInfoPanel')" class="d-flex">
-            <div class="btn p-2"><i class="icon-copy fa fa-{{ opened ? 'minus' : 'plus'  }} mb-2" aria-hidden="true"></i></div>
-            <h6 class="mt-2 pt-1">Payment Information</h6>
-          </div>
+        <ng-template class="panel-header" let-opened="opened" ngbPanelHeader>
+          <accordion-header (click)="expandPanel(acc,'paymentInfoPanel')" [opened]="opened"
+                            title='Payment Information'></accordion-header>
         </ng-template>
+
         <ng-template ngbPanelContent>
           <div class="row">
             <div class="col-md-6 col-lg-6">
@@ -247,10 +242,11 @@
       </ngb-panel>
     </ngb-accordion>
 
-    <div class="m-1" *ngIf="this.form_type==='NEW_SHOP'">
+    <div *ngIf="this.form_status==='DRAFT'" class="m-1">
       <div class="custom-control custom-checkbox mt-4">
         <input (click)="acceptTermsAndConditions()" type="checkbox" class="custom-control-input" id="customCheck1">
-        <label class="custom-control-label" for="customCheck1">I have read and agreed to the <a href="#">terms and conditions</a> and <a href="#"> privacy policy</a></label>
+        <label class="custom-control-label" for="customCheck1">I have read and agreed to the <a href="#">terms and
+          conditions</a> and <a href="#"> privacy policy</a></label>
       </div>
     </div>
 
