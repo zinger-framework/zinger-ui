@@ -100,7 +100,7 @@ export class ShopDetailsComponent extends BaseComponent implements AfterViewChec
     Object.keys(shopData).forEach(field => {
       if (shopData[field] != null) {
         if (field == 'address') {
-          if (shopData['lat'] != 0.0 && shopData['lng'] != 0.0) {
+          if (shopData['lat'] != null && shopData['lng'] != null) {
             this.shopDetailsForm.get('address_line_1').setValue(shopData[field]['street'])
             this.shopDetailsForm.get('address_line_2').setValue(shopData[field]['area'])
             this.shopDetailsForm.get('city').setValue(shopData[field]['city'])
@@ -258,7 +258,7 @@ export class ShopDetailsComponent extends BaseComponent implements AfterViewChec
       return true;
   }
 
-  submitShopDetails() {
+  submitShopDetails(accordion) {
     let formData = this.shopDetailsForm.value
     formData['icon'] = this.iconSrc
     formData['cover_photos'] = this.coverImgSrcList
@@ -278,7 +278,28 @@ export class ShopDetailsComponent extends BaseComponent implements AfterViewChec
       .then(response => {
         this.initializeForm(response['data']['shop'])
       })
-      .catch(error => handleError(error,this.shopDetailsForm));
+      .catch(error => {
+        accordion.expandAll()
+        let reasonData = error['error']['reason']
+        if(reasonData['street']!=null){
+          reasonData['address_line_1'] = reasonData['street']
+          delete reasonData.street
+        }
+        if(reasonData['area']!=null){
+          reasonData['address_line_2'] = reasonData['area']
+          delete reasonData.area
+        }
+        if(reasonData['lat']!=null){
+          reasonData['latitude'] = reasonData['lat']
+          delete reasonData.lat
+        }
+        if(reasonData['lng']!=null){
+          reasonData['longitude'] = reasonData['lng']
+          delete reasonData.lng
+        }
+        error['error']['reason'] = reasonData
+        setTimeout(()=>handleError(error,this.shopDetailsForm),30)
+      })
   }
 
   updateRequestBody(key, requestBody){

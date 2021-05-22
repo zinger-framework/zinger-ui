@@ -16,7 +16,7 @@
   </div>
 
 
-  <form (ngSubmit)="submitShopDetails()" [formGroup]="shopDetailsForm" class="shopDetailsForm">
+  <form (ngSubmit)="submitShopDetails(accordion)" [formGroup]="shopDetailsForm" class="shopDetailsForm">
     <div class="form-feedback has-danger padding-bottom-10 text-center"></div>
     <ngb-accordion #accordion="ngbAccordion" activeIds="ngb-panel-0" (panelChange)="onAccordionExpandListener($event)">
 
@@ -171,7 +171,7 @@
                 </div>
                 <ng-template #placeholderimage>
                   <div class="pt-3 ml-3 cursor-pointer">
-                    <img (click)="browseFiles('icon')" alt="upload image" width="70" height="70" 
+                    <img (click)="browseFiles('icon')" alt="upload image" width="70" height="70"
                          src="/assets/images/upload-image.png"/>
                   </div>
                 </ng-template>
@@ -191,7 +191,7 @@
                                  (deleteImageEvent)="previewDeleted($event,'cover_photos')"></image-preview>
                 </div>
                 <div *ngIf="coverImgSrcList.length<5" class="pt-3 ml-3 cursor-pointer">
-                  <img (click)="browseFiles('cover_photos')" alt="upload image" width="70" height="34" 
+                  <img (click)="browseFiles('cover_photos')" alt="upload image" width="70" height="34"
                        src="/assets/images/upload-image.png"/>
                 </div>
               </div>
