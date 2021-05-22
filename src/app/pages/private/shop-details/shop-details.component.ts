@@ -101,7 +101,7 @@ export class ShopDetailsComponent extends BaseComponent implements AfterViewChec
     Object.keys(shopData).forEach(field => {
       if (shopData[field] != null) {
         if (field == 'address') {
-          if (shopData['lat'] != null && shopData['lng'] != null) {
+          // if (shopData['lat'] != null && shopData['lng'] != null || true) {
             this.shopDetailsForm.get('address_line_1').setValue(shopData[field]['street'])
             this.shopDetailsForm.get('address_line_2').setValue(shopData[field]['area'])
             this.shopDetailsForm.get('city').setValue(shopData[field]['city'])
@@ -110,7 +110,7 @@ export class ShopDetailsComponent extends BaseComponent implements AfterViewChec
             //todo 0.0 must not be initialized
             this.shopDetailsForm.get('latitude').setValue(shopData[field]['lat'])
             this.shopDetailsForm.get('longitude').setValue(shopData[field]['lng'])
-          }
+          // }
         }
         else if(field=='payment'){
           Object.keys(shopData[field]).forEach(payment_field => {
