@@ -16,7 +16,6 @@ import {
   TAGS_REGEX,
   TELEPHONE_REGEX
 } from '../../../core/utils/constants.utils';
-import {NgbPanelChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 import {ToastrService} from 'ngx-toastr';
 import $ from 'jquery';
 import {handleError, setErrorMessage} from '../../../core/utils/common.utils';
@@ -24,7 +23,6 @@ import {ShopService} from '../../../core/service/shop.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {BaseComponent} from '../../../base.component';
 import {validateRange} from "../../../core/utils/validators.utils";
-
 
 @Component({
   selector: 'app-shop',
@@ -90,37 +88,44 @@ export class ShopDetailsComponent extends BaseComponent {
   initializeForm(shopData) {
     Object.keys(shopData).forEach(field => {
       if (shopData[field] != null) {
-        if (field == 'address') {
-          if (shopData[field]['lat'] != null && shopData[field]['lng'] != undefined && shopData[field]['lat'] != 0 && shopData[field]['lng'] != 0) {
-            this.shopDetailsForm.get('latitude').setValue(shopData[field]['lat'])
-            this.shopDetailsForm.get('longitude').setValue(shopData[field]['lng'])
-          }
-          this.shopDetailsForm.get('address_line_1').setValue(shopData[field]['street'])
-          this.shopDetailsForm.get('address_line_2').setValue(shopData[field]['area'])
-          this.shopDetailsForm.get('city').setValue(shopData[field]['city'])
-          this.shopDetailsForm.get('state').setValue(shopData[field]['state'])
-          this.shopDetailsForm.get('pincode').setValue(shopData[field]['pincode'])
-        } else if (field == 'payment') {
-          Object.keys(shopData[field]).forEach(payment_field => {
-            if (shopData[field][payment_field] != null && this.shopDetailsForm.get(payment_field) != null)
-              this.shopDetailsForm.get(payment_field).setValue(shopData[field][payment_field])
-          })
-        } else if (field == 'icon') {
-          this.iconSrc = shopData[field]
-        } else if (field == 'cover_photos' && shopData[field].length > 0) {
-          this.coverImgSrcList = shopData[field]
-        } else if (field == 'tags') {
-          let tagString = shopData[field].toString();
-          tagString = tagString.replace(/,/g, ', ');
-          this.shopDetailsForm.get('tags').setValue(tagString);
-        } else if (field == 'status') {
-          this.formStatus = shopData[field]
-        } else if (field == 'id') {
-          this.shopId = shopData[field]
-        } else {
-          if (this.shopDetailsForm.get(field) != null) {
-            this.shopDetailsForm.get(field).setValue(shopData[field])
-          }
+        switch (shopData[field]){
+          case 'address':
+            if (shopData[field]['lat'] != null && shopData[field]['lng'] != undefined && shopData[field]['lat'] != 0 && shopData[field]['lng'] != 0) {
+              this.shopDetailsForm.get('latitude').setValue(shopData[field]['lat'])
+              this.shopDetailsForm.get('longitude').setValue(shopData[field]['lng'])
+            }
+            this.shopDetailsForm.get('address_line_1').setValue(shopData[field]['street'])
+            this.shopDetailsForm.get('address_line_2').setValue(shopData[field]['area'])
+            this.shopDetailsForm.get('city').setValue(shopData[field]['city'])
+            this.shopDetailsForm.get('state').setValue(shopData[field]['state'])
+            this.shopDetailsForm.get('pincode').setValue(shopData[field]['pincode'])
+            break;
+          case 'payment':
+            Object.keys(shopData[field]).forEach(payment_field => {
+              if (shopData[field][payment_field] != null && this.shopDetailsForm.get(payment_field) != null)
+                this.shopDetailsForm.get(payment_field).setValue(shopData[field][payment_field])
+            })
+            break;
+          case 'icon':
+            this.iconSrc = shopData[field]
+            break;
+          case 'cover_photos':
+            if(shopData[field].length > 0) {
+              this.coverImgSrcList = shopData[field]
+            }
+            break;
+          case 'tags':
+            let tagString = shopData[field].toString();
+            tagString = tagString.replace(/,/g, ', ');
+            this.shopDetailsForm.get('tags').setValue(tagString);
+            break;
+          case 'status':
+            this.formStatus = shopData[field]
+            break;
+          default:
+            if (field != 'id' && this.shopDetailsForm.get(field) != null) {
+              this.shopDetailsForm.get(field).setValue(shopData[field])
+            }
         }
       }
     });
@@ -161,7 +166,6 @@ export class ShopDetailsComponent extends BaseComponent {
                 this.shopService.uploadIcon(this.shopId, formData)
                   .then(response => {
                     this.iconSrc = response['data']['icon']
-                    this.iconName = file.name;
                   })
                   .catch(error => {
                     handleError(error, this.shopDetailsForm)
@@ -192,7 +196,6 @@ export class ShopDetailsComponent extends BaseComponent {
 
   deleteIcon() {
     this.iconSrc = ''
-    this.iconName = ''
     this.shopDetailsForm.get('icon').setValue('')
     setErrorMessage('Icon cannot be empty', 'shopDetails', 'icon')
   }
