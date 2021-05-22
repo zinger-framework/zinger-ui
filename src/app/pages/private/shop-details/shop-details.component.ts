@@ -1,8 +1,21 @@
-import {AfterViewChecked, ChangeDetectionStrategy, Component, NgZone} from '@angular/core';
+import {AfterViewChecked, ChangeDetectionStrategy, ChangeDetectorRef, Component, NgZone} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ExtendedFormControl} from '../../../core/utils/extended-form-control.utils';
-import {ALPHABET_REGEX, APP_ROUTES, BANK_ACCOUNT_NUMBER_REGEX, EMAIL_REGEX, GST_REGEX, IFSC_REGEX, LATLNG_REGEX,
-  MOBILE_REGEX, NAME_REGEX, PAN_REGEX, PINCODE_REGEX} from '../../../core/utils/constants.utils';
+import {
+  ALPHABET_REGEX,
+  APP_ROUTES,
+  BANK_ACCOUNT_NUMBER_REGEX,
+  TAGS_REGEX,
+  EMAIL_REGEX,
+  GST_REGEX,
+  IFSC_REGEX,
+  LATLNG_REGEX,
+  MOBILE_REGEX,
+  NAME_REGEX,
+  PAN_REGEX,
+  PINCODE_REGEX,
+  TELEPHONE_REGEX
+} from '../../../core/utils/constants.utils';
 import {NgbPanelChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 import {ToastrService} from 'ngx-toastr';
 import $ from 'jquery';
@@ -30,16 +43,16 @@ export class ShopDetailsComponent extends BaseComponent implements AfterViewChec
   coverImgNameList = []
   shopId: number;
 
-  constructor(private fb: FormBuilder, private toastr: ToastrService, private shopService: ShopService, private route: ActivatedRoute, private router:Router) {
+  constructor(private fb: FormBuilder, private toastr: ToastrService, private shopService: ShopService, private route: ActivatedRoute, private router:Router, private changeDetectorRef: ChangeDetectorRef) {
     super();
     this.route.params.subscribe(params => this.shopId = params['id']);
     this.shopDetailsForm = this.fb.group({
       name: new ExtendedFormControl('', [Validators.required, Validators.pattern(NAME_REGEX)], 'name'),
       category: new ExtendedFormControl(null, [Validators.required], 'category'),
       description: new ExtendedFormControl('', [Validators.required, Validators.maxLength(250)], 'description'),
-      tags: new ExtendedFormControl('', [Validators.required, Validators.maxLength(100)], 'tags'),
+      tags: new ExtendedFormControl('', [Validators.required, Validators.pattern(TAGS_REGEX)], 'tags'),
       mobile: new ExtendedFormControl('', [Validators.required, Validators.pattern(MOBILE_REGEX)], 'mobile'),
-      telephone: new ExtendedFormControl('', [], 'telephone'),
+      telephone: new ExtendedFormControl('', [Validators.pattern(TELEPHONE_REGEX)], 'telephone'),
       email: new ExtendedFormControl('', [Validators.required, Validators.pattern(EMAIL_REGEX)], 'email'),
       opening_time: new ExtendedFormControl('9:30', [Validators.required], 'opening_time'),
       closing_time: new ExtendedFormControl('21:30', [Validators.required], 'closing_time'),
@@ -80,6 +93,7 @@ export class ShopDetailsComponent extends BaseComponent implements AfterViewChec
       const control = this.shopDetailsForm.get(field);
       control.updateValueAndValidity();
     });
+    this.changeDetectorRef.detectChanges();
   }
 
   initializeForm(shopData) {
@@ -259,8 +273,9 @@ export class ShopDetailsComponent extends BaseComponent implements AfterViewChec
     } else if (key == 'address_line_2') {
       requestBody['area'] = this.shopDetailsForm.value[key]
     } else if (key == 'tags') {
-      requestBody['tags'] = this.shopDetailsForm.value[key].split(', ')
-    } else if (key == 'cover_photos' || key == 'icon') {
+      let temp = this.shopDetailsForm.value[key].replace(/, /g,',');
+      requestBody['tags'] = temp.split(',')
+    } else if (key == 'cover_photos' || key == 'icon' || key=='className') {
       // pass;
     } else {
       requestBody[key] = this.shopDetailsForm.value[key]
