@@ -1,25 +1,23 @@
 import {AfterViewChecked, ChangeDetectionStrategy, Component, NgZone} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {ExtendedFormControl} from "../../../core/utils/extended-form-control.utils";
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {ExtendedFormControl} from '../../../core/utils/extended-form-control.utils';
 import {ALPHABET_REGEX, APP_ROUTES, BANK_ACCOUNT_NUMBER_REGEX, EMAIL_REGEX, GST_REGEX, IFSC_REGEX, LATLNG_REGEX,
-  MOBILE_REGEX, NAME_REGEX, PAN_REGEX, PINCODE_REGEX} from "../../../core/utils/constants.utils";
+  MOBILE_REGEX, NAME_REGEX, PAN_REGEX, PINCODE_REGEX} from '../../../core/utils/constants.utils';
 import {NgbPanelChangeEvent} from '@ng-bootstrap/ng-bootstrap';
-import {ToastrService} from "ngx-toastr";
+import {ToastrService} from 'ngx-toastr';
 import $ from 'jquery';
-import {setErrorMessage} from "../../../core/utils/common.utils";
-import {ShopService} from "../../../core/service/shop.service";
-import {ActivatedRoute, Router} from "@angular/router";
-import {BaseComponent} from "../../../base.component";
+import {handleError, setErrorMessage} from '../../../core/utils/common.utils';
+import {ShopService} from '../../../core/service/shop.service';
+import {ActivatedRoute, Router} from '@angular/router';
+import {BaseComponent} from '../../../base.component';
 
 
 @Component({
   selector: 'app-shop',
-  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './shop-details.component.html',
   styleUrls: ['./shop-details.component.css']
 })
 export class ShopDetailsComponent extends BaseComponent implements AfterViewChecked {
-  form_type = ''
   form_status = ''
   shopDetailsForm: FormGroup;
   shopDetailsInitialValue = {}
@@ -30,10 +28,9 @@ export class ShopDetailsComponent extends BaseComponent implements AfterViewChec
   iconName = ''
   coverImgSrcList = []
   coverImgNameList = []
-  url: any = ''
   shopId: number;
 
-  constructor(private fb: FormBuilder, private toastr: ToastrService, private shopService: ShopService,private zone: NgZone,private route: ActivatedRoute, private router:Router) {
+  constructor(private fb: FormBuilder, private toastr: ToastrService, private shopService: ShopService, private route: ActivatedRoute, private router:Router) {
     super();
     this.route.params.subscribe(params => this.shopId = params['id']);
     this.shopDetailsForm = this.fb.group({
@@ -86,10 +83,7 @@ export class ShopDetailsComponent extends BaseComponent implements AfterViewChec
   }
 
   initializeForm(shopData) {
-    console.log("Got Shop data")
-    console.log(shopData)
     Object.keys(shopData).forEach(field => {
-
       if (shopData[field] != null) {
         if (field == 'address') {
           if (shopData['lat'] != 0.0 && shopData['lng'] != 0.0) {
@@ -115,7 +109,9 @@ export class ShopDetailsComponent extends BaseComponent implements AfterViewChec
           this.coverImgSrcList = shopData[field]
         }
         else if(field=='tags'){
-          this.shopDetailsForm.get('tags').setValue(shopData[field].toString())
+          let tagString = shopData[field].toString();
+          tagString = tagString.replace(/,/g,', ');
+          this.shopDetailsForm.get('tags').setValue(tagString);
         }
         else if(field=='status'){
           this.form_status = shopData[field]
@@ -125,11 +121,8 @@ export class ShopDetailsComponent extends BaseComponent implements AfterViewChec
         }else{
           if (this.shopDetailsForm.get(field) != null) {
             this.shopDetailsForm.get(field).setValue(shopData[field])
-          } else
-            console.log("wrong field " + field)
+          }
         }
-      }else{
-        console.log("Null data: "+field+" "+shopData[field])
       }
     });
     this.shopDetailsInitialValue = this.shopDetailsForm.value
@@ -137,7 +130,7 @@ export class ShopDetailsComponent extends BaseComponent implements AfterViewChec
 
   browseFiles(imgType) {
     this.shopDetailsForm.get(imgType).markAsTouched();
-    $("#" + imgType)[0].click();
+    $('#' + imgType)[0].click();
   }
 
   onFileChange(event, imgType = '') {
@@ -156,35 +149,29 @@ export class ShopDetailsComponent extends BaseComponent implements AfterViewChec
         reader.readAsDataURL(file[i]);
         reader.onload = () => {
           let img = new Image();
-          let base64ImgSrc = reader.result as string;
-          img.src = base64ImgSrc
+          img.src = reader.result as string;
           img.onload = () => {
-            console.log(img.naturalHeight + " "+ img.naturalWidth)
             if(file[i].size/(1024*1024)>1){
               this.toastr.error('Image size must be less than 1 MB')
               return;
             }
             if (imgType == 'icon' && img.naturalWidth==512 && img.naturalHeight==512) {
-              formData.append("icon_file",file[i]);
+              formData.append('icon_file',file[i]);
               this.shopService.uploadIcon(this.shopId,formData)
                 .then(response => {
                   this.iconSrc = response['data']['icon']
                   this.iconName = file[i].name;
-                  console.log(" "+response['data']['icon'])
                 })
                 .catch(error => {
-                  console.log(error)
                   this.toastr.error(error['error']['message'])
                 })
             } else if (imgType == 'cover_photos' && img.naturalWidth==1024 && img.naturalHeight==500) {
-              formData.append("cover_file",file[i]);
+              formData.append('cover_file',file[i]);
               this.shopService.uploadCover(this.shopId,formData)
                 .then(response => {
                   this.coverImgSrcList = response['data']['cover_photos']
-                  console.log(" "+response['data']['cover_photos'])
                 })
                 .catch(error => {
-                  console.log(error)
                   this.toastr.error(error['error']['message'])
                 })
             }else{
@@ -224,10 +211,11 @@ export class ShopDetailsComponent extends BaseComponent implements AfterViewChec
     }
   }
 
-  beforeChange($event: NgbPanelChangeEvent, acc) {
+  onAccordionExpandListener($event: NgbPanelChangeEvent) {
     if ($event.panelId === 'photoPanel' && $event.nextState === false) {
       this.shopDetailsForm.get('icon').setValue('')
       this.shopDetailsForm.get('cover_photos').setValue('')
+      console.log("before expand called")
     }
   }
 
@@ -242,56 +230,42 @@ export class ShopDetailsComponent extends BaseComponent implements AfterViewChec
     let formData = this.shopDetailsForm.value
     formData['icon'] = this.iconSrc
     formData['cover_photos'] = this.coverImgSrcList
-    console.log(this.shopDetailsForm.value)
-    console.log("Submitted")
-
     let requestBody = {}
     if (this.form_status == 'DRAFT') {
       Object.keys(this.shopDetailsForm.value).forEach(key => {
-        if (key == 'latitude') {
-          requestBody['lat'] = this.shopDetailsForm.value[key]
-        } else if (key == 'longitude') {
-          requestBody['lng'] = this.shopDetailsForm.value[key]
-        } else if (key == 'address_line_1') {
-          requestBody['street'] = this.shopDetailsForm.value[key]
-        } else if (key == 'address_line_2') {
-          requestBody['area'] = this.shopDetailsForm.value[key]
-        } else if (key == 'tags') {
-          requestBody['tags'] = this.shopDetailsForm.value[key].split(',')
-        } else if (key == 'cover_photos' || key == 'icon') {
-          console.log('continue')
-        } else {
-          requestBody[key] = this.shopDetailsForm.value[key]
-        }
+        requestBody = this.updateRequestBody(key,requestBody)
       })
-      console.log(requestBody)
-    } else if (this.form_status != 'DRAFT') {
+    } else if (this.form_status == 'VERIFIED') {
       Object.keys(this.shopDetailsForm.value).forEach(key => {
         if (this.shopDetailsInitialValue[key] != this.shopDetailsForm.value[key]) {
-          if (key == 'latitude') {
-            requestBody['lat'] = this.shopDetailsForm.value[key]
-          } else if (key == 'longitude') {
-            requestBody['lng'] = this.shopDetailsForm.value[key]
-          } else if (key == 'address_line_1') {
-            requestBody['street'] = this.shopDetailsForm.value[key]
-          } else if (key == 'address_line_2') {
-            requestBody['area'] = this.shopDetailsForm.value[key]
-          } else if (key == 'tags') {
-            requestBody['tags'] = this.shopDetailsForm.value[key].split(',')
-          } else if (key == 'cover_photos' || key == 'icon') {
-            console.log('continue')
-          } else {
-            requestBody[key] = this.shopDetailsForm.value[key]
-          }
+          requestBody = this.updateRequestBody(key,requestBody)
         }
       })
     }
     this.shopService.updateShopDetails(this.shopId, requestBody)
       .then(response => {
-        console.log(response)
         this.initializeForm(response['data']['shop'])
       })
-      .catch(error => console.log(error));
+      .catch(error => handleError(error,this.shopDetailsForm));
+  }
+
+  updateRequestBody(key, requestBody){
+    if (key == 'latitude') {
+      requestBody['lat'] = this.shopDetailsForm.value[key]
+    } else if (key == 'longitude') {
+      requestBody['lng'] = this.shopDetailsForm.value[key]
+    } else if (key == 'address_line_1') {
+      requestBody['street'] = this.shopDetailsForm.value[key]
+    } else if (key == 'address_line_2') {
+      requestBody['area'] = this.shopDetailsForm.value[key]
+    } else if (key == 'tags') {
+      requestBody['tags'] = this.shopDetailsForm.value[key].split(', ')
+    } else if (key == 'cover_photos' || key == 'icon') {
+      // pass;
+    } else {
+      requestBody[key] = this.shopDetailsForm.value[key]
+    }
+    return requestBody;
   }
 
   acceptTermsAndConditions() {
@@ -299,12 +273,6 @@ export class ShopDetailsComponent extends BaseComponent implements AfterViewChec
   }
 
   expandPanel(acc, panelId) {
-    console.log("expand called: " + panelId)
-    if (acc.isExpanded(panelId)) {
-      acc.collapse(panelId)
-    }
-    else{
-      acc.expand(panelId)
-    }
+    acc.isExpanded(panelId)?acc.collapse(panelId):acc.expand(panelId);
   }
 }

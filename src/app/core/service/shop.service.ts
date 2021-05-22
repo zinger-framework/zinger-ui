@@ -32,9 +32,6 @@ export class ShopService extends ApiService {
   }
 
   deleteCover(shopId,imageIndex){
-    let requestBody = {
-      index: imageIndex
-    }
-    return this.delete(API_ENDPOINTS.SHOP+'/'+shopId+'/cover_photo',requestBody)
+    return this.delete(API_ENDPOINTS.SHOP+'/'+shopId+'/cover_photo/'+imageIndex)
   }
 }

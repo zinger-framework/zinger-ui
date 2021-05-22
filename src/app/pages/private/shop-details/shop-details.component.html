@@ -18,11 +18,11 @@
 
   <form (ngSubmit)="submitShopDetails()" [formGroup]="shopDetailsForm" class="shopDetailsForm">
     <div class="form-feedback has-danger padding-bottom-10 text-center"></div>
-    <ngb-accordion #acc="ngbAccordion" activeIds="ngb-panel-0" (panelChange)="beforeChange($event, acc)">
+    <ngb-accordion #accordion="ngbAccordion" activeIds="ngb-panel-0" (panelChange)="onAccordionExpandListener($event)">
 
       <ngb-panel id="basicInfoPanel">
         <ng-template ngbPanelHeader let-opened="opened" class="panel-header">
-          <accordion-header (click)="expandPanel(acc,'basicInfoPanel')" [opened]="opened"
+          <accordion-header (click)="expandPanel(accordion,'basicInfoPanel')" [opened]="opened"
                             title='Basic Information'></accordion-header>
         </ng-template>
 
@@ -102,7 +102,7 @@
 
       <ngb-panel id="contactInfoPanel">
         <ng-template class="panel-header" let-opened="opened" ngbPanelHeader>
-          <accordion-header (click)="expandPanel(acc,'contactInfoPanel')" [opened]="opened"
+          <accordion-header (click)="expandPanel(accordion,'contactInfoPanel')" [opened]="opened"
                             title='Contact Information'></accordion-header>
         </ng-template>
 
@@ -155,7 +155,7 @@
 
       <ngb-panel id="mediaInfoPanel">
         <ng-template class="panel-header" let-opened="opened" ngbPanelHeader>
-          <accordion-header (click)="expandPanel(acc,'mediaInfoPanel')" [opened]="opened"
+          <accordion-header (click)="expandPanel(accordion,'mediaInfoPanel')" [opened]="opened"
                             title='Media Information'></accordion-header>
         </ng-template>
 
@@ -203,7 +203,7 @@
 
       <ngb-panel id="paymentInfoPanel">
         <ng-template class="panel-header" let-opened="opened" ngbPanelHeader>
-          <accordion-header (click)="expandPanel(acc,'paymentInfoPanel')" [opened]="opened"
+          <accordion-header (click)="expandPanel(accordion,'paymentInfoPanel')" [opened]="opened"
                             title='Payment Information'></accordion-header>
         </ng-template>
 
