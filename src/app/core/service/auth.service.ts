@@ -50,12 +50,12 @@ export class AuthService extends ApiService {
     return this.post(API_ENDPOINTS.AUTH_OTP_SIGNUP, requestBody);
   }
 
-  signup(name, otp, pwd, pwd_confirmation) {
+  signup(name, otp, password, password_confirmation) {
     const requestBody = {
       auth_token: this.jwtService.getAuthToken(),
       otp: otp,
-      password: pwd,
-      password_confirmation: pwd_confirmation,
+      password: password,
+      password_confirmation: password_confirmation,
       name: name
     }
     return this.post(API_ENDPOINTS.AUTH_SIGNUP, requestBody);
