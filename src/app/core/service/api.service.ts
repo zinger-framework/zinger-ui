@@ -90,18 +90,18 @@ export class ApiService implements HttpInterceptor {
     return this.http.post(
       `${API_ENDPOINTS.ADMIN_URL}${path}`,
       JSON.stringify(body),
-      {headers: this.setHeaders(path,contentType)}
+      {headers: this.setHeaders(path, contentType)}
     ).toPromise();
   }
 
-  sendFormData(path: string, body: Object){
+  sendFormData(path: string, body: Object) {
     return this.http.post(
       `${API_ENDPOINTS.ADMIN_URL}${path}`, body,
-      {headers: this.setHeaders(path,null)}
+      {headers: this.setHeaders(path, null)}
     ).toPromise();
   }
 
-  delete(path,body: Object = {}) {
+  delete(path, body: Object = {}) {
     return this.http.request('DELETE', `${API_ENDPOINTS.ADMIN_URL}${path}`, {
       headers: this.setHeaders(path),
       body: body
@@ -113,12 +113,12 @@ export class ApiService implements HttpInterceptor {
     this.router.navigate([APP_ROUTES.AUTH_LOGIN]);
   }
 
-  private setHeaders(path: string,contentType = 'application/json'): HttpHeaders {
+  private setHeaders(path: string, contentType = 'application/json'): HttpHeaders {
     const headersConfig = {}
-    if(contentType!=null)
+    if (contentType != null)
       headersConfig['Content-Type'] = contentType
 
-    headersConfig['Accept']  = 'application/json'
+    headersConfig['Accept'] = 'application/json'
     let setAuthToken;
     if (this.loginOtpAPIs.includes(path)) {
       if (this.jwtService.getAuthToken() != null) {

@@ -30,18 +30,18 @@ import {PublicModule} from "../public/public.module";
   exports: [
     PrivateComponent
   ],
-    imports: [
-      CommonModule,
-      RouterModule,
-      SharedModule,
-      NgApexchartsModule,
-      UiSwitchModule,
-      NgSelectModule,
-      ReactiveFormsModule,
-      NgbAccordionModule,
-      NgxMaterialTimepickerModule,
-      PublicModule
-    ]
+  imports: [
+    CommonModule,
+    RouterModule,
+    SharedModule,
+    NgApexchartsModule,
+    UiSwitchModule,
+    NgSelectModule,
+    ReactiveFormsModule,
+    NgbAccordionModule,
+    NgxMaterialTimepickerModule,
+    PublicModule
+  ]
 })
 export class PrivateModule {
 }

@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { AccordionHeaderComponent } from './accordion-header.component';
+import {AccordionHeaderComponent} from './accordion-header.component';
 
 describe('AccordionHeaderComponent', () => {
   let component: AccordionHeaderComponent;
@@ -8,9 +8,9 @@ describe('AccordionHeaderComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AccordionHeaderComponent ]
+      declarations: [AccordionHeaderComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

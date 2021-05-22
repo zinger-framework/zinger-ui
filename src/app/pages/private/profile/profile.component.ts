@@ -71,9 +71,10 @@ export class ProfileComponent extends BaseComponent {
   }
 
   updateTwoFactor() {
-    if(this.profileApiResponse['mobile'] == null && this.profileForm.get('two_fa_enabled').value){
-        setErrorMessage("Mobile must be updated before enabling 2FA",'profile','mobile')
-        this.profileForm.get('two_fa_enabled').setValue( false);
+    if (this.profileApiResponse['mobile'] == null && this.profileForm.get('two_fa_enabled').value) {
+      setErrorMessage("Mobile must be updated before enabling 2FA", 'profile', 'mobile')
+      this.profileForm.get('two_fa_enabled').setValue(false);
+      return
     }
     this.profileService.updateProfile({two_fa_enabled: this.profileForm.get('two_fa_enabled').value})
       .then(response => {

@@ -1,6 +1,6 @@
-::ng-deep ngx-material-timepicker-content{
+::ng-deep ngx-material-timepicker-content {
   --body-background-color: #fff;
-  --primary-font-family: 'Roboto',sans-serif;
+  --primary-font-family: 'Roboto', sans-serif;
   --button-color: #FF4141 !important;
   --dial-active-color: #fff;
   --dial-inactive-color: rgba(255, 255, 255, .5);

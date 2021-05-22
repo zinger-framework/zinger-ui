@@ -42,7 +42,7 @@ export class AuthService extends ApiService {
   }
 
   resendOtp() {
-    return this.post(API_ENDPOINTS.AUTH_OTP_LOGIN,{})
+    return this.post(API_ENDPOINTS.AUTH_OTP_LOGIN, {})
   }
 
   sendSignupOtp(email) {

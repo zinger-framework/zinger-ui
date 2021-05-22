@@ -1,4 +1,5 @@
 <div class="form-group form-group-{{name}}">
-  <input [id]="name" [formControlName]="name" [placeholder]="placeholder" [type]="inputType" [readOnly]="readonly" [multiple]="multiple" (change)="onChange($event)" class="form-control form-control-lg"/>
+  <input (change)="onChange($event)" [formControlName]="name" [id]="name" [multiple]="multiple" [placeholder]="placeholder"
+         [readOnly]="readonly" [type]="inputType" class="form-control form-control-lg"/>
   <div class="form-control-feedback has-danger"></div>
 </div>

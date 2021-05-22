@@ -17,10 +17,11 @@
 
 
   <form (ngSubmit)="submitShopDetails(accordion)" [formGroup]="shopDetailsForm" class="shopDetailsForm">
-    <ngb-accordion #accordion="ngbAccordion" activeIds="ngb-panel-0" [destroyOnHide]="false" (panelChange)="onAccordionExpandListener($event)">
+    <ngb-accordion #accordion="ngbAccordion" (panelChange)="onAccordionExpandListener($event)" [destroyOnHide]="false"
+                   activeIds="ngb-panel-0">
 
       <ngb-panel id="basicInfoPanel">
-        <ng-template ngbPanelHeader let-opened="opened" class="panel-header">
+        <ng-template class="panel-header" let-opened="opened" ngbPanelHeader>
           <accordion-header (click)="expandPanel(accordion,'basicInfoPanel')" [opened]="opened"
                             title='Basic Information'></accordion-header>
         </ng-template>
@@ -35,7 +36,8 @@
             <div class="col-md-6 col-lg-6">
               <label class="required">Category</label>
               <div class="form-group form-group-category">
-                <ng-select formControlName="category" [clearable]="false" [searchable]="false" [items]="categories" placeholder="Select">
+                <ng-select [clearable]="false" [items]="categories" [searchable]="false" formControlName="category"
+                           placeholder="Select">
                 </ng-select>
                 <div class="form-control-feedback has-danger"></div>
               </div>
@@ -46,7 +48,8 @@
             <div class="col-md-6 col-lg-6">
               <label class="required">Opening Time</label>
               <div class="form-group form-group-opening_time">
-                <input formControlName="opening_time" placeholder="09:30" aria-label="12hr format" [format]="24" [ngxTimepicker]="openingTime" class="form-control form-control-lg">
+                <input [format]="24" [ngxTimepicker]="openingTime" aria-label="12hr format" class="form-control form-control-lg"
+                       formControlName="opening_time" placeholder="09:30">
                 <ngx-material-timepicker #openingTime></ngx-material-timepicker>
                 <div class="form-control-feedback has-danger"></div>
               </div>
@@ -56,7 +59,8 @@
             <div class="col-md-6 col-lg-6">
               <label class="required">Closing Time</label>
               <div class="form-group form-group-closing_time">
-                <input formControlName="closing_time" placeholder="21:30" [format]="24" aria-label="12hr format" [ngxTimepicker]="closingTime" class="form-control form-control-lg">
+                <input [format]="24" [ngxTimepicker]="closingTime" aria-label="12hr format" class="form-control form-control-lg"
+                       formControlName="closing_time" placeholder="21:30">
                 <ngx-material-timepicker #closingTime></ngx-material-timepicker>
                 <div class="form-control-feedback has-danger"></div>
               </div>
@@ -79,7 +83,9 @@
             <div class="col-md-6 col-lg-6">
               <label class="required">Shop Description</label>
               <div class="form-group form-group-description">
-                <textarea rows="6" formControlName="description" placeholder="Describe your restaurant in less than 250 words" class="form-control form-control-lg"></textarea>
+                <textarea class="form-control form-control-lg" formControlName="description"
+                          placeholder="Describe your restaurant in less than 250 words"
+                          rows="6"></textarea>
                 <div class="form-control-feedback has-danger"></div>
               </div>
             </div>
@@ -92,7 +98,8 @@
 
               <div>
                 <label class="required">Tags</label>
-                <form-input inputType="text" name="tags" placeholder="Chinese, Tandoori, Biriyani, Dessert"></form-input>
+                <form-input inputType="text" name="tags"
+                            placeholder="Chinese, Tandoori, Biriyani, Dessert"></form-input>
               </div>
             </div>
           </div>
@@ -127,7 +134,7 @@
             <div class="col-md-6 col-lg-6">
               <label class="required">State</label>
               <div class="form-group form-group-state">
-                <ng-select formControlName="state" [clearable]="false" [searchable]="false" placeholder="Select">
+                <ng-select [clearable]="false" [searchable]="false" formControlName="state" placeholder="Select">
                   <ng-option *ngFor="let state of states" [value]="state">{{state}}</ng-option>
                 </ng-select>
                 <div class="form-control-feedback has-danger"></div>
@@ -165,15 +172,16 @@
               <br>
               <div class="row">
                 <div *ngIf="iconSrc; else placeholderimage">
-                  <image-preview imageType="icon" [imageSrc]="iconSrc"
-                                 (deleteImageEvent)="previewDeleted($event,'icon')"></image-preview>
+                  <image-preview (deleteImageEvent)="previewDeleted($event,'icon')" [imageSrc]="iconSrc"
+                                 imageType="icon"></image-preview>
                 </div>
                 <ng-template #placeholderimage>
-                  <img (click)="browseFiles('icon')" width="70" height="70" class="ml-3 cursor-pointer" 
-                       src="/assets/images/upload-image.png"/>
+                  <img (click)="browseFiles('icon')" class="ml-3 cursor-pointer" height="70" src="/assets/images/upload-image.png"
+                       width="70"/>
                 </ng-template>
               </div>
-              <form-input inputType="file" name="icon" class="file-input" (change)="onFileChange($event,'icon')"></form-input>
+              <form-input (change)="onFileChange($event,'icon')" class="file-input" inputType="file"
+                          name="icon"></form-input>
               <span class="small text-light-gray">• Image size: < 1 MB <br>• Image type: JPG, PNG<br>• Dimensions: 512x512 px</span>
             </div>
           </div>
@@ -184,15 +192,16 @@
               <br>
               <div class="row">
                 <div *ngFor="let imgSrc of coverImgSrcList; let i=index">
-                  <image-preview imageType="cover_photos" [imageSrc]="imgSrc"
-                                 (deleteImageEvent)="previewDeleted($event,'cover_photos')"></image-preview>
+                  <image-preview (deleteImageEvent)="previewDeleted($event,'cover_photos')" [imageSrc]="imgSrc"
+                                 imageType="cover_photos"></image-preview>
                 </div>
                 <div *ngIf="coverImgSrcList.length<10">
-                  <img (click)="browseFiles('cover_photos')" width="70" height="34" class="ml-3 cursor-pointer"
-                       src="/assets/images/upload-image.png"/>
+                  <img (click)="browseFiles('cover_photos')" class="ml-3 cursor-pointer" height="34" src="/assets/images/upload-image.png"
+                       width="70"/>
                 </div>
               </div>
-              <form-input (change)="onFileChange($event,'cover_photos')" class="file-input" inputType="file" name="cover_photos"></form-input>
+              <form-input (change)="onFileChange($event,'cover_photos')" class="file-input" inputType="file"
+                          name="cover_photos"></form-input>
               <span class="small text-light-gray">• Image size: < 1 MB <br>• Image type: JPG, PNG<br>• Dimensions: 1024x500 px<br>• Maximum limit: 10 images</span>
             </div>
           </div>
@@ -242,7 +251,7 @@
 
     <div *ngIf="this.formStatus==='DRAFT'" class="m-1">
       <div class="custom-control custom-checkbox mt-4">
-        <input (click)="acceptTermsAndConditions()" type="checkbox" class="custom-control-input" id="customCheck1">
+        <input (click)="acceptTermsAndConditions()" class="custom-control-input" id="customCheck1" type="checkbox">
         <label class="custom-control-label" for="customCheck1">I have read and agreed to the <a href="#">terms and
           conditions</a> and <a href="#"> privacy policy</a></label>
       </div>
