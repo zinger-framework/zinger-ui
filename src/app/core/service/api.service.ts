@@ -74,7 +74,7 @@ export class ApiService implements HttpInterceptor {
   }
 
   get(path: string, params = new HttpParams()) {
-    return this.http.get(`${API_ENDPOINTS.ADMIN_URL}${path}`, {headers: this.setHeaders(path)})
+    return this.http.get(`${API_ENDPOINTS.ADMIN_URL}${path}`, {headers: this.setHeaders(path, 'application/json')})
       .toPromise();
   }
 
@@ -82,30 +82,28 @@ export class ApiService implements HttpInterceptor {
     return this.http.put(
       `${API_ENDPOINTS.ADMIN_URL}${path}`,
       JSON.stringify(body),
-      {headers: this.setHeaders(path)}
+      {headers: this.setHeaders(path, 'application/json')}
     ).toPromise();
   }
 
-  post(path: string, body: Object, contentType = 'application/json') {
+  post(path: string, body: Object) {
     return this.http.post(
       `${API_ENDPOINTS.ADMIN_URL}${path}`,
       JSON.stringify(body),
-      {headers: this.setHeaders(path, contentType)}
+      {headers: this.setHeaders(path, 'application/json')}
     ).toPromise();
   }
 
   sendFormData(path: string, body: Object) {
     return this.http.post(
       `${API_ENDPOINTS.ADMIN_URL}${path}`, body,
-      {headers: this.setHeaders(path, null)}
+      {headers: this.setHeaders(path)}
     ).toPromise();
   }
 
-  delete(path, body: Object = {}) {
-    return this.http.request('DELETE', `${API_ENDPOINTS.ADMIN_URL}${path}`, {
-      headers: this.setHeaders(path),
-      body: body
-    }).toPromise();
+  delete(path) {
+    return this.http.delete(`${API_ENDPOINTS.ADMIN_URL}${path}`, {headers: this.setHeaders(path, 'application/json')})
+      .toPromise()
   }
 
   logout() {
@@ -113,12 +111,11 @@ export class ApiService implements HttpInterceptor {
     this.router.navigate([APP_ROUTES.AUTH_LOGIN]);
   }
 
-  private setHeaders(path: string, contentType = 'application/json'): HttpHeaders {
-    const headersConfig = {}
-    if (contentType != null)
+  private setHeaders(path: string, contentType = ''): HttpHeaders {
+    const headersConfig = {'Accept': 'application/json'}
+    if (contentType != '')
       headersConfig['Content-Type'] = contentType
 
-    headersConfig['Accept'] = 'application/json'
     let setAuthToken;
     if (this.loginOtpAPIs.includes(path)) {
       if (this.jwtService.getAuthToken() != null) {
