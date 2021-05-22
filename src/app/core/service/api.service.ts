@@ -78,7 +78,7 @@ export class ApiService implements HttpInterceptor {
       .toPromise();
   }
 
-  put(path: string, body: Object = {}) {
+  put(path: string, body: Object) {
     return this.http.put(
       `${API_ENDPOINTS.ADMIN_URL}${path}`,
       JSON.stringify(body),
