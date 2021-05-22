@@ -37,7 +37,6 @@ export class ShopDetailsComponent extends BaseComponent {
   categories = ['GROCERY', 'PHARMACY', 'RESTAURANT', 'OTHERS']
   states = ['Tamil Nadu', 'Kerala', 'Andhra Pradesh', 'Karnataka']
   iconSrc = ''
-  iconName = ''
   coverImgSrcList = []
   shopId: number;
 
@@ -90,7 +89,7 @@ export class ShopDetailsComponent extends BaseComponent {
       if (shopData[field] != null) {
         switch (shopData[field]){
           case 'address':
-            if (shopData[field]['lat'] != null && shopData[field]['lng'] != undefined && shopData[field]['lat'] != 0 && shopData[field]['lng'] != 0) {
+            if (shopData[field]['lat'] != 0 && shopData[field]['lng'] != 0) {
               this.shopDetailsForm.get('latitude').setValue(shopData[field]['lat'])
               this.shopDetailsForm.get('longitude').setValue(shopData[field]['lng'])
             }
@@ -102,7 +101,7 @@ export class ShopDetailsComponent extends BaseComponent {
             break;
           case 'payment':
             Object.keys(shopData[field]).forEach(payment_field => {
-              if (shopData[field][payment_field] != null && this.shopDetailsForm.get(payment_field) != null)
+              if (shopData[field][payment_field] != null)
                 this.shopDetailsForm.get(payment_field).setValue(shopData[field][payment_field])
             })
             break;
@@ -115,8 +114,7 @@ export class ShopDetailsComponent extends BaseComponent {
             }
             break;
           case 'tags':
-            let tagString = shopData[field].toString();
-            tagString = tagString.replace(/,/g, ', ');
+            let tagString = shopData[field].toString().replace(/,/g, ', ');
             this.shopDetailsForm.get('tags').setValue(tagString);
             break;
           case 'status':
@@ -134,10 +132,10 @@ export class ShopDetailsComponent extends BaseComponent {
 
   browseFiles(imgType) {
     this.shopDetailsForm.get(imgType).markAsTouched();
-    $('#' + imgType)[0].click();
+    $('div.form-group-${imgType} input')[0].click();
   }
 
-  onFileChange(event, imgType = '') {
+  onFileChange(event, imgType) {
     if (event.target.files && event.target.files.length) {
       const file = event.target.files[0];
       if (!file.name.endsWith('jpg') && !file.name.endsWith('png') && !file.name.endsWith('jpeg')) {
@@ -200,48 +198,49 @@ export class ShopDetailsComponent extends BaseComponent {
     setErrorMessage('Icon cannot be empty', 'shopDetails', 'icon')
   }
 
-  deleteCoverImage(previewName, index) {
+  deleteCoverImage(index) {
     let deletedImgSrc = this.coverImgSrcList[index];
     this.coverImgSrcList = this.coverImgSrcList.filter(x => x != deletedImgSrc)
     if (this.coverImgSrcList.length == 0)
       setErrorMessage('Cover Photos cannot be empty', 'shopDetails', 'cover_photos')
   }
 
-  previewDeleted(previewName, type) {
-    if (type == 'icon') {
-      this.shopService.deleteIcon(this.shopId)
-        .then(response => {
-          this.deleteIcon()
-        })
-        .catch(error => {
-          if (error['status'] == 404) {
-            this.deleteIcon()
-          }
-          handleError(error, this.shopDetailsForm)
-        })
-
-    } else if (type == 'cover_photos') {
-      this.shopDetailsForm.get(type).setValue('')
-      let index = this.coverImgSrcList.findIndex(x => x == previewName)
-      if (index >= 0) {
-        this.shopService.deleteCoverPhoto(this.shopId, index)
+  previewDeleted(imageUrl, type) {
+    switch (type){
+      case 'icon':
+        this.shopService.deleteIcon(this.shopId)
           .then(response => {
-            this.deleteCoverImage(previewName, index)
+            this.deleteIcon()
           })
           .catch(error => {
             if (error['status'] == 404) {
-              this.deleteCoverImage(previewName, index)
+              this.deleteIcon()
             }
             handleError(error, this.shopDetailsForm)
           })
-      }
+        break;
+      case 'cover_photos':
+        let index = this.coverImgSrcList.findIndex(x => x == imageUrl)
+        if (index >= 0) {
+          this.shopService.deleteCoverPhoto(this.shopId, index)
+            .then(response => {
+              this.deleteCoverImage(index)
+            })
+            .catch(error => {
+              if (error['status'] == 404) {
+                this.deleteCoverImage(index)
+              }
+              handleError(error, this.shopDetailsForm)
+            })
+        }
+        break;
     }
   }
 
   canSubmitForm() {
-    if (this.formStatus == 'DRAFT') {
+    if (this.formStatus == 'DRAFT')
       return this.termsAndCondition && this.shopDetailsForm.valid && this.iconSrc.length > 0 && this.coverImgSrcList.length > 0
-    } else
+    else
       return true;
   }
 
