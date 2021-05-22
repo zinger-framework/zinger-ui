@@ -23,6 +23,7 @@ const routes: Routes = [
       {path: 'signup', component: SignupComponent, canActivate: [AuthGuardService], data: {page: 'PUBLIC'}}
     ]
   },
+  {path: '', redirectTo: '/dashboard', pathMatch: 'full'},
   {path: '**', component: PageNotFoundComponent}
 ];
 
