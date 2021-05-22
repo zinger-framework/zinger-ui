@@ -102,11 +102,6 @@ export class ApiService implements HttpInterceptor {
   }
 
   delete(path,body: Object = {}) {
-    // return this.http.delete(
-    //   `${API_ENDPOINTS.ADMIN_URL}${path}`,
-    //   {headers: this.setHeaders(path)}
-    // ).toPromise();
-
     return this.http.request('DELETE', `${API_ENDPOINTS.ADMIN_URL}${path}`, {
       headers: this.setHeaders(path),
       body: body
@@ -122,9 +117,8 @@ export class ApiService implements HttpInterceptor {
     const headersConfig = {}
     if(contentType!=null)
       headersConfig['Content-Type'] = contentType
+
     headersConfig['Accept']  = 'application/json'
-
-
     let setAuthToken;
     if (this.loginOtpAPIs.includes(path)) {
       if (this.jwtService.getAuthToken() != null) {

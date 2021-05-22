@@ -7,9 +7,9 @@ import {AuthComponent} from './pages/public/auth/auth.component';
 import {ProfileComponent} from './pages/private/profile/profile.component';
 import {DashboardComponent} from './pages/private/dashboard/dashboard.component';
 import {PageNotFoundComponent} from './layouts/page-not-found/page-not-found.component';
-import {AuthGuardService} from "./core/service/auth-guard.service";
-import {SignupComponent} from "./pages/public/auth/signup/signup.component";
-import {ShopDetailsComponent} from "./pages/private/shop-details/shop-details.component";
+import {AuthGuardService} from './core/service/auth-guard.service';
+import {SignupComponent} from './pages/public/auth/signup/signup.component';
+import {ShopDetailsComponent} from './pages/private/shop-details/shop-details.component';
 
 const routes: Routes = [
   {path: 'profile', component: ProfileComponent, canActivate: [AuthGuardService]},

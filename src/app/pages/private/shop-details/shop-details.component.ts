@@ -18,7 +18,7 @@ import {BaseComponent} from '../../../base.component';
   styleUrls: ['./shop-details.component.css']
 })
 export class ShopDetailsComponent extends BaseComponent implements AfterViewChecked {
-  form_status = ''
+  formStatus = ''
   shopDetailsForm: FormGroup;
   shopDetailsInitialValue = {}
   termsAndCondition = false;
@@ -114,7 +114,7 @@ export class ShopDetailsComponent extends BaseComponent implements AfterViewChec
           this.shopDetailsForm.get('tags').setValue(tagString);
         }
         else if(field=='status'){
-          this.form_status = shopData[field]
+          this.formStatus = shopData[field]
         }
         else if(field=='id'){
           this.shopId = shopData[field]
@@ -220,7 +220,7 @@ export class ShopDetailsComponent extends BaseComponent implements AfterViewChec
   }
 
   canSubmitForm() {
-    if (this.form_status == 'DRAFT') {
+    if (this.formStatus == 'DRAFT') {
       return this.termsAndCondition && this.shopDetailsForm.valid && this.iconSrc.length > 0 && this.coverImgSrcList.length > 0
     } else
       return true;
@@ -231,11 +231,11 @@ export class ShopDetailsComponent extends BaseComponent implements AfterViewChec
     formData['icon'] = this.iconSrc
     formData['cover_photos'] = this.coverImgSrcList
     let requestBody = {}
-    if (this.form_status == 'DRAFT') {
+    if (this.formStatus == 'DRAFT') {
       Object.keys(this.shopDetailsForm.value).forEach(key => {
         requestBody = this.updateRequestBody(key,requestBody)
       })
-    } else if (this.form_status == 'VERIFIED') {
+    } else if (this.formStatus == 'VERIFIED') {
       Object.keys(this.shopDetailsForm.value).forEach(key => {
         if (this.shopDetailsInitialValue[key] != this.shopDetailsForm.value[key]) {
           requestBody = this.updateRequestBody(key,requestBody)

@@ -1,13 +1,13 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {ExtendedFormControl} from "../../../../core/utils/extended-form-control.utils";
-import {APP_ROUTES, EMAIL_REGEX, NAME_REGEX, OTP_REGEX, PASSWORD_LENGTH, SESSION_KEY} from "../../../../core/utils/constants.utils";
-import {AuthService} from "../../../../core/service/auth.service";
-import {JwtService} from "../../../../core/service/jwt.service";
+import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {ExtendedFormControl} from '../../../../core/utils/extended-form-control.utils';
+import {APP_ROUTES, EMAIL_REGEX, NAME_REGEX, OTP_REGEX, PASSWORD_LENGTH, SESSION_KEY} from '../../../../core/utils/constants.utils';
+import {AuthService} from '../../../../core/service/auth.service';
+import {JwtService} from '../../../../core/service/jwt.service';
 import $ from 'jquery';
-import {handleError} from "../../../../core/utils/common.utils";
-import {WizardComponent} from "angular-archwizard";
-import {Router} from "@angular/router";
+import {handleError} from '../../../../core/utils/common.utils';
+import {WizardComponent} from 'angular-archwizard';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-signup',
