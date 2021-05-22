@@ -18,5 +18,6 @@ export class FormInputComponent {
   @Input() name: string;
   @Input() readonly: boolean = false;
   @Input() multiple: boolean = false;
-  @Input() onChange: any = (t) => {};
+  @Input() onChange: any = (t) => {
+  };
 }

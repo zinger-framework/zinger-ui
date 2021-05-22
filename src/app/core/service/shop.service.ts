@@ -11,27 +11,27 @@ export class ShopService extends ApiService {
     return this.get(API_ENDPOINTS.SHOP_NEW);
   }
 
-  getShopDetails(shopId){
-    return this.get(API_ENDPOINTS.SHOP+'/'+shopId);
+  getShopDetails(shopId) {
+    return this.get(API_ENDPOINTS.SHOP + '/' + shopId);
   }
 
-  updateShopDetails(shopId,requestBody) {
-    return this.put(API_ENDPOINTS.SHOP+'/'+shopId, requestBody);
+  updateShopDetails(shopId, requestBody) {
+    return this.put(API_ENDPOINTS.SHOP + '/' + shopId, requestBody);
   }
 
-  uploadIcon(shopId,requestBody){
-    return this.sendFormData(API_ENDPOINTS.SHOP+'/'+shopId+'/icon',requestBody)
+  uploadIcon(shopId, requestBody) {
+    return this.sendFormData(API_ENDPOINTS.SHOP + '/' + shopId + '/icon', requestBody)
   }
 
-  uploadCover(shopId,requestBody){
-    return this.sendFormData(API_ENDPOINTS.SHOP+'/'+shopId+'/cover_photo',requestBody)
+  uploadCoverPhoto(shopId, requestBody) {
+    return this.sendFormData(API_ENDPOINTS.SHOP + '/' + shopId + '/cover_photo', requestBody)
   }
 
-  deleteIcon(shopId){
-    return this.delete(API_ENDPOINTS.SHOP+'/'+shopId+'/icon')
+  deleteIcon(shopId) {
+    return this.delete(API_ENDPOINTS.SHOP + '/' + shopId + '/icon')
   }
 
-  deleteCover(shopId,imageIndex){
-    return this.delete(API_ENDPOINTS.SHOP+'/'+shopId+'/cover_photo/'+imageIndex)
+  deleteCoverPhoto(shopId, imageIndex) {
+    return this.delete(API_ENDPOINTS.SHOP + '/' + shopId + '/cover_photo/' + imageIndex)
   }
 }

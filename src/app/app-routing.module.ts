@@ -15,11 +15,12 @@ const routes: Routes = [
   {path: 'profile', component: ProfileComponent, canActivate: [AuthGuardService]},
   {path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuardService]},
   {path: 'shop/:id', component: ShopDetailsComponent, canActivate: [AuthGuardService]},
-  {path: 'updateShop', component: ShopDetailsComponent, canActivate: [AuthGuardService]},
   {
     path: 'auth', component: AuthComponent, children: [
       {path: 'login', component: LoginComponent, canActivate: [AuthGuardService], data: {page: 'PUBLIC'}},
-      {path: 'forgot_password', component: ForgotPasswordComponent, canActivate: [AuthGuardService], data: {page: 'PUBLIC'}},
+      {
+        path: 'forgot_password', component: ForgotPasswordComponent, canActivate: [AuthGuardService], data: {page: 'PUBLIC'}
+      },
       {path: 'signup', component: SignupComponent, canActivate: [AuthGuardService], data: {page: 'PUBLIC'}}
     ]
   },

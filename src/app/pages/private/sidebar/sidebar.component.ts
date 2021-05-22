@@ -12,17 +12,17 @@ import {ToastrService} from "ngx-toastr";
 })
 export class SidebarComponent extends BaseComponent {
 
-  constructor(private shopService: ShopService,private router: Router,private toastr: ToastrService) {
+  constructor(private shopService: ShopService, private router: Router, private toastr: ToastrService) {
     super();
   }
 
   ngOnInit(): void {
   }
 
-  addShop(){
+  addShop() {
     this.shopService.addNewShop()
-      .then(response =>{
-        this.router.navigate([APP_ROUTES.SHOP+'/'+response['data']['shop']['id']],{state: response['data']})
+      .then(response => {
+        this.router.navigate([APP_ROUTES.SHOP + '/' + response['data']['shop']['id']], {state: response['data']})
       })
       .catch(error => {
         this.toastr.error(error['message']);

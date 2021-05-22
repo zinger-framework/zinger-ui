@@ -4,7 +4,7 @@ import {ReactiveFormsModule} from '@angular/forms';
 
 import {FormInputComponent} from './form-elements/form-input/form-input.component';
 import {CardComponent} from './card/card.component';
-import { ImagePreviewComponent } from './form-elements/image-preview/image-preview.component';
+import {ImagePreviewComponent} from './form-elements/image-preview/image-preview.component';
 
 @NgModule({
   declarations: [FormInputComponent, CardComponent, ImagePreviewComponent],

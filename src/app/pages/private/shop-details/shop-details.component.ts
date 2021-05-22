@@ -1,11 +1,10 @@
-import {AfterViewChecked, ChangeDetectionStrategy, Component, NgZone} from '@angular/core';
-import {AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators} from '@angular/forms';
+import {Component} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ExtendedFormControl} from '../../../core/utils/extended-form-control.utils';
 import {
   ALPHABET_REGEX,
   APP_ROUTES,
   BANK_ACCOUNT_NUMBER_REGEX,
-  TAGS_REGEX,
   EMAIL_REGEX,
   GST_REGEX,
   IFSC_REGEX,
@@ -14,6 +13,7 @@ import {
   NAME_REGEX,
   PAN_REGEX,
   PINCODE_REGEX,
+  TAGS_REGEX,
   TELEPHONE_REGEX
 } from '../../../core/utils/constants.utils';
 import {NgbPanelChangeEvent} from '@ng-bootstrap/ng-bootstrap';
@@ -43,7 +43,7 @@ export class ShopDetailsComponent extends BaseComponent {
   coverImgSrcList = []
   shopId: number;
 
-  constructor(private fb: FormBuilder, private toastr: ToastrService, private shopService: ShopService, private route: ActivatedRoute, private router:Router) {
+  constructor(private fb: FormBuilder, private toastr: ToastrService, private shopService: ShopService, private route: ActivatedRoute, private router: Router) {
     super();
     this.route.params.subscribe(params => this.shopId = params['id']);
     this.shopDetailsForm = this.fb.group({
@@ -61,8 +61,8 @@ export class ShopDetailsComponent extends BaseComponent {
       city: new ExtendedFormControl('', [Validators.required, Validators.pattern(ALPHABET_REGEX)], 'city'),
       state: new ExtendedFormControl(null, [Validators.required], 'state'),
       pincode: new ExtendedFormControl('', [Validators.required, Validators.pattern(PINCODE_REGEX)], 'pincode'),
-      latitude: new ExtendedFormControl('', [Validators.required, Validators.pattern(LATLNG_REGEX),validateRange(-90,90)], 'latitude'),
-      longitude: new ExtendedFormControl('', [Validators.required, Validators.pattern(LATLNG_REGEX),validateRange(-180,180)], 'longitude'),
+      latitude: new ExtendedFormControl('', [Validators.required, Validators.pattern(LATLNG_REGEX), validateRange(-90, 90)], 'latitude'),
+      longitude: new ExtendedFormControl('', [Validators.required, Validators.pattern(LATLNG_REGEX), validateRange(-180, 180)], 'longitude'),
       icon: new ExtendedFormControl('', [], 'icon'),
       cover_photos: new ExtendedFormControl('', [], 'cover_photos'),
       account_number: new ExtendedFormControl('', [Validators.required, Validators.pattern(BANK_ACCOUNT_NUMBER_REGEX)], 'account_number'),
@@ -75,9 +75,9 @@ export class ShopDetailsComponent extends BaseComponent {
   }
 
   ngOnInit(): void {
-    if(history.state['shop']!=null){
+    if (history.state['shop'] != null) {
       this.initializeForm(history.state['shop'])
-    }else{
+    } else {
       this.shopService.getShopDetails(this.shopId)
         .then(response => this.initializeForm(response['data']['shop']))
         .catch(error => {
@@ -91,7 +91,7 @@ export class ShopDetailsComponent extends BaseComponent {
     Object.keys(shopData).forEach(field => {
       if (shopData[field] != null) {
         if (field == 'address') {
-          if (shopData[field]['lat'] != null && shopData[field]['lng'] != undefined && shopData[field]['lat'] != 0 && shopData[field]['lng'] != 0 ) {
+          if (shopData[field]['lat'] != null && shopData[field]['lng'] != undefined && shopData[field]['lat'] != 0 && shopData[field]['lng'] != 0) {
             this.shopDetailsForm.get('latitude').setValue(shopData[field]['lat'])
             this.shopDetailsForm.get('longitude').setValue(shopData[field]['lng'])
           }
@@ -100,30 +100,24 @@ export class ShopDetailsComponent extends BaseComponent {
           this.shopDetailsForm.get('city').setValue(shopData[field]['city'])
           this.shopDetailsForm.get('state').setValue(shopData[field]['state'])
           this.shopDetailsForm.get('pincode').setValue(shopData[field]['pincode'])
-        }
-        else if(field=='payment'){
+        } else if (field == 'payment') {
           Object.keys(shopData[field]).forEach(payment_field => {
-            if(shopData[field][payment_field]!=null && this.shopDetailsForm.get(payment_field)!=null)
+            if (shopData[field][payment_field] != null && this.shopDetailsForm.get(payment_field) != null)
               this.shopDetailsForm.get(payment_field).setValue(shopData[field][payment_field])
           })
-        }
-        else if(field=='icon'){
+        } else if (field == 'icon') {
           this.iconSrc = shopData[field]
-        }
-        else if(field=='cover_photos' && shopData[field].length>0){
+        } else if (field == 'cover_photos' && shopData[field].length > 0) {
           this.coverImgSrcList = shopData[field]
-        }
-        else if(field=='tags'){
+        } else if (field == 'tags') {
           let tagString = shopData[field].toString();
-          tagString = tagString.replace(/,/g,', ');
+          tagString = tagString.replace(/,/g, ', ');
           this.shopDetailsForm.get('tags').setValue(tagString);
-        }
-        else if(field=='status'){
+        } else if (field == 'status') {
           this.formStatus = shopData[field]
-        }
-        else if(field=='id'){
+        } else if (field == 'id') {
           this.shopId = shopData[field]
-        }else{
+        } else {
           if (this.shopDetailsForm.get(field) != null) {
             this.shopDetailsForm.get(field).setValue(shopData[field])
           }
@@ -156,35 +150,35 @@ export class ShopDetailsComponent extends BaseComponent {
         let img = new Image();
         img.src = reader.result as string;
         img.onload = () => {
-          if(file.size/(1024*1024)>1){
+          if (file.size / (1024 * 1024) > 1) {
             this.toastr.error('Please upload an image file of less than 1 MB')
             return;
           }
-          switch(imgType) {
+          switch (imgType) {
             case 'icon':
-              if (img.naturalWidth==512 && img.naturalHeight==512) {
-                formData.append('icon_file',file);
-                this.shopService.uploadIcon(this.shopId,formData)
+              if (img.naturalWidth == 512 && img.naturalHeight == 512) {
+                formData.append('icon_file', file);
+                this.shopService.uploadIcon(this.shopId, formData)
                   .then(response => {
                     this.iconSrc = response['data']['icon']
                     this.iconName = file.name;
                   })
                   .catch(error => {
-                    handleError(error,this.shopDetailsForm)
+                    handleError(error, this.shopDetailsForm)
                   })
               } else {
                 this.toastr.error('Please upload a valid image file of 512 x 512 dimension')
               }
               break;
             case 'cover_photos':
-              if (img.naturalWidth==1024 && img.naturalHeight==500) {
-                formData.append('cover_file',file);
-                this.shopService.uploadCover(this.shopId,formData)
+              if (img.naturalWidth == 1024 && img.naturalHeight == 500) {
+                formData.append('cover_file', file);
+                this.shopService.uploadCoverPhoto(this.shopId, formData)
                   .then(response => {
                     this.coverImgSrcList = response['data']['cover_photos']
                   })
                   .catch(error => {
-                    handleError(error,this.shopDetailsForm)
+                    handleError(error, this.shopDetailsForm)
                   })
               } else {
                 this.toastr.error('Please upload a valid image file of 1024 x 500 dimension')
@@ -196,46 +190,46 @@ export class ShopDetailsComponent extends BaseComponent {
     }
   }
 
-  deleteIcon(){
+  deleteIcon() {
     this.iconSrc = ''
     this.iconName = ''
     this.shopDetailsForm.get('icon').setValue('')
     setErrorMessage('Icon cannot be empty', 'shopDetailsForm', 'icon')
   }
 
-  deleteCoverImage(previewName,index){
+  deleteCoverImage(previewName, index) {
     let deletedImgSrc = this.coverImgSrcList[index];
     this.coverImgSrcList = this.coverImgSrcList.filter(x => x != deletedImgSrc)
-    if(this.coverImgSrcList.length == 0)
+    if (this.coverImgSrcList.length == 0)
       setErrorMessage('Cover Photos cannot be empty', 'shopDetailsForm', 'cover_photos')
   }
 
-  previewDeleted(previewName,type){
+  previewDeleted(previewName, type) {
     if (type == 'icon') {
       this.shopService.deleteIcon(this.shopId)
         .then(response => {
           this.deleteIcon()
         })
         .catch(error => {
-          if(error['status']==404){
+          if (error['status'] == 404) {
             this.deleteIcon()
           }
-          handleError(error,this.shopDetailsForm)
+          handleError(error, this.shopDetailsForm)
         })
 
     } else if (type == 'cover_photos') {
       this.shopDetailsForm.get(type).setValue('')
       let index = this.coverImgSrcList.findIndex(x => x == previewName)
       if (index >= 0) {
-        this.shopService.deleteCover(this.shopId, index)
+        this.shopService.deleteCoverPhoto(this.shopId, index)
           .then(response => {
-            this.deleteCoverImage(previewName,index)
+            this.deleteCoverImage(previewName, index)
           })
           .catch(error => {
-            if(error['status']==404){
-              this.deleteCoverImage(previewName,index)
+            if (error['status'] == 404) {
+              this.deleteCoverImage(previewName, index)
             }
-            handleError(error,this.shopDetailsForm)
+            handleError(error, this.shopDetailsForm)
           })
       }
     }
@@ -263,12 +257,12 @@ export class ShopDetailsComponent extends BaseComponent {
     let requestBody = {}
     if (this.formStatus == 'DRAFT') {
       Object.keys(this.shopDetailsForm.value).forEach(key => {
-        requestBody = this.updateRequestBody(key,requestBody)
+        requestBody = this.updateRequestBody(key, requestBody)
       })
     } else if (this.formStatus == 'VERIFIED') {
       Object.keys(this.shopDetailsForm.value).forEach(key => {
         if (this.shopDetailsInitialValue[key] != this.shopDetailsForm.value[key]) {
-          requestBody = this.updateRequestBody(key,requestBody)
+          requestBody = this.updateRequestBody(key, requestBody)
         }
       })
     }
@@ -278,28 +272,28 @@ export class ShopDetailsComponent extends BaseComponent {
       })
       .catch(error => {
         let reasonData = error['error']['reason']
-        if(reasonData['street']!=null){
+        if (reasonData['street'] != null) {
           reasonData['address_line_1'] = reasonData['street']
           delete reasonData.street
         }
-        if(reasonData['area']!=null){
+        if (reasonData['area'] != null) {
           reasonData['address_line_2'] = reasonData['area']
           delete reasonData.area
         }
-        if(reasonData['lat']!=null){
+        if (reasonData['lat'] != null) {
           reasonData['latitude'] = reasonData['lat']
           delete reasonData.lat
         }
-        if(reasonData['lng']!=null){
+        if (reasonData['lng'] != null) {
           reasonData['longitude'] = reasonData['lng']
           delete reasonData.lng
         }
         error['error']['reason'] = reasonData
-        handleError(error,this.shopDetailsForm)
+        handleError(error, this.shopDetailsForm)
       })
   }
 
-  updateRequestBody(key, requestBody){
+  updateRequestBody(key, requestBody) {
     if (key == 'latitude') {
       requestBody['lat'] = this.shopDetailsForm.value[key]
     } else if (key == 'longitude') {
@@ -309,10 +303,10 @@ export class ShopDetailsComponent extends BaseComponent {
     } else if (key == 'address_line_2') {
       requestBody['area'] = this.shopDetailsForm.value[key]
     } else if (key == 'tags') {
-      let temp = this.shopDetailsForm.value[key].replace(/, /g,',');
+      let temp = this.shopDetailsForm.value[key].replace(/, /g, ',');
       requestBody['tags'] = temp.split(',')
-      requestBody['tags'] = requestBody['tags'].filter(tag => tag!='')
-    } else if (key == 'cover_photos' || key == 'icon' || key=='className') {
+      requestBody['tags'] = requestBody['tags'].filter(tag => tag != '')
+    } else if (key == 'cover_photos' || key == 'icon' || key == 'className') {
       // pass;
     } else {
       requestBody[key] = this.shopDetailsForm.value[key]
@@ -325,6 +319,6 @@ export class ShopDetailsComponent extends BaseComponent {
   }
 
   expandPanel(acc, panelId) {
-    acc.isExpanded(panelId)?acc.collapse(panelId):acc.expand(panelId);
+    acc.isExpanded(panelId) ? acc.collapse(panelId) : acc.expand(panelId);
   }
 }
