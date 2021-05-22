@@ -15,7 +15,6 @@ const routes: Routes = [
   {path: 'profile', component: ProfileComponent, canActivate: [AuthGuardService]},
   {path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuardService]},
   {path: 'shop/:id', component: ShopDetailsComponent, canActivate: [AuthGuardService]},
-  {path: 'updateShop', component: ShopDetailsComponent, canActivate: [AuthGuardService]},
   {
     path: 'auth', component: AuthComponent, children: [
       {path: 'login', component: LoginComponent, canActivate: [AuthGuardService], data: {page: 'PUBLIC'}},
