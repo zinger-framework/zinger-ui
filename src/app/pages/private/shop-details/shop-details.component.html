@@ -46,7 +46,7 @@
             <div class="col-md-6 col-lg-6">
               <label class="required">Opening Time</label>
               <div class="form-group form-group-opening_time">
-                <input formControlName="opening_time" placeholder="09:30 AM" aria-label="12hr format" [format]="24" [ngxTimepicker]="openingTime" class="form-control form-control-lg">
+                <input formControlName="opening_time" placeholder="09:30" aria-label="12hr format" [format]="24" [ngxTimepicker]="openingTime" class="form-control form-control-lg">
                 <ngx-material-timepicker #openingTime></ngx-material-timepicker>
                 <div class="form-control-feedback has-danger"></div>
               </div>
@@ -56,7 +56,7 @@
             <div class="col-md-6 col-lg-6">
               <label class="required">Closing Time</label>
               <div class="form-group form-group-closing_time">
-                <input formControlName="closing_time" placeholder="09:30 PM" [format]="24" aria-label="12hr format" [ngxTimepicker]="closingTime" class="form-control form-control-lg">
+                <input formControlName="closing_time" placeholder="21:30" [format]="24" aria-label="12hr format" [ngxTimepicker]="closingTime" class="form-control form-control-lg">
                 <ngx-material-timepicker #closingTime></ngx-material-timepicker>
                 <div class="form-control-feedback has-danger"></div>
               </div>
