@@ -275,6 +275,7 @@ export class ShopDetailsComponent extends BaseComponent implements AfterViewChec
     } else if (key == 'tags') {
       let temp = this.shopDetailsForm.value[key].replace(/, /g,',');
       requestBody['tags'] = temp.split(',')
+      requestBody['tags'] = requestBody['tags'].filter(tag => tag!='')
     } else if (key == 'cover_photos' || key == 'icon' || key=='className') {
       // pass;
     } else {
