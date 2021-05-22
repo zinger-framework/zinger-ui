@@ -193,9 +193,8 @@
                        src="/assets/images/upload-image.png"/>
                 </div>
               </div>
-              <form-input (change)="onFileChange($event,'cover_photos')" class="file-input" inputType="file" multiple="true"
-                          name="cover_photos" placeholder="Attach shop cover photos"></form-input>
-              <span class="small text-light-gray">• Image size: < 1 MB <br>• Image type: JPG, PNG<br>• Dimensions: 1024x500 px<br>• Maximum limit: 5 images</span>
+              <form-input (change)="onFileChange($event,'cover_photos')" class="file-input" inputType="file" name="cover_photos" placeholder="Attach shop cover photos"></form-input>
+              <span class="small text-light-gray">• Image size: < 1 MB <br>• Image type: JPG, PNG<br>• Dimensions: 1024x500 px<br>• Maximum limit: 10 images</span>
             </div>
           </div>
         </ng-template>

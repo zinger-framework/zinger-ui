@@ -54,8 +54,8 @@ export class ShopDetailsComponent extends BaseComponent implements AfterViewChec
       mobile: new ExtendedFormControl('', [Validators.required, Validators.pattern(MOBILE_REGEX)], 'mobile'),
       telephone: new ExtendedFormControl('', [Validators.pattern(TELEPHONE_REGEX)], 'telephone'),
       email: new ExtendedFormControl('', [Validators.required, Validators.pattern(EMAIL_REGEX)], 'email'),
-      opening_time: new ExtendedFormControl('9:30', [Validators.required], 'opening_time'),
-      closing_time: new ExtendedFormControl('21:30', [Validators.required], 'closing_time'),
+      opening_time: new ExtendedFormControl('', [Validators.required], 'opening_time'),
+      closing_time: new ExtendedFormControl('', [Validators.required], 'closing_time'),
       address_line_1: new ExtendedFormControl('', [Validators.required], 'address_line_1'),
       address_line_2: new ExtendedFormControl('', [Validators.required], 'address_line_2'),
       city: new ExtendedFormControl('', [Validators.required, Validators.pattern(ALPHABET_REGEX)], 'city'),
@@ -154,7 +154,7 @@ export class ShopDetailsComponent extends BaseComponent implements AfterViewChec
         if (!file[i].name.endsWith('jpg') && !file[i].name.endsWith('png') && !file[i].name.endsWith('jpeg')) {
           this.toastr.error('Please upload an image')
           return
-        } else if (imgType == 'cover_photos' && this.coverImgSrcList.length >= 5) {
+        } else if (imgType == 'cover_photos' && this.coverImgSrcList.length >= 10) {
           this.toastr.error('Maximum of 5 cover photos can be uploaded')
         }
 
