@@ -4589,10 +4589,11 @@ body.IE .login-wrap .container, body.IE .register-page-wrap .container {
 .image-preview i {
   position: absolute;
   color: #FF4141;
-  background: white;
+  background: yellow;
   border-radius: 50px;
   top: 0;
   right: 0;
+  padding: 2px;
 }
 
 input[type="file"] {

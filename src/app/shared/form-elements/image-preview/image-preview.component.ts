@@ -28,4 +28,7 @@ export class ImagePreviewComponent implements OnInit {
     this.deleteImageEvent.emit(this.imageSrc)
   }
 
+  onImageLoadError(event){
+    event.target.src = '/assets/images/folder-placeholder.png'
+  }
 }

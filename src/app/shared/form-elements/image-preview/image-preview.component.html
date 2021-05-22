@@ -1,6 +1,6 @@
 <div class="image-preview m-2">
-  <img [height]="height" [width]="width" [src]="imageSrc" alt="preview-image" />
-  <i (click)="deleteImage()" aria-hidden="true" class="icon-copy fa fa-close close cursor-pointer"></i>
+  <img [height]="height" [width]="width" [src]="imageSrc" (error)="this.onImageLoadError($event)" alt="preview-image" />
+  <i (click)="deleteImage()" aria-hidden="true" class="icon-copy fa fa-close cursor-pointer"></i>
   <br>
   <span class="ml-2 small">{{imageName}}</span>
 </div>
