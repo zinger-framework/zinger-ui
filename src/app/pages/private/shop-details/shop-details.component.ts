@@ -149,51 +149,59 @@ export class ShopDetailsComponent extends BaseComponent implements AfterViewChec
 
   onFileChange(event, imgType = '') {
     if (event.target.files && event.target.files.length) {
-      const file = event.target.files;
-      for (let i = 0; i < event.target.files.length; i++) {
-        if (!file[i].name.endsWith('jpg') && !file[i].name.endsWith('png') && !file[i].name.endsWith('jpeg')) {
-          this.toastr.error('Please upload an image')
-          return
-        } else if (imgType == 'cover_photos' && this.coverImgSrcList.length >= 10) {
-          this.toastr.error('Maximum of 5 cover photos can be uploaded')
-        }
-
-        let formData = new FormData();
-        const reader = new FileReader();
-        reader.readAsDataURL(file[i]);
-        reader.onload = () => {
-          let img = new Image();
-          img.src = reader.result as string;
-          img.onload = () => {
-            if(file[i].size/(1024*1024)>1){
-              this.toastr.error('Image size must be less than 1 MB')
-              return;
-            }
-            if (imgType == 'icon' && img.naturalWidth==512 && img.naturalHeight==512) {
-              formData.append('icon_file',file[i]);
-              this.shopService.uploadIcon(this.shopId,formData)
-                .then(response => {
-                  this.iconSrc = response['data']['icon']
-                  this.iconName = file[i].name;
-                })
-                .catch(error => {
-                  this.toastr.error(error['error']['message'])
-                })
-            } else if (imgType == 'cover_photos' && img.naturalWidth==1024 && img.naturalHeight==500) {
-              formData.append('cover_file',file[i]);
-              this.shopService.uploadCover(this.shopId,formData)
-                .then(response => {
-                  this.coverImgSrcList = response['data']['cover_photos']
-                })
-                .catch(error => {
-                  this.toastr.error(error['error']['message'])
-                })
-            }else{
-              this.toastr.error('Image height and width do not meet the required specifications')
-            }
-          };
-        };
+      const file = event.target.files[0];
+      if (!file.name.endsWith('jpg') && !file.name.endsWith('png') && !file.name.endsWith('jpeg')) {
+        this.toastr.error('Please upload a valid image file')
+        return;
+      } else if (imgType == 'cover_photos' && this.coverImgSrcList.length >= 10) {
+        this.toastr.error('You have already uploaded 10 images. Please contact Zinger team to increase limit')
+        return;
       }
+
+      let formData = new FormData();
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        let img = new Image();
+        img.src = reader.result as string;
+        img.onload = () => {
+          if(file.size/(1024*1024)>1){
+            this.toastr.error('Please upload an image file of less than 1 MB')
+            return;
+          }
+          switch(imgType) {
+            case 'icon':
+              if (img.naturalWidth==512 && img.naturalHeight==512) {
+                formData.append('icon_file',file);
+                this.shopService.uploadIcon(this.shopId,formData)
+                  .then(response => {
+                    this.iconSrc = response['data']['icon']
+                    this.iconName = file.name;
+                  })
+                  .catch(error => {
+                    this.toastr.error(error['error']['message'])
+                  })
+              } else {
+                this.toastr.error('Please upload a valid image file of 512 x 512 dimension')
+              }
+              break;
+            case 'cover_photos':
+              if (img.naturalWidth==1024 && img.naturalHeight==500) {
+                formData.append('cover_file',file);
+                this.shopService.uploadCover(this.shopId,formData)
+                  .then(response => {
+                    this.coverImgSrcList = response['data']['cover_photos']
+                  })
+                  .catch(error => {
+                    this.toastr.error(error['error']['message'])
+                  })
+              } else {
+                this.toastr.error('Please upload a valid image file of 1024 x 500 dimension')
+              }
+              break;
+          }
+        };
+      };
     }
   }
 
