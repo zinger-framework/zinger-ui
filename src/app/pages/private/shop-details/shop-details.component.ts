@@ -1,5 +1,5 @@
 import {AfterViewChecked, ChangeDetectionStrategy, ChangeDetectorRef, Component, NgZone} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators} from '@angular/forms';
 import {ExtendedFormControl} from '../../../core/utils/extended-form-control.utils';
 import {
   ALPHABET_REGEX,
@@ -23,6 +23,7 @@ import {handleError, setErrorMessage} from '../../../core/utils/common.utils';
 import {ShopService} from '../../../core/service/shop.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {BaseComponent} from '../../../base.component';
+import {validateRange} from "../../../core/utils/validators.utils";
 
 
 @Component({
@@ -61,8 +62,8 @@ export class ShopDetailsComponent extends BaseComponent implements AfterViewChec
       city: new ExtendedFormControl('', [Validators.required, Validators.pattern(ALPHABET_REGEX)], 'city'),
       state: new ExtendedFormControl(null, [Validators.required], 'state'),
       pincode: new ExtendedFormControl('', [Validators.required, Validators.pattern(PINCODE_REGEX)], 'pincode'),
-      latitude: new ExtendedFormControl('', [Validators.required, Validators.pattern(LATLNG_REGEX)], 'latitude'),
-      longitude: new ExtendedFormControl('', [Validators.required, Validators.pattern(LATLNG_REGEX)], 'longitude'),
+      latitude: new ExtendedFormControl('', [Validators.required, Validators.pattern(LATLNG_REGEX),validateRange(-90,90)], 'latitude'),
+      longitude: new ExtendedFormControl('', [Validators.required, Validators.pattern(LATLNG_REGEX),validateRange(-180,180)], 'longitude'),
       icon: new ExtendedFormControl('', [], 'icon'),
       cover_photos: new ExtendedFormControl('', [], 'cover_photos'),
       account_number: new ExtendedFormControl('', [Validators.required, Validators.pattern(BANK_ACCOUNT_NUMBER_REGEX)], 'account_number'),
@@ -106,6 +107,7 @@ export class ShopDetailsComponent extends BaseComponent implements AfterViewChec
             this.shopDetailsForm.get('city').setValue(shopData[field]['city'])
             this.shopDetailsForm.get('state').setValue(shopData[field]['state'])
             this.shopDetailsForm.get('pincode').setValue(shopData[field]['pincode'])
+            //todo 0.0 must not be initialized
             this.shopDetailsForm.get('latitude').setValue(shopData[field]['lat'])
             this.shopDetailsForm.get('longitude').setValue(shopData[field]['lng'])
           }
@@ -267,6 +269,7 @@ export class ShopDetailsComponent extends BaseComponent implements AfterViewChec
   }
 
   submitShopDetails(accordion) {
+    accordion.expandAll()
     let formData = this.shopDetailsForm.value
     formData['icon'] = this.iconSrc
     formData['cover_photos'] = this.coverImgSrcList
@@ -287,7 +290,6 @@ export class ShopDetailsComponent extends BaseComponent implements AfterViewChec
         this.initializeForm(response['data']['shop'])
       })
       .catch(error => {
-        accordion.expandAll()
         let reasonData = error['error']['reason']
         if(reasonData['street']!=null){
           reasonData['address_line_1'] = reasonData['street']
@@ -306,7 +308,7 @@ export class ShopDetailsComponent extends BaseComponent implements AfterViewChec
           delete reasonData.lng
         }
         error['error']['reason'] = reasonData
-        setTimeout(()=>handleError(error,this.shopDetailsForm),30)
+        handleError(error,this.shopDetailsForm)
       })
   }
 

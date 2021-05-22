@@ -41,5 +41,5 @@ export const IFSC_REGEX = /^[A-Z]{4}[A-Z0-9]{7}$/;
 export const PAN_REGEX = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/;
 export const GST_REGEX = /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[0-9]{1}[A-Z]{1}[0-9A-Z]{1}$/;
 export const PINCODE_REGEX = /^[1-9][0-9]{5}$/;
-export const LATLNG_REGEX = /^[0-9]{1,2}[.][0-9]{1,2}$/;
+export const LATLNG_REGEX = /^[0-9+-.]*$/;
 export const TAGS_REGEX = /^[a-zA-Z_, -]{1,100}$/;
