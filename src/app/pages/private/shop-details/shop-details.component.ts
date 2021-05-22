@@ -246,27 +246,29 @@ export class ShopDetailsComponent extends BaseComponent {
 
   submitShopDetails(accordion) {
     accordion.expandAll()
-    let formData = this.shopDetailsForm.value
-    formData['icon'] = this.iconSrc
-    formData['cover_photos'] = this.coverImgSrcList
     let requestBody = {}
-    if (this.formStatus == 'DRAFT') {
-      Object.keys(this.shopDetailsForm.value).forEach(key => {
-        requestBody = this.updateRequestBody(key, requestBody)
-      })
-    } else if (this.formStatus == 'VERIFIED') {
-      Object.keys(this.shopDetailsForm.value).forEach(key => {
-        if (this.shopDetailsInitialValue[key] != this.shopDetailsForm.value[key]) {
+    switch (this.formStatus) {
+      case 'DRAFT':
+        Object.keys(this.shopDetailsForm.value).forEach(key => {
           requestBody = this.updateRequestBody(key, requestBody)
-        }
-      })
+        })
+        break;
+      case 'VERIFIED':
+        Object.keys(this.shopDetailsForm.value).forEach(key => {
+          if (this.shopDetailsInitialValue[key] != this.shopDetailsForm.value[key]) {
+            requestBody = this.updateRequestBody(key, requestBody)
+          }
+        })
+        break;
     }
+
     this.shopService.updateShopDetails(this.shopId, requestBody)
       .then(response => {
         this.initializeForm(response['data']['shop'])
       })
       .catch(error => {
         let reasonData = error['error']['reason']
+
         if (reasonData['street'] != null) {
           reasonData['address_line_1'] = reasonData['street']
           delete reasonData.street
@@ -289,22 +291,16 @@ export class ShopDetailsComponent extends BaseComponent {
   }
 
   updateRequestBody(key, requestBody) {
-    if (key == 'latitude') {
-      requestBody['lat'] = this.shopDetailsForm.value[key]
-    } else if (key == 'longitude') {
-      requestBody['lng'] = this.shopDetailsForm.value[key]
-    } else if (key == 'address_line_1') {
-      requestBody['street'] = this.shopDetailsForm.value[key]
-    } else if (key == 'address_line_2') {
-      requestBody['area'] = this.shopDetailsForm.value[key]
-    } else if (key == 'tags') {
-      let temp = this.shopDetailsForm.value[key].replace(/, /g, ',');
-      requestBody['tags'] = temp.split(',')
-      requestBody['tags'] = requestBody['tags'].filter(tag => tag != '')
-    } else if (key == 'cover_photos' || key == 'icon' || key == 'className') {
-      // pass;
-    } else {
-      requestBody[key] = this.shopDetailsForm.value[key]
+    if (['cover_photos', 'icon', 'className'].includes(key))
+      return requestBody;
+
+    switch (key){
+      case 'latitude': requestBody['lat'] = this.shopDetailsForm.value[key]; break;
+      case 'longitude': requestBody['lng'] = this.shopDetailsForm.value[key]; break;
+      case 'address_line_1': requestBody['street'] = this.shopDetailsForm.value[key]; break;
+      case 'address_line_2': requestBody['area'] = this.shopDetailsForm.value[key]; break;
+      case 'tags': requestBody['tags'] = this.shopDetailsForm.value[key].replace(/, /g, ',').split(',').filter(tag => tag != ''); break;
+      default: requestBody[key] = this.shopDetailsForm.value[key]
     }
     return requestBody;
   }
