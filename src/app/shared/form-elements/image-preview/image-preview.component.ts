@@ -12,15 +12,15 @@ export class ImagePreviewComponent implements OnInit {
   @Input() imageName: string = "";
   @Input() imageType: string = "";
   @Output() deleteImageEvent = new EventEmitter<string>();
-  height=100;
-  width=100;
+  height=75;
+  width=75;
   constructor(public toast: ToastrService) {
   }
 
   ngOnInit(): void {
     if(this.imageType=='cover_photos'){
-      this.height=100;
-      this.width=200;
+      this.height=37;
+      this.width=75;
     }
   }
 
@@ -29,6 +29,6 @@ export class ImagePreviewComponent implements OnInit {
   }
 
   onImageLoadError(event){
-    event.target.src = '/assets/images/folder-placeholder.png'
+    event.target.src = '/assets/images/image-placeholder.png'
   }
 }

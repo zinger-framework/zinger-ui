@@ -164,16 +164,18 @@
             <div class="col-md-12 col-lg-12">
               <label class="required">Upload Icon</label>
               <br>
-              <div *ngIf="iconSrc; else placeholderimage">
-                <image-preview imageType="icon" [imageSrc]="iconSrc" [imageName]="iconName"
-                               (deleteImageEvent)="previewDeleted($event,'icon')"></image-preview>
-              </div>
-              <ng-template #placeholderimage>
-                <div class="mt-3 cursor-pointer">
-                  <img (click)="browseFiles('icon')" alt="upload image" class="opacity-50"
-                       src="/assets/images/upload-image.png"/>
+              <div class="row">
+                <div *ngIf="iconSrc; else placeholderimage">
+                  <image-preview imageType="icon" [imageSrc]="iconSrc" [imageName]="iconName"
+                                 (deleteImageEvent)="previewDeleted($event,'icon')"></image-preview>
                 </div>
-              </ng-template>
+                <ng-template #placeholderimage>
+                  <div class="pt-3 ml-3 cursor-pointer">
+                    <img (click)="browseFiles('icon')" alt="upload image" width="70" height="70" 
+                         src="/assets/images/upload-image.png"/>
+                  </div>
+                </ng-template>
+              </div>
               <form-input inputType="file" name="icon" placeholder="Attach shop icon" class="file-input" (change)="onFileChange($event,'icon')"></form-input>
               <span class="small text-light-gray">• Image size: < 1 MB <br>• Image type: JPG, PNG<br>• Dimensions: 512x512 px</span>
             </div>
@@ -188,8 +190,8 @@
                   <image-preview imageType="cover_photos" [imageSrc]="imgSrc" [imageName]="coverImgNameList[i]"
                                  (deleteImageEvent)="previewDeleted($event,'cover_photos')"></image-preview>
                 </div>
-                <div *ngIf="coverImgSrcList.length<5" class="mt-3 ml-3 cursor-pointer">
-                  <img (click)="browseFiles('cover_photos')" alt="upload image" class="opacity-50"
+                <div *ngIf="coverImgSrcList.length<5" class="pt-3 ml-3 cursor-pointer">
+                  <img (click)="browseFiles('cover_photos')" alt="upload image" width="70" height="34" 
                        src="/assets/images/upload-image.png"/>
                 </div>
               </div>
