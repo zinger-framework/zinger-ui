@@ -19,8 +19,8 @@ export class ImagePreviewComponent implements OnInit {
 
   ngOnInit(): void {
     if(this.imageType=='cover_photos'){
-      this.height=37;
-      this.width=75;
+      this.height=49;
+      this.width=95;
     }
   }
 
@@ -28,7 +28,15 @@ export class ImagePreviewComponent implements OnInit {
     this.deleteImageEvent.emit(this.imageSrc)
   }
 
-  onImageLoadError(event){
-    event.target.src = '/assets/images/image-placeholder.png'
+  onImageLoadError(event) {
+    switch (this.imageType) {
+      case "cover_photos":
+        event.target.src = 'https://via.placeholder.com/1024x500.png'
+        break;
+      default:
+        event.target.src = 'https://via.placeholder.com/512x512.png'
+        break;
+    }
+    
   }
 }

@@ -190,8 +190,8 @@
                   <image-preview imageType="cover_photos" [imageSrc]="imgSrc" [imageName]="coverImgNameList[i]"
                                  (deleteImageEvent)="previewDeleted($event,'cover_photos')"></image-preview>
                 </div>
-                <div *ngIf="coverImgSrcList.length<10" class="pt-3 ml-3 cursor-pointer">
-                  <img (click)="browseFiles('cover_photos')" alt="upload image" width="70" height="34"
+                <div *ngIf="coverImgSrcList.length<10" class="ml-3 cursor-pointer">
+                  <img (click)="browseFiles('cover_photos')" alt="upload image" width="70" height="34" 
                        src="/assets/images/upload-image.png"/>
                 </div>
               </div>
