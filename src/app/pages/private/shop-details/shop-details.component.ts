@@ -197,16 +197,31 @@ export class ShopDetailsComponent extends BaseComponent implements AfterViewChec
     }
   }
 
+  deleteIcon(){
+    this.iconSrc = ''
+    this.iconName = ''
+    this.shopDetailsForm.get('icon').setValue('')
+    setErrorMessage('Icon cannot be empty', 'shopDetailsForm', 'icon')
+  }
+
+  deleteCoverImage(previewName,index){
+    this.coverImgNameList = this.coverImgNameList.filter(x => x != previewName)
+    let deletedImgSrc = this.coverImgSrcList[index];
+    this.coverImgSrcList = this.coverImgSrcList.filter(x => x != deletedImgSrc)
+  }
+
   previewDeleted(previewName,type){
     if (type == 'icon') {
       this.shopService.deleteIcon(this.shopId)
         .then(response => {
-          this.iconSrc = ''
-          this.iconName = ''
-          this.shopDetailsForm.get(type).setValue('')
-          setErrorMessage('Icon cannot be empty', 'shopDetailsForm', 'icon')
+          this.deleteIcon()
         })
-        .catch(error => this.toastr.error(error['message']))
+        .catch(error => {
+          if(error['status']==404){
+            this.deleteIcon()
+          }
+          this.toastr.error(error['error']['message'])
+        })
 
     } else if (type == 'cover_photos') {
       this.shopDetailsForm.get(type).setValue('')
@@ -214,11 +229,14 @@ export class ShopDetailsComponent extends BaseComponent implements AfterViewChec
       if (index >= 0) {
         this.shopService.deleteCover(this.shopId, index)
           .then(response => {
-            this.coverImgNameList = this.coverImgNameList.filter(x => x != previewName)
-            let deletedImgSrc = this.coverImgSrcList[index];
-            this.coverImgSrcList = this.coverImgSrcList.filter(x => x != deletedImgSrc)
+            this.deleteCoverImage(previewName,index)
           })
-          .catch(error => this.toastr.error(error['message']))
+          .catch(error => {
+            if(error['status']==404){
+              this.deleteCoverImage(previewName,index)
+            }
+            this.toastr.error(error['error']['message'])
+          })
       }
       if(this.coverImgNameList.length == 0)
         setErrorMessage('Cover Photos cannot be empty', 'shopDetailsForm', 'cover_photos')
