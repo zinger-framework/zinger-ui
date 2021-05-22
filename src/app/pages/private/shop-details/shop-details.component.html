@@ -15,14 +15,13 @@
     </div>
   </div>
 
-
-  <form (ngSubmit)="submitShopDetails(accordion)" [formGroup]="shopDetailsForm" class="shopDetailsForm">
-    <ngb-accordion #accordion="ngbAccordion" (panelChange)="onAccordionExpandListener($event)" [destroyOnHide]="false"
+  <form (ngSubmit)="submitShopDetails(accordion)" [formGroup]="shopDetailsForm" class="shopDetails">
+    <ngb-accordion #accordion="ngbAccordion" [destroyOnHide]="false"
                    activeIds="ngb-panel-0">
 
       <ngb-panel id="basicInfoPanel">
         <ng-template class="panel-header" let-opened="opened" ngbPanelHeader>
-          <accordion-header (click)="expandPanel(accordion,'basicInfoPanel')" [opened]="opened"
+          <accordion-header (click)="expandPanel(accordion, 'basicInfoPanel')" [opened]="opened"
                             title='Basic Information'></accordion-header>
         </ng-template>
 
@@ -54,7 +53,6 @@
                 <div class="form-control-feedback has-danger"></div>
               </div>
             </div>
-
 
             <div class="col-md-6 col-lg-6">
               <label class="required">Closing Time</label>
@@ -106,9 +104,9 @@
         </ng-template>
       </ngb-panel>
 
-      <ngb-panel id="contactInfoPanel">
+      <ngb-panel id="locationInfoPanel">
         <ng-template class="panel-header" let-opened="opened" ngbPanelHeader>
-          <accordion-header (click)="expandPanel(accordion,'contactInfoPanel')" [opened]="opened"
+          <accordion-header (click)="expandPanel(accordion, 'locationInfoPanel')" [opened]="opened"
                             title='Location Information'></accordion-header>
         </ng-template>
 
@@ -134,8 +132,7 @@
             <div class="col-md-6 col-lg-6">
               <label class="required">State</label>
               <div class="form-group form-group-state">
-                <ng-select [clearable]="false" [searchable]="false" formControlName="state" placeholder="Select">
-                  <ng-option *ngFor="let state of states" [value]="state">{{state}}</ng-option>
+                <ng-select [clearable]="false" [searchable]="false" [items]="states" formControlName="state" placeholder="Select">
                 </ng-select>
                 <div class="form-control-feedback has-danger"></div>
               </div>
@@ -161,7 +158,7 @@
 
       <ngb-panel id="mediaInfoPanel">
         <ng-template class="panel-header" let-opened="opened" ngbPanelHeader>
-          <accordion-header (click)="expandPanel(accordion,'mediaInfoPanel')" [opened]="opened"
+          <accordion-header (click)="expandPanel(accordion, 'mediaInfoPanel')" [opened]="opened"
                             title='Media Information'></accordion-header>
         </ng-template>
 
@@ -172,7 +169,7 @@
               <br>
               <div class="row">
                 <div *ngIf="iconSrc; else placeholderimage">
-                  <image-preview (deleteImageEvent)="previewDeleted($event,'icon')" [imageSrc]="iconSrc"
+                  <image-preview (deleteImageEvent)="previewDeleted($event, 'icon')" [imageSrc]="iconSrc"
                                  imageType="icon"></image-preview>
                 </div>
                 <ng-template #placeholderimage>
@@ -180,7 +177,7 @@
                        width="70"/>
                 </ng-template>
               </div>
-              <form-input (change)="onFileChange($event,'icon')" class="file-input" inputType="file"
+              <form-input (change)="onFileChange($event, 'icon')" class="file-input" inputType="file"
                           name="icon"></form-input>
               <span class="small text-light-gray">• Image size: < 1 MB <br>• Image type: JPG, PNG<br>• Dimensions: 512x512 px</span>
             </div>
@@ -192,7 +189,7 @@
               <br>
               <div class="row">
                 <div *ngFor="let imgSrc of coverImgSrcList; let i=index">
-                  <image-preview (deleteImageEvent)="previewDeleted($event,'cover_photos')" [imageSrc]="imgSrc"
+                  <image-preview (deleteImageEvent)="previewDeleted($event, 'cover_photos')" [imageSrc]="imgSrc"
                                  imageType="cover_photos"></image-preview>
                 </div>
                 <div *ngIf="coverImgSrcList.length<10">
@@ -200,7 +197,7 @@
                        width="70"/>
                 </div>
               </div>
-              <form-input (change)="onFileChange($event,'cover_photos')" class="file-input" inputType="file"
+              <form-input (change)="onFileChange($event, 'cover_photos')" class="file-input" inputType="file"
                           name="cover_photos"></form-input>
               <span class="small text-light-gray">• Image size: < 1 MB <br>• Image type: JPG, PNG<br>• Dimensions: 1024x500 px<br>• Maximum limit: 10 images</span>
             </div>
@@ -210,7 +207,7 @@
 
       <ngb-panel id="paymentInfoPanel">
         <ng-template class="panel-header" let-opened="opened" ngbPanelHeader>
-          <accordion-header (click)="expandPanel(accordion,'paymentInfoPanel')" [opened]="opened"
+          <accordion-header (click)="expandPanel(accordion, 'paymentInfoPanel')" [opened]="opened"
                             title='Payment Information'></accordion-header>
         </ng-template>
 
@@ -249,11 +246,11 @@
       </ngb-panel>
     </ngb-accordion>
 
-    <div *ngIf="this.formStatus==='DRAFT'" class="m-1">
+    <div *ngIf="this.formStatus === 'DRAFT'" class="m-1">
       <div class="custom-control custom-checkbox mt-4">
-        <input (click)="acceptTermsAndConditions()" class="custom-control-input" id="customCheck1" type="checkbox">
-        <label class="custom-control-label" for="customCheck1">I have read and agreed to the <a href="#">terms and
-          conditions</a> and <a href="#"> privacy policy</a></label>
+        <input (click)="acceptTermsAndConditions()" class="custom-control-input" id="terms_and_conditions" type="checkbox">
+        <label class="custom-control-label" for="terms_and_conditions">I have read and agreed to the <a href="#">terms and
+          conditions</a> and <a href="#">privacy policy</a></label>
       </div>
     </div>
 

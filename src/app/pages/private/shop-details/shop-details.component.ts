@@ -70,7 +70,7 @@ export class ShopDetailsComponent extends BaseComponent {
       account_ifsc: new ExtendedFormControl('', [Validators.required, Validators.pattern(IFSC_REGEX)], 'account_ifsc'),
       pan: new ExtendedFormControl('', [Validators.required, Validators.pattern(PAN_REGEX)], 'pan'),
       gst: new ExtendedFormControl('', [Validators.pattern(GST_REGEX)], 'gst'),
-      className: 'shopDetailsForm'
+      className: 'shopDetails'
     });
   }
 
@@ -194,14 +194,14 @@ export class ShopDetailsComponent extends BaseComponent {
     this.iconSrc = ''
     this.iconName = ''
     this.shopDetailsForm.get('icon').setValue('')
-    setErrorMessage('Icon cannot be empty', 'shopDetailsForm', 'icon')
+    setErrorMessage('Icon cannot be empty', 'shopDetails', 'icon')
   }
 
   deleteCoverImage(previewName, index) {
     let deletedImgSrc = this.coverImgSrcList[index];
     this.coverImgSrcList = this.coverImgSrcList.filter(x => x != deletedImgSrc)
     if (this.coverImgSrcList.length == 0)
-      setErrorMessage('Cover Photos cannot be empty', 'shopDetailsForm', 'cover_photos')
+      setErrorMessage('Cover Photos cannot be empty', 'shopDetails', 'cover_photos')
   }
 
   previewDeleted(previewName, type) {
@@ -232,13 +232,6 @@ export class ShopDetailsComponent extends BaseComponent {
             handleError(error, this.shopDetailsForm)
           })
       }
-    }
-  }
-
-  onAccordionExpandListener($event: NgbPanelChangeEvent) {
-    if ($event.panelId === 'photoPanel' && $event.nextState === false) {
-      this.shopDetailsForm.get('icon').setValue('')
-      this.shopDetailsForm.get('cover_photos').setValue('')
     }
   }
 
