@@ -173,7 +173,7 @@ export class ShopDetailsComponent extends BaseComponent {
             case 'cover_photos':
               if (img.naturalWidth == 1024 && img.naturalHeight == 500) {
                 formData.append('cover_file', file);
-                this.shopService.uploadCover(this.shopId, formData)
+                this.shopService.uploadCoverPhoto(this.shopId, formData)
                   .then(response => {
                     this.coverImgSrcList = response['data']['cover_photos']
                   })
@@ -221,7 +221,7 @@ export class ShopDetailsComponent extends BaseComponent {
       this.shopDetailsForm.get(type).setValue('')
       let index = this.coverImgSrcList.findIndex(x => x == previewName)
       if (index >= 0) {
-        this.shopService.deleteCover(this.shopId, index)
+        this.shopService.deleteCoverPhoto(this.shopId, index)
           .then(response => {
             this.deleteCoverImage(previewName, index)
           })

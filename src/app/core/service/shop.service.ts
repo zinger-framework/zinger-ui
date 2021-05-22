@@ -23,7 +23,7 @@ export class ShopService extends ApiService {
     return this.sendFormData(API_ENDPOINTS.SHOP + '/' + shopId + '/icon', requestBody)
   }
 
-  uploadCover(shopId, requestBody) {
+  uploadCoverPhoto(shopId, requestBody) {
     return this.sendFormData(API_ENDPOINTS.SHOP + '/' + shopId + '/cover_photo', requestBody)
   }
 
@@ -31,7 +31,7 @@ export class ShopService extends ApiService {
     return this.delete(API_ENDPOINTS.SHOP + '/' + shopId + '/icon')
   }
 
-  deleteCover(shopId, imageIndex) {
+  deleteCoverPhoto(shopId, imageIndex) {
     return this.delete(API_ENDPOINTS.SHOP + '/' + shopId + '/cover_photo/' + imageIndex)
   }
 }
