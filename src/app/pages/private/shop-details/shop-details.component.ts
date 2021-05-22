@@ -1,4 +1,4 @@
-import {AfterViewChecked, ChangeDetectionStrategy, ChangeDetectorRef, Component, NgZone} from '@angular/core';
+import {AfterViewChecked, ChangeDetectionStrategy, Component, NgZone} from '@angular/core';
 import {AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators} from '@angular/forms';
 import {ExtendedFormControl} from '../../../core/utils/extended-form-control.utils';
 import {
@@ -31,7 +31,7 @@ import {validateRange} from "../../../core/utils/validators.utils";
   templateUrl: './shop-details.component.html',
   styleUrls: ['./shop-details.component.css']
 })
-export class ShopDetailsComponent extends BaseComponent implements AfterViewChecked {
+export class ShopDetailsComponent extends BaseComponent {
   formStatus = ''
   shopDetailsForm: FormGroup;
   shopDetailsInitialValue = {}
@@ -44,7 +44,7 @@ export class ShopDetailsComponent extends BaseComponent implements AfterViewChec
   coverImgNameList = []
   shopId: number;
 
-  constructor(private fb: FormBuilder, private toastr: ToastrService, private shopService: ShopService, private route: ActivatedRoute, private router:Router, private changeDetectorRef: ChangeDetectorRef) {
+  constructor(private fb: FormBuilder, private toastr: ToastrService, private shopService: ShopService, private route: ActivatedRoute, private router:Router) {
     super();
     this.route.params.subscribe(params => this.shopId = params['id']);
     this.shopDetailsForm = this.fb.group({
@@ -86,14 +86,6 @@ export class ShopDetailsComponent extends BaseComponent implements AfterViewChec
           this.router.navigate([APP_ROUTES.DASHBOARD])
         })
     }
-  }
-
-  ngAfterViewChecked() {
-    Object.keys(this.shopDetailsForm.controls).forEach(field => {
-      const control = this.shopDetailsForm.get(field);
-      control.updateValueAndValidity();
-    });
-    this.changeDetectorRef.detectChanges();
   }
 
   initializeForm(shopData) {

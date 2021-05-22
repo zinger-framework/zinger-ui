@@ -17,7 +17,7 @@
 
 
   <form (ngSubmit)="submitShopDetails(accordion)" [formGroup]="shopDetailsForm" class="shopDetailsForm">
-    <ngb-accordion #accordion="ngbAccordion" activeIds="ngb-panel-0" (panelChange)="onAccordionExpandListener($event)">
+    <ngb-accordion #accordion="ngbAccordion" activeIds="ngb-panel-0" [destroyOnHide]="false" (panelChange)="onAccordionExpandListener($event)">
 
       <ngb-panel id="basicInfoPanel">
         <ng-template ngbPanelHeader let-opened="opened" class="panel-header">
