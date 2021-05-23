@@ -13,6 +13,10 @@ import {DashboardComponent} from './dashboard/dashboard.component';
 import {HeaderComponent} from './header/header.component';
 import {ProfileComponent} from './profile/profile.component';
 import {ReactiveFormsModule} from "@angular/forms";
+import {ShopDetailsComponent} from './shop-details/shop-details.component';
+import {NgbAccordionModule} from "@ng-bootstrap/ng-bootstrap";
+import {NgxMaterialTimepickerModule} from "ngx-material-timepicker";
+import {PublicModule} from "../public/public.module";
 
 @NgModule({
   declarations: [
@@ -20,7 +24,8 @@ import {ReactiveFormsModule} from "@angular/forms";
     SidebarComponent,
     DashboardComponent,
     HeaderComponent,
-    ProfileComponent
+    ProfileComponent,
+    ShopDetailsComponent
   ],
   exports: [
     PrivateComponent
@@ -32,7 +37,10 @@ import {ReactiveFormsModule} from "@angular/forms";
     NgApexchartsModule,
     UiSwitchModule,
     NgSelectModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgbAccordionModule,
+    NgxMaterialTimepickerModule,
+    PublicModule
   ]
 })
 export class PrivateModule {

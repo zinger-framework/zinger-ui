@@ -4,7 +4,7 @@ import {ProfileService} from "../../../core/service/profile.service"
 import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ExtendedFormControl} from "../../../core/utils/extended-form-control.utils";
 import {EMAIL_REGEX, MOBILE_REGEX, NAME_REGEX, OTP_REGEX, PASSWORD_LENGTH} from "../../../core/utils/constants.utils";
-import {handleError} from "../../../core/utils/common.utils";
+import {handleError, setErrorMessage} from "../../../core/utils/common.utils";
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {AuthService} from "../../../core/service/auth.service";
 
@@ -71,6 +71,11 @@ export class ProfileComponent extends BaseComponent {
   }
 
   updateTwoFactor() {
+    if (this.profileApiResponse['mobile'] == null && this.profileForm.get('two_fa_enabled').value) {
+      setErrorMessage('Please update mobile number to enable 2FA', 'profile', 'mobile')
+      this.profileForm.get('two_fa_enabled').setValue(false);
+      return
+    }
     this.profileService.updateProfile({two_fa_enabled: this.profileForm.get('two_fa_enabled').value})
       .then(response => {
         this.updateProfileForm(response);

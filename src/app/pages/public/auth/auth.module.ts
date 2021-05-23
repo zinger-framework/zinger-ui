@@ -10,9 +10,10 @@ import {ForgotPasswordComponent} from './forgot-password/forgot-password.compone
 import {AuthComponent} from './auth.component';
 import {SharedModule} from '../../../shared/shared.module';
 import {CoreModule} from '../../../core/core.module';
+import {SignupComponent} from './signup/signup.component';
 
 @NgModule({
-  declarations: [LoginComponent, ForgotPasswordComponent, AuthComponent],
+  declarations: [LoginComponent, ForgotPasswordComponent, AuthComponent, SignupComponent],
   imports: [
     CommonModule,
     FormsModule,

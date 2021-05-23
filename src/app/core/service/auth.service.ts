@@ -32,21 +32,33 @@ export class AuthService extends ApiService {
   }
 
   verifyOTP(otp) {
-    const requestBody = {
-      otp: otp
-    }
+    const requestBody = {otp: otp}
     return this.post(API_ENDPOINTS.AUTH_VERIFY_OTP, requestBody);
   }
 
   verifyMobile(mobile) {
-    const requestBody = {
-      mobile: mobile
-    }
+    const requestBody = {mobile: mobile}
     return this.post(API_ENDPOINTS.AUTH_OTP_VERIFY_MOBILE, requestBody);
   }
 
   resendOtp() {
-    return this.post(API_ENDPOINTS.AUTH_OTP_LOGIN)
+    return this.post(API_ENDPOINTS.AUTH_OTP_LOGIN, {})
+  }
+
+  sendSignupOtp(email) {
+    const requestBody = {email: email}
+    return this.post(API_ENDPOINTS.AUTH_OTP_SIGNUP, requestBody);
+  }
+
+  signup(name, otp, password, password_confirmation) {
+    const requestBody = {
+      auth_token: this.jwtService.getAuthToken(),
+      otp: otp,
+      password: password,
+      password_confirmation: password_confirmation,
+      name: name
+    }
+    return this.post(API_ENDPOINTS.AUTH_SIGNUP, requestBody);
   }
 
   logout() {

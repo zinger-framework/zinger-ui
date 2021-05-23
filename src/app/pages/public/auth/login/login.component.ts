@@ -8,7 +8,6 @@ import {AuthService} from '../../../../core/service/auth.service';
 import {handleError} from '../../../../core/utils/common.utils';
 import {JwtService} from '../../../../core/service/jwt.service';
 import {WizardComponent} from 'angular-archwizard';
-import {LocalStorageService} from '../../../../core/service/local-storage.service';
 import {ToastrService} from 'ngx-toastr';
 
 @Component({
@@ -23,8 +22,7 @@ export class LoginComponent extends BaseComponent {
   @ViewChild(WizardComponent)
   public wizard: WizardComponent;
 
-  constructor(public authService: AuthService, public jwtService: JwtService, private localStorageService: LocalStorageService,
-              private fb: FormBuilder, private router: Router, private toastr: ToastrService) {
+  constructor(public authService: AuthService, public jwtService: JwtService, private fb: FormBuilder, private router: Router, private toastr: ToastrService) {
     super();
     this.loginForm = this.fb.group({
       user_type: new ExtendedFormControl('Admin', [Validators.required], 'user_type'),
@@ -48,10 +46,10 @@ export class LoginComponent extends BaseComponent {
       .then(response => {
         this.jwtService.saveToken(response['data']['token']);
         if (response['data']['redirect_to'] == 'OTP') {
-          this.localStorageService.saveData(SESSION_KEY.LOGGED_IN, 'false');
+          this.jwtService.saveData(SESSION_KEY.LOGGED_IN, 'false');
           this.wizard.goToNextStep();
         } else {
-          this.localStorageService.saveData(SESSION_KEY.LOGGED_IN, 'true');
+          this.jwtService.saveData(SESSION_KEY.LOGGED_IN, 'true');
           this.router.navigate([APP_ROUTES.DASHBOARD]);
         }
       })
@@ -68,7 +66,7 @@ export class LoginComponent extends BaseComponent {
         } else {
           this.jwtService.saveToken(response['data']['token']);
         }
-        this.localStorageService.saveData(SESSION_KEY.LOGGED_IN, 'true');
+        this.jwtService.saveData(SESSION_KEY.LOGGED_IN, 'true');
         this.router.navigate([APP_ROUTES.DASHBOARD]);
       })
       .catch(error => {
@@ -99,7 +97,7 @@ export class LoginComponent extends BaseComponent {
   }
 
   isPasswordAuthenticated() {
-    return this.jwtService.getAuthToken() != null && this.localStorageService.getData(SESSION_KEY.LOGGED_IN) == 'false';
+    return this.jwtService.getAuthToken() != null && this.jwtService.getData(SESSION_KEY.LOGGED_IN) == 'false';
   }
 
   ngAfterViewInit(): void {

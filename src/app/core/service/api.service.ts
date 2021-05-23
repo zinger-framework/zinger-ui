@@ -21,7 +21,7 @@ import {ToastrService} from 'ngx-toastr';
 })
 export class ApiService implements HttpInterceptor {
   private publicAPIs = [API_ENDPOINTS.AUTH_OTP_FORGOT_PASSWORD, API_ENDPOINTS.AUTH_RESET_PASSWORD,
-    API_ENDPOINTS.AUTH_LOGIN];
+    API_ENDPOINTS.AUTH_LOGIN, API_ENDPOINTS.AUTH_OTP_SIGNUP, API_ENDPOINTS.AUTH_SIGNUP];
   private loginOtpAPIs = [API_ENDPOINTS.AUTH_OTP_LOGIN, API_ENDPOINTS.AUTH_VERIFY_OTP, API_ENDPOINTS.AUTH_LOGOUT];
 
   constructor(private http: HttpClient, private router: Router, protected jwtService: JwtService, private toastr: ToastrService) {
@@ -74,31 +74,36 @@ export class ApiService implements HttpInterceptor {
   }
 
   get(path: string, params = new HttpParams()) {
-    return this.http.get(`${API_ENDPOINTS.ADMIN_URL}${path}`, {headers: this.setHeaders(path)})
+    return this.http.get(`${API_ENDPOINTS.ADMIN_URL}${path}`, {headers: this.setHeaders(path, 'application/json')})
       .toPromise();
   }
 
-  put(path: string, body: Object = {}) {
+  put(path: string, body: Object) {
     return this.http.put(
       `${API_ENDPOINTS.ADMIN_URL}${path}`,
       JSON.stringify(body),
-      {headers: this.setHeaders(path)}
+      {headers: this.setHeaders(path, 'application/json')}
     ).toPromise();
   }
 
-  post(path: string, body: Object = {}) {
+  post(path: string, body: Object) {
     return this.http.post(
       `${API_ENDPOINTS.ADMIN_URL}${path}`,
       JSON.stringify(body),
+      {headers: this.setHeaders(path, 'application/json')}
+    ).toPromise();
+  }
+
+  sendFormData(path: string, body: Object) {
+    return this.http.post(
+      `${API_ENDPOINTS.ADMIN_URL}${path}`, body,
       {headers: this.setHeaders(path)}
     ).toPromise();
   }
 
   delete(path) {
-    return this.http.delete(
-      `${API_ENDPOINTS.ADMIN_URL}${path}`,
-      {headers: this.setHeaders(path)}
-    ).toPromise();
+    return this.http.delete(`${API_ENDPOINTS.ADMIN_URL}${path}`, {headers: this.setHeaders(path, 'application/json')})
+      .toPromise()
   }
 
   logout() {
@@ -106,11 +111,10 @@ export class ApiService implements HttpInterceptor {
     this.router.navigate([APP_ROUTES.AUTH_LOGIN]);
   }
 
-  private setHeaders(path: string): HttpHeaders {
-    const headersConfig = {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json'
-    };
+  private setHeaders(path: string, contentType = ''): HttpHeaders {
+    const headersConfig = {'Accept': 'application/json'}
+    if (contentType != '')
+      headersConfig['Content-Type'] = contentType
 
     let setAuthToken;
     if (this.loginOtpAPIs.includes(path)) {

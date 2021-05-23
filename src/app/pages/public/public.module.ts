@@ -6,19 +6,24 @@ import {AuthModule} from './auth/auth.module';
 
 import {PublicComponent} from './public.component';
 import {HeaderComponent} from './header/header.component';
+import {AccordionHeaderComponent} from './accordion-header/accordion-header.component';
+import {NgbAccordionModule} from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
     HeaderComponent,
-    PublicComponent
+    PublicComponent,
+    AccordionHeaderComponent
   ],
   exports: [
-    PublicComponent
+    PublicComponent,
+    AccordionHeaderComponent
   ],
   imports: [
     CommonModule,
     AuthModule,
-    RouterModule
+    RouterModule,
+    NgbAccordionModule
   ]
 })
 export class PublicModule {
