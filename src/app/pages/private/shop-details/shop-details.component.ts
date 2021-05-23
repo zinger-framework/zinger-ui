@@ -159,6 +159,7 @@ export class ShopDetailsComponent extends BaseComponent {
           }
           switch (imgType) {
             case 'icon':
+              this.shopDetailsForm.get('icon').setValue('')
               if (img.naturalWidth == 512 && img.naturalHeight == 512) {
                 formData.append('icon_file', file);
                 this.shopService.uploadIcon(this.shopId, formData)
@@ -194,7 +195,7 @@ export class ShopDetailsComponent extends BaseComponent {
     }
   }
 
-  deleteImage(imageUrl, type) {
+  deleteImage(imageId, type) {
     switch (type){
       case 'icon':
         this.shopService.deleteIcon(this.shopId)
@@ -204,42 +205,34 @@ export class ShopDetailsComponent extends BaseComponent {
           .catch(error => {
             if (error['status'] == 404) {
               this.deleteIcon()
+              this.toastr.error(error['error']['message'])
             }
             handleError(error, this.shopDetailsForm)
           })
         break;
       case 'cover_photos':
-        let index = this.coverImgSrcList.findIndex(x => x['url'] == imageUrl)
-        if (index >= 0) {
-          this.shopService.deleteCoverPhoto(this.shopId, this.coverImgSrcList[index]['id'])
-            .then(response => {
-              this.coverImgSrcList = response['data']['cover_photos']
-            })
-            .catch(error => {
-              if (error['status'] == 404) {
-                this.deleteCoverImage(index)
-                this.toastr.error(error['error']['message'])
-              }
-              handleError(error, this.shopDetailsForm)
-            })
-            .finally(()=>{
-              if (this.coverImgSrcList.length == 0)
-                setErrorMessage('Cover Photos cannot be empty', 'shopDetails', 'cover_photos')
-            })
-        }
+        this.shopService.deleteCoverPhoto(this.shopId, imageId)
+          .then(response => {
+            this.coverImgSrcList = response['data']['cover_photos']
+          })
+          .catch(error => {
+            if (error['status'] == 404) {
+              this.coverImgSrcList = this.coverImgSrcList.filter(x => x['id'] != imageId)
+              this.toastr.error(error['error']['message'])
+            }
+            handleError(error, this.shopDetailsForm)
+          })
+          .finally(()=>{
+            if (this.coverImgSrcList.length == 0)
+              setErrorMessage('Cover Photos cannot be empty', 'shopDetails', 'cover_photos')
+          })
         break;
     }
   }
 
   deleteIcon() {
     this.iconSrc = ''
-    this.shopDetailsForm.get('icon').setValue('')
     setErrorMessage('Icon cannot be empty', 'shopDetails', 'icon')
-  }
-
-  deleteCoverImage(index) {
-    let deletedImgSrc = this.coverImgSrcList[index];
-    this.coverImgSrcList = this.coverImgSrcList.filter(x => x['id'] != deletedImgSrc['id'])
   }
 
   canSubmitForm() {

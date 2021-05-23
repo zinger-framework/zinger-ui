@@ -31,7 +31,7 @@ export class ShopService extends ApiService {
     return this.delete(API_ENDPOINTS.SHOP + '/' + shopId + '/icon')
   }
 
-  deleteCoverPhoto(shopId, imageIndex) {
-    return this.delete(API_ENDPOINTS.SHOP + '/' + shopId + '/cover_photo/' + imageIndex)
+  deleteCoverPhoto(shopId, imageId) {
+    return this.delete(API_ENDPOINTS.SHOP + '/' + shopId + '/cover_photo/' + imageId)
   }
 }
