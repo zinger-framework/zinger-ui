@@ -535,7 +535,7 @@ p {
   color: #f56767
 }
 
-.text-light-gray{
+.text-light-gray {
   color: #808080
 }
 
@@ -4271,35 +4271,12 @@ body.IE .login-wrap .container, body.IE .register-page-wrap .container {
   background-image: url(../images/exclamation.svg);
 }
 
-.file-input input{
-  border: none
-}
-
-.close-button {
-  cursor: pointer;
-  position: absolute;
-  width: 150px;
-  z-index: 2;
-}
-
-.close-button button{
-  display:block;
-  width:15px;
-  height:15px;
-  border-width:1px;
-  border-style: solid;
-  border-color: black;
-  border-radius:100%;
-  background: -webkit-linear-gradient(-45deg, transparent 0%, transparent 46%, black 46%,  black 56%,transparent 56%, transparent 100%), -webkit-linear-gradient(45deg, transparent 0%, transparent 46%, black 46%,  black 56%,transparent 56%, transparent 100%);
-  box-shadow:0px 0px 5px 2px rgba(0,0,0,0.5);
-  transition: all 0.3s ease;
-}
-
 .image-preview {
   display: inline-block;
   position: relative;
   text-align: center;
 }
+
 .image-preview span {
   position: absolute;
   background-color: white;
@@ -4308,7 +4285,7 @@ body.IE .login-wrap .container, body.IE .register-page-wrap .container {
   height: 18px;
   top: -5px;
   right: -9px;
-  box-shadow: 0px 0px 4px 1px rgba(0,0,0,0.2);
+  box-shadow: 0px 0px 4px 1px rgba(0, 0, 0, 0.2);
   cursor: pointer;
   color: #FF4141;
   font-size: 12px;
@@ -4319,31 +4296,28 @@ input[type="file"] {
   display: none;
 }
 
-.card-header h6{
+.card-header h6 {
   color: #FF4141;
 }
 
-.card-header div:hover{
+.card-header div:hover {
   cursor: pointer;
 }
 
-.card-header i{
+.card-header i {
   color: grey;
 }
 
-.card-header i:hover{
+.card-header i:hover {
   color: grey;
 }
-.ng-select .ng-select-container .ng-value-container .ng-placeholder{
+
+.ng-select .ng-select-container .ng-value-container .ng-placeholder {
   font-size: 16px;
   color: #292727a6;
 }
 
-.opacity-50{
-  opacity: 0.5;
-}
-
-.cursor-pointer{
+.cursor-pointer {
   cursor: pointer;
 }
 
