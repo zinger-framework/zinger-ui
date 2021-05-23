@@ -47,7 +47,8 @@
             <div class="col-md-6 col-lg-6">
               <label class="required">Opening Time</label>
               <div class="form-group form-group-opening_time">
-                <input [format]="24" [ngxTimepicker]="openingTime" aria-label="12hr format" class="form-control form-control-lg"
+                <input [format]="24" [ngxTimepicker]="openingTime" aria-label="12hr format"
+                       class="form-control form-control-lg"
                        formControlName="opening_time" placeholder="09:30">
                 <ngx-material-timepicker #openingTime></ngx-material-timepicker>
                 <div class="form-control-feedback has-danger"></div>
@@ -57,7 +58,8 @@
             <div class="col-md-6 col-lg-6">
               <label class="required">Closing Time</label>
               <div class="form-group form-group-closing_time">
-                <input [format]="24" [ngxTimepicker]="closingTime" aria-label="12hr format" class="form-control form-control-lg"
+                <input [format]="24" [ngxTimepicker]="closingTime" aria-label="12hr format"
+                       class="form-control form-control-lg"
                        formControlName="closing_time" placeholder="21:30">
                 <ngx-material-timepicker #closingTime></ngx-material-timepicker>
                 <div class="form-control-feedback has-danger"></div>
@@ -132,7 +134,8 @@
             <div class="col-md-6 col-lg-6">
               <label class="required">State</label>
               <div class="form-group form-group-state">
-                <ng-select [clearable]="false" [searchable]="false" [items]="states" formControlName="state" placeholder="Select">
+                <ng-select [clearable]="false" [items]="states" [searchable]="false" formControlName="state"
+                           placeholder="Select">
                 </ng-select>
                 <div class="form-control-feedback has-danger"></div>
               </div>
@@ -173,7 +176,8 @@
                                  imageType="icon"></image-preview>
                 </div>
                 <ng-template #placeholderimage>
-                  <img (click)="browseFiles('icon')" class="ml-3 cursor-pointer" height="70" src="/assets/images/upload-image.png"
+                  <img (click)="browseFiles('icon')" class="ml-3 cursor-pointer" height="70"
+                       src="/assets/images/upload-image.png"
                        width="70"/>
                 </ng-template>
               </div>
@@ -189,11 +193,13 @@
               <br>
               <div class="row">
                 <div *ngFor="let imgSrc of coverImgSrcList;">
-                  <image-preview (deleteImageEvent)="deleteImage($event, 'cover_photos')" [imageSrc]="imgSrc['url']" [imageId]="imgSrc['id']"
+                  <image-preview (deleteImageEvent)="deleteImage($event, 'cover_photos')" [imageId]="imgSrc['id']"
+                                 [imageSrc]="imgSrc['url']"
                                  imageType="cover_photos"></image-preview>
                 </div>
                 <div *ngIf="coverImgSrcList.length<10">
-                  <img (click)="browseFiles('cover_photos')" class="ml-3 cursor-pointer" height="34" src="/assets/images/upload-image.png"
+                  <img (click)="browseFiles('cover_photos')" class="ml-3 cursor-pointer" height="34"
+                       src="/assets/images/upload-image.png"
                        width="70"/>
                 </div>
               </div>
@@ -248,8 +254,10 @@
 
     <div *ngIf="this.formStatus === 'DRAFT'" class="m-1">
       <div class="custom-control custom-checkbox mt-4">
-        <input (click)="acceptTermsAndConditions()" class="custom-control-input" id="terms_and_conditions" type="checkbox">
-        <label class="custom-control-label" for="terms_and_conditions">I have read and agreed to the <a href="#">terms and
+        <input (click)="acceptTermsAndConditions()" class="custom-control-input" id="terms_and_conditions"
+               type="checkbox">
+        <label class="custom-control-label" for="terms_and_conditions">I have read and agreed to the <a href="#">terms
+          and
           conditions</a> and <a href="#">privacy policy</a></label>
       </div>
     </div>

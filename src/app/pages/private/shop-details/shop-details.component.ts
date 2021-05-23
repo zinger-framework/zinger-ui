@@ -87,7 +87,7 @@ export class ShopDetailsComponent extends BaseComponent {
   initializeForm(shopData) {
     Object.keys(shopData).forEach(field => {
       if (shopData[field] != null) {
-        switch (field){
+        switch (field) {
           case 'address':
             if (shopData[field]['lat'] != 0 && shopData[field]['lng'] != 0) {
               this.shopDetailsForm.get('latitude').setValue(shopData[field]['lat'])
@@ -109,7 +109,7 @@ export class ShopDetailsComponent extends BaseComponent {
             this.iconSrc = shopData[field]
             break;
           case 'cover_photos':
-            if(shopData[field].length > 0) {
+            if (shopData[field].length > 0) {
               this.coverImgSrcList = shopData[field]
             }
             break;
@@ -196,7 +196,7 @@ export class ShopDetailsComponent extends BaseComponent {
   }
 
   deleteImage(imageId, type) {
-    switch (type){
+    switch (type) {
       case 'icon':
         this.shopService.deleteIcon(this.shopId)
           .then(response => {
@@ -222,7 +222,7 @@ export class ShopDetailsComponent extends BaseComponent {
             }
             handleError(error, this.shopDetailsForm)
           })
-          .finally(()=>{
+          .finally(() => {
             if (this.coverImgSrcList.length == 0)
               setErrorMessage('Cover Photos cannot be empty', 'shopDetails', 'cover_photos')
           })
@@ -292,13 +292,24 @@ export class ShopDetailsComponent extends BaseComponent {
     if (['cover_photos', 'icon', 'className'].includes(key))
       return requestBody;
 
-    switch (key){
-      case 'latitude': requestBody['lat'] = this.shopDetailsForm.value[key]; break;
-      case 'longitude': requestBody['lng'] = this.shopDetailsForm.value[key]; break;
-      case 'address_line_1': requestBody['street'] = this.shopDetailsForm.value[key]; break;
-      case 'address_line_2': requestBody['area'] = this.shopDetailsForm.value[key]; break;
-      case 'tags': requestBody['tags'] = this.shopDetailsForm.value[key].replace(/, /g, ',').split(',').filter(tag => tag != ''); break;
-      default: requestBody[key] = this.shopDetailsForm.value[key]
+    switch (key) {
+      case 'latitude':
+        requestBody['lat'] = this.shopDetailsForm.value[key];
+        break;
+      case 'longitude':
+        requestBody['lng'] = this.shopDetailsForm.value[key];
+        break;
+      case 'address_line_1':
+        requestBody['street'] = this.shopDetailsForm.value[key];
+        break;
+      case 'address_line_2':
+        requestBody['area'] = this.shopDetailsForm.value[key];
+        break;
+      case 'tags':
+        requestBody['tags'] = this.shopDetailsForm.value[key].replace(/, /g, ',').split(',').filter(tag => tag != '');
+        break;
+      default:
+        requestBody[key] = this.shopDetailsForm.value[key]
     }
     return requestBody;
   }
