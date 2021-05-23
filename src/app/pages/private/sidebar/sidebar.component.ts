@@ -25,7 +25,7 @@ export class SidebarComponent extends BaseComponent {
         this.router.navigate([APP_ROUTES.SHOP + '/' + response['data']['shop']['id']], {state: response['data']})
       })
       .catch(error => {
-        this.toastr.error(error['message']);
+        this.toastr.error(error['error']['message']);
       })
   }
 }
