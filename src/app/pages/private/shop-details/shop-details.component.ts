@@ -87,7 +87,7 @@ export class ShopDetailsComponent extends BaseComponent {
   initializeForm(shopData) {
     Object.keys(shopData).forEach(field => {
       if (shopData[field] != null) {
-        switch (shopData[field]){
+        switch (field){
           case 'address':
             if (shopData[field]['lat'] != 0 && shopData[field]['lng'] != 0) {
               this.shopDetailsForm.get('latitude').setValue(shopData[field]['lat'])
@@ -132,7 +132,7 @@ export class ShopDetailsComponent extends BaseComponent {
 
   browseFiles(imgType) {
     this.shopDetailsForm.get(imgType).markAsTouched();
-    $('div.form-group-${imgType} input')[0].click();
+    $(`div.form-group-${imgType} input`)[0].click();
   }
 
   onFileChange(event, imgType) {
@@ -223,7 +223,7 @@ export class ShopDetailsComponent extends BaseComponent {
         break;
     }
   }
-  
+
   deleteIcon() {
     this.iconSrc = ''
     this.shopDetailsForm.get('icon').setValue('')
