@@ -87,7 +87,7 @@ export class ShopDetailsComponent extends BaseComponent {
   initializeForm(shopData) {
     Object.keys(shopData).forEach(field => {
       if (shopData[field] != null) {
-        switch (field){
+        switch (field) {
           case 'address':
             if (shopData[field]['lat'] != 0 && shopData[field]['lng'] != 0) {
               this.shopDetailsForm.get('latitude').setValue(shopData[field]['lat'])
@@ -109,7 +109,7 @@ export class ShopDetailsComponent extends BaseComponent {
             this.iconSrc = shopData[field]
             break;
           case 'cover_photos':
-            if(shopData[field].length > 0) {
+            if (shopData[field].length > 0) {
               this.coverImgSrcList = shopData[field]
             }
             break;
@@ -159,6 +159,7 @@ export class ShopDetailsComponent extends BaseComponent {
           }
           switch (imgType) {
             case 'icon':
+              this.shopDetailsForm.get('icon').setValue('')
               if (img.naturalWidth == 512 && img.naturalHeight == 512) {
                 formData.append('icon_file', file);
                 this.shopService.uploadIcon(this.shopId, formData)
@@ -173,6 +174,8 @@ export class ShopDetailsComponent extends BaseComponent {
               }
               break;
             case 'cover_photos':
+              // The below line helps fileChange to be triggered when same photo is uploaded twice
+              this.shopDetailsForm.get('cover_photos').setValue('')
               if (img.naturalWidth == 1024 && img.naturalHeight == 500) {
                 formData.append('cover_file', file);
                 this.shopService.uploadCoverPhoto(this.shopId, formData)
@@ -192,8 +195,8 @@ export class ShopDetailsComponent extends BaseComponent {
     }
   }
 
-  deleteImage(imageUrl, type) {
-    switch (type){
+  deleteImage(imageId, type) {
+    switch (type) {
       case 'icon':
         this.shopService.deleteIcon(this.shopId)
           .then(response => {
@@ -202,39 +205,34 @@ export class ShopDetailsComponent extends BaseComponent {
           .catch(error => {
             if (error['status'] == 404) {
               this.deleteIcon()
+              this.toastr.error(error['error']['message'])
             }
             handleError(error, this.shopDetailsForm)
           })
         break;
       case 'cover_photos':
-        let index = this.coverImgSrcList.findIndex(x => x == imageUrl)
-        if (index >= 0) {
-          this.shopService.deleteCoverPhoto(this.shopId, index)
-            .then(response => {
-              this.deleteCoverImage(index)
-            })
-            .catch(error => {
-              if (error['status'] == 404) {
-                this.deleteCoverImage(index)
-              }
-              handleError(error, this.shopDetailsForm)
-            })
-        }
+        this.shopService.deleteCoverPhoto(this.shopId, imageId)
+          .then(response => {
+            this.coverImgSrcList = response['data']['cover_photos']
+          })
+          .catch(error => {
+            if (error['status'] == 404) {
+              this.coverImgSrcList = this.coverImgSrcList.filter(x => x['id'] != imageId)
+              this.toastr.error(error['error']['message'])
+            }
+            handleError(error, this.shopDetailsForm)
+          })
+          .finally(() => {
+            if (this.coverImgSrcList.length == 0)
+              setErrorMessage('Cover Photos cannot be empty', 'shopDetails', 'cover_photos')
+          })
         break;
     }
   }
 
   deleteIcon() {
     this.iconSrc = ''
-    this.shopDetailsForm.get('icon').setValue('')
     setErrorMessage('Icon cannot be empty', 'shopDetails', 'icon')
-  }
-
-  deleteCoverImage(index) {
-    let deletedImgSrc = this.coverImgSrcList[index];
-    this.coverImgSrcList = this.coverImgSrcList.filter(x => x != deletedImgSrc)
-    if (this.coverImgSrcList.length == 0)
-      setErrorMessage('Cover Photos cannot be empty', 'shopDetails', 'cover_photos')
   }
 
   canSubmitForm() {
@@ -294,13 +292,24 @@ export class ShopDetailsComponent extends BaseComponent {
     if (['cover_photos', 'icon', 'className'].includes(key))
       return requestBody;
 
-    switch (key){
-      case 'latitude': requestBody['lat'] = this.shopDetailsForm.value[key]; break;
-      case 'longitude': requestBody['lng'] = this.shopDetailsForm.value[key]; break;
-      case 'address_line_1': requestBody['street'] = this.shopDetailsForm.value[key]; break;
-      case 'address_line_2': requestBody['area'] = this.shopDetailsForm.value[key]; break;
-      case 'tags': requestBody['tags'] = this.shopDetailsForm.value[key].replace(/, /g, ',').split(',').filter(tag => tag != ''); break;
-      default: requestBody[key] = this.shopDetailsForm.value[key]
+    switch (key) {
+      case 'latitude':
+        requestBody['lat'] = this.shopDetailsForm.value[key];
+        break;
+      case 'longitude':
+        requestBody['lng'] = this.shopDetailsForm.value[key];
+        break;
+      case 'address_line_1':
+        requestBody['street'] = this.shopDetailsForm.value[key];
+        break;
+      case 'address_line_2':
+        requestBody['area'] = this.shopDetailsForm.value[key];
+        break;
+      case 'tags':
+        requestBody['tags'] = this.shopDetailsForm.value[key].replace(/, /g, ',').split(',').filter(tag => tag != '');
+        break;
+      default:
+        requestBody[key] = this.shopDetailsForm.value[key]
     }
     return requestBody;
   }

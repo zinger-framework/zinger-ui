@@ -10,6 +10,7 @@ export class ImagePreviewComponent implements OnInit {
 
   @Input() imageSrc: string;
   @Input() imageType: string;
+  @Input() imageId: string = '';
   @Output() deleteImageEvent = new EventEmitter<string>();
   width = 75;
   height = 75;
@@ -25,7 +26,7 @@ export class ImagePreviewComponent implements OnInit {
   }
 
   deleteImage() {
-    this.deleteImageEvent.emit(this.imageSrc)
+    this.deleteImageEvent.emit(this.imageId)
   }
 
   onImageLoadError(event) {

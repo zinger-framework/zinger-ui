@@ -19,7 +19,10 @@ const routes: Routes = [
     path: 'auth', component: AuthComponent, children: [
       {path: 'login', component: LoginComponent, canActivate: [AuthGuardService], data: {page: 'PUBLIC'}},
       {
-        path: 'forgot_password', component: ForgotPasswordComponent, canActivate: [AuthGuardService], data: {page: 'PUBLIC'}
+        path: 'forgot_password',
+        component: ForgotPasswordComponent,
+        canActivate: [AuthGuardService],
+        data: {page: 'PUBLIC'}
       },
       {path: 'signup', component: SignupComponent, canActivate: [AuthGuardService], data: {page: 'PUBLIC'}}
     ]
