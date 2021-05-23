@@ -173,6 +173,8 @@ export class ShopDetailsComponent extends BaseComponent {
               }
               break;
             case 'cover_photos':
+              // The below line helps fileChange to be triggered when same photo is uploaded twice
+              this.shopDetailsForm.get('cover_photos').setValue('')
               if (img.naturalWidth == 1024 && img.naturalHeight == 500) {
                 formData.append('cover_file', file);
                 this.shopService.uploadCoverPhoto(this.shopId, formData)
@@ -207,17 +209,22 @@ export class ShopDetailsComponent extends BaseComponent {
           })
         break;
       case 'cover_photos':
-        let index = this.coverImgSrcList.findIndex(x => x == imageUrl)
+        let index = this.coverImgSrcList.findIndex(x => x['url'] == imageUrl)
         if (index >= 0) {
-          this.shopService.deleteCoverPhoto(this.shopId, index)
+          this.shopService.deleteCoverPhoto(this.shopId, this.coverImgSrcList[index]['id'])
             .then(response => {
-              this.deleteCoverImage(index)
+              this.coverImgSrcList = response['data']['cover_photos']
             })
             .catch(error => {
               if (error['status'] == 404) {
                 this.deleteCoverImage(index)
+                this.toastr.error(error['error']['message'])
               }
               handleError(error, this.shopDetailsForm)
+            })
+            .finally(()=>{
+              if (this.coverImgSrcList.length == 0)
+                setErrorMessage('Cover Photos cannot be empty', 'shopDetails', 'cover_photos')
             })
         }
         break;
@@ -232,9 +239,7 @@ export class ShopDetailsComponent extends BaseComponent {
 
   deleteCoverImage(index) {
     let deletedImgSrc = this.coverImgSrcList[index];
-    this.coverImgSrcList = this.coverImgSrcList.filter(x => x != deletedImgSrc)
-    if (this.coverImgSrcList.length == 0)
-      setErrorMessage('Cover Photos cannot be empty', 'shopDetails', 'cover_photos')
+    this.coverImgSrcList = this.coverImgSrcList.filter(x => x['id'] != deletedImgSrc['id'])
   }
 
   canSubmitForm() {

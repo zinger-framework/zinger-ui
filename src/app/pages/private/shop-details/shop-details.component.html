@@ -189,7 +189,7 @@
               <br>
               <div class="row">
                 <div *ngFor="let imgSrc of coverImgSrcList; let i=index">
-                  <image-preview (deleteImageEvent)="deleteImage($event, 'cover_photos')" [imageSrc]="imgSrc"
+                  <image-preview (deleteImageEvent)="deleteImage($event, 'cover_photos')" [imageSrc]="imgSrc['url']"
                                  imageType="cover_photos"></image-preview>
                 </div>
                 <div *ngIf="coverImgSrcList.length<10">
