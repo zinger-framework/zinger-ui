@@ -25,7 +25,6 @@ export class LoginComponent extends BaseComponent {
   constructor(public authService: AuthService, public jwtService: JwtService, private fb: FormBuilder, private router: Router, private toastr: ToastrService) {
     super();
     this.loginForm = this.fb.group({
-      user_type: new ExtendedFormControl('Admin', [Validators.required], 'user_type'),
       email: new ExtendedFormControl('', [Validators.required, Validators.pattern(EMAIL_REGEX)], 'email'),
       password: new ExtendedFormControl('', [Validators.required, Validators.minLength(PASSWORD_LENGTH)], 'password'),
       className: 'login'
@@ -42,7 +41,7 @@ export class LoginComponent extends BaseComponent {
 
   login() {
     this.authService
-      .login(this.loginForm.get('email').value, this.loginForm.get('password').value, this.loginForm.get('user_type').value)
+      .login(this.loginForm.get('email').value, this.loginForm.get('password').value)
       .then(response => {
         this.jwtService.saveToken(response['data']['token']);
         if (response['data']['redirect_to'] == 'OTP') {
@@ -91,7 +90,7 @@ export class LoginComponent extends BaseComponent {
   logout() {
     this.authService.logout().finally(() => {
       this.wizard.goToStep(0);
-      this.loginForm.reset({user_type: 'Admin', className: 'login'});
+      this.loginForm.reset({className: 'login'});
       this.otpForm.reset({className: 'otp'});
     });
   }
