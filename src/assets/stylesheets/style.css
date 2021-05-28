@@ -483,6 +483,10 @@ p {
   min-height: 200px
 }
 
+.min-height-450 {
+  min-height: 450px
+}
+
 .bg-cover {
   background-size: cover !important
 }
