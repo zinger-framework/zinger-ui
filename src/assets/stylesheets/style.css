@@ -4334,6 +4334,10 @@ label.required:after {
   color: #FF4141;
 }
 
+.nav-item a{
+  color: #031e23;
+}
+
 @media (min-width: 1301px) and (max-width: 1400px) {
   .header {
     width: calc(100% - 250px)
