@@ -22,11 +22,10 @@ export class AuthService extends ApiService {
     return this.post(API_ENDPOINTS.AUTH_RESET_PASSWORD, requestBody);
   }
 
-  login(email, password, user_type) {
+  login(email, password) {
     const requestBody = {
       email: email,
-      password: password,
-      user_type: user_type
+      password: password
     };
     return this.post(API_ENDPOINTS.AUTH_LOGIN, requestBody);
   }
