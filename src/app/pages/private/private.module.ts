@@ -14,9 +14,10 @@ import {HeaderComponent} from './header/header.component';
 import {ProfileComponent} from './profile/profile.component';
 import {ReactiveFormsModule} from "@angular/forms";
 import {ShopDetailsComponent} from './shop-details/shop-details.component';
-import {NgbAccordionModule} from "@ng-bootstrap/ng-bootstrap";
+import {NgbAccordionModule, NgbNavModule} from "@ng-bootstrap/ng-bootstrap";
 import {NgxMaterialTimepickerModule} from "ngx-material-timepicker";
 import {PublicModule} from "../public/public.module";
+import { ShopApprovalComponent } from './shop-approval/shop-approval.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import {PublicModule} from "../public/public.module";
     DashboardComponent,
     HeaderComponent,
     ProfileComponent,
-    ShopDetailsComponent
+    ShopDetailsComponent,
+    ShopApprovalComponent
   ],
   exports: [
     PrivateComponent
@@ -39,6 +41,7 @@ import {PublicModule} from "../public/public.module";
     NgSelectModule,
     ReactiveFormsModule,
     NgbAccordionModule,
+    NgbNavModule,
     NgxMaterialTimepickerModule,
     PublicModule
   ]

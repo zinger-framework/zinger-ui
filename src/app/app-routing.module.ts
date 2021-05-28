@@ -10,10 +10,12 @@ import {PageNotFoundComponent} from './layouts/page-not-found/page-not-found.com
 import {AuthGuardService} from './core/service/auth-guard.service';
 import {SignupComponent} from './pages/public/auth/signup/signup.component';
 import {ShopDetailsComponent} from './pages/private/shop-details/shop-details.component';
+import {ShopApprovalComponent} from './pages/private/shop-approval/shop-approval.component';
 
 const routes: Routes = [
   {path: 'profile', component: ProfileComponent, canActivate: [AuthGuardService]},
   {path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuardService]},
+  {path: 'test', component: ShopApprovalComponent, canActivate: [AuthGuardService]},
   {path: 'shop/:id', component: ShopDetailsComponent, canActivate: [AuthGuardService]},
   {
     path: 'auth', component: AuthComponent, children: [
