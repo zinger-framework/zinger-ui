@@ -8,9 +8,10 @@ import { Component, OnInit } from '@angular/core';
 export class ShopApprovalComponent implements OnInit {
 
   active = 1;
-  coverImgSrcList = ['/assets/images/upload-image.png','/assets/images/upload-image.png','/assets/images/upload-image.png',
-     '/assets/images/upload-image.png','/assets/images/upload-image.png','/assets/images/upload-image.png',
-    '/assets/images/upload-image.png','/assets/images/upload-image.png','/assets/images/upload-image.png','/assets/images/upload-image.png']
+  // iconSrc = '/assets/images/upload-image.png'
+  iconSrc = null
+  // coverImgSrcList = ['/assets/images/upload-image.png','/assets/images/upload-image.png','/assets/images/upload-image.png']
+  coverImgSrcList = []
   constructor() { }
 
   ngOnInit(): void {

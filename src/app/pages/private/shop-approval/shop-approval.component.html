@@ -45,6 +45,11 @@
 
           <div class="row p-3">
             <div class="col-md-3 col-lg-3">
+              <label class="text-primary">Status</label>
+              <br>
+              <span>draft</span>
+            </div>
+            <div class="col-md-3 col-lg-3">
               <label class="text-primary">Email</label>
               <br>
               <span>harsha1@gmail.com</span>
@@ -125,9 +130,12 @@
           <div class="p-3">
             <label class="text-primary">Icon</label>
             <div class="row pl-3">
-              <div class="ml-3">
-                <img height="70" width="70" src="/assets/images/upload-image.png"/>
+              <div class="ml-3" *ngIf="iconSrc;else iconNotFound">
+                <img height="70" width="70" [src]="iconSrc"/>
               </div>
+              <ng-template #iconNotFound>
+                <span class="small text-light-gray">Icon Not Uploaded</span>
+              </ng-template>
             </div>
           </div>
 
@@ -139,6 +147,9 @@
                   <img height="34" width="70" [src]="imgSrc"/>
                 </div>
               </div>
+              <div *ngIf="coverImgSrcList.length==0">
+                <span class="small text-light-gray">Cover Photos Not Uploaded</span>
+              </div>
             </div>
           </div>
         </ng-template>
@@ -148,11 +159,6 @@
         <ng-template ngbNavContent>
           <div class="row p-3">
             <div class="col-md-3 col-lg-3">
-              <label class="text-primary">Account Holder Name</label>
-              <br>
-              <span>Harshavardhan</span>
-            </div>
-            <div class="col-md-3 col-lg-3">
               <label class="text-primary">Account Number</label>
               <br>
               <span>99889000292</span>
@@ -161,6 +167,11 @@
               <label class="text-primary">IFSC Code</label>
               <br>
               <span>SBIN0021745</span>
+            </div>
+            <div class="col-md-3 col-lg-3">
+              <label class="text-primary">Account Holder Name</label>
+              <br>
+              <span>Harshavardhan</span>
             </div>
           </div>
           <div class="row p-3">
@@ -181,3 +192,13 @@
     <div [ngbNavOutlet]="nav" class="mt-2"></div>
   </div>
 </div>
+<div class="row p-2 mt-2">
+  <div class="col-8"></div>
+  <div class="col-2 d-inline-flex">
+    <button class="btn btn-outline-primary btn-block pr-2" type="button">Reject</button>
+  </div>
+  <div class="col-2 d-inline-flex">
+    <button class="btn btn-primary btn-block" type="button">Approve</button>
+  </div>
+</div>
+
