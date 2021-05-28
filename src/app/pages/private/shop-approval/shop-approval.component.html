@@ -192,13 +192,40 @@
     <div [ngbNavOutlet]="nav" class="mt-2"></div>
   </div>
 </div>
-<div class="row p-2 mt-2">
-  <div class="col-8"></div>
-  <div class="col-2 d-inline-flex">
-    <button class="btn btn-outline-primary btn-block pr-2" type="button">Reject</button>
-  </div>
-  <div class="col-2 d-inline-flex">
-    <button class="btn btn-primary btn-block" type="button">Approve</button>
-  </div>
-</div>
 
+<div class="mt-4">
+  <ngb-accordion #accordion="ngbAccordion" [destroyOnHide]="false" activeIds="ngb-panel-0">
+    <ngb-panel id="approvalPanel">
+      <ng-template class="panel-header" let-opened="opened" ngbPanelHeader>
+        <accordion-header (click)="expandPanel(accordion, 'approvalPanel')" [opened]="opened"
+                          title='Basic Information'></accordion-header>
+      </ng-template>
+       <ng-template ngbPanelContent>
+         <div *ngIf="isTerminalState(); else nonTerminalApprovalState">
+           Current Shop Status is:  {{ this.shopApprovalStatus }}
+         </div>
+         <ng-template #nonTerminalApprovalState>
+           <div *ngIf="shopApprovalStatus=='PENDING' || shopApprovalStatus=='REJECTED' ;" class="row p-2 mt-2">
+             <div class="col-8"></div>
+             <div class="col-2 d-inline-flex">
+               <button class="btn btn-outline-primary btn-block pr-2" type="button" (click)="updateShopApproval('REJECT')">Reject</button>
+             </div>
+             <div class="col-2 d-inline-flex">
+               <button class="btn btn-primary btn-block" type="button" (click)="updateShopApproval('APPROVE')">Approve</button>
+             </div>
+           </div>
+           <div *ngIf="shopApprovalStatus=='BLOCKED' || shopApprovalStatus=='ACTIVE' ;" class="row p-2 mt-2">
+             <div class="col-10"></div>
+             <div *ngIf="shopApprovalStatus=='BLOCKED'" class="col-2 d-inline-flex">
+               <button class="btn btn-primary btn-block" type="button" (click)="updateShopApproval('UNBLOCK')">Unblock</button>
+             </div>
+             <div *ngIf="shopApprovalStatus=='ACTIVE'" class="col-2 d-inline-flex">
+               <button class="btn btn-primary btn-block" type="button" (click)="updateShopApproval('BLOCK')">Block</button>
+             </div>
+           </div>
+
+         </ng-template>
+       </ng-template>
+     </ngb-panel>
+  </ngb-accordion>
+</div>

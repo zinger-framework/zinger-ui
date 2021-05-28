@@ -12,9 +12,22 @@ export class ShopApprovalComponent implements OnInit {
   iconSrc = null
   // coverImgSrcList = ['/assets/images/upload-image.png','/assets/images/upload-image.png','/assets/images/upload-image.png']
   coverImgSrcList = []
+  shopApprovalStatus = 'REJECTED'
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  expandPanel(acc, panelId) {
+    acc.isExpanded(panelId) ? acc.collapse(panelId) : acc.expand(panelId);
+  }
+
+  updateShopApproval(state){
+
+  }
+
+  isTerminalState(){
+    return this.shopApprovalStatus=='DRAFT'
   }
 
 }
