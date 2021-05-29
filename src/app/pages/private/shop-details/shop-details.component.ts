@@ -252,7 +252,7 @@ export class ShopDetailsComponent extends BaseComponent {
           requestBody = this.updateRequestBody(key, requestBody)
         })
         break;
-      case 'VERIFIED':
+      case 'ACTIVE':
         Object.keys(this.shopDetailsForm.value).forEach(key => {
           if (this.shopDetailsInitialValue[key] != this.shopDetailsForm.value[key]) {
             requestBody = this.updateRequestBody(key, requestBody)

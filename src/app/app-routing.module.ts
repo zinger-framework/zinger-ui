@@ -16,7 +16,7 @@ import {CommentComponent} from "./shared/comment/comment.component";
 const routes: Routes = [
   {path: 'profile', component: ProfileComponent, canActivate: [AuthGuardService]},
   {path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuardService]},
-  {path: 'test', component: ShopApprovalComponent, canActivate: [AuthGuardService]},
+  {path: 'shops/:id', component: ShopApprovalComponent, canActivate: [AuthGuardService]},
   {path: 'comment', component: CommentComponent, canActivate: [AuthGuardService]},
   {path: 'shop/:id', component: ShopDetailsComponent, canActivate: [AuthGuardService]},
   {
