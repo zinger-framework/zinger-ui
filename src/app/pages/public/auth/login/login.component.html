@@ -3,26 +3,9 @@
   <aw-wizard-step>
     <form (ngSubmit)="login()" [formGroup]="loginForm" class="login">
       <div class="form-feedback has-danger padding-bottom-10 text-center"></div>
-      <div class="select-role">
-        <div class="btn-group btn-group-toggle" formControlName="user_type" ngbRadioGroup>
-          <label class="btn" ngbButtonLabel>
-            <input ngbButton type="radio" value="Admin">
-            <div class="icon"><img alt="" class="svg" src="/assets/images/briefcase.svg"/></div>
-            <span>I'm Cocomo</span>Admin
-          </label>
-          <label class="btn" ngbButtonLabel>
-            <input ngbButton type="radio" value="Employee">
-            <div class="icon"><img alt="" class="svg" src="/assets/images/person.svg"/></div>
-            <span>I'm Cocomo</span>Employee
-          </label>
-        </div>
-      </div>
-
       <form-input inputType="email" name="email" placeholder="hello@example.com"></form-input>
       <form-input inputType="password" name="password" placeholder="**********"></form-input>
-
       <div class="float-right pb-3"><a [routerLink]="getRoute('AUTH_FORGOT_PASSWORD')">Forgot Password?</a></div>
-
       <input [disabled]="!this.loginForm.valid" class="btn btn-primary btn-lg btn-block" type="submit"
              value="Login Now"/>
     </form>
