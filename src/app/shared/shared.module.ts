@@ -6,18 +6,22 @@ import {FormInputComponent} from './form-elements/form-input/form-input.componen
 import {CardComponent} from './card/card.component';
 import {ImagePreviewComponent} from './form-elements/image-preview/image-preview.component';
 import { CommentComponent } from './comment/comment.component';
+import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
+import {AppRoutingModule} from "../app-routing.module";
 
 @NgModule({
-  declarations: [FormInputComponent, CardComponent, ImagePreviewComponent, CommentComponent],
+  declarations: [FormInputComponent, CardComponent, ImagePreviewComponent, CommentComponent, BreadcrumbComponent],
   exports: [
     FormInputComponent,
     CardComponent,
     ImagePreviewComponent,
-    CommentComponent
+    CommentComponent,
+    BreadcrumbComponent
   ],
   imports: [
     CommonModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    AppRoutingModule
   ]
 })
 export class SharedModule {

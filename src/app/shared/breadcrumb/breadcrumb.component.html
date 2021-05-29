@@ -1,0 +1,14 @@
+<div class="page-header">
+  <div class="row">
+    <div class="col-md-12 col-sm-12">
+      <div class="title">
+        <h4>{{title}}</h4>
+      </div>
+      <nav aria-label="breadcrumb" role="navigation">
+        <ol class="breadcrumb">
+          <li *ngFor="let d of data;let index = index" class="breadcrumb-item" [class.active]="index == data.length-1" ><a [routerLink]="d.link">{{d.label}}</a></li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+</div>
