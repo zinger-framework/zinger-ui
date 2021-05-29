@@ -1,4 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {ExtendedFormControl} from "../../../core/utils/extended-form-control.utils";
+import {OTP_REGEX} from "../../../core/utils/constants.utils";
 
 @Component({
   selector: 'shop-approval',
@@ -8,12 +12,23 @@ import { Component, OnInit } from '@angular/core';
 export class ShopApprovalComponent implements OnInit {
 
   active = 1;
+  rejectShopRequestForm: FormGroup;
   // iconSrc = '/assets/images/upload-image.png'
   iconSrc = null
   // coverImgSrcList = ['/assets/images/upload-image.png','/assets/images/upload-image.png','/assets/images/upload-image.png']
   coverImgSrcList = []
-  shopApprovalStatus = 'REJECTED'
-  constructor() { }
+  @ViewChild('rejectShopRequest', {read: TemplateRef}) rejectShopRequestModal: TemplateRef<any>;
+  shopApprovalStatus = 'PENDING'
+  comments = [{'author':'Harsha','date': '12 Apr 2021,  5:50 PM','comment': 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque autem dolorum fuga, id illo ipsam itaque laborum modi molestias necessitatibus perferendis placeat porro possimus tempora temporibus vel veniam. A ipsam, voluptates. Architecto asperiores culpa est excepturi facilis impedit inventore itaque laudantium non odio odit placeat quasi quod rerum, velit voluptates.'},
+    {'author':'Jack','date': '13 May 2021,  5:50 PM','comment': 'Lorem ipsum dolor sit amet'},
+    {'author':'Parker','date': '12 Dec 2021,  9:50 PM','comment': 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque autem dolorum fuga, id illo ipsam itaque laborum modi molestias necessitatibus perferendis placeat porro possimus tempora temporibus vel veniam. A ipsam, voluptates. Architecto asperiores culpa est excepturi facilis impedit inventore itaque laudantium non odio odit placeat quasi quod rerum, velit voluptates.'}]
+
+  constructor(private fb: FormBuilder, private modalService: NgbModal) {
+    this.rejectShopRequestForm = this.fb.group({
+      reason: new ExtendedFormControl('', [Validators.required, Validators.maxLength(250)], 'reason'),
+      className: 'rejectShopRequest'
+    })
+  }
 
   ngOnInit(): void {
   }
@@ -23,11 +38,14 @@ export class ShopApprovalComponent implements OnInit {
   }
 
   updateShopApproval(state){
-
+    this.modalService.dismissAll();
   }
 
   isTerminalState(){
-    return this.shopApprovalStatus=='DRAFT'
+    return ['DRAFT','REJECTED'].includes(this.shopApprovalStatus)
   }
 
+  showRejectShopRequestModal(){
+    this.modalService.open(this.rejectShopRequestModal, {centered: true});
+  }
 }

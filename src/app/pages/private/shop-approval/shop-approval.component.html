@@ -138,7 +138,6 @@
               </ng-template>
             </div>
           </div>
-
           <div class="p-3">
             <label class="text-primary">Cover Photos</label>
             <div class="row pl-3">
@@ -198,34 +197,57 @@
     <ngb-panel id="approvalPanel">
       <ng-template class="panel-header" let-opened="opened" ngbPanelHeader>
         <accordion-header (click)="expandPanel(accordion, 'approvalPanel')" [opened]="opened"
-                          title='Basic Information'></accordion-header>
+                          title='Update Status'></accordion-header>
       </ng-template>
        <ng-template ngbPanelContent>
-         <div *ngIf="isTerminalState(); else nonTerminalApprovalState">
-           Current Shop Status is:  {{ this.shopApprovalStatus }}
-         </div>
-         <ng-template #nonTerminalApprovalState>
-           <div *ngIf="shopApprovalStatus=='PENDING' || shopApprovalStatus=='REJECTED' ;" class="row p-2 mt-2">
-             <div class="col-8"></div>
-             <div class="col-2 d-inline-flex">
-               <button class="btn btn-outline-primary btn-block pr-2" type="button" (click)="updateShopApproval('REJECT')">Reject</button>
+         <div class="row">
+           <div *ngIf="shopApprovalStatus == 'DRAFT'" class="col-3 pt-2 pl-4">
+             Shop Status:  {{ this.shopApprovalStatus }}
+           </div>
+           <div *ngIf="shopApprovalStatus == 'PENDING';" class="row col-4">
+             <div class="col-6">
+               <button class="btn btn-outline-primary btn-block pr-2" type="button" (click)="this.showRejectShopRequestModal()">Reject</button>
              </div>
-             <div class="col-2 d-inline-flex">
+             <div class="col-6">
                <button class="btn btn-primary btn-block" type="button" (click)="updateShopApproval('APPROVE')">Approve</button>
              </div>
            </div>
-           <div *ngIf="shopApprovalStatus=='BLOCKED' || shopApprovalStatus=='ACTIVE' ;" class="row p-2 mt-2">
-             <div class="col-10"></div>
-             <div *ngIf="shopApprovalStatus=='BLOCKED'" class="col-2 d-inline-flex">
-               <button class="btn btn-primary btn-block" type="button" (click)="updateShopApproval('UNBLOCK')">Unblock</button>
-             </div>
-             <div *ngIf="shopApprovalStatus=='ACTIVE'" class="col-2 d-inline-flex">
-               <button class="btn btn-primary btn-block" type="button" (click)="updateShopApproval('BLOCK')">Block</button>
-             </div>
+           <div *ngIf="shopApprovalStatus == 'BLOCKED'" class="col-2">
+             <button class="btn btn-primary btn-block" type="button" (click)="updateShopApproval('UNBLOCK')">Unblock</button>
            </div>
-
-         </ng-template>
+           <div *ngIf="shopApprovalStatus == 'ACTIVE'" class="col-2">
+             <button class="btn btn-outline-primary btn-block" type="button" (click)="updateShopApproval('BLOCK')">Block</button>
+           </div>
+         </div>
+         <div *ngIf="this.shopApprovalStatus == 'PENDING'" class="p-1 mt-4">
+           <p class="font-weight-bold">Approval Comments</p>
+           <div *ngFor="let comment of comments" class="pt-1">
+             <comment [name]="comment.author" [timeOfComment]="comment.date" [comment]="comment.comment"></comment>
+           </div>
+         </div>
        </ng-template>
      </ngb-panel>
   </ngb-accordion>
+
+  <ng-template #rejectShopRequest let-modal>
+    <form (ngSubmit)="updateShopApproval('REJECT')" [formGroup]="rejectShopRequestForm" class="rejectShopRequest p-2">
+      <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Reason For Rejection</h4>
+        <button (click)="modal.dismiss()" aria-label="Close" class="close" type="button">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div class="form-group form-group-reason mt-4">
+          <textarea class="form-control form-control-lg" formControlName="reason" placeholder="Please add your comments in less than 250 characters" rows="6"></textarea>
+          <div class="form-control-feedback has-danger"></div>
+        </div>
+      </div>
+      <div class="form-feedback has-danger mt-1 mb-1 text-center"></div>
+      <div class="modal-footer">
+        <input [disabled]="!this.rejectShopRequestForm.valid" class="btn btn-primary" type="submit" value="Submit">
+      </div>
+    </form>
+  </ng-template>
 </div>
