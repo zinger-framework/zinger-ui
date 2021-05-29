@@ -8,9 +8,10 @@ import {Component, Input, OnInit} from '@angular/core';
 export class BreadcrumbComponent implements OnInit {
 
   @Input() title = 'Title';
-  @Input() data = [{label: 'Home',link: '/dashboard'}];
+  @Input() data = [{label: 'Home', link: '/dashboard'}];
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit(): void {
   }

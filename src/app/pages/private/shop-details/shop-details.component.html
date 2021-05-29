@@ -1,5 +1,5 @@
 <div class="min-height-200">
-  <breadcrumb title="Register Shop" [data]="breadCrumbData"></breadcrumb>
+  <breadcrumb [data]="breadCrumbData" title="Register Shop"></breadcrumb>
   <form (ngSubmit)="submitShopDetails(accordion)" [formGroup]="shopDetailsForm" class="shopDetails">
     <ngb-accordion #accordion="ngbAccordion" [destroyOnHide]="false"
                    activeIds="ngb-panel-0">

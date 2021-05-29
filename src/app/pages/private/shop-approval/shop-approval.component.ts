@@ -24,7 +24,10 @@ export class ShopApprovalComponent implements OnInit {
 
   constructor(private fb: FormBuilder, private modalService: NgbModal, private route: ActivatedRoute, private router: Router, private shopService: PlatformShopService, private toastr: ToastrService) {
     this.route.params.subscribe(params => this.shopId = params['id']);
-    this.breadCrumbData= [{label: 'Home',link: '/dashboard'},{label: 'Shop',link: '/shops'},{label: this.shopId,link: ''}]
+    this.breadCrumbData = [{label: 'Home', link: '/dashboard'}, {label: 'Shop', link: '/shops'}, {
+      label: this.shopId,
+      link: ''
+    }]
     this.rejectShopRequestForm = this.fb.group({
       reason: new ExtendedFormControl('', [Validators.required, Validators.maxLength(250)], 'reason'),
       className: 'rejectShopRequest'
@@ -47,10 +50,10 @@ export class ShopApprovalComponent implements OnInit {
     acc.isExpanded(panelId) ? acc.collapse(panelId) : acc.expand(panelId);
   }
 
-  updateShopApproval(status){
+  updateShopApproval(status) {
     this.modalService.dismissAll();
     this.data['status'] = status
-    if(status == 'REJECTED') this.data['comment'] = this.rejectShopRequestForm.get('reason').value;
+    if (status == 'REJECTED') this.data['comment'] = this.rejectShopRequestForm.get('reason').value;
     this.shopService.updateShopDetails(this.shopId, this.data)
       .then(response => {
         response['data']['shop']['tags'] = response['data']['shop']['tags'].toString().replace(/,/g, ', ');
@@ -61,11 +64,11 @@ export class ShopApprovalComponent implements OnInit {
       });
   }
 
-  isTerminalState(){
-    return ['DRAFT','REJECTED'].includes(this.shopApprovalStatus)
+  isTerminalState() {
+    return ['DRAFT', 'REJECTED'].includes(this.shopApprovalStatus)
   }
 
-  showRejectShopRequestModal(){
+  showRejectShopRequestModal() {
     this.modalService.open(this.rejectShopRequestModal, {centered: true});
   }
 }

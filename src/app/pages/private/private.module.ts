@@ -17,7 +17,7 @@ import {ShopDetailsComponent} from './shop-details/shop-details.component';
 import {NgbAccordionModule, NgbNavModule} from "@ng-bootstrap/ng-bootstrap";
 import {NgxMaterialTimepickerModule} from "ngx-material-timepicker";
 import {PublicModule} from "../public/public.module";
-import { ShopApprovalComponent } from './shop-approval/shop-approval.component';
+import {ShopApprovalComponent} from './shop-approval/shop-approval.component';
 
 @NgModule({
   declarations: [

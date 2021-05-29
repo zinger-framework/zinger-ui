@@ -11,7 +11,8 @@ export class CommentComponent implements OnInit {
   @Input() time;
   @Input() message;
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit(): void {
   }
