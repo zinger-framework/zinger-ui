@@ -1,20 +1,5 @@
 <div class="min-height-200">
-  <div class="page-header">
-    <div class="row">
-      <div class="col-md-12 col-sm-12">
-        <div class="title">
-          <h4>Register Shop</h4>
-        </div>
-        <nav aria-label="breadcrumb" role="navigation">
-          <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a routerLink="/dashboard">Home</a></li>
-            <li aria-current="page" class="breadcrumb-item active">Shop</li>
-          </ol>
-        </nav>
-      </div>
-    </div>
-  </div>
-
+  <breadcrumb title="Register Shop" [data]="breadCrumbData"></breadcrumb>
   <form (ngSubmit)="submitShopDetails(accordion)" [formGroup]="shopDetailsForm" class="shopDetails">
     <ngb-accordion #accordion="ngbAccordion" [destroyOnHide]="false"
                    activeIds="ngb-panel-0">

@@ -1,20 +1,5 @@
 <div class="min-height-200">
-	<div class="page-header">
-		<div class="row">
-		  <div class="col-md-12 col-sm-12">
-		    <div class="title">
-		      <h4>Shop Approval</h4>
-		    </div>
-		    <nav aria-label="breadcrumb" role="navigation">
-		      <ol class="breadcrumb">
-		        <li class="breadcrumb-item"><a routerLink="/dashboard">Home</a></li>
-		        <li aria-current="page" class="breadcrumb-item">Shop</li>
-		        <li aria-current="page" class="breadcrumb-item active">1</li>
-		      </ol>
-		    </nav>
-		  </div>
-		</div>
-	</div>
+  <breadcrumb title="Approval" [data]="breadCrumbData"></breadcrumb>
   <div class="bg-white rounded p-3 min-height-450">
     <ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-tabs">
       <li [ngbNavItem]="1">

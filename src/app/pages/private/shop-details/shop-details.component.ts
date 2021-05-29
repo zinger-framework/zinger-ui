@@ -39,6 +39,7 @@ export class ShopDetailsComponent extends BaseComponent {
   iconSrc = ''
   coverImgSrcList = []
   shopId: number;
+  breadCrumbData = [{label: 'Home',link: '/dashboard'},{label: 'Shop',link: ''}];
 
   constructor(private fb: FormBuilder, private toastr: ToastrService, private shopService: ShopService, private route: ActivatedRoute, private router: Router) {
     super();
