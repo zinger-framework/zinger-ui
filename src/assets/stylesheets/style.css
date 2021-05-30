@@ -4338,6 +4338,23 @@ label.required:after {
   color: #031e23;
 }
 
+.height-consistent .tab-content {
+  display: flex;
+}
+
+.height-consistent .tab-content > .tab-pane {
+  display: none;
+  display: block;
+  visibility: hidden;
+  margin-right: -100%;
+  width: 100%;
+}
+
+.height-consistent .tab-content > .active {
+  display: block;
+  visibility: visible;
+}
+
 @media (min-width: 1301px) and (max-width: 1400px) {
   .header {
     width: calc(100% - 250px)
