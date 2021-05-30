@@ -2,14 +2,14 @@
   <div class="row">
     <div class="col-md-12 col-sm-12">
       <div class="title">
-        <h4>{{title}}</h4>
+        <h4>{{ title }}</h4>
       </div>
       <nav aria-label="breadcrumb" role="navigation">
         <ol class="breadcrumb">
-          <li *ngFor="let d of data;let index = index" [class.active]="index == data.length-1" class="breadcrumb-item">
-            <a *ngIf="index!=data.length-1;else lastElement" [routerLink]="d.link">{{d.label}}</a>
+          <li *ngFor="let d of data; let i = index" [class.active]="i == data.length-1" class="breadcrumb-item">
+            <a *ngIf="i != data.length-1; else lastElement" [routerLink]="d.link">{{ d.label }}</a>
             <ng-template #lastElement>
-              {{d.label}}
+              {{ d.label }}
             </ng-template>
           </li>
         </ol>
