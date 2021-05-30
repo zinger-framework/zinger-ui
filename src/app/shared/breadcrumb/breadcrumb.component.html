@@ -6,8 +6,8 @@
       </div>
       <nav aria-label="breadcrumb" role="navigation">
         <ol class="breadcrumb">
-          <li *ngFor="let d of data; let i = index" [class.active]="i == data.length-1" class="breadcrumb-item">
-            <a *ngIf="i != data.length-1; else lastElement" [routerLink]="d.link">{{ d.label }}</a>
+          <li *ngFor="let d of data; let i = index" [class.active]="isLastElement(i)" class="breadcrumb-item">
+            <a *ngIf="!isLastElement(i); else lastElement" [routerLink]="d.link">{{ d.label }}</a>
             <ng-template #lastElement>
               {{ d.label }}
             </ng-template>

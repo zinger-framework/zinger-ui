@@ -14,4 +14,8 @@ export class BreadcrumbComponent implements OnInit {
 
   ngOnInit(): void {
   }
+
+  isLastElement(index){
+    return index == this.data.length-1
+  }
 }

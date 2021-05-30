@@ -248,10 +248,6 @@ export class ShopDetailsComponent extends BaseComponent {
     let requestBody = {}
     switch (this.formStatus) {
       case 'DRAFT':
-        Object.keys(this.shopDetailsForm.value).forEach(key => {
-          requestBody = this.updateRequestBody(key, requestBody)
-        })
-        break;
       case 'PENDING':
         Object.keys(this.shopDetailsForm.value).forEach(key => {
           requestBody = this.updateRequestBody(key, requestBody)
