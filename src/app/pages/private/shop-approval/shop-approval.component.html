@@ -211,7 +211,7 @@
           </div>
         </div>
         <div *ngIf="['PENDING', 'REJECTED'].includes(data['status'])" class="p-1 mt-4">
-          <p class="font-weight-bold">Approval Comments</p>
+          <p class="font-weight-bold">Comments</p>
           <div *ngFor="let comment of data['approval_comments']" class="pt-1">
             <comment [message]="comment.message" [time]="comment.time" [userName]="comment.user_id"></comment>
           </div>
