@@ -9,56 +9,56 @@
             <div class="col-md-3 col-lg-3">
               <label class="text-primary">Shop Name</label>
               <br>
-              <span>{{ data['name'] | defaultTo }}</span>
+              <span>{{ data['name'] || '-' }}</span>
             </div>
             <div class="col-md-3 col-lg-3">
               <label class="text-primary">Category</label>
               <br>
-              <span>{{ data['category'] | defaultTo }}</span>
+              <span>{{ data['category'] || '-' }}</span>
             </div>
             <div class="col-md-3 col-lg-3">
               <label class="text-primary">Opening Time</label>
               <br>
-              <span>{{ data['opening_time'] | defaultTo }}</span>
+              <span>{{ data['opening_time'] || '-' }}</span>
             </div>
             <div class="col-md-3 col-lg-3">
               <label class="text-primary">Closing Time</label>
               <br>
-              <span>{{ data['closing_time'] | defaultTo }}</span>
+              <span>{{ data['closing_time'] || '-' }}</span>
             </div>
           </div>
           <div class="row p-3">
             <div class="col-md-3 col-lg-3">
               <label class="text-primary">Status</label>
               <br>
-              <span>{{ data['status'] | defaultTo }}</span>
+              <span>{{ data['status'] || '-' }}</span>
             </div>
             <div class="col-md-3 col-lg-3">
               <label class="text-primary">Email</label>
               <br>
-              <span>{{ data['email'] | defaultTo }}</span>
+              <span>{{ data['email'] || '-' }}</span>
             </div>
             <div class="col-md-3 col-lg-3">
               <label class="text-primary">Mobile</label>
               <br>
-              <span>{{ data['mobile'] | defaultTo }}</span>
+              <span>{{ data['mobile'] || '-' }}</span>
             </div>
             <div class="col-md-3 col-lg-3">
               <label class="text-primary">Telephone</label>
               <br>
-              <span>{{ data['telephone'] | defaultTo }}</span>
+              <span>{{ data['telephone'] || '-' }}</span>
             </div>
           </div>
           <div class="row p-3">
             <div class="col-md-6 col-lg-6">
               <label class="text-primary">Description</label>
               <br>
-              <textarea class="border-0 w-100" readonly rows="4">{{ data['description'] | defaultTo }}</textarea>
+              <textarea class="border-0 w-100" readonly rows="4">{{ data['description'] || '-' }}</textarea>
             </div>
             <div class="col-md-3 col-lg-3">
               <label class="text-primary">Tags</label>
               <br>
-              <span>{{ data['tags'] | defaultTo }}</span>
+              <span>{{ data['tags'] || '-' }}</span>
             </div>
           </div>
         </ng-template>
@@ -70,39 +70,39 @@
             <div class="col-md-6 col-lg-6">
               <label class="text-primary">Street</label>
               <br>
-              <textarea class="border-0 w-100" readonly rows="4">{{ data['address']['street'] | defaultTo }}</textarea>
+              <textarea class="border-0 w-100" readonly rows="4">{{ data['address']['street'] || '-' }}</textarea>
             </div>
             <div class="col-md-6 col-lg-6">
               <label class="text-primary">Area</label>
               <br>
-              <textarea class="border-0 w-100" readonly rows="4">{{ data['address']['area'] | defaultTo }}</textarea>
+              <textarea class="border-0 w-100" readonly rows="4">{{ data['address']['area'] || '-' }}</textarea>
             </div>
           </div>
           <div class="row p-3">
             <div class="col-md-2 col-lg-2">
               <label class="text-primary">City</label>
               <br>
-              <span>{{ data['address']['city'] | defaultTo }}</span>
+              <span>{{ data['address']['city'] || '-' }}</span>
             </div>
             <div class="col-md-2 col-lg-2">
               <label class="text-primary">State</label>
               <br>
-              <span>{{ data['address']['state'] | defaultTo }}</span>
+              <span>{{ data['address']['state'] || '-' }}</span>
             </div>
             <div class="col-md-2 col-lg-2">
               <label class="text-primary">Pincode</label>
               <br>
-              <span>{{ data['address']['pincode'] | defaultTo }}</span>
+              <span>{{ data['address']['pincode'] || '-' }}</span>
             </div>
             <div class="col-md-2 col-lg-2">
               <label class="text-primary">Latitude</label>
               <br>
-              <span>{{ data['address']['lat'] | defaultTo }}</span>
+              <span>{{ data['address']['lat'] || '-' }}</span>
             </div>
             <div class="col-md-2 col-lg-2">
               <label class="text-primary">Longitude</label>
               <br>
-              <span>{{ data['address']['lng'] | defaultTo }}</span>
+              <span>{{ data['address']['lng'] || '-' }}</span>
             </div>
           </div>
         </ng-template>
@@ -113,8 +113,8 @@
           <div class="p-3">
             <label class="text-primary">Icon</label>
             <div class="row pl-3">
-              <div *ngIf="data['icon'];else iconNotFound" class="ml-3">
-                <img [src]="data['icon']" height="70" width="70"/>
+              <div *ngIf="data['icon'];else iconNotFound">
+                <image-preview [imageSrc]="data['icon']" disableDelete="true"></image-preview>
               </div>
               <ng-template #iconNotFound>
                 <span class="small text-light-gray">No icon found</span>
@@ -124,10 +124,8 @@
           <div class="p-3">
             <label class="text-primary">Cover Photos</label>
             <div class="row pl-3">
-              <div *ngFor="let imgSrc of data['cover_photos'];">
-                <div class="image-preview ml-3 pt-1">
-                  <img [src]="imgSrc['url']" height="34" width="70"/>
-                </div>
+              <div *ngFor="let imgSrc of data['cover_photos']">
+                <image-preview [imageSrc]="imgSrc['url']" disableDelete="true" imageType="cover_photos"></image-preview>
               </div>
               <div *ngIf="data['cover_photos'].length==0">
                 <span class="small text-light-gray">No cover photos found</span>
@@ -143,29 +141,29 @@
             <div class="col-md-3 col-lg-3">
               <label class="text-primary">Account Number</label>
               <br>
-              <span>{{ data['payment']['account_number'] | defaultTo }}</span>
+              <span>{{ data['payment']['account_number'] || '-' }}</span>
             </div>
             <div class="col-md-3 col-lg-3">
               <label class="text-primary">IFSC Code</label>
               <br>
-              <span>{{ data['payment']['account_ifsc'] | defaultTo }}</span>
+              <span>{{ data['payment']['account_ifsc'] || '-' }}</span>
             </div>
             <div class="col-md-3 col-lg-3">
               <label class="text-primary">Account Holder Name</label>
               <br>
-              <span>{{ data['payment']['account_holder'] | defaultTo }}</span>
+              <span>{{ data['payment']['account_holder'] || '-' }}</span>
             </div>
           </div>
           <div class="row p-3">
             <div class="col-md-3 col-lg-3">
               <label class="text-primary">PAN Number</label>
               <br>
-              <span>{{ data['payment']['pan'] | defaultTo }}</span>
+              <span>{{ data['payment']['pan'] || '-' }}</span>
             </div>
             <div class="col-md-3 col-lg-3">
               <label class="text-primary">GST Number</label>
               <br>
-              <span>{{ data['payment']['gst'] | defaultTo }}</span>
+              <span>{{ data['payment']['gst'] || '-' }}</span>
             </div>
           </div>
         </ng-template>

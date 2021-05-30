@@ -7,7 +7,6 @@ import {AuthService} from './service/auth.service';
 import {LocalStorageService} from "./service/local-storage.service";
 import {JwtService} from './service/jwt.service';
 import {AuthGuardService} from "./service/auth-guard.service";
-import {DefaultToPipe} from "./pipe/DefaultTo.pipe";
 
 @NgModule({
   imports: [
@@ -15,11 +14,7 @@ import {DefaultToPipe} from "./pipe/DefaultTo.pipe";
   ],
   providers: [LocalStorageService, JwtService, AuthService, AuthGuardService,
     [{provide: HTTP_INTERCEPTORS, useClass: ApiService, multi: true}]
-  ],
-  exports: [
-    DefaultToPipe
-  ],
-  declarations: [DefaultToPipe]
+  ]
 })
 export class CoreModule {
 }
