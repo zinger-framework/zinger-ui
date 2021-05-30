@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ExtendedFormControl} from '../../../../core/utils/extended-form-control.utils';
 import {
@@ -15,20 +15,21 @@ import $ from 'jquery';
 import {handleError} from '../../../../core/utils/common.utils';
 import {WizardComponent} from 'angular-archwizard';
 import {Router} from '@angular/router';
+import {BaseComponent} from "../../../../base.component";
 
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.css']
 })
-export class SignupComponent implements OnInit {
+export class SignupComponent extends BaseComponent {
   signupOtpForm: FormGroup;
   signupForm: FormGroup;
   @ViewChild(WizardComponent)
   public wizard: WizardComponent;
 
   constructor(private fb: FormBuilder, private authService: AuthService, private jwtService: JwtService, private router: Router) {
-
+    super()
     this.signupOtpForm = this.fb.group({
       email: new ExtendedFormControl('', [Validators.required, Validators.pattern(EMAIL_REGEX)], 'email'),
       className: 'signup-otp'

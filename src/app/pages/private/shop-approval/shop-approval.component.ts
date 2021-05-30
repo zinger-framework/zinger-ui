@@ -1,4 +1,4 @@
-import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
+import {Component, TemplateRef, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {ExtendedFormControl} from "../../../core/utils/extended-form-control.utils";
@@ -6,20 +6,22 @@ import {APP_ROUTES} from "../../../core/utils/constants.utils";
 import {ActivatedRoute, Router} from "@angular/router";
 import {PlatformShopService} from "../../../core/service/platform-shop.service";
 import {ToastrService} from "ngx-toastr";
+import {BaseComponent} from "../../../base.component";
 
 @Component({
   selector: 'shop-approval',
   templateUrl: './shop-approval.component.html',
   styleUrls: ['./shop-approval.component.css']
 })
-export class ShopApprovalComponent implements OnInit {
+export class ShopApprovalComponent extends BaseComponent {
   rejectShopForm: FormGroup;
   @ViewChild('rejectShop', {read: TemplateRef}) rejectShopModal: TemplateRef<any>;
   data = {}
-  shopId = 1
+  shopId = 0
   breadCrumbData = [];
 
   constructor(private fb: FormBuilder, private modalService: NgbModal, private route: ActivatedRoute, private router: Router, private shopService: PlatformShopService, private toastr: ToastrService) {
+    super()
     this.route.params.subscribe(params => this.shopId = params['id']);
     this.breadCrumbData = [{label: 'Home', link: '/dashboard'}, {label: 'Shop', link: '/shops'}, {
       label: this.shopId,
@@ -27,7 +29,7 @@ export class ShopApprovalComponent implements OnInit {
     }]
     this.rejectShopForm = this.fb.group({
       reason: new ExtendedFormControl('', [Validators.required, Validators.maxLength(250)], 'reason'),
-      className: 'rejectShop'
+      className: 'reject-shop'
     })
   }
 
@@ -39,6 +41,7 @@ export class ShopApprovalComponent implements OnInit {
       })
       .catch(error => {
         this.toastr.error(error['error']['message']);
+        // TODO Redirect to list of shops
         this.router.navigate([APP_ROUTES.DASHBOARD])
       })
   }
@@ -59,10 +62,6 @@ export class ShopApprovalComponent implements OnInit {
       .catch(error => {
         this.toastr.error(error['error']['message'])
       });
-  }
-
-  isTerminalStatus() {
-    return ['DRAFT', 'REJECTED'].includes(this.data['status'])
   }
 
   getCommentModal() {

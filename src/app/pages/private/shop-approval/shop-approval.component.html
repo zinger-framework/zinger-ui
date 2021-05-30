@@ -183,11 +183,8 @@
                           title='Update Status'></accordion-header>
       </ng-template>
       <ng-template ngbPanelContent>
-        <div class="row">
-          <div *ngIf="isTerminalStatus" class="col-3 pt-2 pl-4">
-            No actions to perform
-          </div>
-          <div *ngIf="data['status'] == 'PENDING';" class="row col-4">
+        <div [ngSwitch]="data['status']" class="row">
+          <div *ngSwitchCase="'PENDING'" class="row col-4">
             <div class="col-6">
               <button (click)="getCommentModal()" class="btn btn-outline-primary btn-block pr-2"
                       type="button">Reject
@@ -198,14 +195,22 @@
               </button>
             </div>
           </div>
-          <div *ngIf="data['status'] == 'BLOCKED'" class="col-2">
+          <div *ngSwitchCase="'BLOCKED'" class="col-2">
             <button (click)="updateShopStatus('ACTIVE')" class="btn btn-primary btn-block" type="button">Unblock
             </button>
           </div>
-          <div *ngIf="data['status'] == 'ACTIVE' || data['status'] == 'INACTIVE' " class="col-2">
+          <div *ngSwitchCase="'ACTIVE'" class="col-2">
             <button (click)="updateShopStatus('BLOCKED')" class="btn btn-outline-primary btn-block" type="button">
               Block
             </button>
+          </div>
+          <div *ngSwitchCase="'INACTIVE'" class="col-2">
+            <button (click)="updateShopStatus('BLOCKED')" class="btn btn-outline-primary btn-block" type="button">
+              Block
+            </button>
+          </div>
+          <div *ngSwitchDefault class="col-3 pt-2 pl-4">
+            No actions to perform
           </div>
         </div>
         <div *ngIf="data['status'] == 'PENDING'" class="p-1 mt-4">
@@ -220,7 +225,7 @@
   </ngb-accordion>
 
   <ng-template #rejectShop let-modal>
-    <form (ngSubmit)="updateShopStatus('REJECTED')" [formGroup]="rejectShopForm" class="rejectShop p-2">
+    <form (ngSubmit)="updateShopStatus('REJECTED')" [formGroup]="rejectShopForm" class="reject-shop p-2">
       <div class="modal-header">
         <h4 class="modal-title" id="modal-basic-title">Reason For Rejection</h4>
         <button (click)="modal.dismiss()" aria-label="Close" class="close" type="button">

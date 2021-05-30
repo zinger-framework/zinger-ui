@@ -1,18 +1,17 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input} from '@angular/core';
+import {BaseComponent} from "../../base.component";
 
 @Component({
   selector: 'breadcrumb',
   templateUrl: './breadcrumb.component.html',
   styleUrls: ['./breadcrumb.component.css']
 })
-export class BreadcrumbComponent implements OnInit {
+export class BreadcrumbComponent extends BaseComponent {
   @Input() title = 'Title';
   @Input() data = [{label: 'Home', link: '/dashboard'}];
 
   constructor() {
-  }
-
-  ngOnInit(): void {
+    super()
   }
 
   isLastElement(index) {

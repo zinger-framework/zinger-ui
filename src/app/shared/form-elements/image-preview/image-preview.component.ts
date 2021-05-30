@@ -1,12 +1,13 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {ToastrService} from "ngx-toastr";
+import {BaseComponent} from "../../../base.component";
 
 @Component({
   selector: 'image-preview',
   templateUrl: './image-preview.component.html',
   styleUrls: ['./image-preview.component.css']
 })
-export class ImagePreviewComponent implements OnInit {
+export class ImagePreviewComponent extends BaseComponent {
 
   @Input() imageSrc: string;
   @Input() imageType: string;
@@ -16,6 +17,7 @@ export class ImagePreviewComponent implements OnInit {
   height = 75;
 
   constructor(public toast: ToastrService) {
+    super()
   }
 
   ngOnInit(): void {
