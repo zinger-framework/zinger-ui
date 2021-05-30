@@ -117,7 +117,7 @@
                 <img [src]="data['icon']" height="70" width="70"/>
               </div>
               <ng-template #iconNotFound>
-                <span class="small text-light-gray">Icon Not Uploaded</span>
+                <span class="small text-light-gray">No icon found</span>
               </ng-template>
             </div>
           </div>
@@ -130,7 +130,7 @@
                 </div>
               </div>
               <div *ngIf="data['cover_photos'].length==0">
-                <span class="small text-light-gray">Cover Photos Not Uploaded</span>
+                <span class="small text-light-gray">No cover photos found</span>
               </div>
             </div>
           </div>
@@ -171,7 +171,7 @@
         </ng-template>
       </li>
     </ul>
-    <div [ngbNavOutlet]="nav" class="mt-2"></div>
+    <div [ngbNavOutlet]="nav"></div>
   </div>
 </div>
 
