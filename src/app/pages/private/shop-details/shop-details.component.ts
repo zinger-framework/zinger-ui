@@ -12,7 +12,8 @@ import {
   MOBILE_REGEX,
   NAME_REGEX,
   PAN_REGEX,
-  PINCODE_REGEX, SHOP_NAME_REGEX,
+  PINCODE_REGEX,
+  SHOP_NAME_REGEX,
   TAGS_REGEX,
   TELEPHONE_REGEX
 } from '../../../core/utils/constants.utils';
@@ -38,6 +39,7 @@ export class ShopDetailsComponent extends BaseComponent {
   states = ['Tamil Nadu', 'Kerala', 'Andhra Pradesh', 'Karnataka']
   iconSrc = ''
   coverImgSrcList = []
+  approvalComments = []
   shopId: number;
   breadCrumbData = [{label: 'Home', link: '/dashboard'}, {label: 'Shop', link: ''}];
 
@@ -120,6 +122,9 @@ export class ShopDetailsComponent extends BaseComponent {
             break;
           case 'status':
             this.formStatus = shopData[field]
+            break;
+          case 'approval_comments':
+            this.approvalComments = shopData[field]
             break;
           default:
             if (field != 'id' && this.shopDetailsForm.get(field) != null) {

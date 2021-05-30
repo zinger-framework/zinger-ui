@@ -1,8 +1,40 @@
 <div class="min-height-200">
   <breadcrumb [data]="breadCrumbData" title="Register Shop"></breadcrumb>
+  <div *ngIf="formStatus == 'PENDING' || formStatus == 'REJECTED'" class="page-header">
+    <div class="row">
+      <div class="col-md-12 col-sm-12">
+        <div>
+          <div *ngIf="this.formStatus == 'REJECTED'" class="text-center text-light-gray">Your request has been rejected.
+            Please check the below comments.
+          </div>
+          <div *ngIf="this.formStatus == 'PENDING'" class="text-center text-light-gray">Your request is pending for approval and will be processed in 2-4 working days
+          </div>
+        </div>
+        <div *ngIf="approvalComments.length > 0" class="mt-3 comment-accordion">
+          <ngb-accordion #commentsAccordion="ngbAccordion" [destroyOnHide]="false">
+            <ngb-panel id="commentsPanel">
+              <ng-template let-opened="opened" ngbPanelHeader>
+                <div class="d-flex bg-white">
+                  <button class="btn p-2" ngbPanelToggle><i aria-hidden="true"
+                                                            class="icon-copy fa fa-{{ opened ? 'minus' : 'plus'  }} mb-2"></i>
+                  </button>
+                  <h6 class="mt-2 pt-1 text-dark">Comments</h6>
+                </div>
+              </ng-template>
+              <ng-template ngbPanelContent>
+                <div *ngFor="let comment of approvalComments" class="pt-1">
+                  <comment [message]="comment.message" [time]="comment.time" [userName]="comment.user_id"></comment>
+                </div>
+              </ng-template>
+            </ngb-panel>
+          </ngb-accordion>
+
+        </div>
+      </div>
+    </div>
+  </div>
   <form (ngSubmit)="submitShopDetails(accordion)" [formGroup]="shopDetailsForm" class="shopDetails">
-    <ngb-accordion #accordion="ngbAccordion" [destroyOnHide]="false"
-                   activeIds="ngb-panel-0">
+    <ngb-accordion #accordion="ngbAccordion" [destroyOnHide]="false">
 
       <ngb-panel id="basicInfoPanel">
         <ng-template class="panel-header" let-opened="opened" ngbPanelHeader>

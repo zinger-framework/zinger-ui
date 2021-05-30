@@ -4355,6 +4355,19 @@ label.required:after {
   visibility: visible;
 }
 
+.comment-accordion .card-header{
+  padding: 0px;
+  margin: 0px;
+  border: none;
+  background-color: white;
+}
+
+.comment-accordion .card{
+  padding: 0px;
+  margin: 0px;
+  border: none;
+}
+
 @media (min-width: 1301px) and (max-width: 1400px) {
   .header {
     width: calc(100% - 250px)
