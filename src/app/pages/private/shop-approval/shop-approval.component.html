@@ -127,7 +127,7 @@
               <div *ngFor="let imgSrc of data['cover_photos']">
                 <image-preview [imageSrc]="imgSrc['url']" disableDelete="true" imageType="cover_photos"></image-preview>
               </div>
-              <div *ngIf="data['cover_photos'].length==0">
+              <div *ngIf="data['cover_photos'].length == 0">
                 <span class="small text-light-gray">No cover photos found</span>
               </div>
             </div>
