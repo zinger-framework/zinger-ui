@@ -1,14 +1,13 @@
 <div class="min-height-200">
   <breadcrumb [data]="breadCrumbData" title="Register Shop"></breadcrumb>
-  <div *ngIf="formStatus == 'PENDING' || formStatus == 'REJECTED'" class="page-header">
+  <div *ngIf="['PENDING', 'REJECTED'].includes(formStatus)" class="page-header">
     <div class="row">
       <div class="col-md-12 col-sm-12">
-        <div>
-          <div *ngIf="this.formStatus == 'REJECTED'" class="text-center text-light-gray">Your request has been rejected.
-            Please check the below comments.
-          </div>
-          <div *ngIf="this.formStatus == 'PENDING'" class="text-center text-light-gray">Your request is pending for approval and will be processed in 2-4 working days
-          </div>
+        <div class="text-center text-light-gray font-weight-bold">
+          <span *ngIf="this.formStatus == 'REJECTED'">Your request has been rejected. Please check the below comments and update shop details.
+          </span>
+          <span *ngIf="this.formStatus == 'PENDING'">Your request is pending for approval and will be processed in 2-4 working days.
+          </span>
         </div>
         <div *ngIf="approvalComments.length > 0" class="mt-3 comment-accordion">
           <ngb-accordion #commentsAccordion="ngbAccordion" [destroyOnHide]="false">
