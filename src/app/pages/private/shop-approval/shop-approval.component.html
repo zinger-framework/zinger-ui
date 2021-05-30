@@ -177,15 +177,15 @@
 
 <div class="mt-4">
   <ngb-accordion #accordion="ngbAccordion" [destroyOnHide]="false" activeIds="ngb-panel-0">
-    <ngb-panel id="approvalPanel">
+    <ngb-panel id="updateStatusPanel">
       <ng-template class="panel-header" let-opened="opened" ngbPanelHeader>
-        <accordion-header (click)="expandPanel(accordion, 'approvalPanel')" [opened]="opened"
+        <accordion-header (click)="expandPanel(accordion, 'updateStatusPanel')" [opened]="opened"
                           title='Update Status'></accordion-header>
       </ng-template>
       <ng-template ngbPanelContent>
         <div class="row">
           <div *ngIf="isTerminalStatus" class="col-3 pt-2 pl-4">
-            No Actions to perform
+            No actions to perform
           </div>
           <div *ngIf="data['status'] == 'PENDING';" class="row col-4">
             <div class="col-6">
@@ -213,7 +213,7 @@
           <div *ngFor="let comment of data['approval_comments']" class="pt-1">
             <comment [message]="comment.message" [time]="comment.time" [userName]="comment.user_id"></comment>
           </div>
-          <div *ngIf="data['approval_comments'].length == 0"><p class="small text-light-gray">No Comments Found</p></div>
+          <div *ngIf="data['approval_comments'].length == 0"><p class="small text-light-gray">No comments found</p></div>
         </div>
       </ng-template>
     </ngb-panel>
