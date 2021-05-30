@@ -12,7 +12,7 @@ import {
   MOBILE_REGEX,
   NAME_REGEX,
   PAN_REGEX,
-  PINCODE_REGEX,
+  PINCODE_REGEX, SHOP_NAME_REGEX,
   TAGS_REGEX,
   TELEPHONE_REGEX
 } from '../../../core/utils/constants.utils';
@@ -45,7 +45,7 @@ export class ShopDetailsComponent extends BaseComponent {
     super();
     this.route.params.subscribe(params => this.shopId = params['id']);
     this.shopDetailsForm = this.fb.group({
-      name: new ExtendedFormControl('', [Validators.required, Validators.pattern(NAME_REGEX)], 'name'),
+      name: new ExtendedFormControl('', [Validators.required, Validators.pattern(SHOP_NAME_REGEX)], 'name'),
       category: new ExtendedFormControl(null, [Validators.required], 'category'),
       description: new ExtendedFormControl('', [Validators.required, Validators.maxLength(250)], 'description'),
       tags: new ExtendedFormControl('', [Validators.required, Validators.pattern(TAGS_REGEX)], 'tags'),
@@ -237,10 +237,8 @@ export class ShopDetailsComponent extends BaseComponent {
   }
 
   canSubmitForm() {
-    if (this.formStatus == 'DRAFT')
-      return this.termsAndCondition && this.shopDetailsForm.valid && this.iconSrc.length > 0 && this.coverImgSrcList.length > 0
-    else
-      return true;
+    let submitStatus = this.shopDetailsForm.valid && this.iconSrc.length > 0 && this.coverImgSrcList.length > 0
+    return (this.formStatus == 'DRAFT') ? this.termsAndCondition && submitStatus : submitStatus
   }
 
   submitShopDetails(accordion) {
