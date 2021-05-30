@@ -4326,6 +4326,58 @@ label.required:after {
   color: red;
 }
 
+/* admin/platform-component */
+
+.private + div.main-container {
+  padding: 100px 30px 20px 310px;
+}
+
+.public + div.main-container {
+  padding: 100px 0 0 0;
+}
+
+/* header-component */
+a.dropdown-item:hover {
+  color: #FF4141;
+  cursor: pointer;
+}
+
+/* profile-component */
+form.verify-mobile div.resend-otp span {
+  color: #555;
+  cursor: pointer;
+}
+
+form.verify-mobile div.resend-otp span:hover {
+  color: #FF4141;
+}
+
+/* forgot-password-component */
+form.forgot-password-otp div.get-otp {
+  text-align: right;
+}
+
+form.forgot-password-otp div.get-otp button {
+  color: #555;
+  margin-bottom: 12px;
+  border: none;
+  background-color: transparent;
+}
+
+form.forgot-password-otp div.get-otp button:hover:not(:disabled) {
+  color: #FF4141;
+}
+
+/* login-component */
+form.otp div.resend-otp span {
+  color: #555;
+  cursor: pointer;
+}
+
+form.otp div.resend-otp span:hover {
+  color: #FF4141;
+}
+
 @media (min-width: 1301px) and (max-width: 1400px) {
   .header {
     width: calc(100% - 250px)

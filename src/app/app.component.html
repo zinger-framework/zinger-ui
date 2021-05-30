@@ -1,8 +1,2 @@
-<app-private *ngIf="jwtService.isLoggedIn(); else unauthorized" class="header-white sidebar-light private">
-</app-private>
-<ng-template #unauthorized>
-  <app-public class="public"></app-public>
-</ng-template>
-<div class="main-container">
-  <router-outlet></router-outlet>
-</div>
+<app-admin *ngIf="getSubDomain() == 'admin'"></app-admin>
+<app-platform *ngIf="getSubDomain() == 'platform'"></app-platform>
