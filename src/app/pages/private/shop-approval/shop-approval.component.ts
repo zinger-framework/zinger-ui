@@ -14,7 +14,6 @@ import {ToastrService} from "ngx-toastr";
 })
 export class ShopApprovalComponent implements OnInit {
   rejectShopForm: FormGroup;
-  // STATUSES = { 'DRAFT' => 1, 'PENDING' => 2, 'ACTIVE' => 3, 'BLOCKED' => 4, 'REJECTED' => 5, 'INACTIVE' => 6 }
   @ViewChild('rejectShop', {read: TemplateRef}) rejectShopRequestModal: TemplateRef<any>;
   data = {}
   shopId = 1
