@@ -17,7 +17,6 @@ export class ShopApprovalComponent implements OnInit {
   rejectShopRequestForm: FormGroup;
   // STATUSES = { 'DRAFT' => 1, 'PENDING' => 2, 'ACTIVE' => 3, 'BLOCKED' => 4, 'REJECTED' => 5, 'INACTIVE' => 6 }
   @ViewChild('rejectShopRequest', {read: TemplateRef}) rejectShopRequestModal: TemplateRef<any>;
-  shopApprovalStatus = 'PENDING'
   data = {}
   shopId = 1
   breadCrumbData = [];
@@ -52,9 +51,9 @@ export class ShopApprovalComponent implements OnInit {
 
   updateShopApproval(status) {
     this.modalService.dismissAll();
-    this.data['status'] = status
-    if (status == 'REJECTED') this.data['comment'] = this.rejectShopRequestForm.get('reason').value;
-    this.shopService.updateShopDetails(this.shopId, this.data)
+    let requestBody = {status: status}
+    if (status == 'REJECTED') requestBody['comment'] = this.rejectShopRequestForm.get('reason').value;
+    this.shopService.updateShopDetails(this.shopId, requestBody)
       .then(response => {
         response['data']['shop']['tags'] = response['data']['shop']['tags'].toString().replace(/,/g, ', ');
         this.data = response['data']['shop']
@@ -65,7 +64,7 @@ export class ShopApprovalComponent implements OnInit {
   }
 
   isTerminalState() {
-    return ['DRAFT', 'REJECTED'].includes(this.shopApprovalStatus)
+    return ['DRAFT', 'REJECTED'].includes(this.data['status'])
   }
 
   showRejectShopRequestModal() {
