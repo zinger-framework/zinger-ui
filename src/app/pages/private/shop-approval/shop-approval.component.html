@@ -1,8 +1,8 @@
 <div class="min-height-200">
   <breadcrumb [data]="breadCrumbData" title="Approval"></breadcrumb>
   <div class="bg-white rounded p-3 min-height-450">
-    <ul #nav="ngbNav" [(activeId)]="active" class="nav-tabs" ngbNav>
-      <li [ngbNavItem]="1">
+    <ul #nav="ngbNav" activeId="basic-tab" class="nav-tabs" ngbNav>
+      <li ngbNavItem="basic-tab">
         <a ngbNavLink>Basic</a>
         <ng-template ngbNavContent>
           <div class="row p-3">
@@ -65,7 +65,7 @@
           </div>
         </ng-template>
       </li>
-      <li [ngbNavItem]="2">
+      <li ngbNavItem="location-tab">
         <a ngbNavLink>Location</a>
         <ng-template ngbNavContent>
           <div class="row p-3">
@@ -109,7 +109,7 @@
           </div>
         </ng-template>
       </li>
-      <li [ngbNavItem]="3">
+      <li ngbNavItem="media-tab">
         <a ngbNavLink>Media</a>
         <ng-template ngbNavContent>
           <div class="p-3">
@@ -138,7 +138,7 @@
           </div>
         </ng-template>
       </li>
-      <li [ngbNavItem]="4">
+      <li ngbNavItem="payment-tab">
         <a ngbNavLink>Payment</a>
         <ng-template ngbNavContent>
           <div class="row p-3">
@@ -220,8 +220,8 @@
     </ngb-panel>
   </ngb-accordion>
 
-  <ng-template #rejectShopRequest let-modal>
-    <form (ngSubmit)="updateShopApproval('REJECTED')" [formGroup]="rejectShopRequestForm" class="rejectShopRequest p-2">
+  <ng-template #rejectShop let-modal>
+    <form (ngSubmit)="updateShopApproval('REJECTED')" [formGroup]="rejectShopForm" class="rejectShop p-2">
       <div class="modal-header">
         <h4 class="modal-title" id="modal-basic-title">Reason For Rejection</h4>
         <button (click)="modal.dismiss()" aria-label="Close" class="close" type="button">
@@ -238,7 +238,7 @@
       </div>
       <div class="form-feedback has-danger mt-1 mb-1 text-center"></div>
       <div class="modal-footer">
-        <input [disabled]="!this.rejectShopRequestForm.valid" class="btn btn-primary" type="submit" value="Submit">
+        <input [disabled]="!this.rejectShopForm.valid" class="btn btn-primary" type="submit" value="Submit">
       </div>
     </form>
   </ng-template>

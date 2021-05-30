@@ -1,7 +1,7 @@
 <div class="p-1 border-bottom">
   <div class="d-flex justify-content-between">
-    <p class="text-primary">{{userName}}</p>
-    <p class="small text-light-gray">{{time}}</p>
+    <p class="text-primary">{{ userName }}</p>
+    <p class="small text-light-gray">{{ time | date:'medium' }}</p>
   </div>
-  <p class="small">{{message}}</p>
+  <p class="small">{{ message }}</p>
 </div>

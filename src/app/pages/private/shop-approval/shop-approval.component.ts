@@ -13,10 +13,9 @@ import {ToastrService} from "ngx-toastr";
   styleUrls: ['./shop-approval.component.css']
 })
 export class ShopApprovalComponent implements OnInit {
-  active = 1;
-  rejectShopRequestForm: FormGroup;
+  rejectShopForm: FormGroup;
   // STATUSES = { 'DRAFT' => 1, 'PENDING' => 2, 'ACTIVE' => 3, 'BLOCKED' => 4, 'REJECTED' => 5, 'INACTIVE' => 6 }
-  @ViewChild('rejectShopRequest', {read: TemplateRef}) rejectShopRequestModal: TemplateRef<any>;
+  @ViewChild('rejectShop', {read: TemplateRef}) rejectShopRequestModal: TemplateRef<any>;
   data = {}
   shopId = 1
   breadCrumbData = [];
@@ -27,9 +26,9 @@ export class ShopApprovalComponent implements OnInit {
       label: this.shopId,
       link: ''
     }]
-    this.rejectShopRequestForm = this.fb.group({
+    this.rejectShopForm = this.fb.group({
       reason: new ExtendedFormControl('', [Validators.required, Validators.maxLength(250)], 'reason'),
-      className: 'rejectShopRequest'
+      className: 'rejectShop'
     })
   }
 
@@ -52,7 +51,7 @@ export class ShopApprovalComponent implements OnInit {
   updateShopApproval(status) {
     this.modalService.dismissAll();
     let requestBody = {status: status}
-    if (status == 'REJECTED') requestBody['comment'] = this.rejectShopRequestForm.get('reason').value;
+    if (status == 'REJECTED') requestBody['comment'] = this.rejectShopForm.get('reason').value;
     this.shopService.updateShopDetails(this.shopId, requestBody)
       .then(response => {
         response['data']['shop']['tags'] = response['data']['shop']['tags'].toString().replace(/,/g, ', ');
