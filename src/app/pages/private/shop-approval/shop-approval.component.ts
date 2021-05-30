@@ -14,7 +14,7 @@ import {ToastrService} from "ngx-toastr";
 })
 export class ShopApprovalComponent implements OnInit {
   rejectShopForm: FormGroup;
-  @ViewChild('rejectShop', {read: TemplateRef}) rejectShopRequestModal: TemplateRef<any>;
+  @ViewChild('rejectShop', {read: TemplateRef}) rejectShopModal: TemplateRef<any>;
   data = {}
   shopId = 1
   breadCrumbData = [];
@@ -66,6 +66,6 @@ export class ShopApprovalComponent implements OnInit {
   }
 
   showRejectShopRequestModal() {
-    this.modalService.open(this.rejectShopRequestModal, {centered: true});
+    this.modalService.open(this.rejectShopModal, {centered: true});
   }
 }
