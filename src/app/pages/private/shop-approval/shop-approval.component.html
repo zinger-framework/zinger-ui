@@ -179,8 +179,8 @@
   <ngb-accordion #accordion="ngbAccordion" [destroyOnHide]="false" activeIds="ngb-panel-0">
     <ngb-panel id="updateStatusPanel">
       <ng-template class="panel-header" let-opened="opened" ngbPanelHeader>
-        <accordion-header (click)="expandPanel(accordion, 'updateStatusPanel')" [opened]="opened"
-                          title='Update Status'></accordion-header>
+      <accordion-header [accordion]="accordion" [opened]="opened" [panelId]="'updateStatusPanel'"
+                        title='Update Status'></accordion-header>
       </ng-template>
       <ng-template ngbPanelContent>
         <div [ngSwitch]="data['status']" class="row">

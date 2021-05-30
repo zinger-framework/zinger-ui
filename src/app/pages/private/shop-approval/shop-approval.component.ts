@@ -46,10 +46,6 @@ export class ShopApprovalComponent extends BaseComponent {
       })
   }
 
-  expandPanel(acc, panelId) {
-    acc.isExpanded(panelId) ? acc.collapse(panelId) : acc.expand(panelId);
-  }
-
   updateShopStatus(status) {
     this.modalService.dismissAll();
     let requestBody = {status: status}

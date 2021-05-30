@@ -319,8 +319,4 @@ export class ShopDetailsComponent extends BaseComponent {
   acceptTermsAndConditions() {
     this.termsAndCondition = !this.termsAndCondition;
   }
-
-  expandPanel(acc, panelId) {
-    acc.isExpanded(panelId) ? acc.collapse(panelId) : acc.expand(panelId);
-  }
 }

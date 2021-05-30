@@ -6,7 +6,7 @@
 
       <ngb-panel id="basicInfoPanel">
         <ng-template class="panel-header" let-opened="opened" ngbPanelHeader>
-          <accordion-header (click)="expandPanel(accordion, 'basicInfoPanel')" [opened]="opened"
+          <accordion-header [accordion]="accordion" [opened]="opened" [panelId]="'basicInfoPanel'"
                             title='Basic Information'></accordion-header>
         </ng-template>
 
@@ -93,7 +93,7 @@
 
       <ngb-panel id="locationInfoPanel">
         <ng-template class="panel-header" let-opened="opened" ngbPanelHeader>
-          <accordion-header (click)="expandPanel(accordion, 'locationInfoPanel')" [opened]="opened"
+          <accordion-header [accordion]="accordion" [opened]="opened" [panelId]="'locationInfoPanel'"
                             title='Location Information'></accordion-header>
         </ng-template>
 
@@ -146,7 +146,7 @@
 
       <ngb-panel id="mediaInfoPanel">
         <ng-template class="panel-header" let-opened="opened" ngbPanelHeader>
-          <accordion-header (click)="expandPanel(accordion, 'mediaInfoPanel')" [opened]="opened"
+          <accordion-header [accordion]="accordion" [opened]="opened" [panelId]="'mediaInfoPanel'"
                             title='Media Information'></accordion-header>
         </ng-template>
 
@@ -198,7 +198,7 @@
 
       <ngb-panel id="paymentInfoPanel">
         <ng-template class="panel-header" let-opened="opened" ngbPanelHeader>
-          <accordion-header (click)="expandPanel(accordion, 'paymentInfoPanel')" [opened]="opened"
+          <accordion-header [accordion]="accordion" [opened]="opened" [panelId]="'paymentInfoPanel'"
                             title='Payment Information'></accordion-header>
         </ng-template>
 
