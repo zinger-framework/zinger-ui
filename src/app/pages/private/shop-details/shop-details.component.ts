@@ -64,7 +64,7 @@ export class ShopDetailsComponent extends BaseComponent {
       icon: new ExtendedFormControl('', [], 'icon'),
       cover_photos: new ExtendedFormControl('', [], 'cover_photos'),
       account_number: new ExtendedFormControl('', [Validators.required, Validators.pattern(BANK_ACCOUNT_NUMBER_REGEX)], 'account_number'),
-      account_holder: new ExtendedFormControl('', [Validators.required, Validators.pattern(NAME_REGEX)], 'account_holder'),
+      account_holder: new ExtendedFormControl('', [Validators.required, Validators.pattern(NAME_REGEX), Validators.minLength(4), Validators.maxLength(35)], 'account_holder'),
       account_ifsc: new ExtendedFormControl('', [Validators.required, Validators.pattern(IFSC_REGEX)], 'account_ifsc'),
       pan: new ExtendedFormControl('', [Validators.required, Validators.pattern(PAN_REGEX)], 'pan'),
       gst: new ExtendedFormControl('', [Validators.pattern(GST_REGEX)], 'gst'),
