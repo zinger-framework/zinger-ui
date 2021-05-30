@@ -4354,7 +4354,7 @@ label.required:after {
   visibility: visible;
 }
 
-.max-line-3 {
+.max-lines-3 {
   display: inline-block;
   max-height: 75px;
   overflow: scroll;
