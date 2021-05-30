@@ -9,56 +9,56 @@
             <div class="col-md-3 col-lg-3">
               <label class="text-primary">Shop Name</label>
               <br>
-              <span>{{ data['name'] }}</span>
+              <span>{{ data['name'] | defaultTo }}</span>
             </div>
             <div class="col-md-3 col-lg-3">
               <label class="text-primary">Category</label>
               <br>
-              <span>{{ data['category'] }}</span>
+              <span>{{ data['category'] | defaultTo }}</span>
             </div>
             <div class="col-md-3 col-lg-3">
               <label class="text-primary">Opening Time</label>
               <br>
-              <span>{{ data['opening_time'] }}</span>
+              <span>{{ data['opening_time'] | defaultTo }}</span>
             </div>
             <div class="col-md-3 col-lg-3">
               <label class="text-primary">Closing Time</label>
               <br>
-              <span>{{ data['closing_time'] }}</span>
+              <span>{{ data['closing_time'] | defaultTo }}</span>
             </div>
           </div>
           <div class="row p-3">
             <div class="col-md-3 col-lg-3">
               <label class="text-primary">Status</label>
               <br>
-              <span>{{ data['status'] }}</span>
+              <span>{{ data['status'] | defaultTo }}</span>
             </div>
             <div class="col-md-3 col-lg-3">
               <label class="text-primary">Email</label>
               <br>
-              <span>{{ data['email'] }}</span>
+              <span>{{ data['email'] | defaultTo }}</span>
             </div>
             <div class="col-md-3 col-lg-3">
               <label class="text-primary">Mobile</label>
               <br>
-              <span>{{ data['mobile'] }}</span>
+              <span>{{ data['mobile'] | defaultTo }}</span>
             </div>
             <div class="col-md-3 col-lg-3">
               <label class="text-primary">Telephone</label>
               <br>
-              <span>{{ data['telephone'] }}</span>
+              <span>{{ data['telephone'] | defaultTo }}</span>
             </div>
           </div>
           <div class="row p-3">
             <div class="col-md-6 col-lg-6">
               <label class="text-primary">Description</label>
               <br>
-              <textarea class="border-0 w-100" readonly rows="4">{{ data['description'] }}</textarea>
+              <textarea class="border-0 w-100" readonly rows="4">{{ data['description'] | defaultTo }}</textarea>
             </div>
             <div class="col-md-3 col-lg-3">
               <label class="text-primary">Tags</label>
               <br>
-              <span>{{ data['tags'] }}</span>
+              <span>{{ data['tags'] | defaultTo }}</span>
             </div>
           </div>
         </ng-template>
@@ -70,39 +70,39 @@
             <div class="col-md-6 col-lg-6">
               <label class="text-primary">Street</label>
               <br>
-              <textarea class="border-0 w-100" readonly rows="4">{{ data['address']['street'] }}</textarea>
+              <textarea class="border-0 w-100" readonly rows="4">{{ data['address']['street'] | defaultTo }}</textarea>
             </div>
             <div class="col-md-6 col-lg-6">
               <label class="text-primary">Area</label>
               <br>
-              <textarea class="border-0 w-100" readonly rows="4">{{ data['address']['area'] }}</textarea>
+              <textarea class="border-0 w-100" readonly rows="4">{{ data['address']['area'] | defaultTo }}</textarea>
             </div>
           </div>
           <div class="row p-3">
             <div class="col-md-2 col-lg-2">
               <label class="text-primary">City</label>
               <br>
-              <span>{{ data['address']['city'] }}</span>
+              <span>{{ data['address']['city'] | defaultTo }}</span>
             </div>
             <div class="col-md-2 col-lg-2">
               <label class="text-primary">State</label>
               <br>
-              <span>{{ data['address']['state'] }}</span>
+              <span>{{ data['address']['state'] | defaultTo }}</span>
             </div>
             <div class="col-md-2 col-lg-2">
               <label class="text-primary">Pincode</label>
               <br>
-              <span>{{ data['address']['pincode'] }}</span>
+              <span>{{ data['address']['pincode'] | defaultTo }}</span>
             </div>
             <div class="col-md-2 col-lg-2">
               <label class="text-primary">Latitude</label>
               <br>
-              <span>{{ data['address']['lat'] }}</span>
+              <span>{{ data['address']['lat'] | defaultTo }}</span>
             </div>
             <div class="col-md-2 col-lg-2">
               <label class="text-primary">Longitude</label>
               <br>
-              <span>{{ data['address']['lng'] }}</span>
+              <span>{{ data['address']['lng'] | defaultTo }}</span>
             </div>
           </div>
         </ng-template>
@@ -143,29 +143,29 @@
             <div class="col-md-3 col-lg-3">
               <label class="text-primary">Account Number</label>
               <br>
-              <span>{{ data['payment']['account_number'] }}</span>
+              <span>{{ data['payment']['account_number'] | defaultTo }}</span>
             </div>
             <div class="col-md-3 col-lg-3">
               <label class="text-primary">IFSC Code</label>
               <br>
-              <span>{{ data['payment']['account_ifsc'] }}</span>
+              <span>{{ data['payment']['account_ifsc'] | defaultTo }}</span>
             </div>
             <div class="col-md-3 col-lg-3">
               <label class="text-primary">Account Holder Name</label>
               <br>
-              <span>{{ data['payment']['account_holder'] }}</span>
+              <span>{{ data['payment']['account_holder'] | defaultTo }}</span>
             </div>
           </div>
           <div class="row p-3">
             <div class="col-md-3 col-lg-3">
               <label class="text-primary">PAN Number</label>
               <br>
-              <span>{{ data['payment']['pan'] }}</span>
+              <span>{{ data['payment']['pan'] | defaultTo }}</span>
             </div>
             <div class="col-md-3 col-lg-3">
               <label class="text-primary">GST Number</label>
               <br>
-              <span>{{ data['payment']['gst'] }}</span>
+              <span>{{ data['payment']['gst'] | defaultTo }}</span>
             </div>
           </div>
         </ng-template>
