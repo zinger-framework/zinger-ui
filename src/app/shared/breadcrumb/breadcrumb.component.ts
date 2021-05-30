@@ -6,7 +6,6 @@ import {Component, Input, OnInit} from '@angular/core';
   styleUrls: ['./breadcrumb.component.css']
 })
 export class BreadcrumbComponent implements OnInit {
-
   @Input() title = 'Title';
   @Input() data = [{label: 'Home', link: '/dashboard'}];
 
@@ -15,5 +14,4 @@ export class BreadcrumbComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
 }

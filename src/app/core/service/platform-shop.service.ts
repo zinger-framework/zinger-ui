@@ -6,7 +6,6 @@ import {API_ENDPOINTS} from "../utils/constants.utils";
   providedIn: 'root'
 })
 export class PlatformShopService extends ApiService {
-
   getShopDetails(shopId) {
     return this.get(API_ENDPOINTS.SHOP + '/' + shopId);
   }
@@ -14,5 +13,4 @@ export class PlatformShopService extends ApiService {
   updateShopDetails(shopId, requestBody) {
     return this.put(API_ENDPOINTS.SHOP + '/' + shopId, requestBody);
   }
-
 }
