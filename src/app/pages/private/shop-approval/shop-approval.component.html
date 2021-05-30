@@ -184,26 +184,26 @@
       </ng-template>
       <ng-template ngbPanelContent>
         <div class="row">
-          <div *ngIf="isTerminalState()" class="col-3 pt-2 pl-4">
-            Shop Status:  {{ data['status'] }}
+          <div *ngIf="isTerminalStatus" class="col-3 pt-2 pl-4">
+            No Actions to perform
           </div>
           <div *ngIf="data['status'] == 'PENDING';" class="row col-4">
             <div class="col-6">
-              <button (click)="this.showRejectShopModal()" class="btn btn-outline-primary btn-block pr-2"
+              <button (click)="getCommentModal()" class="btn btn-outline-primary btn-block pr-2"
                       type="button">Reject
               </button>
             </div>
             <div class="col-6">
-              <button (click)="updateShopApproval('ACTIVE')" class="btn btn-primary btn-block" type="button">Approve
+              <button (click)="updateShopStatus('ACTIVE')" class="btn btn-primary btn-block" type="button">Approve
               </button>
             </div>
           </div>
           <div *ngIf="data['status'] == 'BLOCKED'" class="col-2">
-            <button (click)="updateShopApproval('ACTIVE')" class="btn btn-primary btn-block" type="button">Unblock
+            <button (click)="updateShopStatus('ACTIVE')" class="btn btn-primary btn-block" type="button">Unblock
             </button>
           </div>
-          <div *ngIf="data['status'] == 'ACTIVE'" class="col-2">
-            <button (click)="updateShopApproval('BLOCKED')" class="btn btn-outline-primary btn-block" type="button">
+          <div *ngIf="data['status'] == 'ACTIVE' || data['status'] == 'INACTIVE' " class="col-2">
+            <button (click)="updateShopStatus('BLOCKED')" class="btn btn-outline-primary btn-block" type="button">
               Block
             </button>
           </div>
@@ -213,13 +213,14 @@
           <div *ngFor="let comment of data['approval_comments']" class="pt-1">
             <comment [message]="comment.message" [time]="comment.time" [userName]="comment.user_id"></comment>
           </div>
+          <div *ngIf="data['approval_comments'].length == 0"><p class="small text-light-gray">No Comments Found</p></div>
         </div>
       </ng-template>
     </ngb-panel>
   </ngb-accordion>
 
   <ng-template #rejectShop let-modal>
-    <form (ngSubmit)="updateShopApproval('REJECTED')" [formGroup]="rejectShopForm" class="rejectShop p-2">
+    <form (ngSubmit)="updateShopStatus('REJECTED')" [formGroup]="rejectShopForm" class="rejectShop p-2">
       <div class="modal-header">
         <h4 class="modal-title" id="modal-basic-title">Reason For Rejection</h4>
         <button (click)="modal.dismiss()" aria-label="Close" class="close" type="button">
@@ -235,7 +236,7 @@
       </div>
       <div class="form-feedback has-danger mt-1 mb-1 text-center"></div>
       <div class="modal-footer">
-        <input [disabled]="!this.rejectShopForm.valid" class="btn btn-primary" type="submit" value="Submit">
+        <input [disabled]="!rejectShopForm.valid" class="btn btn-primary" type="submit" value="Submit">
       </div>
     </form>
   </ng-template>

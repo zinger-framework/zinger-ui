@@ -47,7 +47,7 @@ export class ShopApprovalComponent implements OnInit {
     acc.isExpanded(panelId) ? acc.collapse(panelId) : acc.expand(panelId);
   }
 
-  updateShopApproval(status) {
+  updateShopStatus(status) {
     this.modalService.dismissAll();
     let requestBody = {status: status}
     if (status == 'REJECTED') requestBody['comment'] = this.rejectShopForm.get('reason').value;
@@ -61,11 +61,11 @@ export class ShopApprovalComponent implements OnInit {
       });
   }
 
-  isTerminalState() {
+  isTerminalStatus() {
     return ['DRAFT', 'REJECTED'].includes(this.data['status'])
   }
 
-  showRejectShopModal() {
+  getCommentModal() {
     this.modalService.open(this.rejectShopModal, {centered: true});
   }
 }
