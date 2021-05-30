@@ -65,7 +65,7 @@ export class ShopApprovalComponent implements OnInit {
     return ['DRAFT', 'REJECTED'].includes(this.data['status'])
   }
 
-  showRejectShopRequestModal() {
+  showRejectShopModal() {
     this.modalService.open(this.rejectShopModal, {centered: true});
   }
 }
