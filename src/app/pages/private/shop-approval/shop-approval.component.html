@@ -172,7 +172,7 @@
 </div>
 
 <div class="mt-4">
-  <ngb-accordion #accordion="ngbAccordion" [destroyOnHide]="false" activeIds="ngb-panel-0">
+  <ngb-accordion *ngIf="data['status'] != 'DRAFT'" #accordion="ngbAccordion" [destroyOnHide]="false" activeIds="ngb-panel-0">
     <ngb-panel id="updateStatusPanel">
       <ng-template class="panel-header" let-opened="opened" ngbPanelHeader>
       <accordion-header [accordion]="accordion" [opened]="opened" [panelId]="'updateStatusPanel'"
@@ -191,6 +191,10 @@
               </button>
             </div>
           </div>
+          <div *ngSwitchCase="'REJECTED'" class="col-2">
+            <button (click)="updateShopStatus('ACTIVE')" class="btn btn-primary btn-block" type="button">Approve
+            </button>
+          </div>
           <div *ngSwitchCase="'BLOCKED'" class="col-2">
             <button (click)="updateShopStatus('ACTIVE')" class="btn btn-primary btn-block" type="button">Unblock
             </button>
@@ -205,11 +209,8 @@
               Block
             </button>
           </div>
-          <div *ngSwitchDefault class="col-3 pt-2 pl-4 text-light-gray">
-            <span class="small text-light-gray">No actions to perform</span>
-          </div>
         </div>
-        <div *ngIf="data['status'] == 'PENDING'" class="p-1 mt-4">
+        <div *ngIf="['PENDING', 'REJECTED'].includes(data['status'])" class="p-1 mt-4">
           <p class="font-weight-bold">Approval Comments</p>
           <div *ngFor="let comment of data['approval_comments']" class="pt-1">
             <comment [message]="comment.message" [time]="comment.time" [userName]="comment.user_id"></comment>
