@@ -27,13 +27,12 @@
               </ng-template>
             </ngb-panel>
           </ngb-accordion>
-
         </div>
       </div>
     </div>
   </div>
   <form (ngSubmit)="submitShopDetails(accordion)" [formGroup]="shopDetailsForm" class="shopDetails">
-    <ngb-accordion #accordion="ngbAccordion" [destroyOnHide]="false">
+    <ngb-accordion #accordion="ngbAccordion" [destroyOnHide]="false" activeIds="ngb-panel-0">
 
       <ngb-panel id="basicInfoPanel">
         <ng-template class="panel-header" let-opened="opened" ngbPanelHeader>

@@ -4360,14 +4360,14 @@ label.required:after {
   overflow: scroll;
 }
 
-.comment-accordion .card-header{
+.comment-accordion .card-header {
   padding: 0px;
   margin: 0px;
   border: none;
   background-color: white;
 }
 
-.comment-accordion .card{
+.comment-accordion .card {
   padding: 0px;
   margin: 0px;
   border: none;
