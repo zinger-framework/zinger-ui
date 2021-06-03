@@ -1,285 +1,283 @@
-<div class="min-height-200">
-  <breadcrumb [data]="breadCrumbData" title="Register Shop"></breadcrumb>
-  <div *ngIf="['PENDING', 'REJECTED'].includes(formStatus)" class="page-header">
-    <div class="row">
-      <div class="col-md-12 col-sm-12">
-        <div class="text-center text-light-gray font-weight-bold">
-          <span *ngIf="this.formStatus == 'REJECTED'">Your request has been rejected. Please check the below comments and update shop details.
-          </span>
-          <span *ngIf="this.formStatus == 'PENDING'">Your request is pending for approval and will be processed in 2-4 working days.
-          </span>
-        </div>
-        <div *ngIf="approvalComments.length > 0" class="mt-3 comment-accordion">
-          <ngb-accordion #commentsAccordion="ngbAccordion" [destroyOnHide]="false">
-            <ngb-panel id="commentsPanel">
-              <ng-template let-opened="opened" ngbPanelHeader>
-                <div class="d-flex bg-white">
-                  <button class="btn p-2" ngbPanelToggle><i aria-hidden="true"
-                                                            class="icon-copy fa fa-{{ opened ? 'minus' : 'plus'  }} mb-2"></i>
-                  </button>
-                  <h6 class="mt-2 pt-1 text-dark">Comments</h6>
-                </div>
-              </ng-template>
-              <ng-template ngbPanelContent>
-                <div *ngFor="let comment of approvalComments" class="pt-1">
-                  <comment [message]="comment.message" [time]="comment.time" [userName]="comment.user_id"></comment>
-                </div>
-              </ng-template>
-            </ngb-panel>
-          </ngb-accordion>
-        </div>
+<breadcrumb [data]="breadCrumbData" title="Register Shop"></breadcrumb>
+<div *ngIf="['PENDING', 'REJECTED'].includes(formStatus)" class="page-header">
+  <div class="row">
+    <div class="col-md-12 col-sm-12">
+      <div class="text-center text-light-gray font-weight-bold">
+        <span *ngIf="this.formStatus == 'REJECTED'">Your request has been rejected. Please check the below comments and update shop details.
+        </span>
+        <span *ngIf="this.formStatus == 'PENDING'">Your request is pending for approval and will be processed in 2-4 working days.
+        </span>
+      </div>
+      <div *ngIf="approvalComments.length > 0" class="mt-3 comment-accordion">
+        <ngb-accordion #commentsAccordion="ngbAccordion" [destroyOnHide]="false">
+          <ngb-panel id="commentsPanel">
+            <ng-template let-opened="opened" ngbPanelHeader>
+              <div class="d-flex bg-white">
+                <button class="btn p-2" ngbPanelToggle><i aria-hidden="true"
+                                                          class="icon-copy fa fa-{{ opened ? 'minus' : 'plus'  }} mb-2"></i>
+                </button>
+                <h6 class="mt-2 pt-1 text-dark">Comments</h6>
+              </div>
+            </ng-template>
+            <ng-template ngbPanelContent>
+              <div *ngFor="let comment of approvalComments" class="pt-1">
+                <comment [message]="comment.message" [time]="comment.time" [userName]="comment.user_id"></comment>
+              </div>
+            </ng-template>
+          </ngb-panel>
+        </ngb-accordion>
       </div>
     </div>
   </div>
-  <form (ngSubmit)="submitShopDetails(accordion)" [formGroup]="shopDetailsForm" class="shopDetails">
-    <ngb-accordion #accordion="ngbAccordion" [destroyOnHide]="false" activeIds="ngb-panel-0">
-
-      <ngb-panel id="basicInfoPanel">
-        <ng-template class="panel-header" let-opened="opened" ngbPanelHeader>
-          <accordion-header [accordion]="accordion" [opened]="opened" [panelId]="'basicInfoPanel'"
-                            title='Basic Information'></accordion-header>
-        </ng-template>
-
-        <ng-template ngbPanelContent>
-          <div class="row">
-            <div class="col-md-6 col-lg-6">
-              <label class="required">Shop Name</label>
-              <form-input inputType="text" name="name" placeholder="Domino's Pizza"></form-input>
-            </div>
-
-            <div class="col-md-6 col-lg-6">
-              <label class="required">Category</label>
-              <div class="form-group form-group-category">
-                <ng-select [clearable]="false" [items]="categories" [searchable]="false" formControlName="category"
-                           placeholder="Select">
-                </ng-select>
-                <div class="form-control-feedback has-danger"></div>
-              </div>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-md-6 col-lg-6">
-              <label class="required">Opening Time</label>
-              <div class="form-group form-group-opening_time">
-                <input [format]="24" [ngxTimepicker]="openingTime" aria-label="12hr format"
-                       class="form-control form-control-lg"
-                       formControlName="opening_time" placeholder="09:30">
-                <ngx-material-timepicker #openingTime></ngx-material-timepicker>
-                <div class="form-control-feedback has-danger"></div>
-              </div>
-            </div>
-
-            <div class="col-md-6 col-lg-6">
-              <label class="required">Closing Time</label>
-              <div class="form-group form-group-closing_time">
-                <input [format]="24" [ngxTimepicker]="closingTime" aria-label="12hr format"
-                       class="form-control form-control-lg"
-                       formControlName="closing_time" placeholder="21:30">
-                <ngx-material-timepicker #closingTime></ngx-material-timepicker>
-                <div class="form-control-feedback has-danger"></div>
-              </div>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-md-6 col-lg-6">
-              <label class="required">Mobile</label>
-              <form-input inputType="text" name="mobile" placeholder="9884098840"></form-input>
-            </div>
-
-            <div class="col-md-6 col-lg-6">
-              <label>Telephone</label>
-              <form-input inputType="text" name="telephone" placeholder="25745743"></form-input>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-md-6 col-lg-6">
-              <label class="required">Shop Description</label>
-              <div class="form-group form-group-description">
-                <textarea class="form-control form-control-lg" formControlName="description"
-                          placeholder="Describe your restaurant in less than 250 words"
-                          rows="6"></textarea>
-                <div class="form-control-feedback has-danger"></div>
-              </div>
-            </div>
-
-            <div class="col-md-6 col-lg-6">
-              <div>
-                <label class="required">Email</label>
-                <form-input inputType="text" name="email" placeholder="john@gmail.com"></form-input>
-              </div>
-
-              <div>
-                <label class="required">Tags</label>
-                <form-input inputType="text" name="tags"
-                            placeholder="Chinese, Tandoori, Biriyani, Dessert"></form-input>
-              </div>
-            </div>
-          </div>
-        </ng-template>
-      </ngb-panel>
-
-      <ngb-panel id="locationInfoPanel">
-        <ng-template class="panel-header" let-opened="opened" ngbPanelHeader>
-          <accordion-header [accordion]="accordion" [opened]="opened" [panelId]="'locationInfoPanel'"
-                            title='Location Information'></accordion-header>
-        </ng-template>
-
-        <ng-template ngbPanelContent>
-          <div class="row">
-            <div class="col-md-6 col-lg-6">
-              <label class="required">Address Line 1</label>
-              <form-input inputType="text" name="address_line_1" placeholder="No 226, Eden Gardens"></form-input>
-            </div>
-
-            <div class="col-md-6 col-lg-6">
-              <label class="required">Address Line 2</label>
-              <form-input inputType="text" name="address_line_2" placeholder="Nehru Street, Anna Nagar"></form-input>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-md-6 col-lg-6">
-              <label class="required">City</label>
-              <form-input inputType="text" name="city" placeholder="Chennai"></form-input>
-            </div>
-
-            <div class="col-md-6 col-lg-6">
-              <label class="required">State</label>
-              <div class="form-group form-group-state">
-                <ng-select [clearable]="false" [items]="states" [searchable]="false" formControlName="state"
-                           placeholder="Select">
-                </ng-select>
-                <div class="form-control-feedback has-danger"></div>
-              </div>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-md-6 col-lg-6">
-              <label class="required">Pincode</label>
-              <form-input inputType="text" name="pincode" placeholder="600078"></form-input>
-            </div>
-            <div class="col-md-3 col-lg-3">
-              <label class="required">Latitude</label>
-              <form-input inputType="text" name="latitude" placeholder="89.87"></form-input>
-            </div>
-            <div class="col-md-3 col-lg-3">
-              <label class="required">Longitude</label>
-              <form-input inputType="text" name="longitude" placeholder="98.57"></form-input>
-            </div>
-          </div>
-        </ng-template>
-      </ngb-panel>
-
-      <ngb-panel id="mediaInfoPanel">
-        <ng-template class="panel-header" let-opened="opened" ngbPanelHeader>
-          <accordion-header [accordion]="accordion" [opened]="opened" [panelId]="'mediaInfoPanel'"
-                            title='Media Information'></accordion-header>
-        </ng-template>
-
-        <ng-template ngbPanelContent>
-          <div class="row m-1 min-height-200">
-            <div class="col-md-12 col-lg-12">
-              <label class="required">Upload Icon</label>
-              <br>
-              <div class="row">
-                <div *ngIf="iconSrc; else placeholderimage">
-                  <image-preview (deleteImageEvent)="deleteImage($event, 'icon')" [imageSrc]="iconSrc"
-                                 imageType="icon"></image-preview>
-                </div>
-                <ng-template #placeholderimage>
-                  <img (click)="browseFiles('icon')" class="ml-3 cursor-pointer" height="70"
-                       src="/assets/images/upload-image.png"
-                       width="70"/>
-                </ng-template>
-              </div>
-              <form-input (change)="onFileChange($event, 'icon')" inputType="file"
-                          name="icon"></form-input>
-              <span class="small text-light-gray">• Image size: < 1 MB <br>• Image type: JPG, PNG<br>• Dimensions: 512x512 px<br>• File name: Can be alphanumeric, hyphen and underscore with a maximum of 100 characters</span>
-            </div>
-          </div>
-
-          <div class="row mt-4 m-1 min-height-200">
-            <div class="col-md-12 col-lg-12">
-              <label class="required">Upload Cover Photos</label>
-              <br>
-              <div class="row">
-                <div *ngFor="let imgSrc of coverImgSrcList;">
-                  <image-preview (deleteImageEvent)="deleteImage($event, 'cover_photos')" [imageId]="imgSrc['id']"
-                                 [imageSrc]="imgSrc['url']"
-                                 imageType="cover_photos"></image-preview>
-                </div>
-                <div *ngIf="coverImgSrcList.length<10">
-                  <img (click)="browseFiles('cover_photos')" class="ml-3 cursor-pointer" height="34"
-                       src="/assets/images/upload-image.png"
-                       width="70"/>
-                </div>
-              </div>
-              <form-input (change)="onFileChange($event, 'cover_photos')" inputType="file"
-                          name="cover_photos"></form-input>
-              <span class="small text-light-gray">• Image size: < 1 MB <br>• Image type: JPG, PNG<br>• Dimensions: 1024x500 px<br>• Maximum limit: 10 images<br>• File name: Can be alphanumeric, hyphen and underscore with a maximum of 100 characters</span>
-            </div>
-          </div>
-        </ng-template>
-      </ngb-panel>
-
-      <ngb-panel id="paymentInfoPanel">
-        <ng-template class="panel-header" let-opened="opened" ngbPanelHeader>
-          <accordion-header [accordion]="accordion" [opened]="opened" [panelId]="'paymentInfoPanel'"
-                            title='Payment Information'></accordion-header>
-        </ng-template>
-
-        <ng-template ngbPanelContent>
-          <div class="row">
-            <div class="col-md-6 col-lg-6">
-              <label class="required">Account Number</label>
-              <form-input inputType="text" name="account_number" placeholder="99889000292"></form-input>
-            </div>
-
-            <div class="col-md-6 col-lg-6">
-              <label class="required">PAN Number</label>
-              <form-input inputType="text" name="pan" placeholder="BYHKL3197Z"></form-input>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-md-6 col-lg-6">
-              <label class="required">IFSC Code</label>
-              <form-input inputType="text" name="account_ifsc" placeholder="SBIN0021745"></form-input>
-            </div>
-            <div class="col-md-6 col-lg-6">
-              <label>GST Number</label>
-              <form-input inputType="text" name="gst" placeholder="09AAACS4457Q1ZO"></form-input>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-md-6 col-lg-6">
-              <label class="required">Account Holder Name</label>
-              <form-input inputType="text" name="account_holder" placeholder="John Doe"></form-input>
-            </div>
-          </div>
-
-        </ng-template>
-      </ngb-panel>
-    </ngb-accordion>
-
-    <div *ngIf="this.formStatus === 'DRAFT'" class="m-1">
-      <div class="custom-control custom-checkbox mt-4">
-        <input (click)="acceptTermsAndConditions()" class="custom-control-input" id="terms_and_conditions"
-               type="checkbox">
-        <label class="custom-control-label" for="terms_and_conditions">I have read and agreed to the <a href="#">terms
-          and
-          conditions</a> and <a href="#">privacy policy</a></label>
-      </div>
-    </div>
-
-    <div class="d-inline-flex">
-      <input [disabled]="!canSubmitForm()" class="btn btn-primary mt-3" type="submit" [attr.value]="this.formStatus == 'DRAFT' ? 'Register' : 'Update Details'">
-      <div class="form-feedback has-danger mt-4 ml-3"></div>
-    </div>
-  </form>
 </div>
+<form (ngSubmit)="submitShopDetails(accordion)" [formGroup]="shopDetailsForm" class="shopDetails">
+  <ngb-accordion #accordion="ngbAccordion" [destroyOnHide]="false" activeIds="ngb-panel-0">
+
+    <ngb-panel id="basicInfoPanel">
+      <ng-template class="panel-header" let-opened="opened" ngbPanelHeader>
+        <accordion-header [accordion]="accordion" [opened]="opened" [panelId]="'basicInfoPanel'"
+                          title='Basic Information'></accordion-header>
+      </ng-template>
+
+      <ng-template ngbPanelContent>
+        <div class="row">
+          <div class="col-md-6 col-lg-6">
+            <label class="required">Shop Name</label>
+            <form-input inputType="text" name="name" placeholder="Domino's Pizza"></form-input>
+          </div>
+
+          <div class="col-md-6 col-lg-6">
+            <label class="required">Category</label>
+            <div class="form-group form-group-category">
+              <ng-select [clearable]="false" [items]="categories" [searchable]="false" formControlName="category"
+                         placeholder="Select">
+              </ng-select>
+              <div class="form-control-feedback has-danger"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6 col-lg-6">
+            <label class="required">Opening Time</label>
+            <div class="form-group form-group-opening_time">
+              <input [format]="24" [ngxTimepicker]="openingTime" aria-label="12hr format"
+                     class="form-control form-control-lg"
+                     formControlName="opening_time" placeholder="09:30">
+              <ngx-material-timepicker #openingTime></ngx-material-timepicker>
+              <div class="form-control-feedback has-danger"></div>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-6">
+            <label class="required">Closing Time</label>
+            <div class="form-group form-group-closing_time">
+              <input [format]="24" [ngxTimepicker]="closingTime" aria-label="12hr format"
+                     class="form-control form-control-lg"
+                     formControlName="closing_time" placeholder="21:30">
+              <ngx-material-timepicker #closingTime></ngx-material-timepicker>
+              <div class="form-control-feedback has-danger"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6 col-lg-6">
+            <label class="required">Mobile</label>
+            <form-input inputType="text" name="mobile" placeholder="9884098840"></form-input>
+          </div>
+
+          <div class="col-md-6 col-lg-6">
+            <label>Telephone</label>
+            <form-input inputType="text" name="telephone" placeholder="25745743"></form-input>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6 col-lg-6">
+            <label class="required">Shop Description</label>
+            <div class="form-group form-group-description">
+              <textarea class="form-control form-control-lg" formControlName="description"
+                        placeholder="Describe your restaurant in less than 250 words"
+                        rows="6"></textarea>
+              <div class="form-control-feedback has-danger"></div>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-6">
+            <div>
+              <label class="required">Email</label>
+              <form-input inputType="text" name="email" placeholder="john@gmail.com"></form-input>
+            </div>
+
+            <div>
+              <label class="required">Tags</label>
+              <form-input inputType="text" name="tags"
+                          placeholder="Chinese, Tandoori, Biriyani, Dessert"></form-input>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+    </ngb-panel>
+
+    <ngb-panel id="locationInfoPanel">
+      <ng-template class="panel-header" let-opened="opened" ngbPanelHeader>
+        <accordion-header [accordion]="accordion" [opened]="opened" [panelId]="'locationInfoPanel'"
+                          title='Location Information'></accordion-header>
+      </ng-template>
+
+      <ng-template ngbPanelContent>
+        <div class="row">
+          <div class="col-md-6 col-lg-6">
+            <label class="required">Address Line 1</label>
+            <form-input inputType="text" name="address_line_1" placeholder="No 226, Eden Gardens"></form-input>
+          </div>
+
+          <div class="col-md-6 col-lg-6">
+            <label class="required">Address Line 2</label>
+            <form-input inputType="text" name="address_line_2" placeholder="Nehru Street, Anna Nagar"></form-input>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6 col-lg-6">
+            <label class="required">City</label>
+            <form-input inputType="text" name="city" placeholder="Chennai"></form-input>
+          </div>
+
+          <div class="col-md-6 col-lg-6">
+            <label class="required">State</label>
+            <div class="form-group form-group-state">
+              <ng-select [clearable]="false" [items]="states" [searchable]="false" formControlName="state"
+                         placeholder="Select">
+              </ng-select>
+              <div class="form-control-feedback has-danger"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6 col-lg-6">
+            <label class="required">Pincode</label>
+            <form-input inputType="text" name="pincode" placeholder="600078"></form-input>
+          </div>
+          <div class="col-md-3 col-lg-3">
+            <label class="required">Latitude</label>
+            <form-input inputType="text" name="latitude" placeholder="89.87"></form-input>
+          </div>
+          <div class="col-md-3 col-lg-3">
+            <label class="required">Longitude</label>
+            <form-input inputType="text" name="longitude" placeholder="98.57"></form-input>
+          </div>
+        </div>
+      </ng-template>
+    </ngb-panel>
+
+    <ngb-panel id="mediaInfoPanel">
+      <ng-template class="panel-header" let-opened="opened" ngbPanelHeader>
+        <accordion-header [accordion]="accordion" [opened]="opened" [panelId]="'mediaInfoPanel'"
+                          title='Media Information'></accordion-header>
+      </ng-template>
+
+      <ng-template ngbPanelContent>
+        <div class="row m-1 min-height-200">
+          <div class="col-md-12 col-lg-12">
+            <label class="required">Upload Icon</label>
+            <br>
+            <div class="row">
+              <div *ngIf="iconSrc; else placeholderimage">
+                <image-preview (deleteImageEvent)="deleteImage($event, 'icon')" [imageSrc]="iconSrc"
+                               imageType="icon"></image-preview>
+              </div>
+              <ng-template #placeholderimage>
+                <img (click)="browseFiles('icon')" class="ml-3 cursor-pointer" height="70"
+                     src="/assets/images/upload-image.png"
+                     width="70"/>
+              </ng-template>
+            </div>
+            <form-input (change)="onFileChange($event, 'icon')" inputType="file"
+                        name="icon"></form-input>
+            <span class="small text-light-gray">• Image size: < 1 MB <br>• Image type: JPG, PNG<br>• Dimensions: 512x512 px<br>• File name: Can be alphanumeric, hyphen and underscore with a maximum of 100 characters</span>
+          </div>
+        </div>
+
+        <div class="row mt-4 m-1 min-height-200">
+          <div class="col-md-12 col-lg-12">
+            <label class="required">Upload Cover Photos</label>
+            <br>
+            <div class="row">
+              <div *ngFor="let imgSrc of coverImgSrcList;">
+                <image-preview (deleteImageEvent)="deleteImage($event, 'cover_photos')" [imageId]="imgSrc['id']"
+                               [imageSrc]="imgSrc['url']"
+                               imageType="cover_photos"></image-preview>
+              </div>
+              <div *ngIf="coverImgSrcList.length<10">
+                <img (click)="browseFiles('cover_photos')" class="ml-3 cursor-pointer" height="34"
+                     src="/assets/images/upload-image.png"
+                     width="70"/>
+              </div>
+            </div>
+            <form-input (change)="onFileChange($event, 'cover_photos')" inputType="file"
+                        name="cover_photos"></form-input>
+            <span class="small text-light-gray">• Image size: < 1 MB <br>• Image type: JPG, PNG<br>• Dimensions: 1024x500 px<br>• Maximum limit: 10 images<br>• File name: Can be alphanumeric, hyphen and underscore with a maximum of 100 characters</span>
+          </div>
+        </div>
+      </ng-template>
+    </ngb-panel>
+
+    <ngb-panel id="paymentInfoPanel">
+      <ng-template class="panel-header" let-opened="opened" ngbPanelHeader>
+        <accordion-header [accordion]="accordion" [opened]="opened" [panelId]="'paymentInfoPanel'"
+                          title='Payment Information'></accordion-header>
+      </ng-template>
+
+      <ng-template ngbPanelContent>
+        <div class="row">
+          <div class="col-md-6 col-lg-6">
+            <label class="required">Account Number</label>
+            <form-input inputType="text" name="account_number" placeholder="99889000292"></form-input>
+          </div>
+
+          <div class="col-md-6 col-lg-6">
+            <label class="required">PAN Number</label>
+            <form-input inputType="text" name="pan" placeholder="BYHKL3197Z"></form-input>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6 col-lg-6">
+            <label class="required">IFSC Code</label>
+            <form-input inputType="text" name="account_ifsc" placeholder="SBIN0021745"></form-input>
+          </div>
+          <div class="col-md-6 col-lg-6">
+            <label>GST Number</label>
+            <form-input inputType="text" name="gst" placeholder="09AAACS4457Q1ZO"></form-input>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6 col-lg-6">
+            <label class="required">Account Holder Name</label>
+            <form-input inputType="text" name="account_holder" placeholder="John Doe"></form-input>
+          </div>
+        </div>
+
+      </ng-template>
+    </ngb-panel>
+  </ngb-accordion>
+
+  <div *ngIf="this.formStatus === 'DRAFT'" class="m-1">
+    <div class="custom-control custom-checkbox mt-4">
+      <input (click)="acceptTermsAndConditions()" class="custom-control-input" id="terms_and_conditions"
+             type="checkbox">
+      <label class="custom-control-label" for="terms_and_conditions">I have read and agreed to the <a href="#">terms
+        and
+        conditions</a> and <a href="#">privacy policy</a></label>
+    </div>
+  </div>
+
+  <div class="d-inline-flex">
+    <input [disabled]="!canSubmitForm()" class="btn btn-primary mt-3" type="submit" [attr.value]="this.formStatus == 'DRAFT' ? 'Register' : 'Update Details'">
+    <div class="form-feedback has-danger mt-4 ml-3"></div>
+  </div>
+</form>
