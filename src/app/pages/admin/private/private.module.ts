@@ -5,11 +5,11 @@ import {NgSelectModule} from '@ng-select/ng-select';
 import {ReactiveFormsModule} from "@angular/forms";
 import {NgApexchartsModule} from 'ng-apexcharts';
 import {UiSwitchModule} from 'ngx-ui-switch';
-import {NgbAccordionModule} from "@ng-bootstrap/ng-bootstrap";
+import {NgbAccordionModule, NgbNavModule} from "@ng-bootstrap/ng-bootstrap";
 import {NgxMaterialTimepickerModule} from "ngx-material-timepicker";
 
+import {CoreModule} from "../../../core/core.module";
 import {SharedModule} from '../../../shared/shared.module';
-import {FormInputModule} from "../../../shared/form-elements/form-input.module";
 
 import {PrivateComponent} from './private.component';
 import {SidebarComponent} from './sidebar/sidebar.component';
@@ -39,8 +39,9 @@ import {ShopDetailsComponent} from './shop-details/shop-details.component';
     NgSelectModule,
     ReactiveFormsModule,
     NgbAccordionModule,
+    NgbNavModule,
     NgxMaterialTimepickerModule,
-    FormInputModule
+    CoreModule
   ]
 })
 export class PrivateModule {

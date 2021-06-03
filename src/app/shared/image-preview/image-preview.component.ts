@@ -11,12 +11,13 @@ export class ImagePreviewComponent extends BaseComponent {
   @Input() imageSrc: string;
   @Input() imageType: string;
   @Input() imageId: string = '';
+  @Input() disableDelete = false;
   @Output() deleteImageEvent = new EventEmitter<string>();
   width = 75;
   height = 75;
 
   constructor(public toast: ToastrService) {
-    super();
+    super()
   }
 
   ngOnInit(): void {

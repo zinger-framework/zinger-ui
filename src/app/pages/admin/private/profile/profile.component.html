@@ -1,19 +1,5 @@
 <div class="min-height-200">
-  <div class="page-header">
-    <div class="row">
-      <div class="col-md-12 col-sm-12">
-        <div class="title">
-          <h4>Profile</h4>
-        </div>
-        <nav aria-label="breadcrumb" role="navigation">
-          <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a routerLink="/dashboard">Home</a></li>
-            <li aria-current="page" class="breadcrumb-item active">Profile</li>
-          </ol>
-        </nav>
-      </div>
-    </div>
-  </div>
+  <breadcrumb [data]="breadCrumbData" title="Profile"></breadcrumb>
   <div class="row">
     <div class="col-xl-6 col-lg-6 col-md-6 col-sm-10 mb-20">
       <div class="card-box overflow-hidden">

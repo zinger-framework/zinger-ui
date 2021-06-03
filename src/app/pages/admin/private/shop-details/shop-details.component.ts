@@ -13,6 +13,7 @@ import {
   NAME_REGEX,
   PAN_REGEX,
   PINCODE_REGEX,
+  SHOP_NAME_REGEX,
   TAGS_REGEX,
   TELEPHONE_REGEX
 } from '../../../../core/utils/constants.utils';
@@ -38,13 +39,15 @@ export class ShopDetailsComponent extends BaseComponent {
   states = ['Tamil Nadu', 'Kerala', 'Andhra Pradesh', 'Karnataka']
   iconSrc = ''
   coverImgSrcList = []
+  approvalComments = []
   shopId: number;
+  breadCrumbData = [{label: 'Home', link: '/dashboard'}, {label: 'Shop', link: ''}];
 
   constructor(private fb: FormBuilder, private toastr: ToastrService, private shopService: ShopService, private route: ActivatedRoute, private router: Router) {
     super();
     this.route.params.subscribe(params => this.shopId = params['id']);
     this.shopDetailsForm = this.fb.group({
-      name: new ExtendedFormControl('', [Validators.required, Validators.pattern(NAME_REGEX)], 'name'),
+      name: new ExtendedFormControl('', [Validators.required, Validators.pattern(SHOP_NAME_REGEX)], 'name'),
       category: new ExtendedFormControl(null, [Validators.required], 'category'),
       description: new ExtendedFormControl('', [Validators.required, Validators.maxLength(250)], 'description'),
       tags: new ExtendedFormControl('', [Validators.required, Validators.pattern(TAGS_REGEX)], 'tags'),
@@ -53,8 +56,8 @@ export class ShopDetailsComponent extends BaseComponent {
       email: new ExtendedFormControl('', [Validators.required, Validators.pattern(EMAIL_REGEX)], 'email'),
       opening_time: new ExtendedFormControl('', [Validators.required], 'opening_time'),
       closing_time: new ExtendedFormControl('', [Validators.required], 'closing_time'),
-      address_line_1: new ExtendedFormControl('', [Validators.required], 'address_line_1'),
-      address_line_2: new ExtendedFormControl('', [Validators.required], 'address_line_2'),
+      address_line_1: new ExtendedFormControl('', [Validators.required, Validators.maxLength(250)], 'address_line_1'),
+      address_line_2: new ExtendedFormControl('', [Validators.required, Validators.maxLength(250)], 'address_line_2'),
       city: new ExtendedFormControl('', [Validators.required, Validators.pattern(ALPHABET_REGEX)], 'city'),
       state: new ExtendedFormControl(null, [Validators.required], 'state'),
       pincode: new ExtendedFormControl('', [Validators.required, Validators.pattern(PINCODE_REGEX)], 'pincode'),
@@ -63,7 +66,7 @@ export class ShopDetailsComponent extends BaseComponent {
       icon: new ExtendedFormControl('', [], 'icon'),
       cover_photos: new ExtendedFormControl('', [], 'cover_photos'),
       account_number: new ExtendedFormControl('', [Validators.required, Validators.pattern(BANK_ACCOUNT_NUMBER_REGEX)], 'account_number'),
-      account_holder: new ExtendedFormControl('', [Validators.required, Validators.pattern(NAME_REGEX)], 'account_holder'),
+      account_holder: new ExtendedFormControl('', [Validators.required, Validators.pattern(NAME_REGEX), Validators.minLength(4), Validators.maxLength(35)], 'account_holder'),
       account_ifsc: new ExtendedFormControl('', [Validators.required, Validators.pattern(IFSC_REGEX)], 'account_ifsc'),
       pan: new ExtendedFormControl('', [Validators.required, Validators.pattern(PAN_REGEX)], 'pan'),
       gst: new ExtendedFormControl('', [Validators.pattern(GST_REGEX)], 'gst'),
@@ -119,6 +122,9 @@ export class ShopDetailsComponent extends BaseComponent {
             break;
           case 'status':
             this.formStatus = shopData[field]
+            break;
+          case 'approval_comments':
+            this.approvalComments = shopData[field]
             break;
           default:
             if (field != 'id' && this.shopDetailsForm.get(field) != null) {
@@ -236,10 +242,8 @@ export class ShopDetailsComponent extends BaseComponent {
   }
 
   canSubmitForm() {
-    if (this.formStatus == 'DRAFT')
-      return this.termsAndCondition && this.shopDetailsForm.valid && this.iconSrc.length > 0 && this.coverImgSrcList.length > 0
-    else
-      return true;
+    let submitStatus = this.shopDetailsForm.valid && this.iconSrc.length > 0 && this.coverImgSrcList.length > 0
+    return (this.formStatus == 'DRAFT') ? this.termsAndCondition && submitStatus : submitStatus
   }
 
   submitShopDetails(accordion) {
@@ -251,7 +255,7 @@ export class ShopDetailsComponent extends BaseComponent {
           requestBody = this.updateRequestBody(key, requestBody)
         })
         break;
-      case 'VERIFIED':
+      default:
         Object.keys(this.shopDetailsForm.value).forEach(key => {
           if (this.shopDetailsInitialValue[key] != this.shopDetailsForm.value[key]) {
             requestBody = this.updateRequestBody(key, requestBody)
@@ -316,9 +320,5 @@ export class ShopDetailsComponent extends BaseComponent {
 
   acceptTermsAndConditions() {
     this.termsAndCondition = !this.termsAndCondition;
-  }
-
-  expandPanel(acc, panelId) {
-    acc.isExpanded(panelId) ? acc.collapse(panelId) : acc.expand(panelId);
   }
 }

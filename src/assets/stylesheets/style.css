@@ -483,6 +483,10 @@ p {
   min-height: 200px
 }
 
+.min-height-450 {
+  min-height: 450px
+}
+
 .bg-cover {
   background-size: cover !important
 }
@@ -4376,6 +4380,50 @@ form.otp div.resend-otp span {
 
 form.otp div.resend-otp span:hover {
   color: #FF4141;
+}
+
+/* platform-shop-details-component */
+.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active{
+  color: #FF4141;
+}
+
+.nav-item a{
+  color: #031e23;
+}
+
+.height-consistent .tab-content {
+  display: flex;
+}
+
+.height-consistent .tab-content > .tab-pane {
+  display: block;
+  visibility: hidden;
+  margin-right: -100%;
+  width: 100%;
+}
+
+.height-consistent .tab-content > .active {
+  display: block;
+  visibility: visible;
+}
+
+.max-lines-3 {
+  display: inline-block;
+  max-height: 75px;
+  overflow: scroll;
+}
+
+.comment-accordion .card-header {
+  padding: 0px;
+  margin: 0px;
+  border: none;
+  background-color: white;
+}
+
+.comment-accordion .card {
+  padding: 0px;
+  margin: 0px;
+  border: none;
 }
 
 @media (min-width: 1301px) and (max-width: 1400px) {

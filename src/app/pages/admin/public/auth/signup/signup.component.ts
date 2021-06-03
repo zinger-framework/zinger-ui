@@ -29,7 +29,7 @@ export class SignupComponent extends BaseComponent {
   public wizard: WizardComponent;
 
   constructor(private fb: FormBuilder, private authService: AuthService, private jwtService: JwtService, private router: Router) {
-    super();
+    super()
     this.signupOtpForm = this.fb.group({
       email: new ExtendedFormControl('', [Validators.required, Validators.pattern(EMAIL_REGEX)], 'email'),
       className: 'signup-otp'
