@@ -123,12 +123,14 @@
         <div class="p-3">
           <label class="text-primary">Cover Photos</label>
           <div class="row pl-3">
-            <div *ngFor="let imgSrc of data['cover_photos']">
-              <image-preview [imageSrc]="imgSrc['url']" disableDelete="true" imageType="cover_photos"></image-preview>
-            </div>
-            <div *ngIf="data['cover_photos'].length == 0">
+            <div *ngIf="data['cover_photos'] && data['cover_photos'].length == 0; else coverPhotos">
               <span class="small text-light-gray">No cover photos found</span>
             </div>
+            <ng-template #coverPhotos>
+              <div *ngFor="let imgSrc of data['cover_photos']">
+                <image-preview [imageSrc]="imgSrc['url']" disableDelete="true" imageType="cover_photos"></image-preview>
+              </div>
+            </ng-template>
           </div>
         </div>
       </ng-template>

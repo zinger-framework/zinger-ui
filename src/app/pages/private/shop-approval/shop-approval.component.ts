@@ -16,7 +16,7 @@ import {BaseComponent} from "../../../base.component";
 export class ShopApprovalComponent extends BaseComponent {
   rejectShopForm: FormGroup;
   @ViewChild('rejectShop', {read: TemplateRef}) rejectShopModal: TemplateRef<any>;
-  data = {}
+  data = { 'address': {}, 'payment': {} }
   shopId = 0
   breadCrumbData = [];
 
