@@ -112,7 +112,7 @@
         <div class="p-3">
           <label class="text-primary">Icon</label>
           <div class="row pl-3">
-            <div *ngIf="data['icon'];else iconNotFound">
+            <div *ngIf="data['icon']; else iconNotFound">
               <image-preview [imageSrc]="data['icon']" disableDelete="true"></image-preview>
             </div>
             <ng-template #iconNotFound>
