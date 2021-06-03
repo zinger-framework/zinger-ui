@@ -1,19 +1,19 @@
 import {Component, TemplateRef, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
-import {ExtendedFormControl} from "../../../core/utils/extended-form-control.utils";
-import {APP_ROUTES} from "../../../core/utils/constants.utils";
+import {ExtendedFormControl} from "../../../../core/utils/extended-form-control.utils";
+import {APP_ROUTES} from "../../../../core/utils/constants.utils";
 import {ActivatedRoute, Router} from "@angular/router";
-import {PlatformShopService} from "../../../core/service/platform-shop.service";
+import {PlatformShopService} from "../../../../core/service/platform-shop.service";
 import {ToastrService} from "ngx-toastr";
-import {BaseComponent} from "../../../base.component";
+import {BaseComponent} from "../../../../base.component";
 
 @Component({
-  selector: 'shop-approval',
-  templateUrl: './shop-approval.component.html',
-  styleUrls: ['./shop-approval.component.css']
+  selector: 'shop-details',
+  templateUrl: './shop-details.component.html',
+  styleUrls: ['./shop-details.component.css']
 })
-export class ShopApprovalComponent extends BaseComponent {
+export class ShopDetailsComponent extends BaseComponent {
   rejectShopForm: FormGroup;
   @ViewChild('rejectShop', {read: TemplateRef}) rejectShopModal: TemplateRef<any>;
   data = { 'address': {}, 'payment': {} }
