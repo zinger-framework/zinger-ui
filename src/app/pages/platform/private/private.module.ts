@@ -5,7 +5,7 @@ import {NgSelectModule} from '@ng-select/ng-select';
 import {ReactiveFormsModule} from "@angular/forms";
 import {NgApexchartsModule} from 'ng-apexcharts';
 import {UiSwitchModule} from 'ngx-ui-switch';
-import {NgbAccordionModule} from "@ng-bootstrap/ng-bootstrap";
+import {NgbAccordionModule, NgbNavModule} from "@ng-bootstrap/ng-bootstrap";
 import {NgxMaterialTimepickerModule} from "ngx-material-timepicker";
 
 import {SharedModule} from '../../../shared/shared.module';
@@ -16,6 +16,7 @@ import {SidebarComponent} from './sidebar/sidebar.component';
 import {DashboardComponent} from './dashboard/dashboard.component';
 import {HeaderComponent} from './header/header.component';
 import {ProfileComponent} from './profile/profile.component';
+import {ShopDetailsComponent} from "./shop-details/shop-details.component";
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import {ProfileComponent} from './profile/profile.component';
     SidebarComponent,
     DashboardComponent,
     HeaderComponent,
-    ProfileComponent
+    ProfileComponent,
+    ShopDetailsComponent
   ],
   exports: [
     PrivateComponent
@@ -38,7 +40,8 @@ import {ProfileComponent} from './profile/profile.component';
     ReactiveFormsModule,
     NgbAccordionModule,
     NgxMaterialTimepickerModule,
-    FormInputModule
+    FormInputModule,
+    NgbNavModule
   ]
 })
 export class PrivateModule {

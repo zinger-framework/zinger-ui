@@ -17,6 +17,7 @@ import {DashboardComponent} from './dashboard/dashboard.component';
 import {HeaderComponent} from './header/header.component';
 import {ProfileComponent} from './profile/profile.component';
 import {ShopDetailsComponent} from './shop-details/shop-details.component';
+import {FormInputModule} from "../../../shared/form-elements/form-input.module";
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import {ShopDetailsComponent} from './shop-details/shop-details.component';
     NgbAccordionModule,
     NgbNavModule,
     NgxMaterialTimepickerModule,
-    CoreModule
+    CoreModule,
+    FormInputModule
   ]
 })
 export class PrivateModule {
