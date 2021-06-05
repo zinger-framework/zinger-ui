@@ -16,7 +16,7 @@ import {ShopService} from "../../../../core/service/platform/shop.service";
 export class ShopDetailsComponent extends BaseComponent {
   rejectShopForm: FormGroup;
   @ViewChild('rejectShop', {read: TemplateRef}) rejectShopModal: TemplateRef<any>;
-  data = { 'address': {}, 'payment': {} }
+  data = {'address': {}, 'payment': {}}
   shopId = 0
   breadCrumbData = [];
 

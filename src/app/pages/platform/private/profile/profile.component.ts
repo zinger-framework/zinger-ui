@@ -3,7 +3,13 @@ import {BaseComponent} from "../../../../base.component";
 import {ProfileService} from "../../../../core/service/platform/profile.service"
 import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ExtendedFormControl} from "../../../../core/utils/extended-form-control.utils";
-import {EMAIL_REGEX, MOBILE_REGEX, NAME_REGEX, OTP_REGEX, PASSWORD_LENGTH} from "../../../../core/utils/constants.utils";
+import {
+  EMAIL_REGEX,
+  MOBILE_REGEX,
+  NAME_REGEX,
+  OTP_REGEX,
+  PASSWORD_LENGTH
+} from "../../../../core/utils/constants.utils";
 import {handleError, setErrorMessage} from "../../../../core/utils/common.utils";
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {AuthService} from "../../../../core/service/platform/auth.service";

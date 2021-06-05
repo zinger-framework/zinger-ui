@@ -5,7 +5,7 @@ import {PageNotFoundComponent} from './layouts/page-not-found/page-not-found.com
 import {ADMIN_ROUTES} from "./core/routes/admin.routes";
 import {PLATFORM_ROUTES} from "./core/routes/platform.routes";
 
-const routeConfig = { 'admin': ADMIN_ROUTES, 'platform': PLATFORM_ROUTES }
+const routeConfig = {'admin': ADMIN_ROUTES, 'platform': PLATFORM_ROUTES}
 const defaultRoutes: Routes = [
   {path: '', redirectTo: '/dashboard', pathMatch: 'full'},
   {path: '**', component: PageNotFoundComponent}

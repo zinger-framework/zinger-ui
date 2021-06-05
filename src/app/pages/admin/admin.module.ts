@@ -12,12 +12,12 @@ import {AdminComponent} from './admin.component';
   exports: [
     AdminComponent
   ],
-    imports: [
-        PublicModule,
-        PrivateModule,
-        CommonModule,
-        RouterModule
-    ]
+  imports: [
+    PublicModule,
+    PrivateModule,
+    CommonModule,
+    RouterModule
+  ]
 })
 export class AdminModule {
 }

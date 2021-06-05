@@ -277,7 +277,8 @@
   </div>
 
   <div class="d-inline-flex">
-    <input [disabled]="!canSubmitForm()" class="btn btn-primary mt-3" type="submit" [attr.value]="this.formStatus == 'DRAFT' ? 'Register' : 'Update Details'">
+    <input [attr.value]="this.formStatus == 'DRAFT' ? 'Register' : 'Update Details'" [disabled]="!canSubmitForm()" class="btn btn-primary mt-3"
+           type="submit">
     <div class="form-feedback has-danger mt-4 ml-3"></div>
   </div>
 </form>

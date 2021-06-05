@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {JwtService} from "../../core/service/jwt.service";
 import {BaseComponent} from "../../base.component";
 
@@ -7,7 +7,7 @@ import {BaseComponent} from "../../base.component";
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.css']
 })
-export class AdminComponent extends BaseComponent{
+export class AdminComponent extends BaseComponent {
   constructor(public jwtService: JwtService) {
     super();
   }

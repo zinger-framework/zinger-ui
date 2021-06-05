@@ -5,19 +5,19 @@ import {RouterModule} from "@angular/router";
 import {PublicModule} from "./public/public.module";
 import {PrivateModule} from "./private/private.module";
 
-import { PlatformComponent } from './platform.component';
+import {PlatformComponent} from './platform.component';
 
 @NgModule({
   declarations: [PlatformComponent],
   exports: [
     PlatformComponent
   ],
-    imports: [
-        PublicModule,
-        PrivateModule,
-        CommonModule,
-        RouterModule
-    ]
+  imports: [
+    PublicModule,
+    PrivateModule,
+    CommonModule,
+    RouterModule
+  ]
 })
 export class PlatformModule {
 }

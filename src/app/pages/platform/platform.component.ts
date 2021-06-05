@@ -7,7 +7,7 @@ import {BaseComponent} from "../../base.component";
   templateUrl: './platform.component.html',
   styleUrls: ['./platform.component.css']
 })
-export class PlatformComponent extends BaseComponent{
+export class PlatformComponent extends BaseComponent {
   constructor(public jwtService: JwtService) {
     super();
   }
