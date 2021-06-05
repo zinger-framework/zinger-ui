@@ -1,6 +1,6 @@
 export const API_ENDPOINTS = {
-  ADMIN_URL: 'http://admin.zinger.pw/',
-  PLATFORM_URL: 'http://platform.zinger.pw/',
+  ADMIN_URL: 'http://api.zinger.pw/admin/',
+  PLATFORM_URL: 'http://api.zinger.pw/platform/',
   AUTH_RESET_PASSWORD: 'v1/auth/reset_password',
   AUTH_LOGIN: 'v1/auth/login',
   AUTH_SIGNUP: 'v1/auth/signup',
