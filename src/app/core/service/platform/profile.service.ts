@@ -1,12 +1,12 @@
 import {Injectable} from '@angular/core';
-import {ApiService} from './api.service';
-import {API_ENDPOINTS} from '../utils/constants.utils';
+
+import {API_ENDPOINTS} from '../../utils/constants.utils';
+import {PlatformService} from "./platform.service";
 
 @Injectable({
   providedIn: 'root'
 })
-export class ProfileService extends ApiService {
-
+export class ProfileService extends PlatformService {
   getProfile() {
     return this.get(API_ENDPOINTS.USER_PROFILE);
   }

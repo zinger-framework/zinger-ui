@@ -9,7 +9,7 @@ import {
   PASSWORD_LENGTH,
   SESSION_KEY
 } from '../../../../../core/utils/constants.utils';
-import {AuthService} from '../../../../../core/service/auth.service';
+import {AuthService} from '../../../../../core/service/admin/auth.service';
 import {JwtService} from '../../../../../core/service/jwt.service';
 import $ from 'jquery';
 import {handleError} from '../../../../../core/utils/common.utils';

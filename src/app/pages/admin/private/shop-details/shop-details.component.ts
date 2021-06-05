@@ -20,7 +20,7 @@ import {
 import {ToastrService} from 'ngx-toastr';
 import $ from 'jquery';
 import {handleError, setErrorMessage} from '../../../../core/utils/common.utils';
-import {ShopService} from '../../../../core/service/shop.service';
+import {ShopService} from '../../../../core/service/admin/shop.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {BaseComponent} from '../../../../base.component';
 import {validateRange} from "../../../../core/utils/validators.utils";

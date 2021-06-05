@@ -1,12 +1,12 @@
 import {Component, TemplateRef, ViewChild} from '@angular/core';
 import {BaseComponent} from "../../../../base.component";
-import {ProfileService} from "../../../../core/service/profile.service"
+import {ProfileService} from "../../../../core/service/admin/profile.service"
 import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ExtendedFormControl} from "../../../../core/utils/extended-form-control.utils";
 import {EMAIL_REGEX, MOBILE_REGEX, NAME_REGEX, OTP_REGEX, PASSWORD_LENGTH} from "../../../../core/utils/constants.utils";
 import {handleError, setErrorMessage} from "../../../../core/utils/common.utils";
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {AuthService} from "../../../../core/service/auth.service";
+import {AuthService} from "../../../../core/service/admin/auth.service";
 
 @Component({
   selector: 'app-profile',

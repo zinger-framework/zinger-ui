@@ -1,12 +1,12 @@
 import {Injectable} from '@angular/core';
-import {ApiService} from './api.service';
-import {API_ENDPOINTS} from '../utils/constants.utils';
+
+import {API_ENDPOINTS} from '../../utils/constants.utils';
+import {AdminService} from "./admin.service";
 
 @Injectable({
   providedIn: 'root'
 })
-export class AuthService extends ApiService {
-
+export class AuthService extends AdminService {
   forgot_password_otp(email) {
     const requestBody = {email: email};
     return this.post(API_ENDPOINTS.AUTH_OTP_FORGOT_PASSWORD, requestBody);

@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {Router} from "@angular/router";
 import {ToastrService} from "ngx-toastr";
 import {BaseComponent} from "../../../../base.component";
-import {ShopService} from "../../../../core/service/shop.service";
+import {ShopService} from "../../../../core/service/admin/shop.service";
 import {APP_ROUTES} from "../../../../core/utils/constants.utils";
 
 @Component({

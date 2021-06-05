@@ -4,9 +4,9 @@ import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {ExtendedFormControl} from "../../../../core/utils/extended-form-control.utils";
 import {APP_ROUTES} from "../../../../core/utils/constants.utils";
 import {ActivatedRoute, Router} from "@angular/router";
-import {PlatformShopService} from "../../../../core/service/platform-shop.service";
 import {ToastrService} from "ngx-toastr";
 import {BaseComponent} from "../../../../base.component";
+import {ShopService} from "../../../../core/service/platform/shop.service";
 
 @Component({
   selector: 'shop-details',
@@ -20,7 +20,7 @@ export class ShopDetailsComponent extends BaseComponent {
   shopId = 0
   breadCrumbData = [];
 
-  constructor(private fb: FormBuilder, private modalService: NgbModal, private route: ActivatedRoute, private router: Router, private shopService: PlatformShopService, private toastr: ToastrService) {
+  constructor(private fb: FormBuilder, private modalService: NgbModal, private route: ActivatedRoute, private router: Router, private shopService: ShopService, private toastr: ToastrService) {
     super()
     this.route.params.subscribe(params => this.shopId = params['id']);
     this.breadCrumbData = [{label: 'Home', link: '/dashboard'}, {label: 'Shop', link: '/shops'}, {

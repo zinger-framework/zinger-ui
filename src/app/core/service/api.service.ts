@@ -1,4 +1,5 @@
 import {Injectable} from '@angular/core';
+import {Router} from '@angular/router';
 import {
   HttpClient,
   HttpErrorResponse,
@@ -9,22 +10,22 @@ import {
   HttpParams,
   HttpRequest
 } from '@angular/common/http';
-import {JwtService} from './jwt.service';
-import {API_ENDPOINTS, APP_ROUTES} from '../utils/constants.utils';
 import {Observable, throwError} from 'rxjs';
 import {catchError, map} from 'rxjs/operators';
-import {Router} from '@angular/router';
+
 import {ToastrService} from 'ngx-toastr';
+
+import {JwtService} from './jwt.service';
+import {API_ENDPOINTS, APP_ROUTES, OPTION_KEY} from '../utils/constants.utils';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ApiService implements HttpInterceptor {
-  private publicAPIs = [API_ENDPOINTS.AUTH_OTP_FORGOT_PASSWORD, API_ENDPOINTS.AUTH_RESET_PASSWORD,
-    API_ENDPOINTS.AUTH_LOGIN, API_ENDPOINTS.AUTH_OTP_SIGNUP, API_ENDPOINTS.AUTH_SIGNUP];
-  private loginOtpAPIs = [API_ENDPOINTS.AUTH_OTP_LOGIN, API_ENDPOINTS.AUTH_VERIFY_OTP, API_ENDPOINTS.AUTH_LOGOUT];
+  protected baseUrl = ''
 
-  constructor(private http: HttpClient, private router: Router, protected jwtService: JwtService, private toastr: ToastrService) {
+  constructor(protected http: HttpClient, protected router: Router, protected jwtService: JwtService, protected toastr: ToastrService) {
+    this.baseUrl = window.location.hostname.split('.')[0] == 'admin' ? API_ENDPOINTS.ADMIN_URL : API_ENDPOINTS.PLATFORM_URL
   }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -73,36 +74,36 @@ export class ApiService implements HttpInterceptor {
       );
   }
 
-  get(path: string, params = new HttpParams()) {
-    return this.http.get(`${API_ENDPOINTS.ADMIN_URL}${path}`, {headers: this.setHeaders(path, 'application/json')})
+  get(path: string, params = new HttpParams(), options = {}) {
+    return this.http.get(`${this.baseUrl}${path}`, {headers: this.setHeaders(path, options[OPTION_KEY.SET_AUTH_TOKEN], 'application/json')})
       .toPromise();
   }
 
-  put(path: string, body: Object) {
+  put(path: string, body: Object, options = {}) {
     return this.http.put(
-      `${API_ENDPOINTS.ADMIN_URL}${path}`,
+      `${this.baseUrl}${path}`,
       JSON.stringify(body),
-      {headers: this.setHeaders(path, 'application/json')}
+      {headers: this.setHeaders(path, options[OPTION_KEY.SET_AUTH_TOKEN], 'application/json')}
     ).toPromise();
   }
 
-  post(path: string, body: Object) {
+  post(path: string, body: Object, options = {}) {
     return this.http.post(
-      `${API_ENDPOINTS.ADMIN_URL}${path}`,
+      `${this.baseUrl}${path}`,
       JSON.stringify(body),
-      {headers: this.setHeaders(path, 'application/json')}
+      {headers: this.setHeaders(path, options[OPTION_KEY.SET_AUTH_TOKEN], 'application/json')}
     ).toPromise();
   }
 
-  sendFormData(path: string, body: Object) {
+  sendFormData(path: string, body: Object, options = {}) {
     return this.http.post(
-      `${API_ENDPOINTS.ADMIN_URL}${path}`, body,
-      {headers: this.setHeaders(path)}
+      `${this.baseUrl}${path}`, body,
+      {headers: this.setHeaders(path, options[OPTION_KEY.SET_AUTH_TOKEN])}
     ).toPromise();
   }
 
-  delete(path) {
-    return this.http.delete(`${API_ENDPOINTS.ADMIN_URL}${path}`, {headers: this.setHeaders(path, 'application/json')})
+  delete(path, options = {}) {
+    return this.http.delete(`${this.baseUrl}${path}`, {headers: this.setHeaders(path, options[OPTION_KEY.SET_AUTH_TOKEN], 'application/json')})
       .toPromise()
   }
 
@@ -111,23 +112,10 @@ export class ApiService implements HttpInterceptor {
     this.router.navigate([APP_ROUTES.AUTH_LOGIN]);
   }
 
-  private setHeaders(path: string, contentType = ''): HttpHeaders {
+  protected setHeaders(path: string, setAuthToken: any, contentType = ''): HttpHeaders {
     const headersConfig = {'Accept': 'application/json'}
     if (contentType != '')
       headersConfig['Content-Type'] = contentType
-
-    let setAuthToken;
-    if (this.loginOtpAPIs.includes(path)) {
-      if (this.jwtService.getAuthToken() != null) {
-        setAuthToken = true;
-      }
-    } else if (!this.publicAPIs.includes(path)) {
-      if (this.jwtService.isLoggedIn()) {
-        setAuthToken = true;
-      }
-    } else {
-      setAuthToken = false;
-    }
 
     if (setAuthToken == true) {
       headersConfig['Authorization'] = this.jwtService.getAuthToken();

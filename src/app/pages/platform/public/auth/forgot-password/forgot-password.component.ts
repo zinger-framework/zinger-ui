@@ -1,6 +1,6 @@
 import {Component, ViewChild} from '@angular/core';
 import {BaseComponent} from '../../../../../base.component';
-import {AuthService} from '../../../../../core/service/auth.service';
+import {AuthService} from '../../../../../core/service/platform/auth.service';
 import {JwtService} from '../../../../../core/service/jwt.service';
 import {Router} from '@angular/router';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';

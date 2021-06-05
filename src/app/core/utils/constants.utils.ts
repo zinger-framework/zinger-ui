@@ -1,5 +1,6 @@
 export const API_ENDPOINTS = {
   ADMIN_URL: 'http://admin.zinger.pw/',
+  PLATFORM_URL: 'http://platform.zinger.pw/',
   AUTH_RESET_PASSWORD: 'v1/auth/reset_password',
   AUTH_LOGIN: 'v1/auth/login',
   AUTH_SIGNUP: 'v1/auth/signup',
@@ -27,6 +28,10 @@ export const APP_ROUTES = {
 export const SESSION_KEY = {
   LOGGED_IN: 'logged_in',
   AUTHORIZATION: 'authorization'
+}
+
+export const OPTION_KEY = {
+  SET_AUTH_TOKEN: 'set_auth_token'
 }
 
 export const PASSWORD_LENGTH = 6;

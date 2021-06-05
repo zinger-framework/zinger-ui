@@ -1,12 +1,12 @@
 import {Injectable} from '@angular/core';
-import {ApiService} from './api.service';
-import {API_ENDPOINTS} from "../utils/constants.utils";
+
+import {API_ENDPOINTS} from "../../utils/constants.utils";
+import {AdminService} from "./admin.service";
 
 @Injectable({
   providedIn: 'root'
 })
-export class ShopService extends ApiService {
-
+export class ShopService extends AdminService {
   addNewShop() {
     return this.get(API_ENDPOINTS.SHOP_NEW);
   }

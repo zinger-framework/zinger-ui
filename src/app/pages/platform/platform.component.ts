@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {JwtService} from "../../core/service/jwt.service";
 import {BaseComponent} from "../../base.component";
 

@@ -1,6 +1,6 @@
 import {Routes} from "@angular/router";
 import {ProfileComponent} from "../../pages/admin/private/profile/profile.component";
-import {AuthGuardService} from "../service/auth-guard.service";
+import {AuthGuardService} from "../service/admin/auth-guard.service";
 import {DashboardComponent} from "../../pages/admin/private/dashboard/dashboard.component";
 import {ShopDetailsComponent} from "../../pages/admin/private/shop-details/shop-details.component";
 import {AuthComponent} from "../../pages/admin/public/auth/auth.component";
