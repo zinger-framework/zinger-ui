@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot} from '@angular/router';
 
-import {APP_ROUTES} from "../../utils/constants.utils";
 import {JwtService} from "../jwt.service";
+import {APP_ROUTES} from "../../utils/constants.utils";
 
 @Injectable({
   providedIn: 'root'

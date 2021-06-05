@@ -1,5 +1,13 @@
 import {Component} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {ActivatedRoute, Router} from '@angular/router';
+
+import {ToastrService} from 'ngx-toastr';
+import {ShopService} from '../../../../core/service/admin/shop.service';
+import {BaseComponent} from '../../../../base.component';
+import $ from 'jquery';
+import {handleError, setErrorMessage} from '../../../../core/utils/common.utils';
+import {validateRange} from "../../../../core/utils/validators.utils";
 import {ExtendedFormControl} from '../../../../core/utils/extended-form-control.utils';
 import {
   ALPHABET_REGEX,
@@ -17,13 +25,6 @@ import {
   TAGS_REGEX,
   TELEPHONE_REGEX
 } from '../../../../core/utils/constants.utils';
-import {ToastrService} from 'ngx-toastr';
-import $ from 'jquery';
-import {handleError, setErrorMessage} from '../../../../core/utils/common.utils';
-import {ShopService} from '../../../../core/service/admin/shop.service';
-import {ActivatedRoute, Router} from '@angular/router';
-import {BaseComponent} from '../../../../base.component';
-import {validateRange} from "../../../../core/utils/validators.utils";
 
 @Component({
   selector: 'app-shop',
@@ -269,25 +270,6 @@ export class ShopDetailsComponent extends BaseComponent {
         this.initializeForm(response['data']['shop'])
       })
       .catch(error => {
-        let reasonData = error['error']['reason']
-
-        if (reasonData['street'] != null) {
-          reasonData['address_line_1'] = reasonData['street']
-          delete reasonData.street
-        }
-        if (reasonData['area'] != null) {
-          reasonData['address_line_2'] = reasonData['area']
-          delete reasonData.area
-        }
-        if (reasonData['lat'] != null) {
-          reasonData['latitude'] = reasonData['lat']
-          delete reasonData.lat
-        }
-        if (reasonData['lng'] != null) {
-          reasonData['longitude'] = reasonData['lng']
-          delete reasonData.lng
-        }
-        error['error']['reason'] = reasonData
         handleError(error, this.shopDetailsForm)
       })
   }

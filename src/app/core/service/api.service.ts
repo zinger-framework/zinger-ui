@@ -14,7 +14,6 @@ import {Observable, throwError} from 'rxjs';
 import {catchError, map} from 'rxjs/operators';
 
 import {ToastrService} from 'ngx-toastr';
-
 import {JwtService} from './jwt.service';
 import {API_ENDPOINTS, APP_ROUTES, OPTION_KEY} from '../utils/constants.utils';
 

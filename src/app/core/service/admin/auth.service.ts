@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 
-import {API_ENDPOINTS} from '../../utils/constants.utils';
 import {AdminService} from "./admin.service";
+import {API_ENDPOINTS} from '../../utils/constants.utils';
 
 @Injectable({
   providedIn: 'root'
