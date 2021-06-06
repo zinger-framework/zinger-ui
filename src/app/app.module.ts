@@ -15,6 +15,7 @@ import {PagesModule} from './pages/pages.module';
 import {SharedModule} from './shared/shared.module';
 
 import {AppComponent} from './app.component';
+import {CoreModule} from "./core/core.module";
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import {AppComponent} from './app.component';
     HttpClientModule,
     NgbModule,
     PagesModule,
+    CoreModule,
     SharedModule,
     LayoutsModule,
     UiSwitchModule.forRoot({

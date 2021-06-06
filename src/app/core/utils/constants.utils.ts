@@ -31,7 +31,8 @@ export const SESSION_KEY = {
 }
 
 export const OPTION_KEY = {
-  SET_AUTH_TOKEN: 'set_auth_token'
+  SET_AUTH_TOKEN: 'set_auth_token',
+  CONTENT_TYPE: 'content_type'
 }
 
 export const PASSWORD_LENGTH = 6;

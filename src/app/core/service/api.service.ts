@@ -73,7 +73,7 @@ export class ApiService implements HttpInterceptor {
   }
 
   get(path: string, params = new HttpParams(), options = {}) {
-    return this.http.get(`${this.baseUrl}${path}`, {headers: this.setHeaders(path, options[OPTION_KEY.SET_AUTH_TOKEN], 'application/json')})
+    return this.http.get(`${this.baseUrl}${path}`, {headers: this.setHeaders({...options, ...{[OPTION_KEY.CONTENT_TYPE]: 'application/json'}})})
       .toPromise();
   }
 
@@ -81,7 +81,7 @@ export class ApiService implements HttpInterceptor {
     return this.http.put(
       `${this.baseUrl}${path}`,
       JSON.stringify(body),
-      {headers: this.setHeaders(path, options[OPTION_KEY.SET_AUTH_TOKEN], 'application/json')}
+      {headers: this.setHeaders({...options, ...{[OPTION_KEY.CONTENT_TYPE]: 'application/json'}})}
     ).toPromise();
   }
 
@@ -89,19 +89,19 @@ export class ApiService implements HttpInterceptor {
     return this.http.post(
       `${this.baseUrl}${path}`,
       JSON.stringify(body),
-      {headers: this.setHeaders(path, options[OPTION_KEY.SET_AUTH_TOKEN], 'application/json')}
+      {headers: this.setHeaders({...options, ...{[OPTION_KEY.CONTENT_TYPE]: 'application/json'}})}
     ).toPromise();
   }
 
   sendFormData(path: string, body: Object, options = {}) {
     return this.http.post(
       `${this.baseUrl}${path}`, body,
-      {headers: this.setHeaders(path, options[OPTION_KEY.SET_AUTH_TOKEN])}
+      {headers: this.setHeaders({...options, ...{[OPTION_KEY.CONTENT_TYPE]: ''}})}
     ).toPromise();
   }
 
   delete(path, options = {}) {
-    return this.http.delete(`${this.baseUrl}${path}`, {headers: this.setHeaders(path, options[OPTION_KEY.SET_AUTH_TOKEN], 'application/json')})
+    return this.http.delete(`${this.baseUrl}${path}`, {headers: this.setHeaders({...options, ...{[OPTION_KEY.CONTENT_TYPE]: 'application/json'}})})
       .toPromise()
   }
 
@@ -110,14 +110,14 @@ export class ApiService implements HttpInterceptor {
     this.router.navigate([APP_ROUTES.AUTH_LOGIN]);
   }
 
-  protected setHeaders(path: string, setAuthToken: any, contentType = ''): HttpHeaders {
+  protected setHeaders(options): HttpHeaders {
     const headersConfig = {'Accept': 'application/json'}
-    if (contentType != '')
-      headersConfig['Content-Type'] = contentType
+    if (options[OPTION_KEY.CONTENT_TYPE] != '')
+      headersConfig['Content-Type'] = options[OPTION_KEY.CONTENT_TYPE]
 
-    if (setAuthToken == true) {
+    if (options[OPTION_KEY.SET_AUTH_TOKEN] == true) {
       headersConfig['Authorization'] = this.jwtService.getAuthToken();
-    } else if (setAuthToken != false) {
+    } else if (options[OPTION_KEY.SET_AUTH_TOKEN] != false) {
       this.toastr.error('Please login to continue');
       this.router.navigate([APP_ROUTES.AUTH_LOGIN]);
     }

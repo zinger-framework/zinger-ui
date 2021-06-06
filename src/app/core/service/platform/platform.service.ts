@@ -40,8 +40,7 @@ export class PlatformService extends ApiService {
   }
 
   private getOptions(path: string) {
-    let options = {}
-    let setAuthToken;
+    let options = {}, setAuthToken;
     if (this.loginOtpAPIs.includes(path)) {
       if (this.jwtService.getAuthToken() != null) {
         setAuthToken = true;

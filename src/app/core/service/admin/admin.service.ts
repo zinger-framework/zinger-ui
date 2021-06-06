@@ -41,10 +41,17 @@ export class AdminService extends ApiService {
   }
 
   private getOptions(path: string) {
-    let options = {}, setAuthToken = false;
-    if ((this.loginOtpAPIs.includes(path) && this.jwtService.getAuthToken() != null) || 
-        (!this.publicAPIs.includes(path) && this.jwtService.isLoggedIn())) {
-      setAuthToken = true;
+    let options = {}, setAuthToken;
+    if (this.loginOtpAPIs.includes(path)) {
+      if (this.jwtService.getAuthToken() != null) {
+        setAuthToken = true;
+      }
+    } else if (!this.publicAPIs.includes(path)) {
+      if (this.jwtService.isLoggedIn()) {
+        setAuthToken = true;
+      }
+    } else {
+      setAuthToken = false;
     }
     options[OPTION_KEY.SET_AUTH_TOKEN] = setAuthToken
     return options;
