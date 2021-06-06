@@ -6,7 +6,6 @@ import {RouterModule} from '@angular/router';
 import {NgbButtonsModule} from '@ng-bootstrap/ng-bootstrap';
 
 import {SharedModule} from '../../../../shared/shared.module';
-import {CoreModule} from '../../../../core/core.module';
 import {FormInputModule} from "../../../../shared/form-elements/form-input.module";
 
 import {LoginComponent} from './login/login.component';
@@ -23,7 +22,6 @@ import {AuthComponent} from './auth.component';
     RouterModule,
     NgbButtonsModule,
     SharedModule,
-    CoreModule,
     FormInputModule
   ]
 })

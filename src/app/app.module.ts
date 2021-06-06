@@ -10,7 +10,6 @@ import {UiSwitchModule} from 'ngx-ui-switch';
 import {ToastrModule} from 'ngx-toastr';
 import {AppRoutingModule} from './app-routing.module';
 
-import {CoreModule} from './core/core.module';
 import {LayoutsModule} from './layouts/layouts.module';
 import {PagesModule} from './pages/pages.module';
 import {SharedModule} from './shared/shared.module';
@@ -28,7 +27,6 @@ import {AppComponent} from './app.component';
     AppRoutingModule,
     HttpClientModule,
     NgbModule,
-    CoreModule,
     PagesModule,
     SharedModule,
     LayoutsModule,

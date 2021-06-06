@@ -8,7 +8,6 @@ import {UiSwitchModule} from 'ngx-ui-switch';
 import {NgbAccordionModule, NgbNavModule} from "@ng-bootstrap/ng-bootstrap";
 import {NgxMaterialTimepickerModule} from "ngx-material-timepicker";
 
-import {CoreModule} from "../../../core/core.module";
 import {SharedModule} from '../../../shared/shared.module';
 
 import {PrivateComponent} from './private.component';
@@ -42,7 +41,6 @@ import {FormInputModule} from "../../../shared/form-elements/form-input.module";
     NgbAccordionModule,
     NgbNavModule,
     NgxMaterialTimepickerModule,
-    CoreModule,
     FormInputModule
   ]
 })
