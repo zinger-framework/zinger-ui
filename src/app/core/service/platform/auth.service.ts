@@ -7,12 +7,12 @@ import {API_ENDPOINTS} from '../../utils/constants.utils';
   providedIn: 'root'
 })
 export class AuthService extends PlatformService {
-  forgot_password_otp(email) {
+  forgotPasswordOtp(email) {
     const requestBody = {email: email};
     return this.post(API_ENDPOINTS.AUTH_OTP_FORGOT_PASSWORD, requestBody);
   }
 
-  reset_password(otp, pwd, confirm_pwd) {
+  resetPassword(otp, pwd, confirm_pwd) {
     const requestBody = {
       auth_token: this.jwtService.getAuthToken(),
       otp: otp,

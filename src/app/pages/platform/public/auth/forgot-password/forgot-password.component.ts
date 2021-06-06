@@ -43,7 +43,7 @@ export class ForgotPasswordComponent extends BaseComponent {
   }
 
   sendOtp() {
-    this.authService.forgot_password_otp(this.otpForm.get('email').value)
+    this.authService.forgotPasswordOtp(this.otpForm.get('email').value)
       .then((response) => {
         this.jwtService.saveToken(response['data']['auth_token']);
         $('form.forgot-password-otp div.form-group-email input').attr('readonly', true);
@@ -61,7 +61,7 @@ export class ForgotPasswordComponent extends BaseComponent {
     let inputConfirmPwd = this.forgotPwdForm.get('confirm_password').value;
     let inputOtp = this.forgotPwdForm.get('otp').value;
 
-    this.authService.reset_password(inputOtp, inputPwd, inputConfirmPwd)
+    this.authService.resetPassword(inputOtp, inputPwd, inputConfirmPwd)
       .then(response => {
         this.router.navigate([APP_ROUTES.AUTH_LOGIN]);
       })
