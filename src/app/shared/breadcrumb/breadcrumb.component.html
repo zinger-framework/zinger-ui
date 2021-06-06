@@ -1,0 +1,19 @@
+<div class="page-header">
+  <div class="row">
+    <div class="col-md-12 col-sm-12">
+      <div class="title">
+        <h4>{{ title }}</h4>
+      </div>
+      <nav aria-label="breadcrumb" role="navigation">
+        <ol class="breadcrumb">
+          <li *ngFor="let d of data; let i = index" [class.active]="isLastElement(i)" class="breadcrumb-item">
+            <a *ngIf="!isLastElement(i); else lastElement" [routerLink]="d.link">{{ d.label }}</a>
+            <ng-template #lastElement>
+              {{ d.label }}
+            </ng-template>
+          </li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+</div>

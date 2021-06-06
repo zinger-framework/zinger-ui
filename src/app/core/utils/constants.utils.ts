@@ -1,5 +1,6 @@
 export const API_ENDPOINTS = {
-  ADMIN_URL: 'http://admin.zinger.pw/',
+  ADMIN_URL: 'http://api.zinger.pw/admin/',
+  PLATFORM_URL: 'http://api.zinger.pw/platform/',
   AUTH_RESET_PASSWORD: 'v1/auth/reset_password',
   AUTH_LOGIN: 'v1/auth/login',
   AUTH_SIGNUP: 'v1/auth/signup',
@@ -29,12 +30,18 @@ export const SESSION_KEY = {
   AUTHORIZATION: 'authorization'
 }
 
+export const OPTION_KEY = {
+  SET_AUTH_TOKEN: 'set_auth_token',
+  CONTENT_TYPE: 'content_type'
+}
+
 export const PASSWORD_LENGTH = 6;
 export const EMAIL_REGEX = /^\S+@\S+\.[a-z]+$/i;
 export const OTP_REGEX = /^[0-9]{6}$/;
 export const MOBILE_REGEX = /^[0-9]{10}$/i;
 export const TELEPHONE_REGEX = /^[0-9]{8}$/i;
-export const NAME_REGEX = /^[A-z0-9' ]+$/;
+export const NAME_REGEX = /^[A-z ]+$/;
+export const SHOP_NAME_REGEX = /^[A-z0-9' ]+$/;
 export const ALPHABET_REGEX = /^[A-z]+$/;
 export const BANK_ACCOUNT_NUMBER_REGEX = /^[a-zA-Z0-9]{1,34}$/;
 export const IFSC_REGEX = /^[A-Z]{4}[A-Z0-9]{7}$/;
