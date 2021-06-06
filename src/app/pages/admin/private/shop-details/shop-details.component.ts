@@ -243,7 +243,7 @@ export class ShopDetailsComponent extends BaseComponent {
   }
 
   canSubmitForm() {
-    let submitStatus = this.shopDetailsForm.valid && this.iconSrc.length > 0 && this.coverImgSrcList.length > 0
+    let submitStatus = this.shopDetailsForm.valid && this.iconSrc.length > 0 && this.coverImgSrcList.length > 0 && !['BLOCKED', 'INACTIVE'].includes(this.formStatus)
     return (this.formStatus == 'DRAFT') ? this.termsAndCondition && submitStatus : submitStatus
   }
 
