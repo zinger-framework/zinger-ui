@@ -10,11 +10,10 @@ import {filter} from "rxjs/operators";
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent extends BaseComponent {
-  @Input() navData: any;
+  navData: any;
 
   constructor(private route: Router) {
     super();
-    this.navData = {title: 'Register', url: APP_ROUTES.AUTH_SIGNUP}
     route.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe(event => {
       if (event instanceof RouterEvent) {
         if (event.url.includes('login')) {

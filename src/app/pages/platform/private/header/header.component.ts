@@ -8,7 +8,7 @@ import {BaseComponent} from "../../../../base.component";
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent extends BaseComponent {
-  @Input() name: string;
+  name: string;
 
   constructor(private authService: AuthService) {
     super();

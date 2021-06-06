@@ -10,7 +10,7 @@ import {APP_ROUTES} from "../../../../core/utils/constants.utils";
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent extends BaseComponent {
-  @Input() navData: any;
+  navData: any;
 
   constructor(private route: Router) {
     super();
