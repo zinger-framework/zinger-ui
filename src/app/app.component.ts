@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
-import {BaseComponent} from "./base.component";
-import {SUB_DOMAIN} from "./app-routing.module";
+
+import {BaseComponent} from './base.component';
+import {SUB_DOMAIN} from './app-routing.module';
 
 @Component({
   selector: 'app-root',

@@ -1,7 +1,10 @@
 import {Injectable} from '@angular/core';
-import {HttpHeaders, HttpParams} from "@angular/common/http";
+import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
+import {Router} from "@angular/router";
 
 import {ApiService} from '../api.service';
+import {JwtService} from "../jwt.service";
+import {ToastrService} from "ngx-toastr";
 import {API_ENDPOINTS, OPTION_KEY} from "../../utils/constants.utils";
 
 @Injectable({
@@ -10,6 +13,11 @@ import {API_ENDPOINTS, OPTION_KEY} from "../../utils/constants.utils";
 export class PlatformService extends ApiService {
   private publicAPIs = [API_ENDPOINTS.AUTH_OTP_FORGOT_PASSWORD, API_ENDPOINTS.AUTH_RESET_PASSWORD, API_ENDPOINTS.AUTH_LOGIN, API_ENDPOINTS.AUTH_OTP_SIGNUP, API_ENDPOINTS.AUTH_SIGNUP];
   private loginOtpAPIs = [API_ENDPOINTS.AUTH_OTP_LOGIN, API_ENDPOINTS.AUTH_VERIFY_OTP, API_ENDPOINTS.AUTH_LOGOUT];
+
+  constructor(http: HttpClient, router: Router, jwtService: JwtService, toastr: ToastrService) {
+    super(http, router, jwtService, toastr);
+    this.baseUrl = API_ENDPOINTS.PLATFORM_URL
+  }
 
   get(path: string, params: HttpParams = new HttpParams(), options: {} = {}): Promise<Object> {
     options[OPTION_KEY.SET_AUTH_TOKEN] = this.canSetAuthToken(path)

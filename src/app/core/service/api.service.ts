@@ -15,7 +15,7 @@ import {catchError, map} from 'rxjs/operators';
 
 import {ToastrService} from 'ngx-toastr';
 import {JwtService} from './jwt.service';
-import {API_ENDPOINTS, APP_ROUTES, OPTION_KEY} from '../utils/constants.utils';
+import {APP_ROUTES, OPTION_KEY} from '../utils/constants.utils';
 
 @Injectable({
   providedIn: 'root',
@@ -24,7 +24,6 @@ export class ApiService implements HttpInterceptor {
   protected baseUrl = ''
 
   constructor(protected http: HttpClient, protected router: Router, protected jwtService: JwtService, protected toastr: ToastrService) {
-    this.baseUrl = window.location.hostname.split('.')[0] == 'admin' ? API_ENDPOINTS.ADMIN_URL : API_ENDPOINTS.PLATFORM_URL
   }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
