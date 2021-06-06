@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
+import {HttpClient, HttpParams} from "@angular/common/http";
 import {Router} from "@angular/router";
 
 import {ApiService} from '../api.service';
@@ -21,31 +21,27 @@ export class AdminService extends ApiService {
   }
 
   get(path: string, params: HttpParams = new HttpParams(), options: {} = {}): Promise<Object> {
-    options[OPTION_KEY.SET_AUTH_TOKEN] = this.canSetAuthToken(path)
-    return super.get(path, params, options);
+    return super.get(path, params, this.getOptions(path));
   }
 
   post(path: string, body: Object, options: {} = {}): Promise<Object> {
-    options[OPTION_KEY.SET_AUTH_TOKEN] = this.canSetAuthToken(path)
-    return super.post(path, body, options);
+    return super.post(path, body, this.getOptions(path));
   }
 
   put(path: string, body: Object, options: {} = {}): Promise<Object> {
-    options[OPTION_KEY.SET_AUTH_TOKEN] = this.canSetAuthToken(path)
-    return super.put(path, body, options);
+    return super.put(path, body, this.getOptions(path));
   }
 
   sendFormData(path: string, body: Object, options: {} = {}): Promise<Object> {
-    options[OPTION_KEY.SET_AUTH_TOKEN] = this.canSetAuthToken(path)
-    return super.sendFormData(path, body, options);
+    return super.sendFormData(path, body, this.getOptions(path));
   }
 
   delete(path, options: {} = {}): Promise<Object> {
-    options[OPTION_KEY.SET_AUTH_TOKEN] = this.canSetAuthToken(path)
-    return super.delete(path, options);
+    return super.delete(path, this.getOptions(path));
   }
 
-  private canSetAuthToken(path: string): HttpHeaders {
+  private getOptions(path: string) {
+    let options = {}
     let setAuthToken;
     if (this.loginOtpAPIs.includes(path)) {
       if (this.jwtService.getAuthToken() != null) {
@@ -58,6 +54,7 @@ export class AdminService extends ApiService {
     } else {
       setAuthToken = false;
     }
-    return setAuthToken;
+    options[OPTION_KEY.SET_AUTH_TOKEN] = setAuthToken
+    return options;
   }
 }
