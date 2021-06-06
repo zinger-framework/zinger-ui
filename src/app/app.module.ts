@@ -9,13 +9,12 @@ import {NgSelectModule} from '@ng-select/ng-select';
 import {UiSwitchModule} from 'ngx-ui-switch';
 import {ToastrModule} from 'ngx-toastr';
 import {AppRoutingModule} from './app-routing.module';
-
-import {LayoutsModule} from './layouts/layouts.module';
+import {CoreModule} from "./core/core.module";
+import {LayoutsModule} from './layouts/layouts.module'
 import {PagesModule} from './pages/pages.module';
 import {SharedModule} from './shared/shared.module';
 
 import {AppComponent} from './app.component';
-import {CoreModule} from "./core/core.module";
 
 @NgModule({
   declarations: [
@@ -28,8 +27,8 @@ import {CoreModule} from "./core/core.module";
     AppRoutingModule,
     HttpClientModule,
     NgbModule,
-    PagesModule,
     CoreModule,
+    PagesModule,
     SharedModule,
     LayoutsModule,
     UiSwitchModule.forRoot({
