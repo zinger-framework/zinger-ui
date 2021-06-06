@@ -243,7 +243,7 @@ export class ShopDetailsComponent extends BaseComponent {
   }
 
   canSubmitForm() {
-    let submitStatus = this.shopDetailsForm.valid && this.iconSrc.length > 0 && this.coverImgSrcList.length > 0 && !['BLOCKED', 'INACTIVE'].includes(this.formStatus)
+    let submitStatus = this.shopDetailsForm.valid && this.iconSrc.length > 0 && this.coverImgSrcList.length > 0 && this.formStatus != 'BLOCKED'
     return (this.formStatus == 'DRAFT') ? this.termsAndCondition && submitStatus : submitStatus
   }
 
@@ -270,6 +270,11 @@ export class ShopDetailsComponent extends BaseComponent {
         this.initializeForm(response['data']['shop'])
       })
       .catch(error => {
+        if (error['status'] == 404) {
+          this.toastr.error(error['error']['message']);
+          // TODO: navigate to list of shops
+          this.router.navigateByUrl(APP_ROUTES.DASHBOARD);
+        }
         handleError(error, this.shopDetailsForm)
       })
   }

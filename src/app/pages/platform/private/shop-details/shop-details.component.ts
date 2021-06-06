@@ -7,6 +7,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {ToastrService} from "ngx-toastr";
 import {BaseComponent} from "../../../../base.component";
 import {ShopService} from "../../../../core/service/platform/shop.service";
+import {handleError} from "../../../../core/utils/common.utils";
 
 @Component({
   selector: 'shop-details',
@@ -47,16 +48,16 @@ export class ShopDetailsComponent extends BaseComponent {
   }
 
   updateShopStatus(status) {
-    this.modalService.dismissAll();
     let requestBody = {status: status}
-    if (status == 'REJECTED') requestBody['comment'] = this.rejectShopForm.get('reason').value;
+    if (status == 'REJECTED') requestBody['reason'] = this.rejectShopForm.get('reason').value;
     this.shopService.updateShopDetails(this.shopId, requestBody)
       .then(response => {
         response['data']['shop']['tags'] = response['data']['shop']['tags'].toString().replace(/,/g, ', ');
         this.data = response['data']['shop']
+        this.modalService.dismissAll();
       })
       .catch(error => {
-        this.toastr.error(error['error']['message'])
+        this.modalService.hasOpenModals() ? handleError(error, this.rejectShopForm) : this.modalService.dismissAll()
       });
   }
 
