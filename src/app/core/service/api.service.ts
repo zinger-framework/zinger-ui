@@ -30,42 +30,45 @@ export class ApiService implements HttpInterceptor {
     return next.handle(request)
       .pipe(
         map(event => {
-          if (event['body'] != null && event['body']['message'] != null && event['body']['message'] != 'success')
+          if (event['body'] && event['body']['message'] != 'success')
             this.toastr.success(event['body']['message']);
           return event;
         }),
         catchError((error: HttpErrorResponse) => {
           let errorMsg = '';
           if (!(error.error instanceof ErrorEvent)) {
-            if (error.status == 0) {
-              errorMsg = 'Please check your internet connection';
-            } else if (error.status == 401) {
-              switch (error.error.reason) {
-                case 'UNAUTHORIZED': {
+            switch (error.status) {
+              case 0:
+                errorMsg = 'Please check your internet connection';
+                break;
+              case 401:
+                switch (error.error.reason) {
+                  case 'UNAUTHORIZED':
+                    this.logout();
+                    errorMsg = error.error.message;
+                    break;
+                  case 'OTP_UNVERIFIED':
+                    this.router.navigate([APP_ROUTES.AUTH_LOGIN]);
+                    errorMsg = error.error.message;
+                    break;
+                }
+                break;
+              case 403:
+                if (error.error.reason == 'UNAUTHORIZED') {
                   this.logout();
                   errorMsg = error.error.message;
                 }
-                case 'OTP_UNVERIFIED': {
-                  this.router.navigate([APP_ROUTES.AUTH_LOGIN]);
-                  errorMsg = error.error.message;
-                }
-              }
-            } else if (error.status == 403) {
-              if (error.error.reason == 'UNAUTHORIZED') {
-                this.logout();
-                errorMsg = error.error.message;
-              }
-            } else if (error.status == 500) {
-              errorMsg = 'Something went wrong. Please try again later';
+                break;
+              case 500:
+                errorMsg = 'Something went wrong. Please try again later';
+                break;
             }
           }
           if (errorMsg.length > 0) {
             this.toastr.error(errorMsg);
             return new Observable<HttpEvent<any>>();
           } else {
-            if (error['error']['reason'] != null) {
-              this.toastr.error(error['error']['message']);
-            }
+            this.toastr.error(error.error.message);
             return throwError(error);
           }
         })
@@ -115,9 +118,9 @@ export class ApiService implements HttpInterceptor {
     if (options[OPTION_KEY.CONTENT_TYPE] != '')
       headersConfig['Content-Type'] = options[OPTION_KEY.CONTENT_TYPE]
 
-    if (options[OPTION_KEY.SET_AUTH_TOKEN] == true) {
+    if (options[OPTION_KEY.SET_AUTH_TOKEN] == true)
       headersConfig['Authorization'] = this.jwtService.getAuthToken();
-    } else if (options[OPTION_KEY.SET_AUTH_TOKEN] != false) {
+    else if (options[OPTION_KEY.SET_AUTH_TOKEN] != false) {
       this.toastr.error('Please login to continue');
       this.router.navigate([APP_ROUTES.AUTH_LOGIN]);
     }

@@ -43,7 +43,7 @@ export class ForgotPasswordComponent extends BaseComponent {
   }
 
   sendOtp() {
-    this.authService.forgotPasswordOtp(this.otpForm.get('email').value)
+    this.authService.sendForgotPasswordOtp(this.otpForm.get('email').value)
       .then((response) => {
         this.jwtService.saveToken(response['data']['auth_token']);
         $('form.forgot-password-otp div.form-group-email input').attr('readonly', true);
