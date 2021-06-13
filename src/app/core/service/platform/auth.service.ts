@@ -7,9 +7,24 @@ import {API_ENDPOINTS} from '../../utils/constants.utils';
   providedIn: 'root'
 })
 export class AuthService extends PlatformService {
-  forgotPasswordOtp(email) {
-    const requestBody = {email: email};
-    return this.post(API_ENDPOINTS.AUTH_OTP_FORGOT_PASSWORD, requestBody);
+  sendForgotPasswordOtp(email) {
+    const requestBody = {purpose: 'FORGOT_PASSWORD', email: email};
+    return this.post(API_ENDPOINTS.AUTH_OTP, requestBody);
+  }
+
+  verifyMobile(mobile) {
+    const requestBody = {purpose: 'VERIFY_MOBILE', mobile: mobile}
+    return this.post(API_ENDPOINTS.AUTH_OTP, requestBody);
+  }
+
+  resendLoginOtp() {
+    const requestBody = {purpose: 'LOGIN'}
+    return this.post(API_ENDPOINTS.AUTH_OTP, requestBody)
+  }
+
+  sendSignupOtp(email) {
+    const requestBody = {purpose: 'SIGNUP', email: email}
+    return this.post(API_ENDPOINTS.AUTH_OTP, requestBody);
   }
 
   resetPassword(otp, pwd, confirm_pwd) {
@@ -30,23 +45,9 @@ export class AuthService extends PlatformService {
     return this.post(API_ENDPOINTS.AUTH_LOGIN, requestBody);
   }
 
-  verifyOTP(otp) {
+  verifyLoginOtp(otp) {
     const requestBody = {otp: otp}
     return this.post(API_ENDPOINTS.AUTH_VERIFY_OTP, requestBody);
-  }
-
-  verifyMobile(mobile) {
-    const requestBody = {mobile: mobile}
-    return this.post(API_ENDPOINTS.AUTH_OTP_VERIFY_MOBILE, requestBody);
-  }
-
-  resendOtp() {
-    return this.post(API_ENDPOINTS.AUTH_OTP_LOGIN, {})
-  }
-
-  sendSignupOtp(email) {
-    const requestBody = {email: email}
-    return this.post(API_ENDPOINTS.AUTH_OTP_SIGNUP, requestBody);
   }
 
   signup(name, otp, password, password_confirmation) {
