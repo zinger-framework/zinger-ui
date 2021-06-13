@@ -71,7 +71,7 @@ export class ShopDetailsComponent extends BaseComponent {
       account_ifsc: new ExtendedFormControl('', [Validators.required, Validators.pattern(IFSC_REGEX)], 'account_ifsc'),
       pan: new ExtendedFormControl('', [Validators.required, Validators.pattern(PAN_REGEX)], 'pan'),
       gst: new ExtendedFormControl('', [Validators.pattern(GST_REGEX)], 'gst'),
-      className: 'shopDetails'
+      className: 'shop-details'
     });
   }
 
@@ -231,7 +231,7 @@ export class ShopDetailsComponent extends BaseComponent {
           })
           .finally(() => {
             if (this.coverImgSrcList.length == 0)
-              setErrorMessage('Cover Photos cannot be empty', 'shopDetails', 'cover_photos')
+              setErrorMessage('Cover Photos cannot be empty', 'shop-details', 'cover_photos')
           })
         break;
     }
@@ -239,7 +239,7 @@ export class ShopDetailsComponent extends BaseComponent {
 
   deleteIcon() {
     this.iconSrc = ''
-    setErrorMessage('Icon cannot be empty', 'shopDetails', 'icon')
+    setErrorMessage('Icon cannot be empty', 'shop-details', 'icon')
   }
 
   canSubmitForm() {

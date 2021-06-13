@@ -16,9 +16,6 @@ export function handleError(error: any, form: FormGroup) {
         }
       });
     }
-  } else if (error['error']['message'] != null) {
-    setFormErrors(form, error['error']['message']);
-    setErrorMessage(error['error']['message'], form.controls.className.value);
   }
   return errorMsg;
 }
