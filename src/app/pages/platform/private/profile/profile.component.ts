@@ -138,7 +138,7 @@ export class ProfileComponent extends BaseComponent {
   }
 
   sendOtp() {
-    this.authService.verifyMobile(this.profileForm.get('mobile').value)
+    this.authService.verifyAccount('mobile', this.profileForm.get('mobile').value)
       .then(response => {
         this.authToken = response['data']['auth_token'];
       })

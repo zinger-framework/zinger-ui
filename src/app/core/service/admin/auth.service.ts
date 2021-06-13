@@ -12,8 +12,8 @@ export class AuthService extends AdminService {
     return this.post(API_ENDPOINTS.AUTH_OTP, requestBody);
   }
 
-  verifyMobile(mobile) {
-    const requestBody = {purpose: 'VERIFY_MOBILE', mobile: mobile}
+  verifyAccount(key, value) {
+    const requestBody = {purpose: 'VERIFY_ACCOUNT', [key]: value}
     return this.post(API_ENDPOINTS.AUTH_OTP, requestBody);
   }
 
