@@ -42,7 +42,7 @@ export class AdminService extends ApiService {
 
   private getOptions(path: string, params: {} = {}) {
     let options = {}, setAuthToken;
-    if (this.loginOtpAPIs.includes(path) || (path == API_ENDPOINTS.AUTH_OTP && params['purpose'] == 'LOGIN')) {
+    if (this.loginOtpAPIs.includes(path) || (path == API_ENDPOINTS.AUTH_OTP && params['purpose'] == 'TWO_FA')) {
       if (this.jwtService.getAuthToken() != null) {
         setAuthToken = true;
       }

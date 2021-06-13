@@ -80,7 +80,7 @@ export class LoginComponent extends BaseComponent {
   }
 
   resendOtp() {
-    this.authService.resendLoginOtp()
+    this.authService.sendTwoFactorAuthOtp()
       .then(response => {
         if (response['reason'] == 'ALREADY_LOGGED_IN') {
           this.router.navigate([APP_ROUTES.DASHBOARD]);

@@ -17,8 +17,8 @@ export class AuthService extends AdminService {
     return this.post(API_ENDPOINTS.AUTH_OTP, requestBody);
   }
 
-  resendLoginOtp() {
-    const requestBody = {purpose: 'LOGIN'}
+  sendTwoFactorAuthOtp() {
+    const requestBody = {purpose: 'TWO_FA'}
     return this.post(API_ENDPOINTS.AUTH_OTP, requestBody)
   }
 
