@@ -71,7 +71,7 @@ export class ShopDetailsComponent extends BaseComponent {
       account_ifsc: new ExtendedFormControl('', [Validators.required, Validators.pattern(IFSC_REGEX)], 'account_ifsc'),
       pan: new ExtendedFormControl('', [Validators.required, Validators.pattern(PAN_REGEX)], 'pan'),
       gst: new ExtendedFormControl('', [Validators.pattern(GST_REGEX)], 'gst'),
-      className: 'shopDetails'
+      className: 'shop-details'
     });
   }
 
@@ -82,7 +82,6 @@ export class ShopDetailsComponent extends BaseComponent {
       this.shopService.getShopDetails(this.shopId)
         .then(response => this.initializeForm(response['data']['shop']))
         .catch(error => {
-          this.toastr.error(error['error']['message']);
           this.router.navigate([APP_ROUTES.DASHBOARD])
         })
     }
@@ -210,10 +209,7 @@ export class ShopDetailsComponent extends BaseComponent {
             this.deleteIcon()
           })
           .catch(error => {
-            if (error['status'] == 404) {
-              this.deleteIcon()
-              this.toastr.error(error['error']['message'])
-            }
+            if (error['status'] == 404) this.deleteIcon()
             handleError(error, this.shopDetailsForm)
           })
         break;
@@ -223,15 +219,12 @@ export class ShopDetailsComponent extends BaseComponent {
             this.coverImgSrcList = response['data']['cover_photos']
           })
           .catch(error => {
-            if (error['status'] == 404) {
-              this.coverImgSrcList = this.coverImgSrcList.filter(x => x['id'] != imageId)
-              this.toastr.error(error['error']['message'])
-            }
+            if (error['status'] == 404) this.coverImgSrcList = this.coverImgSrcList.filter(x => x['id'] != imageId)
             handleError(error, this.shopDetailsForm)
           })
           .finally(() => {
             if (this.coverImgSrcList.length == 0)
-              setErrorMessage('Cover Photos cannot be empty', 'shopDetails', 'cover_photos')
+              setErrorMessage('Cover Photos cannot be empty', 'shop-details', 'cover_photos')
           })
         break;
     }
@@ -239,7 +232,7 @@ export class ShopDetailsComponent extends BaseComponent {
 
   deleteIcon() {
     this.iconSrc = ''
-    setErrorMessage('Icon cannot be empty', 'shopDetails', 'icon')
+    setErrorMessage('Icon cannot be empty', 'shop-details', 'icon')
   }
 
   canSubmitForm() {
@@ -270,11 +263,8 @@ export class ShopDetailsComponent extends BaseComponent {
         this.initializeForm(response['data']['shop'])
       })
       .catch(error => {
-        if (error['status'] == 404) {
-          this.toastr.error(error['error']['message']);
-          // TODO: navigate to list of shops
-          this.router.navigateByUrl(APP_ROUTES.DASHBOARD);
-        }
+        // TODO: navigate to list of shops
+        if (error['status'] == 404) this.router.navigateByUrl(APP_ROUTES.DASHBOARD);
         handleError(error, this.shopDetailsForm)
       })
   }

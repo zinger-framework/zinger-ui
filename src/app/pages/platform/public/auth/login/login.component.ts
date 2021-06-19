@@ -64,7 +64,7 @@ export class LoginComponent extends BaseComponent {
   }
 
   verifyOtp() {
-    this.authService.verifyOTP(this.otpForm.get('otp').value)
+    this.authService.verifyLoginOtp(this.otpForm.get('otp').value)
       .then(response => {
         if (response['reason'] == 'ALREADY_LOGGED_IN') {
           this.router.navigate([APP_ROUTES.DASHBOARD]);
@@ -80,7 +80,7 @@ export class LoginComponent extends BaseComponent {
   }
 
   resendOtp() {
-    this.authService.resendOtp()
+    this.authService.sendTwoFactorAuthOtp()
       .then(response => {
         if (response['reason'] == 'ALREADY_LOGGED_IN') {
           this.router.navigate([APP_ROUTES.DASHBOARD]);

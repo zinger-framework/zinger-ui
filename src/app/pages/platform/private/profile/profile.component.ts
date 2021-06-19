@@ -59,7 +59,7 @@ export class ProfileComponent extends BaseComponent {
   ngOnInit(): void {
     this.profileService.getProfile()
       .then(response => {
-        this.updateProfileForm(response, true);
+        this.updateProfileForm(response['data']['profile'], true);
       })
       .catch(error => {
         handleError(error, this.profileForm);
@@ -84,7 +84,7 @@ export class ProfileComponent extends BaseComponent {
     }
     this.profileService.updateProfile({two_fa_enabled: this.profileForm.get('two_fa_enabled').value})
       .then(response => {
-        this.updateProfileForm(response);
+        this.updateProfileForm(response['data']['profile']);
       })
       .catch(error => {
         handleError(error, this.profileForm);
@@ -107,7 +107,7 @@ export class ProfileComponent extends BaseComponent {
 
     this.profileService.updateProfile(Object.assign(requestObj, options))
       .then(response => {
-        this.updateProfileForm(response);
+        this.updateProfileForm(response['data']['profile']);
         this.modalService.dismissAll();
       })
       .catch(error => {
@@ -119,8 +119,8 @@ export class ProfileComponent extends BaseComponent {
   }
 
   updateProfileForm(response, initialization = false) {
-    Object.keys(response['data']).map(k => {
-      this.profileForm.get(k).setValue(response['data'][k]);
+    Object.keys(response).map(k => {
+      this.profileForm.get(k).setValue(response[k]);
     })
 
     this.profileApiResponse = this.profileForm.value;
@@ -138,7 +138,7 @@ export class ProfileComponent extends BaseComponent {
   }
 
   sendOtp() {
-    this.authService.verifyMobile(this.profileForm.get('mobile').value)
+    this.authService.verifyAccount('mobile', this.profileForm.get('mobile').value)
       .then(response => {
         this.authToken = response['data']['auth_token'];
       })
