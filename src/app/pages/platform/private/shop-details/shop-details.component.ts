@@ -16,10 +16,13 @@ import {handleError} from "../../../../core/utils/common.utils";
 })
 export class ShopDetailsComponent extends BaseComponent {
   rejectShopForm: FormGroup;
+  deleteShopForm: FormGroup;
   @ViewChild('rejectShop', {read: TemplateRef}) rejectShopModal: TemplateRef<any>;
+  @ViewChild('deleteShop', {read: TemplateRef}) deleteShopModal: TemplateRef<any>;
   data = {'address': {}, 'payment': {}}
   shopId = 0
-  breadCrumbData = [];
+  breadCrumbData = []
+  buttonValue = ''
 
   constructor(private fb: FormBuilder, private modalService: NgbModal, private route: ActivatedRoute, private router: Router, private shopService: ShopService, private toastr: ToastrService) {
     super()
@@ -32,6 +35,7 @@ export class ShopDetailsComponent extends BaseComponent {
       reason: new ExtendedFormControl('', [Validators.required, Validators.maxLength(250)], 'reason'),
       className: 'reject-shop'
     })
+    this.deleteShopForm = this.fb.group({className: 'delete-shop'})
   }
 
   ngOnInit(): void {
@@ -47,6 +51,9 @@ export class ShopDetailsComponent extends BaseComponent {
       })
   }
 
+ // Remove the status keyword and make the button value dynamic
+ // If active -> BLOCK, DELETE
+
   updateShopStatus(status) {
     let requestBody = {status: status}
     if (status == 'REJECTED') requestBody['reason'] = this.rejectShopForm.get('reason').value;
@@ -61,7 +68,21 @@ export class ShopDetailsComponent extends BaseComponent {
       });
   }
 
+  deleteShops(){
+    this.shopService.deleteShop(this.shopId)
+    .then(response => {
+      this.modalService.dismissAll()
+    })
+    .catch(error => {
+      handleError(error, this.deleteShopForm)
+    })
+  }
+
   getCommentModal() {
     this.modalService.open(this.rejectShopModal, {centered: true});
+  }
+
+  getDeleteModal(){
+    this.modalService.open(this.deleteShopModal, {centered: true});
   }
 }

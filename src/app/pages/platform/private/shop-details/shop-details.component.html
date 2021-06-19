@@ -198,21 +198,54 @@
             <button (click)="updateShopStatus('ACTIVE')" class="btn btn-primary btn-block" type="button">Approve
             </button>
           </div>
-          <div *ngSwitchCase="'BLOCKED'" class="col-2">
-            <button (click)="updateShopStatus('ACTIVE')" class="btn btn-primary btn-block" type="button">Unblock
-            </button>
+          <div *ngSwitchCase="'BLOCKED'" class="row col-4">
+            <div class="col-6">
+              <button (click)="updateShopStatus('ACTIVE')" class="btn btn-outline-primary btn-block" type="button">Unblock
+              </button>
+            </div>
+            <div class="col-6">
+              <button (click)="getDeleteModal()" class="btn btn-primary btn-block" type="button">Delete
+              </button>
+            </div>
           </div>
-          <div *ngSwitchCase="'ACTIVE'" class="col-2">
-            <button (click)="updateShopStatus('BLOCKED')" class="btn btn-outline-primary btn-block" type="button">
-              Block
-            </button>
+          <div *ngSwitchCase="'ACTIVE'" class="row col-4">
+            <div class="col-6">
+              <button (click)="updateShopStatus('BLOCKED')" class="btn btn-outline-primary btn-block" type="button">
+                Block
+              </button>  
+            </div>
+            <div class="col-6">
+              <button (click)="getDeleteModal()" class="btn btn-primary btn-block" type="button">
+                Delete
+              </button>  
+            </div>
           </div>
-          <div *ngSwitchCase="'INACTIVE'" class="col-2">
-            <button (click)="updateShopStatus('BLOCKED')" class="btn btn-outline-primary btn-block" type="button">
-              Block
-            </button>
+          <div *ngSwitchCase="'INACTIVE'" class="row col-4">
+            <div class="col-6">
+              <button (click)="updateShopStatus('BLOCKED')" class="btn btn-outline-primary btn-block" type="button">
+                Block
+              </button>
+            </div>
+            <div class="col-6">
+              <button (click)="getDeleteModal()" class="btn btn-primary btn-block" type="button">
+                Delete
+              </button>  
+            </div>
           </div>
         </div>
+        <div *ngIf="['ACTIVE', 'INACTIVE', 'BLOCKED'].includes(data['status'])">
+          <div class="col-6">
+              <button (click)="updateShopStatus('BLOCKED')" class="btn btn-outline-primary btn-block" type="button">
+                Block
+              </button>
+            </div>
+            <div class="col-6">
+              <button (click)="getDeleteModal()" class="btn btn-primary btn-block" type="button">
+                Delete
+              </button>  
+            </div>
+        </div>
+
         <div *ngIf="['PENDING', 'REJECTED'].includes(data['status'])" class="p-1 mt-4">
           <p class="font-weight-bold">Comments</p>
           <div *ngFor="let comment of data['approval_comments']" class="pt-1">
@@ -243,6 +276,24 @@
       <div class="form-feedback has-danger mt-1 mb-1 text-center"></div>
       <div class="modal-footer">
         <input [disabled]="!rejectShopForm.valid" class="btn btn-primary" type="submit" value="Submit">
+      </div>
+    </form>
+  </ng-template>
+
+  <ng-template #deleteShop let-modal>
+    <form (ngSubmit)="deleteShops()" [formGroup]="deleteShopForm" class="delete-shop p-2">
+      <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Delete Shop</h4>
+        <button (click)="modal.dismiss()" aria-label="Close" class="close" type="button">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to delete the shop?</p>
+      </div>
+      <div class="form-feedback has-danger mt-1 mb-1 text-center"></div>
+      <div class="modal-footer">
+        <input class="btn btn-primary" type="submit" value="Yes">
       </div>
     </form>
   </ng-template>

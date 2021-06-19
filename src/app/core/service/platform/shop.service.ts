@@ -14,4 +14,8 @@ export class ShopService extends PlatformService {
   updateShopDetails(shopId, requestBody) {
     return this.put(API_ENDPOINTS.SHOP + '/' + shopId, requestBody);
   }
+
+  deleteShop(shopId) {
+    return this.delete(API_ENDPOINTS.SHOP + '/' + shopId);
+  }
 }
