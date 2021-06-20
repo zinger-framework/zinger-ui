@@ -1,179 +1,183 @@
 <breadcrumb [data]="breadCrumbData" title="Shop Details"></breadcrumb>
 <div class="bg-white rounded p-3 height-consistent">
-  <ul #nav="ngbNav" [destroyOnHide]="false" activeId="basic-tab" class="nav-tabs" ngbNav>
-    <li ngbNavItem="basic-tab">
-      <a ngbNavLink>Basic</a>
-      <ng-template ngbNavContent>
-        <div class="row p-3">
-          <div class="col-md-3 col-lg-3">
-            <label class="text-primary">Shop Name</label>
-            <br>
-            <span>{{ data['name'] || '-' }}</span>
-          </div>
-          <div class="col-md-3 col-lg-3">
-            <label class="text-primary">Category</label>
-            <br>
-            <span>{{ data['category'] || '-' }}</span>
-          </div>
-          <div class="col-md-3 col-lg-3">
-            <label class="text-primary">Opening Time</label>
-            <br>
-            <span>{{ data['opening_time'] || '-' }}</span>
-          </div>
-          <div class="col-md-3 col-lg-3">
-            <label class="text-primary">Closing Time</label>
-            <br>
-            <span>{{ data['closing_time'] || '-' }}</span>
-          </div>
-        </div>
-        <div class="row p-3">
-          <div class="col-md-3 col-lg-3">
-            <label class="text-primary">Status</label>
-            <br>
-            <span>{{ data['status'] || '-' }}</span>
-          </div>
-          <div class="col-md-3 col-lg-3">
-            <label class="text-primary">Email</label>
-            <br>
-            <span>{{ data['email'] || '-' }}</span>
-          </div>
-          <div class="col-md-3 col-lg-3">
-            <label class="text-primary">Mobile</label>
-            <br>
-            <span>{{ data['mobile'] || '-' }}</span>
-          </div>
-          <div class="col-md-3 col-lg-3">
-            <label class="text-primary">Telephone</label>
-            <br>
-            <span>{{ data['telephone'] || '-' }}</span>
-          </div>
-        </div>
-        <div class="row p-3">
-          <div class="col-md-6 col-lg-6">
-            <label class="text-primary">Description</label>
-            <br>
-            <span class="max-lines-3">{{ data['description'] || '-' }}</span>
-          </div>
-          <div class="col-md-6 col-lg-6">
-            <label class="text-primary">Tags</label>
-            <br>
-            <span>{{ data['tags'] || '-' }}</span>
-          </div>
-        </div>
-      </ng-template>
-    </li>
-    <li ngbNavItem="location-tab">
-      <a ngbNavLink>Location</a>
-      <ng-template ngbNavContent>
-        <div class="row p-3">
-          <div class="col-md-6 col-lg-6">
-            <label class="text-primary">Street</label>
-            <br>
-            <span class="max-lines-3">{{ data['address']['street'] || '-' }}</span>
-          </div>
-          <div class="col-md-6 col-lg-6">
-            <label class="text-primary">Area</label>
-            <br>
-            <span class="max-lines-3">{{ data['address']['area'] || '-' }}</span>
-          </div>
-        </div>
-        <div class="row p-3">
-          <div class="col-md-2 col-lg-2">
-            <label class="text-primary">City</label>
-            <br>
-            <span>{{ data['address']['city'] || '-' }}</span>
-          </div>
-          <div class="col-md-2 col-lg-2">
-            <label class="text-primary">State</label>
-            <br>
-            <span>{{ data['address']['state'] || '-' }}</span>
-          </div>
-          <div class="col-md-2 col-lg-2">
-            <label class="text-primary">Pincode</label>
-            <br>
-            <span>{{ data['address']['pincode'] || '-' }}</span>
-          </div>
-          <div class="col-md-2 col-lg-2">
-            <label class="text-primary">Latitude</label>
-            <br>
-            <span>{{ data['address']['lat'] || '-' }}</span>
-          </div>
-          <div class="col-md-2 col-lg-2">
-            <label class="text-primary">Longitude</label>
-            <br>
-            <span>{{ data['address']['lng'] || '-' }}</span>
-          </div>
-        </div>
-      </ng-template>
-    </li>
-    <li ngbNavItem="media-tab">
-      <a ngbNavLink>Media</a>
-      <ng-template ngbNavContent>
-        <div class="p-3">
-          <label class="text-primary">Icon</label>
-          <div class="row pl-3">
-            <div *ngIf="data['icon']; else iconNotFound">
-              <image-preview [imageSrc]="data['icon']" disableDelete="true"></image-preview>
+  <div class="d-flex justify-content-between border-bottom">
+    <ul #nav="ngbNav" [destroyOnHide]="false" activeId="basic-tab" class="nav-tabs border-bottom-0" ngbNav>
+      <li ngbNavItem="basic-tab">
+        <a ngbNavLink>Basic</a>
+        <ng-template ngbNavContent>
+          <div class="row p-3">
+            <div class="col-md-3 col-lg-3">
+              <label class="text-primary">Shop Name</label>
+              <br>
+              <span>{{ data['name'] || '-' }}</span>
             </div>
-            <ng-template #iconNotFound>
-              <span class="small text-light-gray">No icon found</span>
-            </ng-template>
-          </div>
-        </div>
-        <div class="p-3">
-          <label class="text-primary">Cover Photos</label>
-          <div class="row pl-3">
-            <div *ngIf="data['cover_photos'] && data['cover_photos'].length == 0; else coverPhotos">
-              <span class="small text-light-gray">No cover photos found</span>
+            <div class="col-md-3 col-lg-3">
+              <label class="text-primary">Category</label>
+              <br>
+              <span>{{ data['category'] || '-' }}</span>
             </div>
-            <ng-template #coverPhotos>
-              <div *ngFor="let imgSrc of data['cover_photos']">
-                <image-preview [imageSrc]="imgSrc['url']" disableDelete="true" imageType="cover_photos"></image-preview>
+            <div class="col-md-3 col-lg-3">
+              <label class="text-primary">Opening Time</label>
+              <br>
+              <span>{{ data['opening_time'] || '-' }}</span>
+            </div>
+            <div class="col-md-3 col-lg-3">
+              <label class="text-primary">Closing Time</label>
+              <br>
+              <span>{{ data['closing_time'] || '-' }}</span>
+            </div>
+          </div>
+          <div class="row p-3">
+            <div class="col-md-3 col-lg-3">
+              <label class="text-primary">Status</label>
+              <br>
+              <span>{{ data['status'] || '-' }}</span>
+              <span *ngIf="data['deleted']" class="pl-1 text-light-gray">(deleted)</span>
+            </div>
+            <div class="col-md-3 col-lg-3">
+              <label class="text-primary">Email</label>
+              <br>
+              <span>{{ data['email'] || '-' }}</span>
+            </div>
+            <div class="col-md-3 col-lg-3">
+              <label class="text-primary">Mobile</label>
+              <br>
+              <span>{{ data['mobile'] || '-' }}</span>
+            </div>
+            <div class="col-md-3 col-lg-3">
+              <label class="text-primary">Telephone</label>
+              <br>
+              <span>{{ data['telephone'] || '-' }}</span>
+            </div>
+          </div>
+          <div class="row p-3">
+            <div class="col-md-6 col-lg-6">
+              <label class="text-primary">Description</label>
+              <br>
+              <span class="max-lines-3">{{ data['description'] || '-' }}</span>
+            </div>
+            <div class="col-md-6 col-lg-6">
+              <label class="text-primary">Tags</label>
+              <br>
+              <span>{{ data['tags'] || '-' }}</span>
+            </div>
+          </div>
+        </ng-template>
+      </li>
+      <li ngbNavItem="location-tab">
+        <a ngbNavLink>Location</a>
+        <ng-template ngbNavContent>
+          <div class="row p-3">
+            <div class="col-md-6 col-lg-6">
+              <label class="text-primary">Street</label>
+              <br>
+              <span class="max-lines-3">{{ data['address']['street'] || '-' }}</span>
+            </div>
+            <div class="col-md-6 col-lg-6">
+              <label class="text-primary">Area</label>
+              <br>
+              <span class="max-lines-3">{{ data['address']['area'] || '-' }}</span>
+            </div>
+          </div>
+          <div class="row p-3">
+            <div class="col-md-2 col-lg-2">
+              <label class="text-primary">City</label>
+              <br>
+              <span>{{ data['address']['city'] || '-' }}</span>
+            </div>
+            <div class="col-md-2 col-lg-2">
+              <label class="text-primary">State</label>
+              <br>
+              <span>{{ data['address']['state'] || '-' }}</span>
+            </div>
+            <div class="col-md-2 col-lg-2">
+              <label class="text-primary">Pincode</label>
+              <br>
+              <span>{{ data['address']['pincode'] || '-' }}</span>
+            </div>
+            <div class="col-md-2 col-lg-2">
+              <label class="text-primary">Latitude</label>
+              <br>
+              <span>{{ data['address']['lat'] || '-' }}</span>
+            </div>
+            <div class="col-md-2 col-lg-2">
+              <label class="text-primary">Longitude</label>
+              <br>
+              <span>{{ data['address']['lng'] || '-' }}</span>
+            </div>
+          </div>
+        </ng-template>
+      </li>
+      <li ngbNavItem="media-tab">
+        <a ngbNavLink>Media</a>
+        <ng-template ngbNavContent>
+          <div class="p-3">
+            <label class="text-primary">Icon</label>
+            <div class="row pl-3">
+              <div *ngIf="data['icon']; else iconNotFound">
+                <image-preview [imageSrc]="data['icon']" disableDelete="true"></image-preview>
               </div>
-            </ng-template>
+              <ng-template #iconNotFound>
+                <span class="small text-light-gray">No icon found</span>
+              </ng-template>
+            </div>
           </div>
-        </div>
-      </ng-template>
-    </li>
-    <li ngbNavItem="payment-tab">
-      <a ngbNavLink>Payment</a>
-      <ng-template ngbNavContent>
-        <div class="row p-3">
-          <div class="col-md-3 col-lg-3">
-            <label class="text-primary">Account Number</label>
-            <br>
-            <span>{{ data['payment']['account_number'] || '-' }}</span>
+          <div class="p-3">
+            <label class="text-primary">Cover Photos</label>
+            <div class="row pl-3">
+              <div *ngIf="data['cover_photos'] && data['cover_photos'].length == 0; else coverPhotos">
+                <span class="small text-light-gray">No cover photos found</span>
+              </div>
+              <ng-template #coverPhotos>
+                <div *ngFor="let imgSrc of data['cover_photos']">
+                  <image-preview [imageSrc]="imgSrc['url']" disableDelete="true" imageType="cover_photos"></image-preview>
+                </div>
+              </ng-template>
+            </div>
           </div>
-          <div class="col-md-3 col-lg-3">
-            <label class="text-primary">IFSC Code</label>
-            <br>
-            <span>{{ data['payment']['account_ifsc'] || '-' }}</span>
+        </ng-template>
+      </li>
+      <li ngbNavItem="payment-tab">
+        <a ngbNavLink>Payment</a>
+        <ng-template ngbNavContent>
+          <div class="row p-3">
+            <div class="col-md-3 col-lg-3">
+              <label class="text-primary">Account Number</label>
+              <br>
+              <span>{{ data['payment']['account_number'] || '-' }}</span>
+            </div>
+            <div class="col-md-3 col-lg-3">
+              <label class="text-primary">IFSC Code</label>
+              <br>
+              <span>{{ data['payment']['account_ifsc'] || '-' }}</span>
+            </div>
+            <div class="col-md-3 col-lg-3">
+              <label class="text-primary">Account Holder Name</label>
+              <br>
+              <span>{{ data['payment']['account_holder'] || '-' }}</span>
+            </div>
           </div>
-          <div class="col-md-3 col-lg-3">
-            <label class="text-primary">Account Holder Name</label>
-            <br>
-            <span>{{ data['payment']['account_holder'] || '-' }}</span>
+          <div class="row p-3">
+            <div class="col-md-3 col-lg-3">
+              <label class="text-primary">PAN Number</label>
+              <br>
+              <span>{{ data['payment']['pan'] || '-' }}</span>
+            </div>
+            <div class="col-md-3 col-lg-3">
+              <label class="text-primary">GST Number</label>
+              <br>
+              <span>{{ data['payment']['gst'] || '-' }}</span>
+            </div>
           </div>
-        </div>
-        <div class="row p-3">
-          <div class="col-md-3 col-lg-3">
-            <label class="text-primary">PAN Number</label>
-            <br>
-            <span>{{ data['payment']['pan'] || '-' }}</span>
-          </div>
-          <div class="col-md-3 col-lg-3">
-            <label class="text-primary">GST Number</label>
-            <br>
-            <span>{{ data['payment']['gst'] || '-' }}</span>
-          </div>
-        </div>
-      </ng-template>
-    </li>
-  </ul>
+        </ng-template>
+      </li>
+    </ul>
+    <span class="small text-light-gray pt-2 mt-2"> Last Updated: {{ data['updated_at'] }}</span>
+  </div>
   <div [ngbNavOutlet]="nav"></div>
 </div>
 
-<div class="mt-4">
+<div class="mt-4" *ngIf="data['deleted']=='true'">
   <ngb-accordion #accordion="ngbAccordion" *ngIf="data['status'] != 'DRAFT'" [destroyOnHide]="false"
                  activeIds="ngb-panel-0">
     <ngb-panel id="updateStatusPanel">
