@@ -56,7 +56,7 @@ export class ShopDetailsComponent extends BaseComponent {
 
   updateShopStatus(status) {
     let requestBody = {status: status}
-    if (status == 'REJECTED') requestBody['reason'] = this.rejectShopForm.get('reason').value;
+    if (['REJECTED', 'BLOCKED'].includes(status)) requestBody['reason'] = this.rejectShopForm.get('reason').value;
     this.shopService.updateShopDetails(this.shopId, requestBody)
       .then(response => {
         response['data']['shop']['tags'] = response['data']['shop']['tags'].toString().replace(/,/g, ', ');

@@ -177,7 +177,7 @@
   <div [ngbNavOutlet]="nav"></div>
 </div>
 
-<div class="mt-4" *ngIf="data['deleted']=='true'">
+<div class="mt-4" *ngIf="data['deleted']==false">
   <ngb-accordion #accordion="ngbAccordion" *ngIf="data['status'] != 'DRAFT'" [destroyOnHide]="false"
                  activeIds="ngb-panel-0">
     <ngb-panel id="updateStatusPanel">
@@ -237,7 +237,7 @@
             </div>
           </div>
         </div>
-        <div *ngIf="['ACTIVE', 'INACTIVE', 'BLOCKED'].includes(data['status'])">
+        <!-- <div *ngIf="['ACTIVE', 'INACTIVE', 'BLOCKED'].includes(data['status'])">
           <div class="col-6">
               <button (click)="updateShopStatus('BLOCKED')" class="btn btn-outline-primary btn-block" type="button">
                 Block
@@ -248,7 +248,7 @@
                 Delete
               </button>  
             </div>
-        </div>
+        </div> -->
 
         <div *ngIf="['PENDING', 'REJECTED'].includes(data['status'])" class="p-1 mt-4">
           <p class="font-weight-bold">Comments</p>
