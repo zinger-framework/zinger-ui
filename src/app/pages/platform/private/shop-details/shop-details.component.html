@@ -189,7 +189,7 @@
         <div [ngSwitch]="data['status']" class="row">
           <div *ngSwitchCase="'PENDING'" class="row col-4">
             <div class="col-6">
-              <button (click)="getCommentModal()" class="btn btn-outline-primary btn-block pr-2"
+              <button (click)="getReasonModal('Rejection')" class="btn btn-outline-primary btn-block pr-2"
                       type="button">Reject
               </button>
             </div>
@@ -208,30 +208,30 @@
               </button>
             </div>
             <div class="col-6">
-              <button (click)="getDeleteModal()" class="btn btn-primary btn-block" type="button">Delete
+              <button (click)="getReasonModal('Deletion')" class="btn btn-primary btn-block" type="button">Delete
               </button>
             </div>
           </div>
           <div *ngSwitchCase="'ACTIVE'" class="row col-4">
             <div class="col-6">
-              <button (click)="updateShopStatus('BLOCKED')" class="btn btn-outline-primary btn-block" type="button">
+              <button (click)="getReasonModal('Blocking')" class="btn btn-outline-primary btn-block" type="button">
                 Block
               </button>  
             </div>
             <div class="col-6">
-              <button (click)="getDeleteModal()" class="btn btn-primary btn-block" type="button">
+              <button (click)="getReasonModal('Deletion')" class="btn btn-primary btn-block" type="button">
                 Delete
               </button>  
             </div>
           </div>
           <div *ngSwitchCase="'INACTIVE'" class="row col-4">
             <div class="col-6">
-              <button (click)="updateShopStatus('BLOCKED')" class="btn btn-outline-primary btn-block" type="button">
+              <button (click)="getReasonModal('Blocking')" class="btn btn-outline-primary btn-block" type="button">
                 Block
               </button>
             </div>
             <div class="col-6">
-              <button (click)="getDeleteModal()" class="btn btn-primary btn-block" type="button">
+              <button (click)="getReasonModal('Deletion')" class="btn btn-primary btn-block" type="button">
                 Delete
               </button>  
             </div>
@@ -261,44 +261,4 @@
       </ng-template>
     </ngb-panel>
   </ngb-accordion>
-
-  <ng-template #rejectShop let-modal>
-    <form (ngSubmit)="updateShopStatus('REJECTED')" [formGroup]="rejectShopForm" class="reject-shop p-2">
-      <div class="modal-header">
-        <h4 class="modal-title" id="modal-basic-title">Reason For Rejection</h4>
-        <button (click)="modal.dismiss()" aria-label="Close" class="close" type="button">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="form-group form-group-reason mt-4">
-          <textarea class="form-control form-control-lg" formControlName="reason"
-                    placeholder="Please add your comments in less than 250 characters" rows="6"></textarea>
-          <div class="form-control-feedback has-danger"></div>
-        </div>
-      </div>
-      <div class="form-feedback has-danger mt-1 mb-1 text-center"></div>
-      <div class="modal-footer">
-        <input [disabled]="!rejectShopForm.valid" class="btn btn-primary" type="submit" value="Submit">
-      </div>
-    </form>
-  </ng-template>
-
-  <ng-template #deleteShop let-modal>
-    <form (ngSubmit)="deleteShops()" [formGroup]="deleteShopForm" class="delete-shop p-2">
-      <div class="modal-header">
-        <h4 class="modal-title" id="modal-basic-title">Delete Shop</h4>
-        <button (click)="modal.dismiss()" aria-label="Close" class="close" type="button">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <p>Are you sure you want to delete the shop?</p>
-      </div>
-      <div class="form-feedback has-danger mt-1 mb-1 text-center"></div>
-      <div class="modal-footer">
-        <input class="btn btn-primary" type="submit" value="Yes">
-      </div>
-    </form>
-  </ng-template>
 </div>

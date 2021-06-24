@@ -8,6 +8,7 @@ import {ToastrService} from "ngx-toastr";
 import {BaseComponent} from "../../../../base.component";
 import {ShopService} from "../../../../core/service/platform/shop.service";
 import {handleError} from "../../../../core/utils/common.utils";
+import {ReasonModalComponent} from "../../../../shared/reason-modal/reason-modal.component"
 
 @Component({
   selector: 'shop-details',
@@ -15,8 +16,6 @@ import {handleError} from "../../../../core/utils/common.utils";
   styleUrls: ['./shop-details.component.css']
 })
 export class ShopDetailsComponent extends BaseComponent {
-  rejectShopForm: FormGroup;
-  deleteShopForm: FormGroup;
   @ViewChild('rejectShop', {read: TemplateRef}) rejectShopModal: TemplateRef<any>;
   @ViewChild('deleteShop', {read: TemplateRef}) deleteShopModal: TemplateRef<any>;
   data = {'address': {}, 'payment': {}}
@@ -31,11 +30,6 @@ export class ShopDetailsComponent extends BaseComponent {
       label: this.shopId,
       link: ''
     }]
-    this.rejectShopForm = this.fb.group({
-      reason: new ExtendedFormControl('', [Validators.required, Validators.maxLength(250)], 'reason'),
-      className: 'reject-shop'
-    })
-    this.deleteShopForm = this.fb.group({className: 'delete-shop'})
   }
 
   ngOnInit(): void {
@@ -51,12 +45,9 @@ export class ShopDetailsComponent extends BaseComponent {
       })
   }
 
- // Remove the status keyword and make the button value dynamic
- // If active -> BLOCK, DELETE
-
-  updateShopStatus(status) {
+  updateShopStatus(status, reasonForm = null) {
     let requestBody = {status: status}
-    if (['REJECTED', 'BLOCKED'].includes(status)) requestBody['reason'] = this.rejectShopForm.get('reason').value;
+    if (['REJECTED', 'BLOCKED'].includes(status)) requestBody['reason'] = reasonForm.get('reason').value;
     this.shopService.updateShopDetails(this.shopId, requestBody)
       .then(response => {
         response['data']['shop']['tags'] = response['data']['shop']['tags'].toString().replace(/,/g, ', ');
@@ -64,25 +55,36 @@ export class ShopDetailsComponent extends BaseComponent {
         this.modalService.dismissAll();
       })
       .catch(error => {
-        this.modalService.hasOpenModals() ? handleError(error, this.rejectShopForm) : this.modalService.dismissAll()
+        this.modalService.hasOpenModals() ? handleError(error, reasonForm) : this.modalService.dismissAll()
       });
   }
 
-  deleteShops(){
+  deleteShops(reasonForm){
     this.shopService.deleteShop(this.shopId)
-    .then(response => {
-      this.modalService.dismissAll()
-    })
-    .catch(error => {
-      handleError(error, this.deleteShopForm)
-    })
+      .then(response => {
+        this.data['deleted'] = true
+        this.modalService.dismissAll()
+      })
+      .catch(error => {
+        this.modalService.hasOpenModals() ? handleError(error, reasonForm) : this.modalService.dismissAll()
+      })
   }
 
-  getCommentModal() {
-    this.modalService.open(this.rejectShopModal, {centered: true});
-  }
-
-  getDeleteModal(){
-    this.modalService.open(this.deleteShopModal, {centered: true});
+  getReasonModal(reason){
+    const modalRef = this.modalService.open(ReasonModalComponent, {centered: true});
+    modalRef.componentInstance.title = reason;
+    modalRef.componentInstance.updateStatus.subscribe((receivedEntry) => {
+      switch (receivedEntry['title']) {
+        case 'Deletion':
+          this.deleteShops(receivedEntry['formObject']);
+          break;
+        case 'Rejection':
+          this.updateShopStatus('REJECTED', receivedEntry['formObject'])
+          break;
+        case 'Blocking':
+          this.updateShopStatus('BLOCKED', receivedEntry['formObject'])
+          break;
+      }
+    })
   }
 }
