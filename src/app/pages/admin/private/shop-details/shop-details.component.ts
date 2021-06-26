@@ -85,14 +85,6 @@ export class ShopDetailsComponent extends BaseComponent {
     }
   }
 
-  getShopDetails() {
-    this.shopService.getShopDetails(this.shopId)
-      .then(response => this.initializeForm(response['data']['shop']))
-      .catch(error => {
-        this.router.navigate([APP_ROUTES.DASHBOARD])
-      })
-  }
-
   initializeForm(shopData) {
     Object.keys(shopData).forEach(field => {
       if (shopData[field] != null) {
@@ -301,6 +293,14 @@ export class ShopDetailsComponent extends BaseComponent {
 
   acceptTermsAndConditions() {
     this.termsAndCondition = !this.termsAndCondition;
+  }
+
+  getShopDetails() {
+    this.shopService.getShopDetails(this.shopId)
+      .then(response => this.initializeForm(response['data']['shop']))
+      .catch(error => {
+        this.router.navigate([APP_ROUTES.DASHBOARD])
+      })
   }
 
   updateShopActiveStatus() {
