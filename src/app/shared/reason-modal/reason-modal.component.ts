@@ -23,7 +23,7 @@ export class ReasonModalComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  onSubmit(status){
+  onSubmit(status) {
     this.updateStatus.emit({title: this.title, formObject: this.reasonForm})    
   }
 }

@@ -21,7 +21,6 @@ export class ShopDetailsComponent extends BaseComponent {
   data = {'address': {}, 'payment': {}}
   shopId = 0
   breadCrumbData = []
-  buttonValue = ''
 
   constructor(private fb: FormBuilder, private modalService: NgbModal, private route: ActivatedRoute, private router: Router, private shopService: ShopService, private toastr: ToastrService) {
     super()
@@ -59,7 +58,7 @@ export class ShopDetailsComponent extends BaseComponent {
       });
   }
 
-  deleteShops(reasonForm){
+  deleteShops(reasonForm) {
     // TODO @harsha - Reason for deletion must be sent in API request
     this.shopService.deleteShop(this.shopId)
       .then(response => {
@@ -71,19 +70,19 @@ export class ShopDetailsComponent extends BaseComponent {
       })
   }
 
-  getReasonModal(reason){
+  getReasonModal(reason) {
     const modalRef = this.modalService.open(ReasonModalComponent, {centered: true});
     modalRef.componentInstance.title = reason;
-    modalRef.componentInstance.updateStatus.subscribe((receivedEntry) => {
-      switch (receivedEntry['title']) {
+    modalRef.componentInstance.updateStatus.subscribe((data) => {
+      switch (data['title']) {
         case 'Deletion':
-          this.deleteShops(receivedEntry['formObject']);
+          this.deleteShops(data['formObject']);
           break;
         case 'Rejection':
-          this.updateShopStatus('REJECTED', receivedEntry['formObject'])
+          this.updateShopStatus('REJECTED', data['formObject'])
           break;
         case 'Blocking':
-          this.updateShopStatus('BLOCKED', receivedEntry['formObject'])
+          this.updateShopStatus('BLOCKED', data['formObject'])
           break;
       }
     })
