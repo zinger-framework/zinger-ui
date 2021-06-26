@@ -43,6 +43,7 @@ export class ShopDetailsComponent extends BaseComponent {
   approvalComments = []
   shopId: number;
   breadCrumbData = [{label: 'Home', link: '/dashboard'}, {label: 'Shop', link: ''}];
+  isShopActive: boolean = false;
 
   constructor(private fb: FormBuilder, private toastr: ToastrService, private shopService: ShopService, private route: ActivatedRoute, private router: Router) {
     super();
@@ -79,12 +80,16 @@ export class ShopDetailsComponent extends BaseComponent {
     if (history.state['shop'] != null) {
       this.initializeForm(history.state['shop'])
     } else {
-      this.shopService.getShopDetails(this.shopId)
+      this.getShopDetails();
+    }
+  }
+
+  getShopDetails() {
+    this.shopService.getShopDetails(this.shopId)
         .then(response => this.initializeForm(response['data']['shop']))
         .catch(error => {
           this.router.navigate([APP_ROUTES.DASHBOARD])
         })
-    }
   }
 
   initializeForm(shopData) {
@@ -122,6 +127,7 @@ export class ShopDetailsComponent extends BaseComponent {
             break;
           case 'status':
             this.formStatus = shopData[field]
+            if (this.formStatus == 'ACTIVE') this.isShopActive = true;
             break;
           case 'approval_comments':
             this.approvalComments = shopData[field]
@@ -137,6 +143,7 @@ export class ShopDetailsComponent extends BaseComponent {
   }
 
   browseFiles(imgType) {
+    if (this.formStatus == 'BLOCKED') return this.toastr.error('Image upload not allowed when shop is blocked')
     this.shopDetailsForm.get(imgType).markAsTouched();
     $(`div.form-group-${imgType} input`)[0].click();
   }
@@ -202,6 +209,7 @@ export class ShopDetailsComponent extends BaseComponent {
   }
 
   deleteImage(imageId, type) {
+    if (this.formStatus == 'BLOCKED') return this.toastr.error('Deleting image not allowed when shop is blocked')
     switch (type) {
       case 'icon':
         this.shopService.deleteIcon(this.shopId)
@@ -258,15 +266,7 @@ export class ShopDetailsComponent extends BaseComponent {
         break;
     }
 
-    this.shopService.updateShopDetails(this.shopId, requestBody)
-      .then(response => {
-        this.initializeForm(response['data']['shop'])
-      })
-      .catch(error => {
-        // TODO: navigate to list of shops
-        if (error['status'] == 404) this.router.navigateByUrl(APP_ROUTES.DASHBOARD);
-        handleError(error, this.shopDetailsForm)
-      })
+    this.updateShopDetails(requestBody)
   }
 
   updateRequestBody(key, requestBody) {
@@ -297,5 +297,27 @@ export class ShopDetailsComponent extends BaseComponent {
 
   acceptTermsAndConditions() {
     this.termsAndCondition = !this.termsAndCondition;
+  }
+
+  updateShopActiveStatus() {
+    this.isShopActive = !this.isShopActive;
+    if (this.formStatus == 'BLOCKED') return this.toastr.error('Shop update not allowed when shop is blocked');
+    let requestBody = {}
+    requestBody['status'] = this.formStatus == 'ACTIVE' ? 'INACTIVE': 'ACTIVE'
+    this.updateShopDetails(requestBody, {resetStatus: true})
+  }
+
+  updateShopDetails(requestBody, options = {}) {
+    this.shopService.updateShopDetails(this.shopId, requestBody)
+      .then(response => {
+        this.initializeForm(response['data']['shop']);
+      })
+      .catch(error => {
+        // TODO: navigate to list of shops
+        if (error['status'] == 404) this.router.navigateByUrl(APP_ROUTES.DASHBOARD);
+        if (error['status'] == 403) this.getShopDetails();
+        if (options['resetStatus'] && options['resetStatus'] == true) this.isShopActive = !this.isShopActive;
+        handleError(error, this.shopDetailsForm);
+      })
   }
 }

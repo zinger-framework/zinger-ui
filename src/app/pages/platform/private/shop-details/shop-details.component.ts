@@ -60,6 +60,7 @@ export class ShopDetailsComponent extends BaseComponent {
   }
 
   deleteShops(reasonForm){
+    // TODO @harsha - Reason for deletion must be sent in API request
     this.shopService.deleteShop(this.shopId)
       .then(response => {
         this.data['deleted'] = true
