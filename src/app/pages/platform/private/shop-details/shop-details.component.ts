@@ -35,6 +35,8 @@ export class ShopDetailsComponent extends BaseComponent {
       .then(response => {
         response['data']['shop']['tags'] = response['data']['shop']['tags'].toString().replace(/,/g, ', ');
         this.data = response['data']['shop']
+        // TODO -  Remove below line after API changes return deleted comments
+        this.data['deleted_comments'] = []
       })
       .catch(error => {
         this.toastr.error(error['error']['message']);
