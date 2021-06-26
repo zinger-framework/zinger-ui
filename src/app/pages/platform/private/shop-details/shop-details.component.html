@@ -212,23 +212,11 @@
               </button>
             </div>
           </div>
-          <div *ngSwitchCase="'ACTIVE'" class="row col-4">
+          <div *ngSwitchDefault class="row col-4">
             <div class="col-6">
               <button (click)="getReasonModal('Blocking')" class="btn btn-outline-primary btn-block" type="button">
                 Block
               </button>  
-            </div>
-            <div class="col-6">
-              <button (click)="getReasonModal('Deletion')" class="btn btn-primary btn-block" type="button">
-                Delete
-              </button>  
-            </div>
-          </div>
-          <div *ngSwitchCase="'INACTIVE'" class="row col-4">
-            <div class="col-6">
-              <button (click)="getReasonModal('Blocking')" class="btn btn-outline-primary btn-block" type="button">
-                Block
-              </button>
             </div>
             <div class="col-6">
               <button (click)="getReasonModal('Deletion')" class="btn btn-primary btn-block" type="button">
@@ -237,18 +225,6 @@
             </div>
           </div>
         </div>
-        <!-- <div *ngIf="['ACTIVE', 'INACTIVE', 'BLOCKED'].includes(data['status'])">
-          <div class="col-6">
-              <button (click)="updateShopStatus('BLOCKED')" class="btn btn-outline-primary btn-block" type="button">
-                Block
-              </button>
-            </div>
-            <div class="col-6">
-              <button (click)="getDeleteModal()" class="btn btn-primary btn-block" type="button">
-                Delete
-              </button>  
-            </div>
-        </div> -->
 
         <div *ngIf="['PENDING', 'REJECTED'].includes(data['status'])" class="p-1 mt-4">
           <p class="font-weight-bold">Comments</p>
