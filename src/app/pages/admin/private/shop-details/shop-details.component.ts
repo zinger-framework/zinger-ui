@@ -47,7 +47,7 @@ export class ShopDetailsComponent extends BaseComponent {
   isShopActive: boolean = false;
 
   constructor(private fb: FormBuilder, private toastr: ToastrService, private shopService: ShopService, private route: ActivatedRoute, private router: Router) {
-    super(); 
+    super();
     this.route.params.subscribe(params => this.shopId = params['id']);
     this.shopDetailsForm = this.fb.group({
       name: new ExtendedFormControl('', [Validators.required, Validators.pattern(SHOP_NAME_REGEX)], 'name'),
@@ -305,7 +305,6 @@ export class ShopDetailsComponent extends BaseComponent {
 
   updateShopActiveStatus() {
     this.isShopActive = !this.isShopActive;
-    if (this.formStatus == 'BLOCKED') return this.toastr.error('Shop update not allowed when shop is blocked');
     let requestBody = {}
     requestBody['status'] = this.formStatus == 'ACTIVE' ? 'INACTIVE': 'ACTIVE'
     this.updateShopDetails(requestBody, {resetStatus: true})
