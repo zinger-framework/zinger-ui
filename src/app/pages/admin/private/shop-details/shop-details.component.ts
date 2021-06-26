@@ -41,12 +41,13 @@ export class ShopDetailsComponent extends BaseComponent {
   iconSrc = ''
   coverImgSrcList = []
   approvalComments = []
+  blockedComments = []
   shopId: number;
   breadCrumbData = [{label: 'Home', link: '/dashboard'}, {label: 'Shop', link: ''}];
   isShopActive: boolean = false;
 
   constructor(private fb: FormBuilder, private toastr: ToastrService, private shopService: ShopService, private route: ActivatedRoute, private router: Router) {
-    super();
+    super(); 
     this.route.params.subscribe(params => this.shopId = params['id']);
     this.shopDetailsForm = this.fb.group({
       name: new ExtendedFormControl('', [Validators.required, Validators.pattern(SHOP_NAME_REGEX)], 'name'),
@@ -131,6 +132,9 @@ export class ShopDetailsComponent extends BaseComponent {
             break;
           case 'approval_comments':
             this.approvalComments = shopData[field]
+            break;
+          case 'blocked_comments':
+            this.blockedComments = shopData[field]
             break;
           default:
             if (field != 'id' && this.shopDetailsForm.get(field) != null) {
