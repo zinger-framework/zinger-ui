@@ -9,10 +9,8 @@ import {ExtendedFormControl} from "../../core/utils/extended-form-control.utils"
   styleUrls: ['./reason-modal.component.css']
 })
 export class ReasonModalComponent implements OnInit {
-
   @Input() title;
   @Output() updateStatus: EventEmitter<{title: string, formObject: FormGroup}> = new EventEmitter();
-
   reasonForm: FormGroup;
   
   constructor(public activeModal: NgbActiveModal, private fb: FormBuilder) {
@@ -28,5 +26,4 @@ export class ReasonModalComponent implements OnInit {
   onSubmit(status){
     this.updateStatus.emit({title: this.title, formObject: this.reasonForm})    
   }
-
 }

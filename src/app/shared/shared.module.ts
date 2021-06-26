@@ -10,7 +10,7 @@ import {AccordionHeaderComponent} from "./accordion-header/accordion-header.comp
 import {CommentComponent} from './comment/comment.component';
 import {BreadcrumbComponent} from './breadcrumb/breadcrumb.component';
 import {AppRoutingModule} from "../app-routing.module";
-import { ReasonModalComponent } from './reason-modal/reason-modal.component';
+import {ReasonModalComponent} from './reason-modal/reason-modal.component';
 
 @NgModule({
   declarations: [CardComponent, ImagePreviewComponent, AccordionHeaderComponent, CommentComponent, BreadcrumbComponent, ReasonModalComponent],

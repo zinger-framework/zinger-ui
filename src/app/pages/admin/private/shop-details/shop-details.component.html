@@ -3,8 +3,7 @@
   <div class="row">
     <div class="col-md-12 col-sm-12">
       <div class="text-center text-light-gray font-weight-bold">
-        <span *ngIf="formStatus == 'BLOCKED'">
-          The shop is blocked by the admin. Please check the below comments.
+        <span *ngIf="formStatus == 'BLOCKED'">The shop is blocked by the admin. Please check the below comments.
         </span>
         <span *ngIf="formStatus == 'REJECTED'">Your request has been rejected. Please check the below comments and update shop details.
         </span>
@@ -293,7 +292,7 @@
     </ngb-panel>
   </ngb-accordion>
 
-  <div *ngIf="formStatus === 'DRAFT'" class="m-1">
+  <div *ngIf="formStatus == 'DRAFT'" class="m-1">
     <div class="custom-control custom-checkbox mt-4">
       <input (click)="acceptTermsAndConditions()" class="custom-control-input" id="terms_and_conditions"
              type="checkbox">
