@@ -1,5 +1,5 @@
-import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
-import {NgbModal, NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {ExtendedFormControl} from "../../core/utils/extended-form-control.utils";
 
@@ -10,9 +10,9 @@ import {ExtendedFormControl} from "../../core/utils/extended-form-control.utils"
 })
 export class ReasonModalComponent implements OnInit {
   @Input() title;
-  @Output() updateStatus: EventEmitter<{title: string, formObject: FormGroup}> = new EventEmitter();
+  @Output() updateStatus: EventEmitter<{ title: string, formObject: FormGroup }> = new EventEmitter();
   reasonForm: FormGroup;
-  
+
   constructor(public activeModal: NgbActiveModal, private fb: FormBuilder) {
     this.reasonForm = this.fb.group({
       reason: new ExtendedFormControl('', [Validators.required, Validators.maxLength(250)], 'reason'),
@@ -24,6 +24,6 @@ export class ReasonModalComponent implements OnInit {
   }
 
   onSubmit(status) {
-    this.updateStatus.emit({title: this.title, formObject: this.reasonForm})    
+    this.updateStatus.emit({title: this.title, formObject: this.reasonForm})
   }
 }

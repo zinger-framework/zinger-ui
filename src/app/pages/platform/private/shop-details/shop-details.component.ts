@@ -1,7 +1,6 @@
 import {Component, TemplateRef, ViewChild} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {FormBuilder} from "@angular/forms";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
-import {ExtendedFormControl} from "../../../../core/utils/extended-form-control.utils";
 import {APP_ROUTES} from "../../../../core/utils/constants.utils";
 import {ActivatedRoute, Router} from "@angular/router";
 import {ToastrService} from "ngx-toastr";

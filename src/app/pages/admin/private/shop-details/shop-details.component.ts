@@ -87,10 +87,10 @@ export class ShopDetailsComponent extends BaseComponent {
 
   getShopDetails() {
     this.shopService.getShopDetails(this.shopId)
-        .then(response => this.initializeForm(response['data']['shop']))
-        .catch(error => {
-          this.router.navigate([APP_ROUTES.DASHBOARD])
-        })
+      .then(response => this.initializeForm(response['data']['shop']))
+      .catch(error => {
+        this.router.navigate([APP_ROUTES.DASHBOARD])
+      })
   }
 
   initializeForm(shopData) {
@@ -306,7 +306,7 @@ export class ShopDetailsComponent extends BaseComponent {
   updateShopActiveStatus() {
     this.isShopActive = !this.isShopActive;
     let requestBody = {}
-    requestBody['status'] = this.formStatus == 'ACTIVE' ? 'INACTIVE': 'ACTIVE'
+    requestBody['status'] = this.formStatus == 'ACTIVE' ? 'INACTIVE' : 'ACTIVE'
     this.updateShopDetails(requestBody, {resetStatus: true})
   }
 

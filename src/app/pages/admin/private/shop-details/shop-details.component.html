@@ -303,7 +303,8 @@
   </div>
 
   <div class="d-inline-flex">
-    <input [attr.value]="formStatus == 'DRAFT' ? 'Register' : 'Update Details'" [disabled]="!canSubmitForm()" class="btn btn-primary mt-3"
+    <input [attr.value]="formStatus == 'DRAFT' ? 'Register' : 'Update Details'" [disabled]="!canSubmitForm()"
+           class="btn btn-primary mt-3"
            type="submit">
     <div class="form-feedback has-danger mt-4 ml-3"></div>
   </div>
