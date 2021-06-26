@@ -233,7 +233,7 @@
           <div *ngIf="data['approval_comments'].length == 0"><p class="small text-light-gray">No comments found</p>
           </div>
         </div>
-        <div *ngIf="['BLOCKED'].includes(data['status'])" class="p-1 mt-4">
+        <div *ngIf="data['status'] == 'BLOCKED'" class="p-1 mt-4">
           <p class="font-weight-bold">Blocked Comments</p>
           <div *ngFor="let comment of data['blocked_comments']" class="pt-1">
             <comment [message]="comment.message" [time]="comment.time" [userName]="comment.user_id"></comment>
