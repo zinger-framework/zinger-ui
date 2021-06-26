@@ -205,8 +205,7 @@
           </div>
           <div *ngSwitchCase="'BLOCKED'" class="row col-4">
             <div class="col-6">
-              <button (click)="updateShopStatus('ACTIVE')" class="btn btn-outline-primary btn-block" type="button">
-                Unblock
+              <button (click)="updateShopStatus('ACTIVE')" class="btn btn-outline-primary btn-block" type="button">Unblock
               </button>
             </div>
             <div class="col-6">
@@ -216,13 +215,11 @@
           </div>
           <div *ngSwitchDefault class="row col-4">
             <div class="col-6">
-              <button (click)="getReasonModal('Blocking')" class="btn btn-outline-primary btn-block" type="button">
-                Block
+              <button (click)="getReasonModal('Blocking')" class="btn btn-outline-primary btn-block" type="button">Block
               </button>
             </div>
             <div class="col-6">
-              <button (click)="getReasonModal('Deletion')" class="btn btn-primary btn-block" type="button">
-                Delete
+              <button (click)="getReasonModal('Deletion')" class="btn btn-primary btn-block" type="button">Delete
               </button>
             </div>
           </div>
