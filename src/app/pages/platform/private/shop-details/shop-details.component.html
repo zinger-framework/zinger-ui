@@ -178,7 +178,7 @@
   <div [ngbNavOutlet]="nav"></div>
 </div>
 
-<div *ngIf="data['deleted']==false" class="mt-4">
+<div *ngIf="data['deleted']==false; else deletedComment" class="mt-4">
   <ngb-accordion #accordion="ngbAccordion" *ngIf="data['status'] != 'DRAFT'" [destroyOnHide]="false"
                  activeIds="ngb-panel-0">
     <ngb-panel id="updateStatusPanel">
@@ -226,14 +226,32 @@
         </div>
 
         <div *ngIf="['PENDING', 'REJECTED'].includes(data['status'])" class="p-1 mt-4">
-          <p class="font-weight-bold">Comments</p>
+          <p class="font-weight-bold">Approval Comments</p>
           <div *ngFor="let comment of data['approval_comments']" class="pt-1">
             <comment [message]="comment.message" [time]="comment.time" [userName]="comment.user_id"></comment>
           </div>
           <div *ngIf="data['approval_comments'].length == 0"><p class="small text-light-gray">No comments found</p>
           </div>
         </div>
+        <div *ngIf="['BLOCKED'].includes(data['status'])" class="p-1 mt-4">
+          <p class="font-weight-bold">Blocked Comments</p>
+          <div *ngFor="let comment of data['blocked_comments']" class="pt-1">
+            <comment [message]="comment.message" [time]="comment.time" [userName]="comment.user_id"></comment>
+          </div>
+          <div *ngIf="data['blocked_comments'].length == 0"><p class="small text-light-gray">No comments found</p>
+          </div>
+        </div>
       </ng-template>
     </ngb-panel>
   </ngb-accordion>
 </div>
+
+<!-- TODO: Fix this error -->
+<!-- <div *ngIf="data['deleted'] == true" class="p-3 mt-4 bg-white">
+  <p class="font-weight-bold">Deleted Comments</p>
+  <div *ngFor="let comment of data['deleted_comments']" class="pt-1">
+    <comment [message]="comment.message" [time]="comment.time" [userName]="comment.user_id"></comment>
+  </div>
+  <div *ngIf="data['deleted_comments'].length == 0"><p class="small text-light-gray">No comments found</p>
+  </div>
+</div> -->

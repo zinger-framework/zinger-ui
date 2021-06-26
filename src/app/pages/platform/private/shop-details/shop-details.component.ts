@@ -17,7 +17,7 @@ import {ReasonModalComponent} from "../../../../shared/reason-modal/reason-modal
 export class ShopDetailsComponent extends BaseComponent {
   @ViewChild('rejectShop', {read: TemplateRef}) rejectShopModal: TemplateRef<any>;
   @ViewChild('deleteShop', {read: TemplateRef}) deleteShopModal: TemplateRef<any>;
-  data = {'address': {}, 'payment': {}}
+  data = {'address': {}, 'payment': {}, 'deleted_comments': []}
   shopId = 0
   breadCrumbData = []
 
