@@ -246,12 +246,14 @@
   </ngb-accordion>
 </div>
 
-<!-- TODO: Fix this error -->
-<div *ngIf="data['deleted'] == true" class="p-3 mt-4 bg-white">
-  <p class="font-weight-bold">Deleted Comments</p>
-  <div *ngFor="let comment of data['deleted_comments']" class="pt-1">
-    <comment [message]="comment.message" [time]="comment.time" [userName]="comment.user_id"></comment>
+<ng-template #deletedComment>
+  <div *ngIf="data['deleted'] == true" class="p-3 mt-4 bg-white">
+    <p class="font-weight-bold">Deleted Comments</p>
+    <div *ngFor="let comment of data['deleted_comments']" class="pt-1">
+      <comment [message]="comment.message" [time]="comment.time" [userName]="comment.user_id"></comment>
+    </div>
+    <div *ngIf="data['deleted_comments'].length == 0"><p class="small text-light-gray">No comments found</p>
+    </div>
   </div>
-  <div *ngIf="data['deleted_comments'].length == 0"><p class="small text-light-gray">No comments found</p>
-  </div>
-</div>
+</ng-template>
+
