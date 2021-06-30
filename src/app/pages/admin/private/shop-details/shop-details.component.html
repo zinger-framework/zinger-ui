@@ -20,7 +20,7 @@
       </ng-template>
       <ng-template ngbPanelContent>
         <div *ngFor="let comment of approvalComments" class="pt-1">
-          <comment [message]="comment.message" [time]="comment.time" [userName]="comment.user_id"></comment>
+          <comment [message]="comment.message" [time]="comment.time" [userName]="comment.user_id" [image]="comment.image_url"></comment>
         </div>
       </ng-template>
     </ngb-panel>

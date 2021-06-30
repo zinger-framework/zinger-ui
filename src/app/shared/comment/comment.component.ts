@@ -14,7 +14,9 @@ export class CommentComponent extends BaseComponent {
 
   constructor() {
     super()
-    // TODO: Remove below value-assignment when image_url is being introduced - Logesh
-    this.image = 'https://www.gravatar.com/avatar/19950ba08782d91c3e50e7bd2287d3c3.png';
+  }
+
+  onImageLoadError(event) {
+    event.target.src = 'https://www.gravatar.com/avatar/placeholder.png'
   }
 }
