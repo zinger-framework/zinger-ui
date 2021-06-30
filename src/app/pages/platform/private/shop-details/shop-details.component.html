@@ -175,7 +175,7 @@
 
 <div class="mt-4">
   <ngb-accordion #accordion="ngbAccordion" *ngIf="data['status'] != 'DRAFT'" [destroyOnHide]="false"
-                 activeIds="ngb-panel-0">
+                 activeIds="ngb-panel-0" class="shop-details">
     <ngb-panel id="updateStatusPanel">
       <ng-template class="panel-header" let-opened="opened" ngbPanelHeader>
         <accordion-header [accordion]="accordion" [opened]="opened" [panelId]="'updateStatusPanel'"

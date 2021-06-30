@@ -29,6 +29,7 @@
     "ngx-material-timepicker": "^5.5.3",
     "ngx-toastr": "^12.1.0",
     "ngx-ui-switch": "^10.0.2",
+    "crypto-js": "^4.0.0",
     "zone.js": "~0.10.2"
   },
   "devDependencies": {
