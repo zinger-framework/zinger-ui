@@ -10,10 +10,11 @@ export class CommentComponent extends BaseComponent {
   @Input() userName;
   @Input() time;
   @Input() message;
-  image;
+  @Input() image;
 
   constructor() {
     super()
-    this.image = 'https://www.gravatar.com/avatar/19950ba08782d91c3e50e7bd2287d3c3.jpg';
+    // TODO: Remove below value-assignment when image_url is being introduced - Logesh
+    this.image = 'https://www.gravatar.com/avatar/19950ba08782d91c3e50e7bd2287d3c3.png';
   }
 }
