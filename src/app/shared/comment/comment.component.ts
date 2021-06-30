@@ -1,6 +1,5 @@
 import {Component, Input} from '@angular/core';
 import {BaseComponent} from "../../base.component";
-import md5 from 'crypto-js/md5';
 
 @Component({
   selector: 'comment',
@@ -15,6 +14,6 @@ export class CommentComponent extends BaseComponent {
 
   constructor() {
     super()
-    this.image = `https://www.gravatar.com/avatar/${md5('ddlogesh@gmail.com').toString()}.png`;
+    this.image = 'https://www.gravatar.com/avatar/19950ba08782d91c3e50e7bd2287d3c3.jpg';
   }
 }
