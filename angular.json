@@ -29,7 +29,12 @@
               "node_modules/ngx-toastr/toastr.css",
               "src/assets/stylesheets/style.css",
               "src/assets/stylesheets/angular-wizard.scss",
-              "node_modules/ngx-ui-switch/ui-switch.component.scss"
+              "node_modules/ngx-ui-switch/ui-switch.component.scss",
+              "node_modules/@swimlane/ngx-datatable/index.css",
+              "node_modules/@swimlane/ngx-datatable/themes/material.scss",
+              "node_modules/@swimlane/ngx-datatable/themes/bootstrap.scss",
+              "node_modules/@swimlane/ngx-datatable/themes/bootstrap.css",
+              "node_modules/@swimlane/ngx-datatable/assets/icons.css"
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",

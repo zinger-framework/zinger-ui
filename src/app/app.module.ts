@@ -8,6 +8,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {NgSelectModule} from '@ng-select/ng-select';
 import {UiSwitchModule} from 'ngx-ui-switch';
 import {ToastrModule} from 'ngx-toastr';
+import {NgxDatatableModule} from '@swimlane/ngx-datatable';
 import {AppRoutingModule} from './app-routing.module';
 import {CoreModule} from "./core/core.module";
 import {LayoutsModule} from './layouts/layouts.module'
@@ -40,7 +41,8 @@ import {AppComponent} from './app.component';
     BrowserAnimationsModule,
     ToastrModule.forRoot({
       closeButton: true
-    })
+    }),
+    NgxDatatableModule
   ],
   bootstrap: [AppComponent]
 })
