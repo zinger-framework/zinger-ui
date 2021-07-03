@@ -10,8 +10,13 @@ export class CommentComponent extends BaseComponent {
   @Input() userName;
   @Input() time;
   @Input() message;
+  @Input() image;
 
   constructor() {
     super()
+  }
+
+  onImageLoadError(event) {
+    event.target.src = 'https://www.gravatar.com/avatar/placeholder.png'
   }
 }
