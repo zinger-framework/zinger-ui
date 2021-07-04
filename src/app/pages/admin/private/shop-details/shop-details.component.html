@@ -3,9 +3,9 @@
   <div class="row">
     <div class="col-md-12 col-sm-12">
       <div class="text-center text-light-gray font-weight-bold">
-        <span *ngIf="formStatus == 'BLOCKED'">The shop is blocked by the admin. Please check the below comments.
+        <span *ngIf="formStatus == 'BLOCKED'">Your shop is blocked by the Admin. Please contact our support team to unblock.
         </span>
-        <span *ngIf="formStatus == 'REJECTED'">Your request has been rejected. Please check the below comments and update shop details.
+        <span *ngIf="formStatus == 'REJECTED'">Your request has been rejected. Please check the below reason and update shop details.
         </span>
         <span *ngIf="formStatus == 'PENDING'">Your request is pending for approval and will be processed in 2-4 working days.
         </span>
@@ -13,37 +13,38 @@
     </div>
   </div>
 </div>
-<div *ngIf="approvalComments.length > 0" class="shop-details">
+<div *ngIf="rejectedConversations.length > 0" class="shop-details mb-4">
   <ngb-accordion #accordion="ngbAccordion" [destroyOnHide]="false">
     <ngb-panel id="rejectedCommentsPanel">
       <ng-template class="panel-header" let-opened="opened" ngbPanelHeader>
         <accordion-header [accordion]="accordion" [opened]="opened" [panelId]="'rejectedCommentsPanel'" class="da-card"
-                          title='Comments'></accordion-header>
+                          title='Reason for Rejection'></accordion-header>
       </ng-template>
       <ng-template ngbPanelContent>
-        <div *ngFor="let comment of approvalComments" class="pt-1">
-          <comment [message]="comment.message" [time]="comment.time" [userName]="comment.user_id" [image]="comment.image_url"></comment>
+        <div *ngFor="let comment of rejectedConversations" class="pt-1">
+          <comment [message]="comment.message" [time]="comment.time" [userName]="comment?.platform_user?.name"
+                   [image]="comment.profile_url"></comment>
         </div>
       </ng-template>
     </ngb-panel>
   </ngb-accordion>
 </div>
-<div *ngIf="blockedComments.length > 0" class="shop-details">
+<div *ngIf="blockedConversations.length > 0" class="shop-details mb-4">
   <ngb-accordion #accordion="ngbAccordion" [destroyOnHide]="false">
     <ngb-panel id="blockedCommentsPanel">
       <ng-template class="panel-header" let-opened="opened" ngbPanelHeader>
         <accordion-header [accordion]="accordion" [opened]="opened" [panelId]="'blockedCommentsPanel'" class="da-card"
-                          title='Comments'></accordion-header>
+                          title='Reason for Blocking'></accordion-header>
       </ng-template>
       <ng-template ngbPanelContent>
-        <div *ngFor="let comment of blockedComments" class="pt-1">
-          <comment [message]="comment.message" [time]="comment.time" [userName]="comment.user_id" [image]="comment.image_url"></comment>
+        <div *ngFor="let comment of blockedConversations" class="pt-1">
+          <comment [message]="comment.message" [time]="comment.time" [userName]="comment?.platform_user?.name"
+                   [image]="comment.profile_url"></comment>
         </div>
       </ng-template>
     </ngb-panel>
   </ngb-accordion>
 </div>
-<br>
 <form (ngSubmit)="submitShopDetails(accordion)" [formGroup]="shopDetailsForm" class="shop-details">
   <ngb-accordion #accordion="ngbAccordion" [destroyOnHide]="false" activeIds="ngb-panel-0">
     <ngb-panel id="basicInfoPanel">
@@ -298,7 +299,7 @@
   </div>
 
   <div class="d-inline-flex">
-    <input [attr.value]="this.formStatus == 'DRAFT' ? 'Register' : 'Update Details'" [disabled]="!canSubmitForm()"
+    <input [attr.value]="formStatus == 'DRAFT' ? 'Register' : 'Update Details'" [disabled]="!canSubmitForm()"
            class="btn btn-primary mt-3"
            type="submit">
     <div class="form-feedback has-danger mt-4 ml-3"></div>

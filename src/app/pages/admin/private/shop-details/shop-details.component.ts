@@ -40,8 +40,8 @@ export class ShopDetailsComponent extends BaseComponent {
   states = ['Tamil Nadu', 'Kerala', 'Andhra Pradesh', 'Karnataka']
   iconSrc = ''
   coverImgSrcList = []
-  approvalComments = []
-  blockedComments = []
+  rejectedConversations = []
+  blockedConversations = []
   shopId: number;
   breadCrumbData = [{label: 'Home', link: '/dashboard'}, {label: 'Shop', link: ''}];
   isShopActive: boolean = false;
@@ -122,11 +122,11 @@ export class ShopDetailsComponent extends BaseComponent {
             this.formStatus = shopData[field]
             if (this.formStatus == 'ACTIVE') this.isShopActive = true;
             break;
-          case 'approval_comments':
-            this.approvalComments = shopData[field]
+          case 'rejected_conversations':
+            this.rejectedConversations = shopData[field]
             break;
-          case 'blocked_comments':
-            this.blockedComments = shopData[field]
+          case 'blocked_conversations':
+            this.blockedConversations = shopData[field]
             break;
           default:
             if (field != 'id' && this.shopDetailsForm.get(field) != null) {

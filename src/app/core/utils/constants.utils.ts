@@ -12,6 +12,7 @@ export const API_ENDPOINTS = {
   USER_PROFILE_MODIFY: 'v1/user_profile/modify',
   SHOP_NEW: 'v1/shop/new',
   SHOP: 'v1/shop',
+  SHOP_DELETE: 'v1/shop/delete',
 };
 
 export const APP_ROUTES = {
