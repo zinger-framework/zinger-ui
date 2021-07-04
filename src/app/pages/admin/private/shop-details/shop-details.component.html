@@ -13,7 +13,7 @@
     </div>
   </div>
 </div>
-<div *ngIf="conversations['rejected_conversations'].length > 0" class="shop-details mb-4">
+<div *ngIf="conversations['rejected'].length > 0" class="shop-details mb-4">
   <ngb-accordion #accordion="ngbAccordion" [destroyOnHide]="false">
     <ngb-panel id="rejectedCommentsPanel">
       <ng-template class="panel-header" let-opened="opened" ngbPanelHeader>
@@ -21,7 +21,7 @@
                           title='Reason for Rejection'></accordion-header>
       </ng-template>
       <ng-template ngbPanelContent>
-        <div *ngFor="let comment of conversations['rejected_conversations']" class="pt-1">
+        <div *ngFor="let comment of conversations['rejected']" class="pt-1">
           <comment [message]="comment.message" [time]="comment.time" [userName]="comment?.platform_user?.name"
                    [image]="comment.profile_url"></comment>
         </div>
@@ -29,7 +29,7 @@
     </ngb-panel>
   </ngb-accordion>
 </div>
-<div *ngIf="conversations['blocked_conversations'].length > 0" class="shop-details mb-4">
+<div *ngIf="conversations['blocked'].length > 0" class="shop-details mb-4">
   <ngb-accordion #accordion="ngbAccordion" [destroyOnHide]="false">
     <ngb-panel id="blockedCommentsPanel">
       <ng-template class="panel-header" let-opened="opened" ngbPanelHeader>
@@ -37,7 +37,7 @@
                           title='Reason for Blocking'></accordion-header>
       </ng-template>
       <ng-template ngbPanelContent>
-        <div *ngFor="let comment of conversations['blocked_conversations']" class="pt-1">
+        <div *ngFor="let comment of conversations['blocked']" class="pt-1">
           <comment [message]="comment.message" [time]="comment.time" [userName]="comment?.platform_user?.name"
                    [image]="comment.profile_url"></comment>
         </div>
