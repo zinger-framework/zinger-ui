@@ -31,8 +31,7 @@ export class ShopDetailsComponent extends BaseComponent {
   ngOnInit(): void {
     this.shopService.getShopDetails(this.shopId)
       .then(response => {
-        response['data']['shop']['tags'] = response['data']['shop']['tags'].toString().replace(/,/g, ', ');
-        this.data = response['data']['shop']
+        this.loadShopData(response)
       })
       .catch(error => {
         this.toastr.error(error['error']['message']);
@@ -46,8 +45,7 @@ export class ShopDetailsComponent extends BaseComponent {
     if (['REJECTED', 'BLOCKED'].includes(status)) requestBody['reason'] = reasonForm.get('reason').value;
     this.shopService.updateShopDetails(this.shopId, requestBody)
       .then(response => {
-        response['data']['shop']['tags'] = response['data']['shop']['tags'].toString().replace(/,/g, ', ');
-        this.data = response['data']['shop']
+        this.loadShopData(response)
         this.modalService.dismissAll();
       })
       .catch(error => {
@@ -59,7 +57,7 @@ export class ShopDetailsComponent extends BaseComponent {
     let requestBody = {id: this.shopId, reason: reasonForm.get('reason').value}
     this.shopService.deleteShop(requestBody)
       .then(response => {
-        this.data['deleted'] = true
+        this.loadShopData(response)
         this.modalService.dismissAll()
       })
       .catch(error => {
@@ -83,5 +81,10 @@ export class ShopDetailsComponent extends BaseComponent {
           break;
       }
     })
+  }
+
+  loadShopData(response) {
+    response['data']['shop']['tags'] = response['data']['shop']['tags'].toString().replace(/,/g, ', ');
+    this.data = response['data']['shop']
   }
 }
