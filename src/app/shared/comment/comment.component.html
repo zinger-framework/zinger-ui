@@ -1,7 +1,12 @@
-<div class="p-1 border-bottom">
-  <div class="d-flex justify-content-between">
-    <p class="text-primary">{{ userName }}</p>
-    <p class="small text-light-gray">{{ time | date:'medium' }}</p>
+<div class="p-1">
+  <div class="row">
+    <div class="pl-3"><img (error)="this.onImageLoadError($event)" [src]="image" width="50" height="50" class="rounded-circle" /></div>
+    <div class="col-6 border-bottom">
+      <div class="d-flex justify-content-between">
+        <span class="font-weight-bold">{{ userName }}</span>
+        <p class="small text-light-gray">{{ time | date:'medium' }}</p>
+      </div>
+      <p class="small">{{ message }}</p>
+    </div>
   </div>
-  <p class="small">{{ message }}</p>
 </div>

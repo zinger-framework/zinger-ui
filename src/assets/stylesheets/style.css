@@ -616,7 +616,7 @@ p {
   box-shadow: 0 0 28px rgba(0, 0, 0, .08)
 }
 
-.card-box, .da-card {
+.card-box, .da-card, .accordion > .card {
   background-color: #fff;
   border-radius: 10px;
   -webkit-box-shadow: 0 0 28px rgba(0, 0, 0, .08);
@@ -642,7 +642,15 @@ p {
 
 .card-header {
   font-weight: 500;
-  font-size: 16px
+  font-size: 16px;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.shop-details .card-header {
+  background-color: #FFFFFF;
 }
 
 .card-text, .price del {
@@ -4411,19 +4419,6 @@ form.otp div.resend-otp span:hover {
   display: inline-block;
   max-height: 75px;
   overflow: scroll;
-}
-
-.comment-accordion .card-header {
-  padding: 0px;
-  margin: 0px;
-  border: none;
-  background-color: white;
-}
-
-.comment-accordion .card {
-  padding: 0px;
-  margin: 0px;
-  border: none;
 }
 
 @media (min-width: 1301px) and (max-width: 1400px) {
