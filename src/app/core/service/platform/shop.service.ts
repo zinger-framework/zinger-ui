@@ -16,6 +16,6 @@ export class ShopService extends PlatformService {
   }
 
   deleteShop(requestBody) {
-    return this.post(API_ENDPOINTS.SHOP_DELETE_SHOP, requestBody);
+    return this.post(API_ENDPOINTS.SHOP + '/delete_shop', requestBody);
   }
 }
