@@ -1,5 +1,5 @@
 <div>
-  <form (ngSubmit)="onSubmit('REJECTED')" [formGroup]="reasonForm" class="modal-content reason p-2">
+  <form (ngSubmit)="onSubmit()" [formGroup]="reasonForm" class="modal-content reason p-2">
     <div class="modal-header">
       <h4 class="modal-title" id="modal-basic-title">Reason For {{title}}</h4>
       <button (click)="activeModal.dismiss()" aria-label="Close" class="close" type="button">
@@ -9,7 +9,7 @@
     <div class="modal-body">
       <div class="form-group form-group-reason mt-4">
           <textarea class="form-control form-control-lg" formControlName="reason"
-                    placeholder="Please add your comments in less than 250 characters" rows="6"></textarea>
+            placeholder="Please add your comments in less than 250 characters" rows="6"></textarea>
         <div class="form-control-feedback has-danger"></div>
       </div>
     </div>
