@@ -2,25 +2,101 @@
     class="bootstrap bg-white"
     [rows]="rows"
     [sortType]="SortType.multi"
-    [columnMode]="ColumnMode.force"
+    [columnMode]="ColumnMode.standard"
     [loadingIndicator]="isLoading"
-    [columns]="columns"
     [headerHeight]="50"
     [footerHeight]="50"
     rowHeight="auto"
     reorderable="true"
+    limit="5"
   >
 
- <!-- <ngx-datatable-column name="Id" prop="id" [width]="5">
+ <ngx-datatable-column name="Id" prop="id" [width]="50" [sortable]="false" headerClass="bg-secondary">
     <ng-template let-id="value" ngx-datatable-cell-template>
        {{id}}
     </ng-template>
   </ngx-datatable-column>
 
-  <ngx-datatable-column name="Name" prop="name" [width]="200">
+  <ngx-datatable-column name="Name" prop="name" [width]="150" [sortable]="false">
     <ng-template let-name="value" ngx-datatable-cell-template>
         {{name}}
     </ng-template>
-  </ngx-datatable-column> -->
+  </ngx-datatable-column>
 
+  <ngx-datatable-column name="Category" prop="category" [width]="100" [sortable]="false">
+    <ng-template let-category="value" ngx-datatable-cell-template>
+        {{category}}
+    </ng-template>
+  </ngx-datatable-column>
+
+  <ngx-datatable-column name="Status" prop="status" [width]="100" [sortable]="false">
+    <ng-template let-status="value" ngx-datatable-cell-template>
+        {{status}}
+    </ng-template>
+  </ngx-datatable-column>
+
+  <ngx-datatable-column name="Deleted" prop="deleted" [width]="100" [sortable]="false">
+    <ng-template let-deleted="value" ngx-datatable-cell-template>
+        {{ deleted }} 
+    </ng-template>
+  </ngx-datatable-column>
+
+  <ngx-datatable-column name="City" prop="address" [width]="100" [sortable]="false">
+    <ng-template let-address="value" ngx-datatable-cell-template>
+        {{address.city}}
+    </ng-template>
+  </ngx-datatable-column>
+
+  <ngx-datatable-column name="State" prop="address" [width]="150" [sortable]="false">
+    <ng-template let-address="value" ngx-datatable-cell-template>
+        {{address.state}}
+    </ng-template>
+  </ngx-datatable-column>
+
+  <ngx-datatable-column name="Lat" prop="address" [width]="50" [sortable]="false">
+    <ng-template let-address="value" ngx-datatable-cell-template>
+        {{address.lat}}
+    </ng-template>
+  </ngx-datatable-column>
+
+  <ngx-datatable-column name="Lng" prop="address" [width]="50" [sortable]="false">
+    <ng-template let-address="value" ngx-datatable-cell-template>
+        {{address.lng}}
+    </ng-template>
+  </ngx-datatable-column>
+
+  <ngx-datatable-column name="Pincode" prop="address" [width]="100" [sortable]="false">
+    <ng-template let-address="value" ngx-datatable-cell-template>
+        {{address.pincode}}
+    </ng-template>
+  </ngx-datatable-column>
 </ngx-datatable>
+
+<ngx-datatable-footer class="bg-white">
+  <ng-template 
+    ngx-datatable-footer-template
+    let-rowCount="rowCount"
+    let-pageSize="pageSize"
+    let-selectedCount="selectedCount"
+    let-curPage="curPage"
+    let-offset="offset"
+    let-isVisible="isVisible">
+      <div class="page-count">
+        <span *ngIf="selectedMessage">
+          {{selectedCount.toLocaleString()}} {{selectedMessage}} / 
+        </span>
+        {{rowCount.toLocaleString()}} {{totalMessage}}
+      </div>
+      <datatable-pager
+          [pagerLeftArrowIcon]="'datatable-icon-left'"
+          [pagerRightArrowIcon]="'datatable-icon-right'"
+          [pagerPreviousIcon]="'datatable-icon-prev'"
+          [pagerNextIcon]="'datatable-icon-skip'"
+          [page]="curPage"
+          [size]="pageSize"
+          [count]="rowCount"
+          [hidden]="!((rowCount / pageSize) > 1)"
+          (change)="table.onFooterPage($event)">
+      </datatable-pager>
+  </ng-template>
+</ngx-datatable-footer>

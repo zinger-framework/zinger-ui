@@ -12,9 +12,9 @@ export class ShopListComponent implements OnInit {
   rows = [];
   isLoading = false;
   columns = [
-    {name: 'Id', prop: 'id', width: -10}, 
-    {name: 'Name', prop: 'name', width:50}, 
-    {name: 'Category', prop: 'category', width:50}, 
+    {name: 'Id', prop: 'id', sortable: false, width: 10}, 
+    {name: 'Name', prop: 'name', sortable: false, width:50}, 
+    {name: 'Category', prop: 'category', sortable: false, width:50}, 
     {name: 'Tags', prop: 'tags', sortable: false, width:50}, 
     {name: 'Description', prop: 'description', sortable: false, width:50}
   ];
