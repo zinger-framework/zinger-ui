@@ -57,9 +57,9 @@ export class ShopDetailsComponent extends BaseComponent {
       });
   }
 
-  deleteShops(reasonForm) {
-    // TODO @harsha - Reason for deletion must be sent in API request
-    this.shopService.deleteShop(this.shopId)
+  deleteShop(reasonForm) {
+    let requestBody = {id: this.shopId, reason: reasonForm.get('reason').value}
+    this.shopService.deleteShop(requestBody)
       .then(response => {
         this.data['deleted'] = true
         this.modalService.dismissAll()
@@ -75,7 +75,7 @@ export class ShopDetailsComponent extends BaseComponent {
     modalRef.componentInstance.updateStatus.subscribe((data) => {
       switch (data['title']) {
         case 'Deletion':
-          this.deleteShops(data['formObject']);
+          this.deleteShop(data['formObject']);
           break;
         case 'Rejection':
           this.updateShopStatus('REJECTED', data['formObject'])
