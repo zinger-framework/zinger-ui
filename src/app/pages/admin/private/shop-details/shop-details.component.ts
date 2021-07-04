@@ -141,7 +141,7 @@ export class ShopDetailsComponent extends BaseComponent {
   browseFiles(imgType) {
     if (this.formStatus == 'BLOCKED') {
       let errorMsg = {'error': {'reason': {}}}
-      errorMsg['error']['reason'][imgType] = ['Image upload disabled as shop is blocked']
+      errorMsg['error']['reason'][imgType] = ['Image upload is disabled as your shop is blocked']
       return handleError(errorMsg, this.shopDetailsForm)
     }
     this.shopDetailsForm.get(imgType).markAsTouched();
@@ -211,7 +211,7 @@ export class ShopDetailsComponent extends BaseComponent {
   deleteImage(imageId, imgType) {
     if (this.formStatus == 'BLOCKED') {
       let errorMsg = {'error': {'reason': {}}}
-      errorMsg['error']['reason'][imgType] = ['Image deletion disabled as shop is blocked']
+      errorMsg['error']['reason'][imgType] = ['Image deletion is disabled as your shop is blocked']
       return handleError(errorMsg, this.shopDetailsForm) 
     }
     switch (imgType) {
