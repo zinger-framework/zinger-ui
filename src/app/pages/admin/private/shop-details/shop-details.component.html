@@ -1,13 +1,13 @@
 <breadcrumb [data]="breadCrumbData" title="Register Shop"></breadcrumb>
-<div *ngIf="['PENDING', 'REJECTED', 'BLOCKED'].includes(formStatus)" class="page-header">
+<div *ngIf="['PENDING', 'REJECTED', 'BLOCKED'].includes(shopStatus)" class="page-header">
   <div class="row">
     <div class="col-md-12 col-sm-12">
       <div class="text-center text-light-gray font-weight-bold">
-        <span *ngIf="formStatus == 'BLOCKED'">Your shop is blocked by the Admin. Please contact our support team to unblock.
+        <span *ngIf="shopStatus == 'BLOCKED'">Your shop is blocked by the Admin. Please contact our support team to unblock.
         </span>
-        <span *ngIf="formStatus == 'REJECTED'">Your request has been rejected. Please check the below reason and update shop details.
+        <span *ngIf="shopStatus == 'REJECTED'">Your request has been rejected. Please check the below reason and update shop details.
         </span>
-        <span *ngIf="formStatus == 'PENDING'">Your request is pending for approval and will be processed in 2-4 working days.
+        <span *ngIf="shopStatus == 'PENDING'">Your request is pending for approval and will be processed in 2-4 working days.
         </span>
       </div>
     </div>
@@ -131,7 +131,7 @@
           </div>
         </div>
 
-        <div *ngIf="['ACTIVE', 'INACTIVE'].includes(formStatus)" class="row">
+        <div *ngIf="['ACTIVE', 'INACTIVE'].includes(shopStatus)" class="row">
           <div class="col-md-6 col-lg-6">
             <div>
               <label>Is Shop Active?</label><br>
@@ -288,7 +288,7 @@
     </ngb-panel>
   </ngb-accordion>
 
-  <div *ngIf="formStatus == 'DRAFT'" class="m-1">
+  <div *ngIf="shopStatus == 'DRAFT'" class="m-1">
     <div class="custom-control custom-checkbox mt-4">
       <input (click)="acceptTermsAndConditions()" class="custom-control-input" id="terms_and_conditions"
              type="checkbox">
@@ -299,7 +299,7 @@
   </div>
 
   <div class="d-inline-flex">
-    <input [attr.value]="formStatus == 'DRAFT' ? 'Register' : 'Update Details'" [disabled]="!canSubmitForm()"
+    <input [attr.value]="shopStatus == 'DRAFT' ? 'Register' : 'Update Details'" [disabled]="!canSubmitForm()"
            class="btn btn-primary mt-3"
            type="submit">
     <div class="form-feedback has-danger mt-4 ml-3"></div>

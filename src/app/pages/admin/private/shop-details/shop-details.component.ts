@@ -32,7 +32,7 @@ import {
   styleUrls: ['./shop-details.component.css']
 })
 export class ShopDetailsComponent extends BaseComponent {
-  formStatus = ''
+  shopStatus = ''
   shopDetailsForm: FormGroup;
   shopDetailsInitialValue = {}
   termsAndCondition = false;
@@ -118,8 +118,8 @@ export class ShopDetailsComponent extends BaseComponent {
             this.shopDetailsForm.get('tags').setValue(tagString);
             break;
           case 'status':
-            this.formStatus = shopData[field]
-            if (this.formStatus == 'ACTIVE') this.isShopActive = true;
+            this.shopStatus = shopData[field]
+            if (this.shopStatus == 'ACTIVE') this.isShopActive = true;
             break;
           case 'rejected_conversations':
             this.conversations['rejected'] = shopData[field]
@@ -138,7 +138,7 @@ export class ShopDetailsComponent extends BaseComponent {
   }
 
   browseFiles(imgType) {
-    if (this.formStatus == 'BLOCKED') {
+    if (this.shopStatus == 'BLOCKED') {
       let errorMsg = {'error': {'reason': {}}}
       errorMsg['error']['reason'][imgType] = ['Image upload is disabled as your shop is blocked']
       return handleError(errorMsg, this.shopDetailsForm)
@@ -208,7 +208,7 @@ export class ShopDetailsComponent extends BaseComponent {
   }
 
   deleteImage(imageId, imgType) {
-    if (this.formStatus == 'BLOCKED') {
+    if (this.shopStatus == 'BLOCKED') {
       let errorMsg = {'error': {'reason': {}}}
       errorMsg['error']['reason'][imgType] = ['Image deletion is disabled as your shop is blocked']
       return handleError(errorMsg, this.shopDetailsForm) 
@@ -247,14 +247,14 @@ export class ShopDetailsComponent extends BaseComponent {
   }
 
   canSubmitForm() {
-    let submitStatus = this.shopDetailsForm.valid && this.iconSrc.length > 0 && this.coverImgSrcList.length > 0 && this.formStatus != 'BLOCKED'
-    return (this.formStatus == 'DRAFT') ? this.termsAndCondition && submitStatus : submitStatus
+    let submitStatus = this.shopDetailsForm.valid && this.iconSrc.length > 0 && this.coverImgSrcList.length > 0 && this.shopStatus != 'BLOCKED'
+    return (this.shopStatus == 'DRAFT') ? this.termsAndCondition && submitStatus : submitStatus
   }
 
   submitShopDetails(accordion) {
     accordion.expandAll()
     let requestBody = {}
-    switch (this.formStatus) {
+    switch (this.shopStatus) {
       case 'DRAFT':
         Object.keys(this.shopDetailsForm.value).forEach(key => {
           requestBody = this.updateRequestBody(key, requestBody)
@@ -313,7 +313,7 @@ export class ShopDetailsComponent extends BaseComponent {
   updateShopActiveStatus() {
     this.isShopActive = !this.isShopActive;
     let requestBody = {}
-    requestBody['status'] = this.formStatus == 'ACTIVE' ? 'INACTIVE' : 'ACTIVE'
+    requestBody['status'] = this.shopStatus == 'ACTIVE' ? 'INACTIVE' : 'ACTIVE'
     this.updateShopDetails(requestBody, {resetStatus: true})
   }
 
