@@ -135,7 +135,7 @@
           <div class="col-md-6 col-lg-6">
             <div>
               <label>Is Shop Active?</label><br>
-              <ui-switch (click)="updateShopActiveStatus()" [checked]="isShopActive"></ui-switch>
+              <ui-switch (click)="updateShopActiveStatus()" [(ngModel)]="isShopActive" [ngModelOptions]="{standalone: true}"></ui-switch>
             </div>
           </div>
         </div>

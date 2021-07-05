@@ -119,7 +119,7 @@ export class ShopDetailsComponent extends BaseComponent {
             break;
           case 'status':
             this.shopStatus = shopData[field]
-            if (this.shopStatus == 'ACTIVE') this.isShopActive = true;
+            this.isShopActive = this.shopStatus == 'ACTIVE' ?  true : false;
             break;
           case 'rejected_conversations':
             this.conversations['rejected'] = shopData[field]
@@ -309,7 +309,6 @@ export class ShopDetailsComponent extends BaseComponent {
   }
 
   updateShopActiveStatus() {
-    this.isShopActive = !this.isShopActive;
     let requestBody = {}
     requestBody['status'] = this.shopStatus == 'ACTIVE' ? 'INACTIVE' : 'ACTIVE'
     this.updateShopDetails(requestBody, {resetStatus: true})
