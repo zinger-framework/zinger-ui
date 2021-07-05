@@ -138,11 +138,7 @@ export class ShopDetailsComponent extends BaseComponent {
   }
 
   browseFiles(imgType) {
-    if (this.shopStatus == 'BLOCKED') {
-      let errorMsg = {'error': {'reason': {}}}
-      errorMsg['error']['reason'][imgType] = ['Image upload is disabled as your shop is blocked']
-      return handleError(errorMsg, this.shopDetailsForm)
-    }
+    if (this.shopStatus == 'BLOCKED') return this.handleBlockingError(imgType, 'upload')
     this.shopDetailsForm.get(imgType).markAsTouched();
     $(`div.form-group-${imgType} input`)[0].click();
   }
@@ -208,11 +204,7 @@ export class ShopDetailsComponent extends BaseComponent {
   }
 
   deleteImage(imageId, imgType) {
-    if (this.shopStatus == 'BLOCKED') {
-      let errorMsg = {'error': {'reason': {}}}
-      errorMsg['error']['reason'][imgType] = ['Image deletion is disabled as your shop is blocked']
-      return handleError(errorMsg, this.shopDetailsForm) 
-    }
+    if (this.shopStatus == 'BLOCKED') return this.handleBlockingError(imgType, 'deletion')
     switch (imgType) {
       case 'icon':
         this.shopService.deleteIcon(this.shopId)
@@ -244,6 +236,12 @@ export class ShopDetailsComponent extends BaseComponent {
   deleteIcon() {
     this.iconSrc = ''
     setErrorMessage('Icon cannot be empty', 'shop-details', 'icon')
+  }
+
+  handleBlockingError(imgType, operation) {
+    let errorMsg = {'error': {'reason': {}}}
+    errorMsg['error']['reason'][imgType] = [`Image ${operation} is disabled as your shop is blocked`]
+    return handleError(errorMsg, this.shopDetailsForm)
   }
 
   canSubmitForm() {
