@@ -322,7 +322,7 @@ export class ShopDetailsComponent extends BaseComponent {
       .catch(error => {
         // TODO: navigate to list of shops
         if (error['status'] == 404) this.router.navigateByUrl(APP_ROUTES.DASHBOARD);
-        if (options['resetStatus'] && options['resetStatus'] == true) this.isShopActive = !this.isShopActive;
+        if (options['resetStatus']) this.isShopActive = !this.isShopActive;
         handleError(error, this.shopDetailsForm);
       })
   }
