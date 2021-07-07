@@ -1,249 +1,255 @@
 <breadcrumb [data]="breadCrumbData" title="Shop Details"></breadcrumb>
 <div class="bg-white rounded p-3 height-consistent">
-  <ul #nav="ngbNav" [destroyOnHide]="false" activeId="basic-tab" class="nav-tabs" ngbNav>
-    <li ngbNavItem="basic-tab">
-      <a ngbNavLink>Basic</a>
-      <ng-template ngbNavContent>
-        <div class="row p-3">
-          <div class="col-md-3 col-lg-3">
-            <label class="text-primary">Shop Name</label>
-            <br>
-            <span>{{ data['name'] || '-' }}</span>
-          </div>
-          <div class="col-md-3 col-lg-3">
-            <label class="text-primary">Category</label>
-            <br>
-            <span>{{ data['category'] || '-' }}</span>
-          </div>
-          <div class="col-md-3 col-lg-3">
-            <label class="text-primary">Opening Time</label>
-            <br>
-            <span>{{ data['opening_time'] || '-' }}</span>
-          </div>
-          <div class="col-md-3 col-lg-3">
-            <label class="text-primary">Closing Time</label>
-            <br>
-            <span>{{ data['closing_time'] || '-' }}</span>
-          </div>
-        </div>
-        <div class="row p-3">
-          <div class="col-md-3 col-lg-3">
-            <label class="text-primary">Status</label>
-            <br>
-            <span>{{ data['status'] || '-' }}</span>
-          </div>
-          <div class="col-md-3 col-lg-3">
-            <label class="text-primary">Email</label>
-            <br>
-            <span>{{ data['email'] || '-' }}</span>
-          </div>
-          <div class="col-md-3 col-lg-3">
-            <label class="text-primary">Mobile</label>
-            <br>
-            <span>{{ data['mobile'] || '-' }}</span>
-          </div>
-          <div class="col-md-3 col-lg-3">
-            <label class="text-primary">Telephone</label>
-            <br>
-            <span>{{ data['telephone'] || '-' }}</span>
-          </div>
-        </div>
-        <div class="row p-3">
-          <div class="col-md-6 col-lg-6">
-            <label class="text-primary">Description</label>
-            <br>
-            <span class="max-lines-3">{{ data['description'] || '-' }}</span>
-          </div>
-          <div class="col-md-6 col-lg-6">
-            <label class="text-primary">Tags</label>
-            <br>
-            <span>{{ data['tags'] || '-' }}</span>
-          </div>
-        </div>
-      </ng-template>
-    </li>
-    <li ngbNavItem="location-tab">
-      <a ngbNavLink>Location</a>
-      <ng-template ngbNavContent>
-        <div class="row p-3">
-          <div class="col-md-6 col-lg-6">
-            <label class="text-primary">Street</label>
-            <br>
-            <span class="max-lines-3">{{ data['address']['street'] || '-' }}</span>
-          </div>
-          <div class="col-md-6 col-lg-6">
-            <label class="text-primary">Area</label>
-            <br>
-            <span class="max-lines-3">{{ data['address']['area'] || '-' }}</span>
-          </div>
-        </div>
-        <div class="row p-3">
-          <div class="col-md-2 col-lg-2">
-            <label class="text-primary">City</label>
-            <br>
-            <span>{{ data['address']['city'] || '-' }}</span>
-          </div>
-          <div class="col-md-2 col-lg-2">
-            <label class="text-primary">State</label>
-            <br>
-            <span>{{ data['address']['state'] || '-' }}</span>
-          </div>
-          <div class="col-md-2 col-lg-2">
-            <label class="text-primary">Pincode</label>
-            <br>
-            <span>{{ data['address']['pincode'] || '-' }}</span>
-          </div>
-          <div class="col-md-2 col-lg-2">
-            <label class="text-primary">Latitude</label>
-            <br>
-            <span>{{ data['address']['lat'] || '-' }}</span>
-          </div>
-          <div class="col-md-2 col-lg-2">
-            <label class="text-primary">Longitude</label>
-            <br>
-            <span>{{ data['address']['lng'] || '-' }}</span>
-          </div>
-        </div>
-      </ng-template>
-    </li>
-    <li ngbNavItem="media-tab">
-      <a ngbNavLink>Media</a>
-      <ng-template ngbNavContent>
-        <div class="p-3">
-          <label class="text-primary">Icon</label>
-          <div class="row pl-3">
-            <div *ngIf="data['icon']; else iconNotFound">
-              <image-preview [imageSrc]="data['icon']" disableDelete="true"></image-preview>
+  <div class="d-flex justify-content-between border-bottom">
+    <ul #nav="ngbNav" [destroyOnHide]="false" activeId="basic-tab" class="nav-tabs border-bottom-0" ngbNav>
+      <li ngbNavItem="basic-tab">
+        <a ngbNavLink>Basic</a>
+        <ng-template ngbNavContent>
+          <div class="row p-3">
+            <div class="col-md-3 col-lg-3">
+              <label class="text-primary">Shop Name</label>
+              <br>
+              <span>{{ data['name'] || '-' }}</span>
             </div>
-            <ng-template #iconNotFound>
-              <span class="small text-light-gray">No icon found</span>
-            </ng-template>
-          </div>
-        </div>
-        <div class="p-3">
-          <label class="text-primary">Cover Photos</label>
-          <div class="row pl-3">
-            <div *ngIf="data['cover_photos'] && data['cover_photos'].length == 0; else coverPhotos">
-              <span class="small text-light-gray">No cover photos found</span>
+            <div class="col-md-3 col-lg-3">
+              <label class="text-primary">Category</label>
+              <br>
+              <span>{{ data['category'] || '-' }}</span>
             </div>
-            <ng-template #coverPhotos>
-              <div *ngFor="let imgSrc of data['cover_photos']">
-                <image-preview [imageSrc]="imgSrc['url']" disableDelete="true" imageType="cover_photos"></image-preview>
+            <div class="col-md-3 col-lg-3">
+              <label class="text-primary">Opening Time</label>
+              <br>
+              <span>{{ data['opening_time'] || '-' }}</span>
+            </div>
+            <div class="col-md-3 col-lg-3">
+              <label class="text-primary">Closing Time</label>
+              <br>
+              <span>{{ data['closing_time'] || '-' }}</span>
+            </div>
+          </div>
+          <div class="row p-3">
+            <div class="col-md-3 col-lg-3">
+              <label class="text-primary">Status</label>
+              <br>
+              <span>{{ data['status'] || '-' }}</span>
+              <span *ngIf="data['deleted']" class="pl-1 text-light-gray">(deleted)</span>
+            </div>
+            <div class="col-md-3 col-lg-3">
+              <label class="text-primary">Email</label>
+              <br>
+              <span>{{ data['email'] || '-' }}</span>
+            </div>
+            <div class="col-md-3 col-lg-3">
+              <label class="text-primary">Mobile</label>
+              <br>
+              <span>{{ data['mobile'] || '-' }}</span>
+            </div>
+            <div class="col-md-3 col-lg-3">
+              <label class="text-primary">Telephone</label>
+              <br>
+              <span>{{ data['telephone'] || '-' }}</span>
+            </div>
+          </div>
+          <div class="row p-3">
+            <div class="col-md-6 col-lg-6">
+              <label class="text-primary">Description</label>
+              <br>
+              <span class="max-lines-3">{{ data['description'] || '-' }}</span>
+            </div>
+            <div class="col-md-6 col-lg-6">
+              <label class="text-primary">Tags</label>
+              <br>
+              <span>{{ data['tags'] || '-' }}</span>
+            </div>
+          </div>
+        </ng-template>
+      </li>
+      <li ngbNavItem="location-tab">
+        <a ngbNavLink>Location</a>
+        <ng-template ngbNavContent>
+          <div class="row p-3">
+            <div class="col-md-6 col-lg-6">
+              <label class="text-primary">Street</label>
+              <br>
+              <span class="max-lines-3">{{ data['address']['street'] || '-' }}</span>
+            </div>
+            <div class="col-md-6 col-lg-6">
+              <label class="text-primary">Area</label>
+              <br>
+              <span class="max-lines-3">{{ data['address']['area'] || '-' }}</span>
+            </div>
+          </div>
+          <div class="row p-3">
+            <div class="col-md-2 col-lg-2">
+              <label class="text-primary">City</label>
+              <br>
+              <span>{{ data['address']['city'] || '-' }}</span>
+            </div>
+            <div class="col-md-2 col-lg-2">
+              <label class="text-primary">State</label>
+              <br>
+              <span>{{ data['address']['state'] || '-' }}</span>
+            </div>
+            <div class="col-md-2 col-lg-2">
+              <label class="text-primary">Pincode</label>
+              <br>
+              <span>{{ data['address']['pincode'] || '-' }}</span>
+            </div>
+            <div class="col-md-2 col-lg-2">
+              <label class="text-primary">Latitude</label>
+              <br>
+              <span>{{ data['address']['lat'] || '-' }}</span>
+            </div>
+            <div class="col-md-2 col-lg-2">
+              <label class="text-primary">Longitude</label>
+              <br>
+              <span>{{ data['address']['lng'] || '-' }}</span>
+            </div>
+          </div>
+        </ng-template>
+      </li>
+      <li ngbNavItem="media-tab">
+        <a ngbNavLink>Media</a>
+        <ng-template ngbNavContent>
+          <div class="p-3">
+            <label class="text-primary">Icon</label>
+            <div class="row pl-3">
+              <div *ngIf="data['icon']; else iconNotFound">
+                <image-preview [imageSrc]="data['icon']" disableDelete="true"></image-preview>
               </div>
-            </ng-template>
+              <ng-template #iconNotFound>
+                <span class="small text-light-gray">No icon found</span>
+              </ng-template>
+            </div>
           </div>
-        </div>
-      </ng-template>
-    </li>
-    <li ngbNavItem="payment-tab">
-      <a ngbNavLink>Payment</a>
-      <ng-template ngbNavContent>
-        <div class="row p-3">
-          <div class="col-md-3 col-lg-3">
-            <label class="text-primary">Account Number</label>
-            <br>
-            <span>{{ data['payment']['account_number'] || '-' }}</span>
+          <div class="p-3">
+            <label class="text-primary">Cover Photos</label>
+            <div class="row pl-3">
+              <div *ngIf="data['cover_photos'] && data['cover_photos'].length == 0; else coverPhotos">
+                <span class="small text-light-gray">No cover photos found</span>
+              </div>
+              <ng-template #coverPhotos>
+                <div *ngFor="let imgSrc of data['cover_photos']">
+                  <image-preview [imageSrc]="imgSrc['url']" disableDelete="true"
+                                 imageType="cover_photos"></image-preview>
+                </div>
+              </ng-template>
+            </div>
           </div>
-          <div class="col-md-3 col-lg-3">
-            <label class="text-primary">IFSC Code</label>
-            <br>
-            <span>{{ data['payment']['account_ifsc'] || '-' }}</span>
+        </ng-template>
+      </li>
+      <li ngbNavItem="payment-tab">
+        <a ngbNavLink>Payment</a>
+        <ng-template ngbNavContent>
+          <div class="row p-3">
+            <div class="col-md-3 col-lg-3">
+              <label class="text-primary">Account Number</label>
+              <br>
+              <span>{{ data['payment']['account_number'] || '-' }}</span>
+            </div>
+            <div class="col-md-3 col-lg-3">
+              <label class="text-primary">IFSC Code</label>
+              <br>
+              <span>{{ data['payment']['account_ifsc'] || '-' }}</span>
+            </div>
+            <div class="col-md-3 col-lg-3">
+              <label class="text-primary">Account Holder Name</label>
+              <br>
+              <span>{{ data['payment']['account_holder'] || '-' }}</span>
+            </div>
           </div>
-          <div class="col-md-3 col-lg-3">
-            <label class="text-primary">Account Holder Name</label>
-            <br>
-            <span>{{ data['payment']['account_holder'] || '-' }}</span>
+          <div class="row p-3">
+            <div class="col-md-3 col-lg-3">
+              <label class="text-primary">PAN Number</label>
+              <br>
+              <span>{{ data['payment']['pan'] || '-' }}</span>
+            </div>
+            <div class="col-md-3 col-lg-3">
+              <label class="text-primary">GST Number</label>
+              <br>
+              <span>{{ data['payment']['gst'] || '-' }}</span>
+            </div>
           </div>
-        </div>
-        <div class="row p-3">
-          <div class="col-md-3 col-lg-3">
-            <label class="text-primary">PAN Number</label>
-            <br>
-            <span>{{ data['payment']['pan'] || '-' }}</span>
-          </div>
-          <div class="col-md-3 col-lg-3">
-            <label class="text-primary">GST Number</label>
-            <br>
-            <span>{{ data['payment']['gst'] || '-' }}</span>
-          </div>
-        </div>
-      </ng-template>
-    </li>
-  </ul>
+        </ng-template>
+      </li>
+    </ul>
+    <span class="small text-light-gray pt-2 mt-2">Last updated at {{ data['updated_at'] | date: 'medium' }}</span>
+  </div>
   <div [ngbNavOutlet]="nav"></div>
 </div>
 
-<div class="mt-4">
-  <ngb-accordion #accordion="ngbAccordion" *ngIf="data['status'] != 'DRAFT'" [destroyOnHide]="false"
-                 activeIds="ngb-panel-0" class="shop-details">
-    <ngb-panel id="updateStatusPanel">
-      <ng-template class="panel-header" let-opened="opened" ngbPanelHeader>
-        <accordion-header [accordion]="accordion" [opened]="opened" [panelId]="'updateStatusPanel'"
-                          title='Update Status'></accordion-header>
-      </ng-template>
-      <ng-template ngbPanelContent>
-        <div [ngSwitch]="data['status']" class="row">
-          <div *ngSwitchCase="'PENDING'" class="row col-4">
-            <div class="col-6">
-              <button (click)="getCommentModal()" class="btn btn-outline-primary btn-block pr-2"
-                      type="button">Reject
-              </button>
-            </div>
-            <div class="col-6">
-              <button (click)="updateShopStatus('ACTIVE')" class="btn btn-primary btn-block" type="button">Approve
-              </button>
-            </div>
+<ngb-accordion #accordion="ngbAccordion" *ngIf="data['status'] != 'DRAFT'" [destroyOnHide]="false"
+               activeIds="ngb-panel-0">
+  <ngb-panel *ngIf="!data['deleted']" id="updateStatusPanel" cardClass="mt-4">
+    <ng-template class="panel-header" let-opened="opened" ngbPanelHeader>
+      <accordion-header [accordion]="accordion" [opened]="opened" [panelId]="'updateStatusPanel'"
+                        title='Update Status'></accordion-header>
+    </ng-template>
+    <ng-template ngbPanelContent>
+      <div [ngSwitch]="data['status']" class="row">
+        <div *ngSwitchCase="'PENDING'" class="row col-4">
+          <div class="col-6">
+            <button (click)="getReasonModal('Rejection')" class="btn btn-outline-primary btn-block pr-2"
+                    type="button">Reject
+            </button>
           </div>
-          <div *ngSwitchCase="'REJECTED'" class="col-2">
+          <div class="col-6">
             <button (click)="updateShopStatus('ACTIVE')" class="btn btn-primary btn-block" type="button">Approve
             </button>
           </div>
-          <div *ngSwitchCase="'BLOCKED'" class="col-2">
+        </div>
+        <div *ngSwitchCase="'REJECTED'" class="col-2">
+          <button (click)="updateShopStatus('ACTIVE')" class="btn btn-primary btn-block" type="button">Approve
+          </button>
+        </div>
+        <div *ngSwitchCase="'BLOCKED'" class="row col-4">
+          <div class="col-6">
             <button (click)="updateShopStatus('ACTIVE')" class="btn btn-primary btn-block" type="button">Unblock
             </button>
           </div>
-          <div *ngSwitchCase="'ACTIVE'" class="col-2">
-            <button (click)="updateShopStatus('BLOCKED')" class="btn btn-outline-primary btn-block" type="button">
-              Block
-            </button>
-          </div>
-          <div *ngSwitchCase="'INACTIVE'" class="col-2">
-            <button (click)="updateShopStatus('BLOCKED')" class="btn btn-outline-primary btn-block" type="button">
-              Block
+          <div class="col-6">
+            <button (click)="getReasonModal('Deletion')" class="btn btn-outline-primary btn-block" type="button">Delete
             </button>
           </div>
         </div>
-        <div *ngIf="['PENDING', 'REJECTED'].includes(data['status'])" class="p-1 mt-4">
-          <p class="font-weight-bold">Comments</p>
-          <div *ngFor="let comment of data['approval_comments']" class="pt-1">
-            <comment [message]="comment.message" [time]="comment.time" [userName]="comment.user_id" [image]="comment.image_url"></comment>
+        <div *ngSwitchDefault class="row col-4">
+          <div class="col-6">
+            <button (click)="getReasonModal('Blocking')" class="btn btn-outline-primary btn-block" type="button">Block
+            </button>
           </div>
-          <div *ngIf="data['approval_comments'].length == 0"><p class="small text-light-gray">No comments found</p>
+          <div class="col-6">
+            <button (click)="getReasonModal('Deletion')" class="btn btn-outline-primary btn-block" type="button">Delete
+            </button>
           </div>
         </div>
-      </ng-template>
-    </ngb-panel>
-  </ngb-accordion>
+      </div>
 
-  <ng-template #rejectShop let-modal>
-    <form (ngSubmit)="updateShopStatus('REJECTED')" [formGroup]="rejectShopForm" class="reject-shop p-2">
-      <div class="modal-header">
-        <h4 class="modal-title" id="modal-basic-title">Reason For Rejection</h4>
-        <button (click)="modal.dismiss()" aria-label="Close" class="close" type="button">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="form-group form-group-reason mt-4">
-          <textarea class="form-control form-control-lg" formControlName="reason"
-                    placeholder="Please add your comments in less than 250 characters" rows="6"></textarea>
-          <div class="form-control-feedback has-danger"></div>
+      <div *ngIf="['PENDING', 'REJECTED'].includes(data['status']) && data['rejected_conversations'].length > 0" class="p-1 mt-4">
+        <p class="font-weight-bold">Reason For Rejection</p>
+        <div *ngFor="let comment of data['rejected_conversations']" class="pt-1">
+          <comment [message]="comment.message" [time]="comment.time" [userName]="comment?.platform_user?.name"
+                   [image]="comment.profile_url"></comment>
         </div>
       </div>
-      <div class="form-feedback has-danger mt-1 mb-1 text-center"></div>
-      <div class="modal-footer">
-        <input [disabled]="!rejectShopForm.valid" class="btn btn-primary" type="submit" value="Submit">
+      <div *ngIf="data['status'] == 'BLOCKED' && data['blocked_conversations'].length > 0" class="p-1 mt-4">
+        <p class="font-weight-bold">Reason For Blocking</p>
+        <div *ngFor="let comment of data['blocked_conversations']" class="pt-1">
+          <comment [message]="comment.message" [time]="comment.time" [userName]="comment?.platform_user?.name"
+                   [image]="comment.profile_url"></comment>
+        </div>
       </div>
-    </form>
-  </ng-template>
-</div>
+    </ng-template>
+  </ngb-panel>
+  <ngb-panel *ngIf="data['deleted'] && data['deleted_conversations'].length > 0" id="deletedConversationsPanel" cardClass="mt-4">
+    <ng-template class="panel-header" let-opened="opened" ngbPanelHeader>
+      <accordion-header [accordion]="accordion" [opened]="opened" [panelId]="'deletedConversationsPanel'"
+                        title='Reason For Deletion'></accordion-header>
+    </ng-template>
+    <ng-template ngbPanelContent>
+      <div *ngFor="let comment of data['deleted_conversations']" class="pt-1">
+        <comment [message]="comment.message" [time]="comment.time" [userName]="comment?.platform_user?.name"
+                 [image]="comment.profile_url"></comment>
+      </div>
+    </ng-template>
+  </ngb-panel>
+</ngb-accordion>

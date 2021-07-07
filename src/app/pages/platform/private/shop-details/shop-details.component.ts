@@ -1,13 +1,13 @@
-import {Component, TemplateRef, ViewChild} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {Component} from '@angular/core';
+import {FormBuilder} from "@angular/forms";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
-import {ExtendedFormControl} from "../../../../core/utils/extended-form-control.utils";
 import {APP_ROUTES} from "../../../../core/utils/constants.utils";
 import {ActivatedRoute, Router} from "@angular/router";
 import {ToastrService} from "ngx-toastr";
 import {BaseComponent} from "../../../../base.component";
 import {ShopService} from "../../../../core/service/platform/shop.service";
 import {handleError} from "../../../../core/utils/common.utils";
+import {ReasonModalComponent} from "../../../../shared/reason-modal/reason-modal.component"
 
 @Component({
   selector: 'shop-details',
@@ -15,11 +15,9 @@ import {handleError} from "../../../../core/utils/common.utils";
   styleUrls: ['./shop-details.component.css']
 })
 export class ShopDetailsComponent extends BaseComponent {
-  rejectShopForm: FormGroup;
-  @ViewChild('rejectShop', {read: TemplateRef}) rejectShopModal: TemplateRef<any>;
-  data = {'address': {}, 'payment': {}}
+  data = {'address': {}, 'payment': {}, 'deleted_conversations': []}
   shopId = 0
-  breadCrumbData = [];
+  breadCrumbData = []
 
   constructor(private fb: FormBuilder, private modalService: NgbModal, private route: ActivatedRoute, private router: Router, private shopService: ShopService, private toastr: ToastrService) {
     super()
@@ -28,17 +26,12 @@ export class ShopDetailsComponent extends BaseComponent {
       label: this.shopId,
       link: ''
     }]
-    this.rejectShopForm = this.fb.group({
-      reason: new ExtendedFormControl('', [Validators.required, Validators.maxLength(250)], 'reason'),
-      className: 'reject-shop'
-    })
   }
 
   ngOnInit(): void {
     this.shopService.getShopDetails(this.shopId)
       .then(response => {
-        response['data']['shop']['tags'] = response['data']['shop']['tags'].toString().replace(/,/g, ', ');
-        this.data = response['data']['shop']
+        this.loadShopData(response)
       })
       .catch(error => {
         this.toastr.error(error['error']['message']);
@@ -47,21 +40,51 @@ export class ShopDetailsComponent extends BaseComponent {
       })
   }
 
-  updateShopStatus(status) {
+  updateShopStatus(status, reasonForm = null) {
     let requestBody = {status: status}
-    if (status == 'REJECTED') requestBody['reason'] = this.rejectShopForm.get('reason').value;
+    if (['REJECTED', 'BLOCKED'].includes(status)) requestBody['reason'] = reasonForm.get('reason').value;
     this.shopService.updateShopDetails(this.shopId, requestBody)
       .then(response => {
-        response['data']['shop']['tags'] = response['data']['shop']['tags'].toString().replace(/,/g, ', ');
-        this.data = response['data']['shop']
+        this.loadShopData(response)
         this.modalService.dismissAll();
       })
       .catch(error => {
-        this.modalService.hasOpenModals() ? handleError(error, this.rejectShopForm) : this.modalService.dismissAll()
+        this.modalService.hasOpenModals() ? handleError(error, reasonForm) : this.modalService.dismissAll()
       });
   }
 
-  getCommentModal() {
-    this.modalService.open(this.rejectShopModal, {centered: true});
+  deleteShop(reasonForm) {
+    let requestBody = {id: this.shopId, reason: reasonForm.get('reason').value}
+    this.shopService.deleteShop(requestBody)
+      .then(response => {
+        this.loadShopData(response)
+        this.modalService.dismissAll()
+      })
+      .catch(error => {
+        this.modalService.hasOpenModals() ? handleError(error, reasonForm) : this.modalService.dismissAll()
+      })
+  }
+
+  getReasonModal(reason) {
+    const modalRef = this.modalService.open(ReasonModalComponent, {centered: true});
+    modalRef.componentInstance.title = reason;
+    modalRef.componentInstance.updateStatus.subscribe((data) => {
+      switch (data['title']) {
+        case 'Deletion':
+          this.deleteShop(data['formObject']);
+          break;
+        case 'Rejection':
+          this.updateShopStatus('REJECTED', data['formObject'])
+          break;
+        case 'Blocking':
+          this.updateShopStatus('BLOCKED', data['formObject'])
+          break;
+      }
+    })
+  }
+
+  loadShopData(response) {
+    response['data']['shop']['tags'] = response['data']['shop']['tags'].toString().replace(/,/g, ', ');
+    this.data = response['data']['shop']
   }
 }
