@@ -10,6 +10,62 @@ import {SortType, ColumnMode} from "@swimlane/ngx-datatable"
 export class ShopListComponent implements OnInit {
 
   rows = [];
+  rows2 = [
+  {
+    "id": 4,
+    "name": "Sathyas Canteen",
+    "category": "GROCERY",
+    "status": "ACTIVE",
+    "created_at": "2021-05-30 16:45:39",
+    "deleted": false,
+    "area": "Thiruverkadu"
+  },
+  {
+    "id": 2,
+    "name": "Sathyas Canteen",
+    "category": "GROCERY",
+    "status": "ACTIVE",
+    "created_at": "2021-05-30 14:03:20",
+    "deleted": true,
+    "area": "Thiruverkadu"
+  },
+  {
+    "id": 4,
+    "name": "Sathyas Canteen",
+    "category": "GROCERY",
+    "status": "ACTIVE",
+    "created_at": "2021-05-30 16:45:39",
+    "deleted": false,
+    "area": "Thiruverkadu"
+  },
+  {
+    "id": 2,
+    "name": "Sathyas Canteen",
+    "category": "GROCERY",
+    "status": "ACTIVE",
+    "created_at": "2021-05-30 14:03:20",
+    "deleted": true,
+    "area": "Thiruverkadu"
+  },
+  {
+    "id": 4,
+    "name": "Sathyas Canteen",
+    "category": "GROCERY",
+    "status": "ACTIVE",
+    "created_at": "2021-05-30 16:45:39",
+    "deleted": false,
+    "area": "Thiruverkadu"
+  },
+  {
+    "id": 2,
+    "name": "Sathyas Canteen",
+    "category": "GROCERY",
+    "status": "ACTIVE",
+    "created_at": "2021-05-30 14:03:20",
+    "deleted": true,
+    "area": "Thiruverkadu"
+  }
+]
   isLoading = false;
   columns = [
     {name: 'Id', prop: 'id', sortable: false, width: 10}, 
@@ -33,6 +89,7 @@ export class ShopListComponent implements OnInit {
     .then(response => {
       this.isLoading = true;
       this.rows = response['data']['shops']
+      this.rows = this.rows2;
     })
     .catch(error => {
       this.isLoading = true;

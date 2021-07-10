@@ -12,7 +12,7 @@ export class ShopService extends PlatformService {
   }
 
   getShopList(start_time = '2020-06-06 00:00:00', end_time = '2022-06-06 00:09:00'){
-    return this.get(API_ENDPOINTS.SHOP + '?start_time=' + start_time + '&end_time=' + end_time);
+    return this.get(API_ENDPOINTS.SHOP);
   }
 
   updateShopDetails(shopId, requestBody) {
