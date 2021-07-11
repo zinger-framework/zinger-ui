@@ -1,31 +1,70 @@
 <div class="p-3 m-1 bg-white">
-  <div class="filters pb-5 mb-5 row">
+  <form (ngSubmit)="getShopList()" [formGroup]="shopSearchForm" class="shop-search row">   
     <div class="col-5">
       <label>From-To</label>
-      <br>
-      <input type="date" name="date-from" class="mr-2 border-1">
-      <input type="date" name="date-to">
+      <!-- <form-input inputType="date" name="startDate" placeholder=""></form-input> -->
+      <div class="form-inline">
+        <div class="form-group hidden">
+          <div class="input-group">
+            <input name="datepicker"
+                   class="form-control"
+                   ngbDatepicker
+                   #datepicker="ngbDatepicker"
+                   [autoClose]="'outside'"
+                   (dateSelect)="onDateSelection($event)"
+                   [displayMonths]="2"
+                   [dayTemplate]="t"
+                   outsideDays="hidden"
+                   [startDate]="fromDate!"
+                   tabindex="-1">
+            <ng-template #t let-date let-focused="focused">
+              <span class="custom-day"
+                    [class.focused]="focused"
+                    [class.range]="isRange(date)"
+                    [class.faded]="isHovered(date) || isInside(date)"
+                    (mouseenter)="hoveredDate = date"
+                    (mouseleave)="hoveredDate = null">
+                {{ date.day }}
+              </span>
+            </ng-template>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="input-group">
+            <input #dpFromDate
+                   class="form-control" placeholder="yyyy-mm-dd"
+                   name="dpFromDate"
+                   [value]="rangeDate"
+                   (input)="fromDate = validateInput(fromDate, dpFromDate.value)">
+            <div class="input-group-append">
+              <button class="btn btn-outline-secondary calendar" (click)="datepicker.toggle()" type="button"></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-2">
+      <label>Category</label>
+      <div class="form-group form-group-status">
+        <ng-select [clearable]="false" [items]="statuses" [searchable]="false" formControlName="status"
+          [multiple]="true" placeholder="Select">
+        </ng-select>
+        <div class="form-control-feedback has-danger"></div>
+      </div>
     </div>
 
     <div class="col-3">
-      <label for="cars">Category</label>
-      <br>
-      <select id="cars" name="cars" class="mt-1">
-        <option value="volvo">Volvo</option>
-        <option value="saab">Saab</option>
-        <option value="fiat">Fiat</option>
-        <option value="audi">Audi</option>
-      </select>
+      <label>Search</label>
+      <form-input inputType="text" name="query" placeholder="Shop id or name "></form-input>
     </div>
 
-    <div class="col-3">
-      <label for="search">Search</label>
-      <br>
-      <input type="text" name="search" placeholder="Search">
+    <div class="col-1 mt-3">
+      <input type="submit" name="Submit" class="btn btn-primary mt-4"/>
     </div>
 
-  </div>
-
+    <div class="form-feedback has-danger mt-4 ml-3"></div>
+  </form>
 
   <p> <span class="h6">Shop</span> | <span class="small text-light-gray font-weight-bold"> Total({{rows.length}}) </span></p>
   <ngx-datatable
@@ -94,5 +133,4 @@
   </ngx-datatable-footer>
   </div>
 </ngx-datatable>
-
 </div>

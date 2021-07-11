@@ -5,7 +5,7 @@ import {NgSelectModule} from '@ng-select/ng-select';
 import {ReactiveFormsModule} from "@angular/forms";
 import {NgApexchartsModule} from 'ng-apexcharts';
 import {UiSwitchModule} from 'ngx-ui-switch';
-import {NgbAccordionModule, NgbNavModule} from "@ng-bootstrap/ng-bootstrap";
+import {NgbAccordionModule, NgbNavModule, NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import {NgxMaterialTimepickerModule} from "ngx-material-timepicker";
 import {NgxDatatableModule} from '@swimlane/ngx-datatable';
 
@@ -45,7 +45,8 @@ import {ShopListComponent} from './shop-list/shop-list.component';
     NgxMaterialTimepickerModule,
     FormInputModule,
     NgbNavModule,
-    NgxDatatableModule
+    NgxDatatableModule,
+    NgbModule
   ]
 })
 export class PrivateModule {
