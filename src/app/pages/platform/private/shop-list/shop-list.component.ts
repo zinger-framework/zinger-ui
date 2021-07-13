@@ -1,10 +1,22 @@
-import {Component, OnInit} from '@angular/core';
-import {ShopService} from "../../../../core/service/platform/shop.service";
-import {SortType, ColumnMode} from "@swimlane/ngx-datatable"
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {DatePipe} from '@angular/common';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {ShopService} from "../../../../core/service/platform/shop.service";
+import {SortType, ColumnMode} from "@swimlane/ngx-datatable";
 import {ExtendedFormControl} from '../../../../core/utils/extended-form-control.utils';
 import {ToastrService} from 'ngx-toastr';
 import {NgbCalendar, NgbDate, NgbDateParserFormatter} from "@ng-bootstrap/ng-bootstrap";
+
+export class Page {
+  // The number of elements in the page
+  size: number = 5;
+  // The total number of elements
+  totalElements: number = 13;
+  // The total number of pages
+  totalPages: number = 3;
+  // The current page number
+  pageNumber: number = 0;
+}
 
 @Component({
   selector: 'app-shop-list',
@@ -14,6 +26,7 @@ import {NgbCalendar, NgbDate, NgbDateParserFormatter} from "@ng-bootstrap/ng-boo
 export class ShopListComponent implements OnInit {
 
   rows = [];
+  page = new Page();
   isLoading = false;
   statuses = ['PENDING', 'ACTIVE', 'INACTIVE', 'BLOCKED']
   columns = [
@@ -29,12 +42,21 @@ export class ShopListComponent implements OnInit {
   hoveredDate: NgbDate | null = null;
   fromDate: NgbDate | null;
   toDate: NgbDate | null;
-  rangeDate: NgbDate | null;
+  rangeDate = '';
+  pageSize = 5;
+  @ViewChild('myTable') table;
 
-  constructor(private fb: FormBuilder, private toastr: ToastrService, private calendar: NgbCalendar, public formatter: NgbDateParserFormatter, private shopService: ShopService) {
+
+  constructor(private fb: FormBuilder, private toastr: ToastrService, private calendar: NgbCalendar, public formatter: NgbDateParserFormatter, 
+    public datepipe: DatePipe, private shopService: ShopService) {
 
     this.fromDate = calendar.getToday();
     this.toDate = calendar.getNext(calendar.getToday(), 'd', 10);
+    console.log(this.datepipe.transform(new Date(), 'yyyy-dd-MM HH:mm:ss'));
+    console.log(this.datepipe.transform(new Date(this.fromDate.year, this.fromDate.month - 1, this.fromDate.day), 
+      'yyyy-dd-MM HH:mm:ss'))
+    this.page.pageNumber = 0;
+    this.page.size = this.pageSize;
 
     this.shopSearchForm = this.fb.group({
       query: new ExtendedFormControl('', [], 'query'),
@@ -47,20 +69,31 @@ export class ShopListComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.setPage({ offset: 0 });
     this.getShopList();
   }
 
   getShopList() {
     this.isLoading = true;
-    this.shopService.getShopList()
+    let paramString = 'offset=' + this.page.pageNumber * this.pageSize;
+    this.shopService.getShopList(paramString)
     .then(response => {
-      this.isLoading = true;
       this.rows = response['data']['shops']
+      this.page.totalElements = response['data']['total']
+      this.page.totalPages = response['data']['total'] / this.pageSize;
     })
     .catch(error => {
-      this.isLoading = true;
       console.log(error)
     })
+    .finally(() => {
+      this.isLoading = false;
+    })
+  }
+
+  setPage(pageInfo) {
+    this.page.pageNumber = pageInfo.offset;
+    console.log(this.page.pageNumber);
+    this.getShopList();
   }
 
   onDateSelection(date: NgbDate) {

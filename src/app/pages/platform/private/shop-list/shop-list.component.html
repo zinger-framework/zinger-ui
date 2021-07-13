@@ -68,6 +68,7 @@
 
   <p> <span class="h6">Shop</span> | <span class="small text-light-gray font-weight-bold"> Total({{rows.length}}) </span></p>
   <ngx-datatable
+    #myTable
     class="material bg-white box-shadow-none border-1"
     [rows]="rows"
     [sortType]="SortType.multi"
@@ -77,8 +78,11 @@
     [footerHeight]="50"
     rowHeight="auto"
     reorderable="true"
-    limit="3"
-    offset="0"
+    [externalPaging]="true"
+    [count]="page.totalElements"
+    [offset]="page.pageNumber"
+    [limit]="page.size"
+    (page)="setPage($event)"
   >
 
  <ngx-datatable-column name="Id" prop="id" [width]="50" [sortable]="false" [headerClass]="'h1'">
@@ -111,8 +115,8 @@
     </ng-template>
   </ngx-datatable-column>
   
-  <div style="margin-right: 50%;">
-    <ngx-datatable-footer>
+  
+  <ngx-datatable-footer style="margin-right: 50%;">
     <ng-template 
       ngx-datatable-footer-template
       let-rowCount="rowCount"
@@ -127,10 +131,11 @@
             [page]="curPage"
             [size]="pageSize"
             [count]="rowCount"
-            [hidden]="!((rowCount / pageSize) > 1)">
+            [hidden]="!((rowCount / pageSize) > 1)"
+            (change)="table.onFooterPage($event)">
         </datatable-pager>
     </ng-template>
   </ngx-datatable-footer>
-  </div>
+  
 </ngx-datatable>
 </div>

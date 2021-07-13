@@ -1,5 +1,5 @@
 import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
+import {CommonModule, DatePipe} from '@angular/common';
 import {RouterModule} from '@angular/router';
 import {NgSelectModule} from '@ng-select/ng-select';
 import {ReactiveFormsModule} from "@angular/forms";
@@ -42,7 +42,8 @@ import {FormInputModule} from "../../../shared/form-elements/form-input.module";
     NgbNavModule,
     NgxMaterialTimepickerModule,
     FormInputModule
-  ]
+  ],
+  providers: [DatePipe]
 })
 export class PrivateModule {
 }

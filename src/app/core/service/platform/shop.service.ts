@@ -11,8 +11,9 @@ export class ShopService extends PlatformService {
     return this.get(API_ENDPOINTS.SHOP + '/' + shopId);
   }
 
-  getShopList(start_time = '2020-06-06 00:00:00', end_time = '2022-06-06 00:09:00'){
-    return this.get(API_ENDPOINTS.SHOP);
+  getShopList(params = ''){
+    let endPoint = (params == '') ? API_ENDPOINTS.SHOP : API_ENDPOINTS.SHOP + '?' + params;
+    return this.get(endPoint);
   }
 
   updateShopDetails(shopId, requestBody) {
