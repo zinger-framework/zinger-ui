@@ -1,13 +1,12 @@
 <div class="p-3 m-1 bg-white">
-  <form (ngSubmit)="getShopList()" [formGroup]="shopSearchForm" class="shop-search row">   
-    <div class="col-5">
-      <label>From-To</label>
-      <!-- <form-input inputType="date" name="startDate" placeholder=""></form-input> -->
+  <form (ngSubmit)="updateFilters()" [formGroup]="shopSearchForm" class="shop-search row">   
+    <div class="col-3">
+      <label class="mb-2 pb-1">From</label>
       <div class="form-inline">
         <div class="form-group hidden">
-          <div class="input-group">
+          <div>
             <input name="datepicker"
-                   class="form-control"
+                   class="form-control d-none"
                    ngbDatepicker
                    #datepicker="ngbDatepicker"
                    [autoClose]="'outside'"
@@ -32,10 +31,26 @@
         <div class="form-group">
           <div class="input-group">
             <input #dpFromDate
-                   class="form-control" placeholder="yyyy-mm-dd"
+                   class="form-control" 
+                   placeholder="yyyy-mm-dd"
                    name="dpFromDate"
-                   [value]="rangeDate"
+                   [value]="formatter.format(fromDate)"
                    (input)="fromDate = validateInput(fromDate, dpFromDate.value)">
+            <div class="input-group-append">
+              <button class="btn btn-outline-secondary calendar" (click)="datepicker.toggle()" type="button"></button>
+            </div>
+          </div>
+        </div>
+
+       <label class="mb-2">To</label> 
+       <div class="form-group">
+          <div class="input-group">
+            <input #dpToDate
+                   class="form-control" 
+                   placeholder="yyyy-mm-dd"
+                   name="dpToDate"
+                   [value]="formatter.format(toDate)"
+                   (input)="toDate = validateInput(toDate, dpToDate.value)">
             <div class="input-group-append">
               <button class="btn btn-outline-secondary calendar" (click)="datepicker.toggle()" type="button"></button>
             </div>
@@ -44,11 +59,19 @@
       </div>
     </div>
 
-    <div class="col-2">
-      <label>Category</label>
+    <div class="col-3">
+      <label>Status</label>
       <div class="form-group form-group-status">
         <ng-select [clearable]="false" [items]="statuses" [searchable]="false" formControlName="status"
-          [multiple]="true" placeholder="Select">
+          [multiple]="true" placeholder="Status">
+        </ng-select>
+        <div class="form-control-feedback has-danger"></div>
+      </div>
+
+      <label>Deleted</label> 
+      <div class="form-group form-group-deleted">
+        <ng-select [clearable]="false" [items]="deletedStatus" [searchable]="false" formControlName="deleted"
+         [multiple]="false" placeholder="Delete Status">
         </ng-select>
         <div class="form-control-feedback has-danger"></div>
       </div>
@@ -57,23 +80,36 @@
     <div class="col-3">
       <label>Search</label>
       <form-input inputType="text" name="query" placeholder="Shop id or name "></form-input>
+
+      <label>Sort</label> 
+      <div class="form-group form-group-sortorder">
+        <ng-select [clearable]="false" [items]="sortItems" [searchable]="false" formControlName="sortorder"
+          placeholder="Delete Status">
+        </ng-select>
+        <div class="form-control-feedback has-danger"></div>
+      </div>
     </div>
 
     <div class="col-1 mt-3">
+      <div class="mt-5 pt-5"></div>
+      <div class="mt-1"></div>
       <input type="submit" name="Submit" class="btn btn-primary mt-4"/>
     </div>
 
     <div class="form-feedback has-danger mt-4 ml-3"></div>
   </form>
 
-  <p> <span class="h6">Shop</span> | <span class="small text-light-gray font-weight-bold"> Total({{rows.length}}) </span></p>
+  <p class="mt-2"> 
+    <span class="h6">Shop</span> | 
+    <span class="small text-light-gray font-weight-bold"> Total({{page.totalElements}}) </span>
+  </p>
   <ngx-datatable
     #myTable
     class="material bg-white box-shadow-none border-1"
     [rows]="rows"
     [sortType]="SortType.multi"
     [columnMode]="ColumnMode.standard"
-    [loadingIndicator]="false"
+    [loadingIndicator]="isLoading"
     [headerHeight]="50"
     [footerHeight]="50"
     rowHeight="auto"

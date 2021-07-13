@@ -29,6 +29,8 @@ export class ShopListComponent implements OnInit {
   page = new Page();
   isLoading = false;
   statuses = ['PENDING', 'ACTIVE', 'INACTIVE', 'BLOCKED']
+  deletedStatus = ['ALL', 'TRUE', 'FALSE']
+  sortItems = ['ASC', 'DSC']
   columns = [
     {name: 'Id', prop: 'id', sortable: false, width: 10},
     {name: 'Name', prop: 'name', sortable: false, width:50},
@@ -44,14 +46,15 @@ export class ShopListComponent implements OnInit {
   toDate: NgbDate | null;
   rangeDate = '';
   pageSize = 5;
+  currentFilters = {}
   @ViewChild('myTable') table;
 
 
   constructor(private fb: FormBuilder, private toastr: ToastrService, private calendar: NgbCalendar, public formatter: NgbDateParserFormatter, 
     public datepipe: DatePipe, private shopService: ShopService) {
 
-    this.fromDate = calendar.getToday();
-    this.toDate = calendar.getNext(calendar.getToday(), 'd', 10);
+    this.fromDate = calendar.getPrev(calendar.getToday(), 'd', 10);
+    this.toDate = calendar.getToday();
     console.log(this.datepipe.transform(new Date(), 'yyyy-dd-MM HH:mm:ss'));
     console.log(this.datepipe.transform(new Date(this.fromDate.year, this.fromDate.month - 1, this.fromDate.day), 
       'yyyy-dd-MM HH:mm:ss'))
@@ -63,9 +66,18 @@ export class ShopListComponent implements OnInit {
       status: new ExtendedFormControl('ACTIVE', [], 'status'),
       startDate: new ExtendedFormControl('', [], 'startDate'),
       endDate: new ExtendedFormControl('', [], 'endDate'),
-      sortOrder: new ExtendedFormControl('', [], 'sortOrder'),
+      sortorder: new ExtendedFormControl('', [], 'sortorder'),
+      deleted: new ExtendedFormControl('', [], 'deleted'),
       className: 'shop-search'
     });
+
+    this.currentFilters['query'] = '';
+    this.currentFilters['deleted'] = '';
+    this.currentFilters['status'] = '';
+    this.currentFilters['sortorder'] = '';
+    this.currentFilters['fromDate'] = '';
+    this.currentFilters['endDate'] = this.datepipe.transform(new Date(), 'yyyy-dd-MM HH:mm:ss');
+
   }
 
   ngOnInit(): void {
@@ -73,8 +85,19 @@ export class ShopListComponent implements OnInit {
     this.getShopList();
   }
 
+  updateFilters() {
+    this.page.pageNumber = 0;
+    this.currentFilters['query'] = this.shopSearchForm.get('query').value;
+    // TODO: Update the filter
+    console.log(this.shopSearchForm.get('query').value)
+    console.log(this.shopSearchForm.get('status').value)
+    console.log(this.shopSearchForm.get('deleted').value)
+    console.log(this.shopSearchForm.get('sortorder').value)
+  }
+
   getShopList() {
     this.isLoading = true;
+    // TODO: Search based on the filters
     let paramString = 'offset=' + this.page.pageNumber * this.pageSize;
     this.shopService.getShopList(paramString)
     .then(response => {
@@ -105,7 +128,6 @@ export class ShopListComponent implements OnInit {
       this.toDate = null;
       this.fromDate = date;
     }
-    this.rangeDate = this.formatter.format(this.fromDate).toLocaleString() + ' to ' + this.formatter.format(this.toDate).toLocaleString()
   }
 
   isHovered(date: NgbDate) {
