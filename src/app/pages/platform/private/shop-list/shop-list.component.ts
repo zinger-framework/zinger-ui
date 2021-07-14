@@ -52,18 +52,14 @@ export class ShopListComponent implements OnInit {
 
   constructor(private fb: FormBuilder, private toastr: ToastrService, private calendar: NgbCalendar, public formatter: NgbDateParserFormatter, 
     public datepipe: DatePipe, private shopService: ShopService) {
-
-    this.fromDate = calendar.getPrev(calendar.getToday(), 'd', 10);
-    this.toDate = calendar.getToday();
-    console.log(this.datepipe.transform(new Date(), 'yyyy-dd-MM HH:mm:ss'));
-    console.log(this.datepipe.transform(new Date(this.fromDate.year, this.fromDate.month - 1, this.fromDate.day), 
-      'yyyy-dd-MM HH:mm:ss'))
+    this.fromDate = '';
+    this.toDate = '';
     this.page.pageNumber = 0;
     this.page.size = this.pageSize;
 
     this.shopSearchForm = this.fb.group({
       query: new ExtendedFormControl('', [], 'query'),
-      status: new ExtendedFormControl('ACTIVE', [], 'status'),
+      status: new ExtendedFormControl('', [], 'status'),
       startDate: new ExtendedFormControl('', [], 'startDate'),
       endDate: new ExtendedFormControl('', [], 'endDate'),
       sortorder: new ExtendedFormControl('', [], 'sortorder'),
@@ -76,8 +72,7 @@ export class ShopListComponent implements OnInit {
     this.currentFilters['status'] = '';
     this.currentFilters['sortorder'] = '';
     this.currentFilters['fromDate'] = '';
-    this.currentFilters['endDate'] = this.datepipe.transform(new Date(), 'yyyy-dd-MM HH:mm:ss');
-
+    this.currentFilters['toDate'] = this.datepipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss');
   }
 
   ngOnInit(): void {
@@ -88,17 +83,38 @@ export class ShopListComponent implements OnInit {
   updateFilters() {
     this.page.pageNumber = 0;
     this.currentFilters['query'] = this.shopSearchForm.get('query').value;
-    // TODO: Update the filter
-    console.log(this.shopSearchForm.get('query').value)
-    console.log(this.shopSearchForm.get('status').value)
-    console.log(this.shopSearchForm.get('deleted').value)
-    console.log(this.shopSearchForm.get('sortorder').value)
+    if (this.shopSearchForm.get('status').value != '') 
+      this.currentFilters['status'] = this.shopSearchForm.get('status').value;
+    switch (this.shopSearchForm.get('deleted').value) {
+      case 'TRUE': this.currentFilters['deleted'] = 'true'; break;
+      case 'FALSE': this.currentFilters['deleted'] = 'false'; break;
+      default: this.currentFilters['deleted'] = ''
+    }
+    if (this.shopSearchForm.get('sortorder').value != '') 
+      this.currentFilters['sortorder'] = this.shopSearchForm.get('sortorder').value;
+    if(this.fromDate != '')
+      this.currentFilters['fromDate'] = this.datepipe.transform(new Date(this.fromDate.year, this.fromDate.month - 1, 
+        this.fromDate.day), 'yyyy-MM-dd HH:mm:ss');
+    if(this.toDate != '')
+      this.currentFilters['toDate'] = this.datepipe.transform(new Date(this.toDate.year, this.toDate.month - 1, 
+        this.toDate.day), 'yyyy-MM-dd HH:mm:ss');
+    console.log(this.currentFilters)
+    this.getShopList();
   }
 
   getShopList() {
     this.isLoading = true;
-    // TODO: Search based on the filters
     let paramString = 'offset=' + this.page.pageNumber * this.pageSize;
+    for(let i = 0; i < this.currentFilters['status'].length ; i++) {
+      paramString = paramString + `&statuses[]=${this.currentFilters['status'][i]}`
+    }
+
+    if (this.currentFilters['deleted'] != '') paramString = paramString + `&deleted=${this.currentFilters['deleted']}`
+    // if (this.currentFilters['fromDate'] != '') paramString = paramString + `&start_time=${this.currentFilters['fromDate']}`
+    // if (this.currentFilters['toDate'] != '') paramString = paramString + `&end_time=${this.currentFilters['toDate']}`
+    if (this.currentFilters['sortorder'] != '') paramString = paramString + `&sort_order=${this.currentFilters['sortorder']}`
+    console.log(`paramString: ${paramString}`) 
+
     this.shopService.getShopList(paramString)
     .then(response => {
       this.rows = response['data']['shops']
@@ -115,7 +131,6 @@ export class ShopListComponent implements OnInit {
 
   setPage(pageInfo) {
     this.page.pageNumber = pageInfo.offset;
-    console.log(this.page.pageNumber);
     this.getShopList();
   }
 
