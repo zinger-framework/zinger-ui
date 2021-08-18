@@ -1,61 +1,57 @@
 <breadcrumb [data]="breadCrumbData" title="Register Shop"></breadcrumb>
-<div *ngIf="['PENDING', 'REJECTED', 'BLOCKED'].includes(formStatus)" class="page-header">
+<div *ngIf="['PENDING', 'REJECTED', 'BLOCKED'].includes(shopStatus)" class="page-header">
   <div class="row">
     <div class="col-md-12 col-sm-12">
       <div class="text-center text-light-gray font-weight-bold">
-        <span *ngIf="formStatus == 'BLOCKED'">The shop is blocked by the admin. Please check the below comments.
+        <span *ngIf="shopStatus == 'BLOCKED'">Your shop is blocked by the Admin. Please contact our support team to unblock.
         </span>
-        <span *ngIf="formStatus == 'REJECTED'">Your request has been rejected. Please check the below comments and update shop details.
+        <span *ngIf="shopStatus == 'REJECTED'">Your request has been rejected. Please check the below reason and update shop details.
         </span>
-        <span *ngIf="formStatus == 'PENDING'">Your request is pending for approval and will be processed in 2-4 working days.
+        <span *ngIf="shopStatus == 'PENDING'">Your request is pending for approval and will be processed in 2-4 working days.
         </span>
-      </div>
-      <div class="mt-3 comment-accordion">
-        <ngb-accordion #commentsAccordion="ngbAccordion" [destroyOnHide]="false">
-          <ngb-panel *ngIf="approvalComments.length > 0" id="approvalCommentsPanel">
-            <ng-template let-opened="opened" ngbPanelHeader>
-              <div class="d-flex bg-white">
-                <button class="btn p-2" ngbPanelToggle><i aria-hidden="true"
-                                                          class="icon-copy fa fa-{{ opened ? 'minus' : 'plus'  }} mb-2"></i>
-                </button>
-                <h6 class="mt-2 pt-1 text-dark">Approval Comments</h6>
-              </div>
-            </ng-template>
-            <ng-template ngbPanelContent>
-              <div *ngFor="let comment of approvalComments" class="pt-1">
-                <comment [message]="comment.message" [time]="comment.time" [userName]="comment.user_id"></comment>
-              </div>
-            </ng-template>
-          </ngb-panel>
-          <ngb-panel *ngIf="blockedComments.length > 0" id="blockedCommentsPanel">
-            <ng-template let-opened="opened" ngbPanelHeader>
-              <div class="d-flex bg-white">
-                <button class="btn p-2" ngbPanelToggle><i aria-hidden="true"
-                                                          class="icon-copy fa fa-{{ opened ? 'minus' : 'plus'  }} mb-2"></i>
-                </button>
-                <h6 class="mt-2 pt-1 text-dark">Blocked Comments</h6>
-              </div>
-            </ng-template>
-            <ng-template ngbPanelContent>
-              <div *ngFor="let comment of blockedComments" class="pt-1">
-                <comment [message]="comment.message" [time]="comment.time" [userName]="comment.user_id"></comment>
-              </div>
-            </ng-template>
-          </ngb-panel>
-        </ngb-accordion>
       </div>
     </div>
   </div>
 </div>
+<div *ngIf="conversations['rejected'].length > 0" class="shop-details mb-4">
+  <ngb-accordion #accordion="ngbAccordion" [destroyOnHide]="false">
+    <ngb-panel id="rejectedCommentsPanel">
+      <ng-template class="panel-header" let-opened="opened" ngbPanelHeader>
+        <accordion-header [accordion]="accordion" [opened]="opened" [panelId]="'rejectedCommentsPanel'" class="da-card"
+                          title='Reason for Rejection'></accordion-header>
+      </ng-template>
+      <ng-template ngbPanelContent>
+        <div *ngFor="let comment of conversations['rejected']" class="pt-1">
+          <comment [message]="comment.message" [time]="comment.time" [userName]="comment?.platform_user?.name"
+                   [image]="comment.profile_url"></comment>
+        </div>
+      </ng-template>
+    </ngb-panel>
+  </ngb-accordion>
+</div>
+<div *ngIf="conversations['blocked'].length > 0" class="shop-details mb-4">
+  <ngb-accordion #accordion="ngbAccordion" [destroyOnHide]="false">
+    <ngb-panel id="blockedCommentsPanel">
+      <ng-template class="panel-header" let-opened="opened" ngbPanelHeader>
+        <accordion-header [accordion]="accordion" [opened]="opened" [panelId]="'blockedCommentsPanel'" class="da-card"
+                          title='Reason for Blocking'></accordion-header>
+      </ng-template>
+      <ng-template ngbPanelContent>
+        <div *ngFor="let comment of conversations['blocked']" class="pt-1">
+          <comment [message]="comment.message" [time]="comment.time" [userName]="comment?.platform_user?.name"
+                   [image]="comment.profile_url"></comment>
+        </div>
+      </ng-template>
+    </ngb-panel>
+  </ngb-accordion>
+</div>
 <form (ngSubmit)="submitShopDetails(accordion)" [formGroup]="shopDetailsForm" class="shop-details">
   <ngb-accordion #accordion="ngbAccordion" [destroyOnHide]="false" activeIds="ngb-panel-0">
-
     <ngb-panel id="basicInfoPanel">
       <ng-template class="panel-header" let-opened="opened" ngbPanelHeader>
         <accordion-header [accordion]="accordion" [opened]="opened" [panelId]="'basicInfoPanel'"
                           title='Basic Information'></accordion-header>
       </ng-template>
-
       <ng-template ngbPanelContent>
         <div class="row">
           <div class="col-md-6 col-lg-6">
@@ -135,11 +131,11 @@
           </div>
         </div>
 
-        <div *ngIf="['ACTIVE', 'INACTIVE'].includes(formStatus)" class="row">
+        <div *ngIf="['ACTIVE', 'INACTIVE'].includes(shopStatus)" class="row">
           <div class="col-md-6 col-lg-6">
             <div>
-              <label>Shop Active</label><br>
-              <ui-switch (click)="updateShopActiveStatus()" [checked]="isShopActive"></ui-switch>
+              <label>Is Shop Active?</label><br>
+              <ui-switch (click)="updateShopActiveStatus()" [(ngModel)]="isShopActive" [ngModelOptions]="{standalone: true}"></ui-switch>
             </div>
           </div>
         </div>
@@ -206,7 +202,7 @@
       </ng-template>
 
       <ng-template ngbPanelContent>
-        <div class="row m-1 min-height-200">
+        <div class="row m-1">
           <div class="col-md-12 col-lg-12">
             <label class="required">Upload Icon</label>
             <br>
@@ -227,7 +223,7 @@
           </div>
         </div>
 
-        <div class="row mt-4 m-1 min-height-200">
+        <div class="row mt-4 m-1">
           <div class="col-md-12 col-lg-12">
             <label class="required">Upload Cover Photos</label>
             <br>
@@ -292,7 +288,8 @@
     </ngb-panel>
   </ngb-accordion>
 
-  <div *ngIf="formStatus == 'DRAFT'" class="m-1">
+
+  <div *ngIf="shopStatus == 'DRAFT'" class="m-1">
     <div class="custom-control custom-checkbox mt-4">
       <input (click)="acceptTermsAndConditions()" class="custom-control-input" id="terms_and_conditions"
              type="checkbox">
@@ -303,9 +300,7 @@
   </div>
 
   <div class="d-inline-flex">
-    <input [attr.value]="formStatus == 'DRAFT' ? 'Register' : 'Update Details'" [disabled]="!canSubmitForm()"
-           class="btn btn-primary mt-3"
-           type="submit">
+    <input [attr.value]="shopStatus == 'DRAFT' ? 'Register' : 'Update Details'" [disabled]="!canSubmitForm()" class="btn btn-primary mt-3" type="submit">
     <div class="form-feedback has-danger mt-4 ml-3"></div>
   </div>
 </form>

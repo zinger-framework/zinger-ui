@@ -32,7 +32,7 @@ import {
   styleUrls: ['./shop-details.component.css']
 })
 export class ShopDetailsComponent extends BaseComponent {
-  formStatus = ''
+  shopStatus = ''
   shopDetailsForm: FormGroup;
   shopDetailsInitialValue = {}
   termsAndCondition = false;
@@ -40,8 +40,7 @@ export class ShopDetailsComponent extends BaseComponent {
   states = ['Tamil Nadu', 'Kerala', 'Andhra Pradesh', 'Karnataka']
   iconSrc = ''
   coverImgSrcList = []
-  approvalComments = []
-  blockedComments = []
+  conversations = {'rejected': [], 'blocked': []}
   shopId: number;
   breadCrumbData = [{label: 'Home', link: '/dashboard'}, {label: 'Shop', link: ''}];
   isShopActive: boolean = false;
@@ -119,11 +118,14 @@ export class ShopDetailsComponent extends BaseComponent {
             this.shopDetailsForm.get('tags').setValue(tagString);
             break;
           case 'status':
-            this.formStatus = shopData[field]
-            if (this.formStatus == 'ACTIVE') this.isShopActive = true;
+            this.shopStatus = shopData[field]
+            this.isShopActive = this.shopStatus == 'ACTIVE' ?  true : false;
             break;
           case 'rejected_conversations':
-            this.approvalComments = shopData[field]
+            this.conversations['rejected'] = shopData[field]
+            break;
+          case 'blocked_conversations':
+            this.conversations['blocked'] = shopData[field]
             break;
           case 'blocked_conversations':
             this.blockedComments = shopData[field]
@@ -139,7 +141,7 @@ export class ShopDetailsComponent extends BaseComponent {
   }
 
   browseFiles(imgType) {
-    if (this.formStatus == 'BLOCKED') return this.toastr.error('Image upload not allowed when shop is blocked')
+    if (this.shopStatus == 'BLOCKED') return this.handleBlockingError(imgType, 'upload')
     this.shopDetailsForm.get(imgType).markAsTouched();
     $(`div.form-group-${imgType} input`)[0].click();
   }
@@ -204,9 +206,9 @@ export class ShopDetailsComponent extends BaseComponent {
     }
   }
 
-  deleteImage(imageId, type) {
-    if (this.formStatus == 'BLOCKED') return this.toastr.error('Deleting image not allowed when shop is blocked')
-    switch (type) {
+  deleteImage(imageId, imgType) {
+    if (this.shopStatus == 'BLOCKED') return this.handleBlockingError(imgType, 'deletion')
+    switch (imgType) {
       case 'icon':
         this.shopService.deleteIcon(this.shopId)
           .then(response => {
@@ -239,15 +241,21 @@ export class ShopDetailsComponent extends BaseComponent {
     setErrorMessage('Icon cannot be empty', 'shop-details', 'icon')
   }
 
+  handleBlockingError(imgType, operation) {
+    let errorMsg = {'error': {'reason': {}}}
+    errorMsg['error']['reason'][imgType] = [`Image ${operation} is disabled as your shop is blocked`]
+    return handleError(errorMsg, this.shopDetailsForm)
+  }
+
   canSubmitForm() {
-    let submitStatus = this.shopDetailsForm.valid && this.iconSrc.length > 0 && this.coverImgSrcList.length > 0 && this.formStatus != 'BLOCKED'
-    return (this.formStatus == 'DRAFT') ? this.termsAndCondition && submitStatus : submitStatus
+    let submitStatus = this.shopDetailsForm.valid && this.iconSrc.length > 0 && this.coverImgSrcList.length > 0 && this.shopStatus != 'BLOCKED'
+    return (this.shopStatus == 'DRAFT') ? this.termsAndCondition && submitStatus : submitStatus
   }
 
   submitShopDetails(accordion) {
     accordion.expandAll()
     let requestBody = {}
-    switch (this.formStatus) {
+    switch (this.shopStatus) {
       case 'DRAFT':
         Object.keys(this.shopDetailsForm.value).forEach(key => {
           requestBody = this.updateRequestBody(key, requestBody)
@@ -304,9 +312,8 @@ export class ShopDetailsComponent extends BaseComponent {
   }
 
   updateShopActiveStatus() {
-    this.isShopActive = !this.isShopActive;
     let requestBody = {}
-    requestBody['status'] = this.formStatus == 'ACTIVE' ? 'INACTIVE' : 'ACTIVE'
+    requestBody['status'] = this.shopStatus == 'ACTIVE' ? 'INACTIVE' : 'ACTIVE'
     this.updateShopDetails(requestBody, {resetStatus: true})
   }
 
@@ -318,8 +325,7 @@ export class ShopDetailsComponent extends BaseComponent {
       .catch(error => {
         // TODO: navigate to list of shops
         if (error['status'] == 404) this.router.navigateByUrl(APP_ROUTES.DASHBOARD);
-        if (error['status'] == 403) this.getShopDetails();
-        if (options['resetStatus'] && options['resetStatus'] == true) this.isShopActive = !this.isShopActive;
+        if (options['resetStatus']) this.isShopActive = !this.isShopActive;
         handleError(error, this.shopDetailsForm);
       })
   }

@@ -173,87 +173,81 @@
         </ng-template>
       </li>
     </ul>
-    <span class="small text-light-gray pt-2 mt-2"> Last Updated: {{ data['updated_at'] }}</span>
+    <span class="small text-light-gray pt-2 mt-2">Last updated at {{ data['updated_at'] | date: 'medium' }}</span>
   </div>
   <div [ngbNavOutlet]="nav"></div>
 </div>
 
-<div *ngIf="data['deleted']==false; else deletedComment" class="mt-4">
-  <ngb-accordion #accordion="ngbAccordion" *ngIf="data['status'] != 'DRAFT'" [destroyOnHide]="false"
-                 activeIds="ngb-panel-0">
-    <ngb-panel id="updateStatusPanel">
-      <ng-template class="panel-header" let-opened="opened" ngbPanelHeader>
-        <accordion-header [accordion]="accordion" [opened]="opened" [panelId]="'updateStatusPanel'"
-                          title='Update Status'></accordion-header>
-      </ng-template>
-      <ng-template ngbPanelContent>
-        <div [ngSwitch]="data['status']" class="row">
-          <div *ngSwitchCase="'PENDING'" class="row col-4">
-            <div class="col-6">
-              <button (click)="getReasonModal('Rejection')" class="btn btn-outline-primary btn-block pr-2"
-                      type="button">Reject
-              </button>
-            </div>
-            <div class="col-6">
-              <button (click)="updateShopStatus('ACTIVE')" class="btn btn-primary btn-block" type="button">Approve
-              </button>
-            </div>
+
+<ngb-accordion #accordion="ngbAccordion" *ngIf="data['status'] != 'DRAFT'" [destroyOnHide]="false" activeIds="ngb-panel-0">
+  <ngb-panel *ngIf="!data['deleted']" id="updateStatusPanel" cardClass="mt-4">
+    <ng-template class="panel-header" let-opened="opened" ngbPanelHeader>
+      <accordion-header [accordion]="accordion" [opened]="opened" [panelId]="'updateStatusPanel'" title='Update Status'></accordion-header>
+    </ng-template>
+    <ng-template ngbPanelContent>
+      <div [ngSwitch]="data['status']" class="row">
+        <div *ngSwitchCase="'PENDING'" class="row col-4">
+          <div class="col-6">
+            <button (click)="getReasonModal('Rejection')" class="btn btn-outline-primary btn-block pr-2" type="button">Reject
+            </button>
           </div>
-          <div *ngSwitchCase="'REJECTED'" class="col-2">
+          <div class="col-6">
             <button (click)="updateShopStatus('ACTIVE')" class="btn btn-primary btn-block" type="button">Approve
             </button>
           </div>
-          <div *ngSwitchCase="'BLOCKED'" class="row col-4">
-            <div class="col-6">
-              <button (click)="updateShopStatus('ACTIVE')" class="btn btn-outline-primary btn-block" type="button">Unblock
-              </button>
-            </div>
-            <div class="col-6">
-              <button (click)="getReasonModal('Deletion')" class="btn btn-primary btn-block" type="button">Delete
-              </button>
-            </div>
+        </div>
+        <div *ngSwitchCase="'REJECTED'" class="col-2">
+          <button (click)="updateShopStatus('ACTIVE')" class="btn btn-primary btn-block" type="button">Approve
+          </button>
+        </div>
+        <div *ngSwitchCase="'BLOCKED'" class="row col-4">
+          <div class="col-6">
+            <button (click)="updateShopStatus('ACTIVE')" class="btn btn-primary btn-block" type="button">Unblock
+            </button>
           </div>
-          <div *ngSwitchDefault class="row col-4">
-            <div class="col-6">
-              <button (click)="getReasonModal('Blocking')" class="btn btn-outline-primary btn-block" type="button">Block
-              </button>
-            </div>
-            <div class="col-6">
-              <button (click)="getReasonModal('Deletion')" class="btn btn-primary btn-block" type="button">Delete
-              </button>
-            </div>
+          <div class="col-6">
+            <button (click)="getReasonModal('Deletion')" class="btn btn-outline-primary btn-block" type="button">Delete
+            </button>
           </div>
         </div>
-
-        <div *ngIf="['PENDING', 'REJECTED'].includes(data['status'])" class="p-1 mt-4">
-          <p class="font-weight-bold">Approval Comments</p>
-          <div *ngFor="let comment of data['rejected_conversations']" class="pt-1">
-            <comment [message]="comment.message" [time]="comment.time" [userName]="comment.user_id"></comment>
+        <div *ngSwitchDefault class="row col-4">
+          <div class="col-6">
+            <button (click)="getReasonModal('Blocking')" class="btn btn-outline-primary btn-block" type="button">Block
+            </button>
           </div>
-          <div *ngIf="data['rejected_conversations'].length == 0"><p class="small text-light-gray">No comments found</p>
-          </div>
-        </div>
-        <div *ngIf="data['status'] == 'BLOCKED'" class="p-1 mt-4">
-          <p class="font-weight-bold">Blocked Comments</p>
-          <div *ngFor="let comment of data['blocked_conversations']" class="pt-1">
-            <comment [message]="comment.message" [time]="comment.time" [userName]="comment.user_id"></comment>
-          </div>
-          <div *ngIf="data['blocked_conversations'].length == 0"><p class="small text-light-gray">No comments found</p>
+          <div class="col-6">
+            <button (click)="getReasonModal('Deletion')" class="btn btn-outline-primary btn-block" type="button">Delete
+            </button>
           </div>
         </div>
-      </ng-template>
-    </ngb-panel>
-  </ngb-accordion>
-</div>
+      </div>
 
-<ng-template #deletedComment>
-  <div *ngIf="data['deleted'] == true" class="p-3 mt-4 bg-white">
-    <p class="font-weight-bold">Deleted Comments</p>
-    <div *ngFor="let comment of data['deleted_comments']" class="pt-1">
-      <comment [message]="comment.message" [time]="comment.time" [userName]="comment.user_id"></comment>
-    </div>
-    <div *ngIf="data['deleted_comments'].length == 0"><p class="small text-light-gray">No comments found</p>
-    </div>
-  </div>
-</ng-template>
-
+      <div *ngIf="['PENDING', 'REJECTED'].includes(data['status']) && data['rejected_conversations'].length > 0" class="p-1 mt-4">
+        <p class="font-weight-bold">Reason For Rejection</p>
+        <div *ngFor="let comment of data['rejected_conversations']" class="pt-1">
+          <comment [message]="comment.message" [time]="comment.time" [userName]="comment?.platform_user?.name"
+                   [image]="comment.profile_url"></comment>
+        </div>
+      </div>
+      <div *ngIf="data['status'] == 'BLOCKED' && data['blocked_conversations'].length > 0" class="p-1 mt-4">
+        <p class="font-weight-bold">Reason For Blocking</p>
+        <div *ngFor="let comment of data['blocked_conversations']" class="pt-1">
+          <comment [message]="comment.message" [time]="comment.time" [userName]="comment?.platform_user?.name"
+                   [image]="comment.profile_url"></comment>
+        </div>
+      </div>
+    </ng-template>
+  </ngb-panel>
+  <ngb-panel *ngIf="data['deleted'] && data['deleted_conversations'].length > 0" id="deletedConversationsPanel" cardClass="mt-4">
+    <ng-template class="panel-header" let-opened="opened" ngbPanelHeader>
+      <accordion-header [accordion]="accordion" [opened]="opened" [panelId]="'deletedConversationsPanel'"
+                        title='Reason For Deletion'></accordion-header>
+    </ng-template>
+    <ng-template ngbPanelContent>
+      <div *ngFor="let comment of data['deleted_conversations']" class="pt-1">
+        <comment [message]="comment.message" [time]="comment.time" [userName]="comment?.platform_user?.name"
+                 [image]="comment.profile_url"></comment>
+      </div>
+    </ng-template>
+  </ngb-panel>
+</ngb-accordion>

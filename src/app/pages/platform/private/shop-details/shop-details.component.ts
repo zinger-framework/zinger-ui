@@ -1,4 +1,4 @@
-import {Component, TemplateRef, ViewChild} from '@angular/core';
+import {Component} from '@angular/core';
 import {FormBuilder} from "@angular/forms";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {APP_ROUTES} from "../../../../core/utils/constants.utils";
@@ -15,7 +15,7 @@ import {ReasonModalComponent} from "../../../../shared/reason-modal/reason-modal
   styleUrls: ['./shop-details.component.css']
 })
 export class ShopDetailsComponent extends BaseComponent {
-  data = {'address': {}, 'payment': {}, 'deleted_comments': []}
+  data = {'address': {}, 'payment': {}, 'deleted_conversations': []}
   shopId = 0
   breadCrumbData = []
 
@@ -31,10 +31,7 @@ export class ShopDetailsComponent extends BaseComponent {
   ngOnInit(): void {
     this.shopService.getShopDetails(this.shopId)
       .then(response => {
-        response['data']['shop']['tags'] = response['data']['shop']['tags'].toString().replace(/,/g, ', ');
-        this.data = response['data']['shop']
-        // TODO -  Remove below line after API changes return deleted comments
-        this.data['deleted_comments'] = []
+        this.loadShopData(response)
       })
       .catch(error => {
         this.toastr.error(error['error']['message']);
@@ -48,8 +45,7 @@ export class ShopDetailsComponent extends BaseComponent {
     if (['REJECTED', 'BLOCKED'].includes(status)) requestBody['reason'] = reasonForm.get('reason').value;
     this.shopService.updateShopDetails(this.shopId, requestBody)
       .then(response => {
-        response['data']['shop']['tags'] = response['data']['shop']['tags'].toString().replace(/,/g, ', ');
-        this.data = response['data']['shop']
+        this.loadShopData(response)
         this.modalService.dismissAll();
       })
       .catch(error => {
@@ -57,11 +53,11 @@ export class ShopDetailsComponent extends BaseComponent {
       });
   }
 
-  deleteShops(reasonForm) {
-    // TODO @harsha - Reason for deletion must be sent in API request
-    this.shopService.deleteShop(this.shopId)
+  deleteShop(reasonForm) {
+    let requestBody = {id: this.shopId, reason: reasonForm.get('reason').value}
+    this.shopService.deleteShop(requestBody)
       .then(response => {
-        this.data['deleted'] = true
+        this.loadShopData(response)
         this.modalService.dismissAll()
       })
       .catch(error => {
@@ -75,7 +71,7 @@ export class ShopDetailsComponent extends BaseComponent {
     modalRef.componentInstance.updateStatus.subscribe((data) => {
       switch (data['title']) {
         case 'Deletion':
-          this.deleteShops(data['formObject']);
+          this.deleteShop(data['formObject']);
           break;
         case 'Rejection':
           this.updateShopStatus('REJECTED', data['formObject'])
@@ -85,5 +81,10 @@ export class ShopDetailsComponent extends BaseComponent {
           break;
       }
     })
+  }
+
+  loadShopData(response) {
+    response['data']['shop']['tags'] = response['data']['shop']['tags'].toString().replace(/,/g, ', ');
+    this.data = response['data']['shop']
   }
 }
