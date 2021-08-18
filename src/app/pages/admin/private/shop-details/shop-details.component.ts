@@ -122,10 +122,10 @@ export class ShopDetailsComponent extends BaseComponent {
             this.formStatus = shopData[field]
             if (this.formStatus == 'ACTIVE') this.isShopActive = true;
             break;
-          case 'approval_comments':
+          case 'rejected_conversations':
             this.approvalComments = shopData[field]
             break;
-          case 'blocked_comments':
+          case 'blocked_conversations':
             this.blockedComments = shopData[field]
             break;
           default:

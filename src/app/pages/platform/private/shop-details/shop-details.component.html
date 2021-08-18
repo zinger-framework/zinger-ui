@@ -227,18 +227,18 @@
 
         <div *ngIf="['PENDING', 'REJECTED'].includes(data['status'])" class="p-1 mt-4">
           <p class="font-weight-bold">Approval Comments</p>
-          <div *ngFor="let comment of data['approval_comments']" class="pt-1">
+          <div *ngFor="let comment of data['rejected_conversations']" class="pt-1">
             <comment [message]="comment.message" [time]="comment.time" [userName]="comment.user_id"></comment>
           </div>
-          <div *ngIf="data['approval_comments'].length == 0"><p class="small text-light-gray">No comments found</p>
+          <div *ngIf="data['rejected_conversations'].length == 0"><p class="small text-light-gray">No comments found</p>
           </div>
         </div>
         <div *ngIf="data['status'] == 'BLOCKED'" class="p-1 mt-4">
           <p class="font-weight-bold">Blocked Comments</p>
-          <div *ngFor="let comment of data['blocked_comments']" class="pt-1">
+          <div *ngFor="let comment of data['blocked_conversations']" class="pt-1">
             <comment [message]="comment.message" [time]="comment.time" [userName]="comment.user_id"></comment>
           </div>
-          <div *ngIf="data['blocked_comments'].length == 0"><p class="small text-light-gray">No comments found</p>
+          <div *ngIf="data['blocked_conversations'].length == 0"><p class="small text-light-gray">No comments found</p>
           </div>
         </div>
       </ng-template>

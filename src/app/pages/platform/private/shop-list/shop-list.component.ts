@@ -52,8 +52,8 @@ export class ShopListComponent implements OnInit {
 
   constructor(private fb: FormBuilder, private toastr: ToastrService, private calendar: NgbCalendar, public formatter: NgbDateParserFormatter, 
     public datepipe: DatePipe, private shopService: ShopService) {
-    this.fromDate = '';
-    this.toDate = '';
+    this.fromDate = calendar.getPrev(calendar.getToday(), 'd', 10);
+    this.toDate = calendar.getToday();
     this.page.pageNumber = 0;
     this.page.size = this.pageSize;
 
@@ -92,12 +92,12 @@ export class ShopListComponent implements OnInit {
     }
     if (this.shopSearchForm.get('sortorder').value != '') 
       this.currentFilters['sortorder'] = this.shopSearchForm.get('sortorder').value;
-    if(this.fromDate != '')
-      this.currentFilters['fromDate'] = this.datepipe.transform(new Date(this.fromDate.year, this.fromDate.month - 1, 
-        this.fromDate.day), 'yyyy-MM-dd HH:mm:ss');
-    if(this.toDate != '')
-      this.currentFilters['toDate'] = this.datepipe.transform(new Date(this.toDate.year, this.toDate.month - 1, 
-        this.toDate.day), 'yyyy-MM-dd HH:mm:ss');
+    // if(this.fromDate != '')
+    //   this.currentFilters['fromDate'] = this.datepipe.transform(new Date(this.fromDate.year, this.fromDate.month - 1, 
+    //     this.fromDate.day), 'yyyy-MM-dd HH:mm:ss');
+    // if(this.toDate != '')
+    //   this.currentFilters['toDate'] = this.datepipe.transform(new Date(this.toDate.year, this.toDate.month - 1, 
+    //     this.toDate.day), 'yyyy-MM-dd HH:mm:ss');
     console.log(this.currentFilters)
     this.getShopList();
   }
