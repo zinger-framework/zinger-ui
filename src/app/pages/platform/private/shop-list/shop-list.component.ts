@@ -1,11 +1,13 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {DatePipe} from '@angular/common';
+import {Router} from '@angular/router';;
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ShopService} from "../../../../core/service/platform/shop.service";
 import {SortType, ColumnMode} from "@swimlane/ngx-datatable";
 import {ExtendedFormControl} from '../../../../core/utils/extended-form-control.utils';
 import {ToastrService} from 'ngx-toastr';
 import {NgbCalendar, NgbDate, NgbDateParserFormatter} from "@ng-bootstrap/ng-bootstrap";
+import {APP_ROUTES} from '../../../../core/utils/constants.utils';
 
 export class Page {
   // The number of elements in the page
@@ -45,13 +47,13 @@ export class ShopListComponent implements OnInit {
   fromDate: NgbDate | null;
   toDate: NgbDate | null;
   rangeDate = '';
-  pageSize = 5;
+  pageSize = 2;
   currentFilters = {}
-  @ViewChild('myTable') table;
+  @ViewChild('shopList') table;
 
 
   constructor(private fb: FormBuilder, private toastr: ToastrService, private calendar: NgbCalendar, public formatter: NgbDateParserFormatter, 
-    public datepipe: DatePipe, private shopService: ShopService) {
+    public datepipe: DatePipe, private shopService: ShopService, private router: Router) {
     this.fromDate = calendar.getPrev(calendar.getToday(), 'd', 10);
     this.toDate = calendar.getToday();
     this.page.pageNumber = 0;
@@ -160,6 +162,12 @@ export class ShopListComponent implements OnInit {
   validateInput(currentValue: NgbDate | null, input: string): NgbDate | null {
     const parsed = this.formatter.parse(input);
     return parsed && this.calendar.isValid(NgbDate.from(parsed)) ? NgbDate.from(parsed) : currentValue;
+  }
+
+  onClick(event) {
+     if(event.type == 'click') {
+        this.router.navigateByUrl(APP_ROUTES.SHOP + "/" + event.row.id);
+    }
   }
 
 }

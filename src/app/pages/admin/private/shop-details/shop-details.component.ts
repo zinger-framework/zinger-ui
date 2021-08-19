@@ -127,9 +127,6 @@ export class ShopDetailsComponent extends BaseComponent {
           case 'blocked_conversations':
             this.conversations['blocked'] = shopData[field]
             break;
-          case 'blocked_conversations':
-            this.blockedComments = shopData[field]
-            break;
           default:
             if (field != 'id' && this.shopDetailsForm.get(field) != null) {
               this.shopDetailsForm.get(field).setValue(shopData[field])

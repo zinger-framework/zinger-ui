@@ -104,7 +104,7 @@
     <span class="small text-light-gray font-weight-bold"> Total({{page.totalElements}}) </span>
   </p>
   <ngx-datatable
-    #myTable
+    #shopList
     class="material bg-white box-shadow-none border-1"
     [rows]="rows"
     [sortType]="SortType.multi"
@@ -119,6 +119,7 @@
     [offset]="page.pageNumber"
     [limit]="page.size"
     (page)="setPage($event)"
+    (activate)="onClick($event)"
   >
 
  <ngx-datatable-column name="Id" prop="id" [width]="50" [sortable]="false" [headerClass]="'h1'">
@@ -150,7 +151,6 @@
         {{ area }} 
     </ng-template>
   </ngx-datatable-column>
-  
   
   <ngx-datatable-footer style="margin-right: 50%;">
     <ng-template 
