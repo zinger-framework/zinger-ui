@@ -4444,7 +4444,8 @@ form.otp div.resend-otp span:hover {
 }
 
 .datatable-footer-inner .active a {
-  background: linear-gradient(135deg, #ffc4c4 0%, rgba(255, 6, 0,1) 100%) !important;
+  color: white !important;
+  background-color: red !important;
 }
 
 .datatable-footer-inner ul {

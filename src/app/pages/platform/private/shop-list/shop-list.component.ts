@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {DatePipe} from '@angular/common';
-import {Router} from '@angular/router';;
+import {Router} from '@angular/router';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ShopService} from "../../../../core/service/platform/shop.service";
 import {SortType, ColumnMode} from "@swimlane/ngx-datatable";
@@ -11,11 +11,11 @@ import {APP_ROUTES} from '../../../../core/utils/constants.utils';
 
 export class Page {
   // The number of elements in the page
-  size: number = 5;
+  size: number;
   // The total number of elements
-  totalElements: number = 13;
+  totalElements: number;
   // The total number of pages
-  totalPages: number = 3;
+  totalPages: number;
   // The current page number
   pageNumber: number = 0;
 }
@@ -26,7 +26,7 @@ export class Page {
   styleUrls: ['./shop-list.component.css']
 })
 export class ShopListComponent implements OnInit {
-
+  
   rows = [];
   page = new Page();
   isLoading = false;
@@ -49,8 +49,8 @@ export class ShopListComponent implements OnInit {
   rangeDate = '';
   pageSize = 2;
   currentFilters = {}
+  cache = new Map();  
   @ViewChild('shopList') table;
-
 
   constructor(private fb: FormBuilder, private toastr: ToastrService, private calendar: NgbCalendar, public formatter: NgbDateParserFormatter, 
     public datepipe: DatePipe, private shopService: ShopService, private router: Router) {
@@ -79,11 +79,11 @@ export class ShopListComponent implements OnInit {
 
   ngOnInit(): void {
     this.setPage({ offset: 0 });
-    this.getShopList();
   }
 
   updateFilters() {
     this.page.pageNumber = 0;
+    this.cache = new Map();
     this.currentFilters['query'] = this.shopSearchForm.get('query').value;
     if (this.shopSearchForm.get('status').value != '') 
       this.currentFilters['status'] = this.shopSearchForm.get('status').value;
@@ -105,8 +105,14 @@ export class ShopListComponent implements OnInit {
   }
 
   getShopList() {
+    let offset = this.page.pageNumber * this.pageSize
+    if(this.cache[offset] != null) {
+      this.rows = this.cache[this.page.pageNumber * this.pageSize]
+      return
+    }
+
     this.isLoading = true;
-    let paramString = 'offset=' + this.page.pageNumber * this.pageSize;
+    let paramString = 'offset=' + offset;
     for(let i = 0; i < this.currentFilters['status'].length ; i++) {
       paramString = paramString + `&statuses[]=${this.currentFilters['status'][i]}`
     }
@@ -119,9 +125,10 @@ export class ShopListComponent implements OnInit {
 
     this.shopService.getShopList(paramString)
     .then(response => {
-      this.rows = response['data']['shops']
-      this.page.totalElements = response['data']['total']
+      this.rows = response['data']['shops'];
+      this.page.totalElements = response['data']['total'];
       this.page.totalPages = response['data']['total'] / this.pageSize;
+      this.updateCache(offset, response);
     })
     .catch(error => {
       console.log(error)
@@ -142,4 +149,8 @@ export class ShopListComponent implements OnInit {
     }
   }
 
+  updateCache(offset: int, response: Object) {
+    this.cache[offset] = response['data']['shops']
+    this.cache['total'] = response['data']['total']
+  }
 }
