@@ -26,7 +26,7 @@ export class Page {
   styleUrls: ['./shop-list.component.css']
 })
 export class ShopListComponent implements OnInit {
-  
+
   rows = [];
   page = new Page();
   isLoading = false;
@@ -68,21 +68,16 @@ export class ShopListComponent implements OnInit {
       deleted: new ExtendedFormControl('', [], 'deleted'),
       className: 'shop-search'
     });
-
-    this.currentFilters['query'] = '';
-    this.currentFilters['deleted'] = '';
-    this.currentFilters['status'] = '';
-    this.currentFilters['sortorder'] = '';
-    this.currentFilters['fromDate'] = '';
-    this.currentFilters['toDate'] = this.datepipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss');
   }
 
   ngOnInit(): void {
+    this.resetFilters();
     this.setPage({ offset: 0 });
   }
 
   updateFilters() {
     this.page.pageNumber = 0;
+    this.resetFilters();
     this.cache = new Map();
     this.currentFilters['query'] = this.shopSearchForm.get('query').value;
     if (this.shopSearchForm.get('status').value != '') 
@@ -117,10 +112,11 @@ export class ShopListComponent implements OnInit {
       paramString = paramString + `&statuses[]=${this.currentFilters['status'][i]}`
     }
 
-    if (this.currentFilters['deleted'] != '') paramString = paramString + `&deleted=${this.currentFilters['deleted']}`
-    // if (this.currentFilters['fromDate'] != '') paramString = paramString + `&start_time=${this.currentFilters['fromDate']}`
-    // if (this.currentFilters['toDate'] != '') paramString = paramString + `&end_time=${this.currentFilters['toDate']}`
-    if (this.currentFilters['sortorder'] != '') paramString = paramString + `&sort_order=${this.currentFilters['sortorder']}`
+    if (this.currentFilters['deleted'] != '') paramString = paramString + `&deleted=${this.currentFilters['deleted']}`;
+    // if (this.currentFilters['fromDate'] != '') paramString = paramString + `&start_time=${this.currentFilters['fromDate']}`;
+    // if (this.currentFilters['toDate'] != '') paramString = paramString + `&end_time=${this.currentFilters['toDate']}`;
+    if (this.currentFilters['sortorder'] != '') paramString = paramString + `&sort_order=${this.currentFilters['sortorder']}`;
+    if (this.currentFilters['query'] != '') paramString = paramString + `&name=${this.currentFilters['query']}`;
     console.log(`paramString: ${paramString}`) 
 
     this.shopService.getShopList(paramString)
@@ -149,8 +145,17 @@ export class ShopListComponent implements OnInit {
     }
   }
 
-  updateCache(offset: int, response: Object) {
+  updateCache(offset: number, response: Object) {
     this.cache[offset] = response['data']['shops']
     this.cache['total'] = response['data']['total']
+  }
+
+  resetFilters() {
+    this.currentFilters['query'] = '';
+    this.currentFilters['deleted'] = '';
+    this.currentFilters['status'] = '';
+    this.currentFilters['sortorder'] = '';
+    this.currentFilters['fromDate'] = '';
+    this.currentFilters['toDate'] = this.datepipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss');
   }
 }
