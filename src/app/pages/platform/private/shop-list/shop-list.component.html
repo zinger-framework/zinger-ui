@@ -1,104 +1,52 @@
-<div class="p-3 m-1 bg-white">
-  <form (ngSubmit)="updateFilters()" [formGroup]="shopSearchForm" class="shop-search row">   
-    <div class="col-3">
-      <label class="mb-2 pb-1">From</label>
-      <div class="form-inline">
-        <div class="form-group hidden">
-          <div>
-            <input name="datepicker"
-                   class="form-control d-none"
-                   ngbDatepicker
-                   #datepicker="ngbDatepicker"
-                   [autoClose]="'outside'"
-                   (dateSelect)="onDateSelection($event)"
-                   [displayMonths]="2"
-                   [dayTemplate]="t"
-                   outsideDays="hidden"
-                   [startDate]="fromDate!"
-                   tabindex="-1">
-            <ng-template #t let-date let-focused="focused">
-              <span class="custom-day"
-                    [class.focused]="focused"
-                    [class.range]="isRange(date)"
-                    [class.faded]="isHovered(date) || isInside(date)"
-                    (mouseenter)="hoveredDate = date"
-                    (mouseleave)="hoveredDate = null">
-                {{ date.day }}
-              </span>
-            </ng-template>
+<div class="p-3 mb-4 bg-white">
+  <form (ngSubmit)="updateFilters()" [formGroup]="shopSearchForm" class="shop-search"> 
+    <div class="row">
+      <div class="col-6">
+        <rangedatepicker></rangedatepicker>
+      </div> 
+       <div class="col-3">
+          <label>Status</label>
+          <div class="form-group form-group-status">
+            <ng-select [clearable]="false" [items]="statuses" [searchable]="false" formControlName="status"
+              [multiple]="true" placeholder="Status">
+            </ng-select>
+            <div class="form-control-feedback has-danger"></div>
           </div>
         </div>
-        <div class="form-group">
-          <div class="input-group">
-            <input #dpFromDate
-                   class="form-control" 
-                   placeholder="yyyy-mm-dd"
-                   name="dpFromDate"
-                   [value]="formatter.format(fromDate)"
-                   (input)="fromDate = validateInput(fromDate, dpFromDate.value)">
-            <div class="input-group-append">
-              <button class="btn btn-outline-secondary calendar" (click)="datepicker.toggle()" type="button"></button>
-            </div>
-          </div>
+        <div class="col-3">
+          <label>Search</label>
+          <form-input inputType="text" name="query" placeholder="Shop id or name "></form-input>
         </div>
-
-       <label class="mb-2">To</label> 
-       <div class="form-group">
-          <div class="input-group">
-            <input #dpToDate
-                   class="form-control" 
-                   placeholder="yyyy-mm-dd"
-                   name="dpToDate"
-                   [value]="formatter.format(toDate)"
-                   (input)="toDate = validateInput(toDate, dpToDate.value)">
-            <div class="input-group-append">
-              <button class="btn btn-outline-secondary calendar" (click)="datepicker.toggle()" type="button"></button>
-            </div>
-          </div>
+    </div>
+    <div class="row">
+      <div class="col-3">
+        <label>Deleted</label> 
+        <div class="form-group form-group-deleted">
+          <ng-select [clearable]="false" [items]="deletedStatus" [searchable]="false" formControlName="deleted"
+           [multiple]="false" placeholder="Delete Status">
+          </ng-select>
+          <div class="form-control-feedback has-danger"></div>
+        </div> 
+      </div>
+      <div class="col-3">
+        <label>Sort</label> 
+        <div class="form-group form-group-sortorder">
+          <ng-select [clearable]="false" [items]="sortItems" [searchable]="false" formControlName="sortorder"
+            placeholder="Delete Status">
+          </ng-select>
+          <div class="form-control-feedback has-danger"></div>
         </div>
       </div>
-    </div>
-
-    <div class="col-3">
-      <label>Status</label>
-      <div class="form-group form-group-status">
-        <ng-select [clearable]="false" [items]="statuses" [searchable]="false" formControlName="status"
-          [multiple]="true" placeholder="Status">
-        </ng-select>
-        <div class="form-control-feedback has-danger"></div>
-      </div>
-
-      <label>Deleted</label> 
-      <div class="form-group form-group-deleted">
-        <ng-select [clearable]="false" [items]="deletedStatus" [searchable]="false" formControlName="deleted"
-         [multiple]="false" placeholder="Delete Status">
-        </ng-select>
-        <div class="form-control-feedback has-danger"></div>
+      <div class="col-1 mt-3">
+        <input type="submit" name="Submit" class="btn btn-primary mt-4"/>
       </div>
     </div>
-
-    <div class="col-3">
-      <label>Search</label>
-      <form-input inputType="text" name="query" placeholder="Shop id or name "></form-input>
-
-      <label>Sort</label> 
-      <div class="form-group form-group-sortorder">
-        <ng-select [clearable]="false" [items]="sortItems" [searchable]="false" formControlName="sortorder"
-          placeholder="Delete Status">
-        </ng-select>
-        <div class="form-control-feedback has-danger"></div>
-      </div>
-    </div>
-
-    <div class="col-1 mt-3">
-      <div class="mt-5 pt-5"></div>
-      <div class="mt-1"></div>
-      <input type="submit" name="Submit" class="btn btn-primary mt-4"/>
-    </div>
-
     <div class="form-feedback has-danger mt-4 ml-3"></div>
   </form>
+</div>
 
+
+<div class="p-3 m-1 bg-white">
   <p class="mt-2"> 
     <span class="h6">Shop</span> | 
     <span class="small text-light-gray font-weight-bold"> Total({{page.totalElements}}) </span>
