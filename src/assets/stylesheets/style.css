@@ -4462,6 +4462,19 @@ button.calendar, button.calendar:active {
   background-repeat: no-repeat;
   background-size: 23px;
   background-position: center;
+  filter: invert(1);
+}
+
+.datatable-header-cell-label {
+  color: #031e23;
+  font-weight: 400;
+  font-family: 'Inter', sans-serif;
+  font-size: 16px !important; 
+}
+
+.btn-outline-grey {
+  color: #343a40;
+  border-color: #343a40 !important;
 }
 
 @media (min-width: 1301px) and (max-width: 1400px) {
