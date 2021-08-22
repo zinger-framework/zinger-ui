@@ -2,7 +2,7 @@
   <form (ngSubmit)="updateFilters()" [formGroup]="shopSearchForm" class="shop-search"> 
     <div class="row">
       <div class="col-6">
-        <rangedatepicker></rangedatepicker>
+        <rangedatepicker [fromDate]="this.fromDate" [toDate]="this.toDate" [hoveredDate]="this.hoveredDate" (dateSelectionEvent)="onDateSelection($event)"></rangedatepicker>
       </div> 
        <div class="col-3">
           <label>Status</label>

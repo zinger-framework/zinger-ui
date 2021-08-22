@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, EventEmitter, Input, Output} from '@angular/core';
 import {NgbDate, NgbCalendar, NgbDateParserFormatter} from '@ng-bootstrap/ng-bootstrap';
 import {BaseComponent} from "../../base.component";
 
@@ -9,14 +9,13 @@ import {BaseComponent} from "../../base.component";
 })
 export class RangedatepickerComponent extends BaseComponent {
 
-  hoveredDate: NgbDate | null = null;
-  fromDate: NgbDate | null;
-  toDate: NgbDate | null;
+  @Input() hoveredDate: NgbDate | null = null;
+  @Input() fromDate: NgbDate | null;
+  @Input() toDate: NgbDate | null;
+  @Output() dateSelectionEvent = new EventEmitter<Map<string, NgbDate>>();
 
   constructor(private calendar: NgbCalendar, public formatter: NgbDateParserFormatter) {
     super();
-    this.fromDate = calendar.getToday();
-    this.toDate = calendar.getNext(calendar.getToday(), 'd', 10);
   }
 
   onDateSelection(date: NgbDate) {
@@ -28,6 +27,11 @@ export class RangedatepickerComponent extends BaseComponent {
       this.toDate = null;
       this.fromDate = date;
     }
+
+    let selectedDates = new Map();
+    selectedDates.set('fromDate', this.fromDate);
+    selectedDates.set('toDate', this.toDate);
+    this.dateSelectionEvent.emit(selectedDates);
   }
 
   isHovered(date: NgbDate) {

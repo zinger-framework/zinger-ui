@@ -10,13 +10,9 @@ import {NgbCalendar, NgbDate, NgbDateParserFormatter} from "@ng-bootstrap/ng-boo
 import {APP_ROUTES} from '../../../../core/utils/constants.utils';
 
 export class Page {
-  // The number of elements in the page
   size: number;
-  // The total number of elements
   totalElements: number;
-  // The total number of pages
   totalPages: number;
-  // The current page number
   pageNumber: number = 0;
 }
 
@@ -54,16 +50,13 @@ export class ShopListComponent implements OnInit {
 
   constructor(private fb: FormBuilder, private toastr: ToastrService, private calendar: NgbCalendar, public formatter: NgbDateParserFormatter, 
     public datepipe: DatePipe, private shopService: ShopService, private router: Router) {
-    this.fromDate = calendar.getPrev(calendar.getToday(), 'd', 10);
-    this.toDate = calendar.getToday();
+    this.toDate = calendar.getPrev(calendar.getToday(), 'd', 10);
     this.page.pageNumber = 0;
     this.page.size = this.pageSize;
 
     this.shopSearchForm = this.fb.group({
       query: new ExtendedFormControl('', [], 'query'),
       status: new ExtendedFormControl('', [], 'status'),
-      startDate: new ExtendedFormControl('', [], 'startDate'),
-      endDate: new ExtendedFormControl('', [], 'endDate'),
       sortorder: new ExtendedFormControl('', [], 'sortorder'),
       deleted: new ExtendedFormControl('', [], 'deleted'),
       className: 'shop-search'
@@ -89,20 +82,20 @@ export class ShopListComponent implements OnInit {
     }
     if (this.shopSearchForm.get('sortorder').value != '') 
       this.currentFilters['sortorder'] = this.shopSearchForm.get('sortorder').value;
-    // if(this.fromDate != '')
-    //   this.currentFilters['fromDate'] = this.datepipe.transform(new Date(this.fromDate.year, this.fromDate.month - 1, 
-    //     this.fromDate.day), 'yyyy-MM-dd HH:mm:ss');
-    // if(this.toDate != '')
-    //   this.currentFilters['toDate'] = this.datepipe.transform(new Date(this.toDate.year, this.toDate.month - 1, 
-    //     this.toDate.day), 'yyyy-MM-dd HH:mm:ss');
+    if(this.fromDate != null)
+      this.currentFilters['fromDate'] = this.datepipe.transform(new Date(this.fromDate.year, this.fromDate.month - 1, 
+        this.fromDate.day), 'yyyy-MM-dd HH:mm:ss');
+    if(this.toDate != null)
+      this.currentFilters['toDate'] = this.datepipe.transform(new Date(this.toDate.year, this.toDate.month - 1, 
+        this.toDate.day), 'yyyy-MM-dd HH:mm:ss');
     console.log(this.currentFilters)
     this.getShopList();
   }
 
   getShopList() {
     let offset = this.page.pageNumber * this.pageSize
-    if(this.cache[offset] != null) {
-      this.rows = this.cache[this.page.pageNumber * this.pageSize]
+    if(this.cache.get(offset) != null) {
+      this.rows = this.cache.get(offset)
       return
     }
 
@@ -145,9 +138,14 @@ export class ShopListComponent implements OnInit {
     }
   }
 
+  onDateSelection(selectedDate: Map<string, NgbDate>) {
+    this.fromDate = selectedDate.get('fromDate')
+    this.toDate = selectedDate.get('toDate')
+  }
+
   updateCache(offset: number, response: Object) {
-    this.cache[offset] = response['data']['shops']
-    this.cache['total'] = response['data']['total']
+    this.cache.set(offset, response['data']['shops'])
+    this.cache.set('total', response['data']['total'])
   }
 
   resetFilters() {
