@@ -1,5 +1,5 @@
-<div class="p-3 mb-4 bg-white">
-  <form (ngSubmit)="updateFilters()" [formGroup]="shopSearchForm" class="shop-search"> 
+<div class="card-box overflow-hidden">
+  <form (ngSubmit)="updateFilters()" [formGroup]="shopSearchForm" class="shop-search p-4"> 
     <div class="row">
       <div class="col-6">
         <rangedatepicker [fromDate]="this.fromDate" [toDate]="this.toDate" [hoveredDate]="this.hoveredDate" (dateSelectionEvent)="onDateSelection($event)"></rangedatepicker>
@@ -49,85 +49,84 @@
         <input type="submit" name="Submit" class="btn btn-primary mt-4"/>
       </div>
     </div>
-    <div class="form-feedback has-danger mt-4 ml-3"></div>
+    <div class="form-feedback has-danger mt-1 ml-3"></div>
   </form>
-</div>
-
-
-<div class="p-3 m-1 bg-white">
-  <p class="mt-2"> 
-    <span class="h6">Shop</span> | 
-    <span class="h6"> Total({{page.totalElements}}) </span>
-  </p>
-  <ngx-datatable
-    #shopList
-    class="material bg-white box-shadow-none border-1"
-    [rows]="rows"
-    [sortType]="SortType.multi"
-    [columnMode]="ColumnMode.standard"
-    [loadingIndicator]="isLoading"
-    [headerHeight]="50"
-    [footerHeight]="50"
-    rowHeight="auto"
-    reorderable="true"
-    [externalPaging]="true"
-    [count]="page.totalElements"
-    [offset]="page.pageNumber"
-    [limit]="page.size"
-    (page)="setPage($event)"
-    (activate)="onClick($event)"
-  >
-
- <ngx-datatable-column name="Id" prop="id" [width]="50" [sortable]="false" [headerClass]="'h1'">
-    <ng-template let-id="value" ngx-datatable-cell-template>
-       {{id}}
-    </ng-template>
-  </ngx-datatable-column>
-
-  <ngx-datatable-column name="Name" prop="name" [width]="250" [sortable]="false">
-    <ng-template let-name="value" ngx-datatable-cell-template>
-        {{name}}
-    </ng-template>
-  </ngx-datatable-column>
-
-  <ngx-datatable-column name="Category" prop="category" [width]="200" [sortable]="false">
-    <ng-template let-category="value" ngx-datatable-cell-template>
-        {{category}}
-    </ng-template>
-  </ngx-datatable-column>
-
-  <ngx-datatable-column name="Status" prop="status" [width]="200" [sortable]="false">
-    <ng-template let-status="value" ngx-datatable-cell-template>
-        {{status}}
-    </ng-template>
-  </ngx-datatable-column>
-
-  <ngx-datatable-column name="Area" prop="area" [width]="200" [sortable]="false">
-    <ng-template let-area="value" ngx-datatable-cell-template>
-        {{ area }} 
-    </ng-template>
-  </ngx-datatable-column>
   
-  <ngx-datatable-footer style="margin-right: 50%;">
-    <ng-template 
-      ngx-datatable-footer-template
-      let-rowCount="rowCount"
-      let-pageSize="pageSize"
-      let-selectedCount="selectedCount"
-      let-curPage="curPage"
-      let-offset="offset"
-      let-isVisible="isVisible">
-        <datatable-pager
-            [pagerLeftArrowIcon]="'datatable-icon-left'"
-            [pagerRightArrowIcon]="'datatable-icon-right'"
-            [page]="curPage"
-            [size]="pageSize"
-            [count]="rowCount"
-            [hidden]="!((rowCount / pageSize) > 1)"
-            (change)="table.onFooterPage($event)">
-        </datatable-pager>
-    </ng-template>
-  </ngx-datatable-footer>
-  
-</ngx-datatable>
+  <div class="p-4">
+    <p class="mt-2"> 
+      <span class="h6">Shop</span> | 
+      <span class="h6"> Total({{page.totalElements}}) </span>
+    </p>
+    <ngx-datatable
+      #shopList
+      class="material bg-white box-shadow-none border-1"
+      [rows]="rows"
+      [sortType]="SortType.multi"
+      [columnMode]="ColumnMode.standard"
+      [loadingIndicator]="isLoading"
+      [headerHeight]="50"
+      [footerHeight]="50"
+      rowHeight="auto"
+      reorderable="true"
+      [externalPaging]="true"
+      [count]="page.totalElements"
+      [offset]="page.pageNumber"
+      [limit]="page.size"
+      (page)="setPage($event)"
+      (activate)="onClick($event)"
+    >
+
+     <ngx-datatable-column name="Id" prop="id" [width]="50" [sortable]="false" [headerClass]="'h1'">
+        <ng-template let-id="value" ngx-datatable-cell-template>
+           {{id}}
+        </ng-template>
+      </ngx-datatable-column>
+
+      <ngx-datatable-column name="Name" prop="name" [width]="250" [sortable]="false">
+        <ng-template let-name="value" ngx-datatable-cell-template>
+            {{name}}
+        </ng-template>
+      </ngx-datatable-column>
+
+      <ngx-datatable-column name="Category" prop="category" [width]="200" [sortable]="false">
+        <ng-template let-category="value" ngx-datatable-cell-template>
+            {{category}}
+        </ng-template>
+      </ngx-datatable-column>
+
+      <ngx-datatable-column name="Status" prop="status" [width]="200" [sortable]="false">
+        <ng-template let-status="value" ngx-datatable-cell-template>
+            {{status}}
+        </ng-template>
+      </ngx-datatable-column>
+
+      <ngx-datatable-column name="Area" prop="area" [width]="200" [sortable]="false">
+        <ng-template let-area="value" ngx-datatable-cell-template>
+            {{ area }} 
+        </ng-template>
+      </ngx-datatable-column>
+      
+      <ngx-datatable-footer style="margin-right: 50%;">
+        <ng-template 
+          ngx-datatable-footer-template
+          let-rowCount="rowCount"
+          let-pageSize="pageSize"
+          let-selectedCount="selectedCount"
+          let-curPage="curPage"
+          let-offset="offset"
+          let-isVisible="isVisible">
+            <datatable-pager
+                [pagerLeftArrowIcon]="'datatable-icon-left'"
+                [pagerRightArrowIcon]="'datatable-icon-right'"
+                [page]="curPage"
+                [size]="pageSize"
+                [count]="rowCount"
+                [hidden]="!((rowCount / pageSize) > 1)"
+                (change)="table.onFooterPage($event)">
+            </datatable-pager>
+        </ng-template>
+      </ngx-datatable-footer>
+      
+    </ngx-datatable>
+  </div>
 </div>

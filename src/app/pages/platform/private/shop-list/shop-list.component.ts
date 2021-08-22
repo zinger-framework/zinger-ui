@@ -28,7 +28,6 @@ export class ShopListComponent implements OnInit {
   isLoading = false;
   statuses = ['PENDING', 'ACTIVE', 'INACTIVE', 'BLOCKED']
   deletedStatus = ['ALL', 'TRUE', 'FALSE']
-  sortItems = ['ASC', 'DSC']
   columns = [
     {name: 'Id', prop: 'id', sortable: false, width: 10},
     {name: 'Name', prop: 'name', sortable: false, width:50},

@@ -4477,6 +4477,14 @@ button.calendar, button.calendar:active {
   border-color: #343a40 !important;
 }
 
+.ngb-dp-weekday {
+  color: #FF4141 !important;
+}
+
+.ngx-datatable.material .datatable-footer .datatable-pager a {
+  border-radius: 15px !important;
+}
+
 @media (min-width: 1301px) and (max-width: 1400px) {
   .header {
     width: calc(100% - 250px)
