@@ -57,7 +57,7 @@ export class ShopListComponent implements OnInit {
       query: new ExtendedFormControl('', [], 'query'),
       status: new ExtendedFormControl('', [], 'status'),
       sortorder: new ExtendedFormControl('', [], 'sortorder'),
-      deleted: new ExtendedFormControl('', [], 'deleted'),
+      deleted: new ExtendedFormControl(null, [], 'deleted'),
       className: 'shop-search'
     });
   }
