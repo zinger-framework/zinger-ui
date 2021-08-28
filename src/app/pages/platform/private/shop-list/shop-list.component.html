@@ -2,7 +2,7 @@
   <form (ngSubmit)="updateFilters()" [formGroup]="shopSearchForm" class="shop-search p-4"> 
     <div class="row">
       <div class="col-6">
-        <rangedatepicker [fromDate]="this.fromDate" [toDate]="this.toDate" [hoveredDate]="this.hoveredDate" (dateSelectionEvent)="onDateSelection($event)"></rangedatepicker>
+        <rangedatepicker [fromDate]="fromDate" [toDate]="toDate" [hoveredDate]="hoveredDate" (dateSelectionEvent)="onDateSelection($event)"></rangedatepicker>
       </div> 
       <div class="col-6">
         <label>Search</label>
@@ -61,13 +61,12 @@
       #shopList
       class="material bg-white box-shadow-none border-1"
       [rows]="rows"
-      [sortType]="SortType.multi"
       [columnMode]="ColumnMode.standard"
       [loadingIndicator]="isLoading"
       [headerHeight]="50"
       [footerHeight]="50"
       rowHeight="auto"
-      reorderable="true"
+      reorderable="false"
       [externalPaging]="true"
       [count]="page.totalElements"
       [offset]="page.pageNumber"
@@ -76,7 +75,7 @@
       (activate)="onRowClick($event)"
     >
 
-     <ngx-datatable-column name="Id" prop="id" [width]="50" [sortable]="false" [headerClass]="'h1'">
+     <ngx-datatable-column name="Id" prop="id" [width]="50" [sortable]="false">
         <ng-template let-id="value" ngx-datatable-cell-template>
            {{id}}
         </ng-template>
@@ -106,7 +105,7 @@
         </ng-template>
       </ngx-datatable-column>
       
-      <ngx-datatable-footer style="margin-right: 50%;">
+      <ngx-datatable-footer>
         <ng-template 
           ngx-datatable-footer-template
           let-rowCount="rowCount"
