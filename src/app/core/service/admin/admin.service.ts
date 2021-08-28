@@ -47,7 +47,7 @@ export class AdminService extends ApiService {
         setAuthToken = true;
       }
     } else if (!(this.publicAPIs.includes(path) ||
-      (path == API_ENDPOINTS.AUTH_OTP && ['FORGOT_PASSWORD', 'SIGNUP'].includes(params['purpose'])))) {
+        (path == API_ENDPOINTS.AUTH_OTP && ['FORGOT_PASSWORD', 'SIGNUP'].includes(params['purpose'])))) {
       if (this.jwtService.isLoggedIn()) {
         setAuthToken = true;
       }
