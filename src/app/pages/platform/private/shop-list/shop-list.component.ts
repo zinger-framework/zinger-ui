@@ -1,13 +1,15 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {DatePipe} from '@angular/common';
-import {Router} from '@angular/router';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {Router, ActivatedRoute} from '@angular/router';
+import {FormBuilder, FormGroup} from '@angular/forms';
 import {ShopService} from "../../../../core/service/platform/shop.service";
 import {SortType, ColumnMode} from "@swimlane/ngx-datatable";
 import {ExtendedFormControl} from '../../../../core/utils/extended-form-control.utils';
+import {handleError} from '../../../../core/utils/common.utils';
 import {ToastrService} from 'ngx-toastr';
-import {NgbCalendar, NgbDate, NgbDateParserFormatter} from "@ng-bootstrap/ng-bootstrap";
+import {NgbCalendar, NgbDate} from "@ng-bootstrap/ng-bootstrap";
 import {APP_ROUTES} from '../../../../core/utils/constants.utils';
+import {BaseComponent} from "../../../../base.component";
 
 export class Page {
   size: number;
@@ -17,42 +19,34 @@ export class Page {
 }
 
 @Component({
-  selector: 'app-shop-list',
+  selector: 'shop-list',
   templateUrl: './shop-list.component.html',
   styleUrls: ['./shop-list.component.css']
 })
-export class ShopListComponent implements OnInit {
-
-  rows = [];
-  page = new Page();
-  isLoading = false;
+export class ShopListComponent extends BaseComponent {
+  rows = []
+  page = new Page()
+  isLoading = false
   statuses = ['PENDING', 'ACTIVE', 'INACTIVE', 'BLOCKED']
   deletedStatus = ['ALL', 'TRUE', 'FALSE']
-  columns = [
-    {name: 'Id', prop: 'id', sortable: false, width: 10},
-    {name: 'Name', prop: 'name', sortable: false, width:50},
-    {name: 'Category', prop: 'category', sortable: false, width:50},
-    {name: 'Tags', prop: 'tags', sortable: false, width:50},
-    {name: 'Description', prop: 'description', sortable: false, width:50}
-  ];
   SortType = SortType;
   ColumnMode = ColumnMode;
   shopSearchForm: FormGroup;
   hoveredDate: NgbDate | null = null;
   fromDate: NgbDate | null;
   toDate: NgbDate | null;
-  rangeDate = '';
-  pageSize = 2;
+  pageSize = 1;
   currentFilters = {}
-  cache = new Map();  
+  cache = new Map();
   @ViewChild('shopList') table;
 
-  constructor(private fb: FormBuilder, private toastr: ToastrService, private calendar: NgbCalendar, public formatter: NgbDateParserFormatter, 
-    public datepipe: DatePipe, private shopService: ShopService, private router: Router) {
+  constructor(private fb: FormBuilder, private toastr: ToastrService, private calendar: NgbCalendar, 
+    public datepipe: DatePipe, private shopService: ShopService, private router: Router, private route: ActivatedRoute) {
+    super();
     this.toDate = calendar.getPrev(calendar.getToday(), 'd', 10);
     this.page.pageNumber = 0;
     this.page.size = this.pageSize;
-
+    
     this.shopSearchForm = this.fb.group({
       query: new ExtendedFormControl('', [], 'query'),
       status: new ExtendedFormControl('', [], 'status'),
@@ -64,7 +58,44 @@ export class ShopListComponent implements OnInit {
 
   ngOnInit(): void {
     this.resetFilters();
+    this.route.queryParams.subscribe(params => {
+      for (let key of Object.keys(this.currentFilters)) {
+        if(key in params && params[key] != '') {
+          let value = params[key]
+          if(key == 'status') {
+            switch(typeof params[key]) {
+              case 'string': 
+                value = this.statuses.includes(params[key]) ? [params[key]] : null
+                break;
+              default:
+                value = []
+                params[key].forEach(val => {
+                  if(this.statuses.includes(val)) value.push(val)
+                })
+            }
+            if(value == null || value == []) continue
+          }
+          this.updateSearchText()
+          this.currentFilters[key] = value
+          this.shopSearchForm.get(key)?.setValue(value)
+        }
+      }
+    });
     this.setPage({ offset: 0 });
+  }
+
+  updateSearchText() {
+    let query = {}
+    for (let key of Object.keys(this.currentFilters)) {
+      if(this.currentFilters[key] != '')
+        query[key] = this.currentFilters[key]
+    }
+
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: query,
+      queryParamsHandling: "merge",
+    });
   }
 
   updateFilters() {
@@ -87,7 +118,6 @@ export class ShopListComponent implements OnInit {
     if(this.toDate != null)
       this.currentFilters['toDate'] = this.datepipe.transform(new Date(this.toDate.year, this.toDate.month - 1, 
         this.toDate.day), 'yyyy-MM-dd HH:mm:ss');
-    console.log(this.currentFilters)
     this.getShopList();
   }
 
@@ -108,8 +138,8 @@ export class ShopListComponent implements OnInit {
     // if (this.currentFilters['fromDate'] != '') paramString = paramString + `&start_time=${this.currentFilters['fromDate']}`;
     // if (this.currentFilters['toDate'] != '') paramString = paramString + `&end_time=${this.currentFilters['toDate']}`;
     if (this.currentFilters['sortorder'] != '') paramString = paramString + `&sort_order=${this.currentFilters['sortorder']}`;
-    if (this.currentFilters['query'] != '') paramString = paramString + `&name=${this.currentFilters['query']}`;
-    console.log(`paramString: ${paramString}`) 
+    if (this.currentFilters['query'] != '') paramString = paramString + `&name=${this.currentFilters['query']}`; 
+    this.updateSearchText()
 
     this.shopService.getShopList(paramString)
     .then(response => {
@@ -119,7 +149,7 @@ export class ShopListComponent implements OnInit {
       this.updateCache(offset, response);
     })
     .catch(error => {
-      console.log(error)
+      handleError(error, this.shopSearchForm);
     })
     .finally(() => {
       this.isLoading = false;
@@ -131,7 +161,7 @@ export class ShopListComponent implements OnInit {
     this.getShopList();
   }
 
-  onClick(event) {
+  onRowClick(event) {
      if(event.type == 'click') {
         this.router.navigateByUrl(APP_ROUTES.SHOP + "/" + event.row.id);
     }

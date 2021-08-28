@@ -51,7 +51,7 @@
     </div>
     <div class="form-feedback has-danger mt-1 ml-3"></div>
   </form>
-  
+
   <div class="p-4">
     <p class="mt-2"> 
       <span class="h6">Shop</span> | 
@@ -73,7 +73,7 @@
       [offset]="page.pageNumber"
       [limit]="page.size"
       (page)="setPage($event)"
-      (activate)="onClick($event)"
+      (activate)="onRowClick($event)"
     >
 
      <ngx-datatable-column name="Id" prop="id" [width]="50" [sortable]="false" [headerClass]="'h1'">
