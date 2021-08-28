@@ -4426,10 +4426,6 @@ form.otp div.resend-otp span:hover {
   border: 1px solid #ecf0f4;
 }
 
-.datatable-header-cell-wrapper span {
-  font-size: 14px;
-}
-
 .datatable-footer-inner .active a {
   color: white !important;
   background-color: red !important;
