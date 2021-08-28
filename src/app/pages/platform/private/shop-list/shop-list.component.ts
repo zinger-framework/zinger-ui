@@ -35,7 +35,7 @@ export class ShopListComponent extends BaseComponent {
   hoveredDate: NgbDate | null = null;
   fromDate: NgbDate | null;
   toDate: NgbDate | null;
-  pageSize = 1;
+  pageSize = 2;
   currentFilters = {}
   cache = new Map();
   @ViewChild('shopList') table;
@@ -46,7 +46,7 @@ export class ShopListComponent extends BaseComponent {
     this.toDate = calendar.getPrev(calendar.getToday(), 'd', 10);
     this.page.pageNumber = 0;
     this.page.size = this.pageSize;
-    
+
     this.shopSearchForm = this.fb.group({
       query: new ExtendedFormControl('', [], 'query'),
       status: new ExtendedFormControl('', [], 'status'),

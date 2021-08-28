@@ -9,7 +9,6 @@ import {BaseComponent} from "../../base.component";
   templateUrl: './reason-modal.component.html',
   styleUrls: ['./reason-modal.component.css']
 })
-
 export class ReasonModalComponent extends BaseComponent {
   @Input() title;
   @Output() updateStatus: EventEmitter<{ title: string, formObject: FormGroup }> = new EventEmitter();

@@ -4421,19 +4421,6 @@ form.otp div.resend-otp span:hover {
   overflow: scroll;
 }
 
-.comment-accordion .card-header {
-  padding: 0px;
-  margin: 0px;
-  border: none;
-  background-color: white;
-}
-
-.comment-accordion .card {
-  padding: 0px;
-  margin: 0px;
-  border: none;
-}
-
 .box-shadow-none {
   box-shadow: none !important;
   border: 1px solid #ecf0f4;
