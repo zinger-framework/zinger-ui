@@ -11,19 +11,19 @@ import {CommentComponent} from './comment/comment.component';
 import {BreadcrumbComponent} from './breadcrumb/breadcrumb.component';
 import {AppRoutingModule} from "../app-routing.module";
 import {ReasonModalComponent} from './reason-modal/reason-modal.component';
-import {RangedatepickerComponent} from './rangedatepicker/rangedatepicker.component';
+import {RangeDatePickerComponent} from './range-date-picker/range-date-picker.component';
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 
 
 @NgModule({
-  declarations: [CardComponent, ImagePreviewComponent, AccordionHeaderComponent, CommentComponent, BreadcrumbComponent, ReasonModalComponent, RangedatepickerComponent],
+  declarations: [CardComponent, ImagePreviewComponent, AccordionHeaderComponent, CommentComponent, BreadcrumbComponent, ReasonModalComponent, RangeDatePickerComponent],
   exports: [
     CardComponent,
     ImagePreviewComponent,
     AccordionHeaderComponent,
     CommentComponent,
     BreadcrumbComponent,
-    RangedatepickerComponent
+    RangeDatePickerComponent
   ],
   imports: [
     CommonModule,

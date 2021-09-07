@@ -3,11 +3,11 @@ import {NgbDate, NgbCalendar, NgbDateParserFormatter} from '@ng-bootstrap/ng-boo
 import {BaseComponent} from "../../base.component";
 
 @Component({
-  selector: 'rangedatepicker',
-  templateUrl: './rangedatepicker.component.html',
-  styleUrls: ['./rangedatepicker.component.css']
+  selector: 'range-date-picker',
+  templateUrl: './range-date-picker.component.html',
+  styleUrls: ['./range-date-picker.component.css']
 })
-export class RangedatepickerComponent extends BaseComponent {
+export class RangeDatePickerComponent extends BaseComponent {
 
   @Input() hoveredDate: NgbDate | null = null;
   @Input() fromDate: NgbDate | null;
