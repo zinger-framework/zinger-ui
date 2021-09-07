@@ -1,6 +1,6 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {NgbDate, NgbCalendar, NgbDateParserFormatter} from '@ng-bootstrap/ng-bootstrap';
-import {BaseComponent} from "../../base.component";
+import {Component, EventEmitter, Input, Output} from '@angular/core'
+import {NgbDate, NgbCalendar, NgbDateParserFormatter} from '@ng-bootstrap/ng-bootstrap'
+import {BaseComponent} from "../../base.component"
 
 @Component({
   selector: 'range-date-picker',
@@ -9,46 +9,46 @@ import {BaseComponent} from "../../base.component";
 })
 export class RangeDatePickerComponent extends BaseComponent {
 
-  @Input() hoveredDate: NgbDate | null = null;
-  @Input() fromDate: NgbDate | null;
-  @Input() toDate: NgbDate | null;
-  @Output() dateSelectionEvent = new EventEmitter<Map<string, NgbDate>>();
+  @Input() hoveredDate: NgbDate | null = null
+  @Input() fromDate: NgbDate | null
+  @Input() toDate: NgbDate | null
+  @Output() dateSelectionEvent = new EventEmitter<Map<string, NgbDate>>()
 
   constructor(private calendar: NgbCalendar, public formatter: NgbDateParserFormatter) {
-    super();
+    super()
   }
 
   onDateSelection(date: NgbDate) {
     if (!this.fromDate && !this.toDate) {
-      this.fromDate = date;
+      this.fromDate = date
     } else if (this.fromDate && !this.toDate && date && date.after(this.fromDate)) {
-      this.toDate = date;
+      this.toDate = date
     } else {
-      this.toDate = null;
-      this.fromDate = date;
+      this.toDate = null
+      this.fromDate = date
     }
 
-    let selectedDates = new Map();
-    selectedDates.set('fromDate', this.fromDate);
-    selectedDates.set('toDate', this.toDate);
-    this.dateSelectionEvent.emit(selectedDates);
+    let selectedDates = new Map()
+    selectedDates.set('fromDate', this.fromDate)
+    selectedDates.set('toDate', this.toDate)
+    this.dateSelectionEvent.emit(selectedDates)
   }
 
   isHovered(date: NgbDate) {
-    return this.fromDate && !this.toDate && this.hoveredDate && date.after(this.fromDate) && date.before(this.hoveredDate);
+    return this.fromDate && !this.toDate && this.hoveredDate && date.after(this.fromDate) && date.before(this.hoveredDate)
   }
 
   isInside(date: NgbDate) {
-    return this.toDate && date.after(this.fromDate) && date.before(this.toDate);
+    return this.toDate && date.after(this.fromDate) && date.before(this.toDate)
   }
 
   isRange(date: NgbDate) {
-    return date.equals(this.fromDate) || (this.toDate && date.equals(this.toDate)) || this.isInside(date) || this.isHovered(date);
+    return date.equals(this.fromDate) || (this.toDate && date.equals(this.toDate)) || this.isInside(date) || this.isHovered(date)
   }
 
   validateInput(currentValue: NgbDate | null, input: string): NgbDate | null {
-    const parsed = this.formatter.parse(input);
-    return parsed && this.calendar.isValid(NgbDate.from(parsed)) ? NgbDate.from(parsed) : currentValue;
+    const parsed = this.formatter.parse(input)
+    return parsed && this.calendar.isValid(NgbDate.from(parsed)) ? NgbDate.from(parsed) : currentValue
   }
 
 }
