@@ -40,9 +40,9 @@ export class ShopListComponent extends BaseComponent {
     this.page.pageNumber = 0
     this.page.size = this.pageSize
     this.shopSearchForm = this.fb.group({
-      query: new ExtendedFormControl('', [], 'query'),
+      searchText: new ExtendedFormControl('', [], 'searchText'),
       status: new ExtendedFormControl('', [], 'status'),
-      sortorder: new ExtendedFormControl('', [], 'sortorder'),
+      sortOrder: new ExtendedFormControl('', [], 'sortOrder'),
       deleted: new ExtendedFormControl(null, [], 'deleted'),
       className: 'shop-search'
     })
@@ -94,7 +94,7 @@ export class ShopListComponent extends BaseComponent {
     this.page.pageNumber = 0
     this.resetFilters()
     this.cache = new Map()
-    this.currentFilters['query'] = this.shopSearchForm.get('query').value
+    this.currentFilters['searchText'] = this.shopSearchForm.get('searchText').value
     if (this.shopSearchForm.get('status').value != '') 
       this.currentFilters['status'] = this.shopSearchForm.get('status').value
     switch (this.shopSearchForm.get('deleted').value) {
@@ -102,8 +102,8 @@ export class ShopListComponent extends BaseComponent {
       case 'FALSE': this.currentFilters['deleted'] = 'false'; break;
       default: this.currentFilters['deleted'] = ''
     }
-    if (this.shopSearchForm.get('sortorder').value != '') 
-      this.currentFilters['sortorder'] = this.shopSearchForm.get('sortorder').value;
+    if (this.shopSearchForm.get('sortOrder').value != '') 
+      this.currentFilters['sortOrder'] = this.shopSearchForm.get('sortOrder').value;
     if(this.fromDate != null)
       this.currentFilters['fromDate'] = this.datepipe.transform(new Date(this.fromDate.year, this.fromDate.month - 1, 
         this.fromDate.day), 'yyyy-MM-dd HH:mm:ss')
@@ -129,8 +129,8 @@ export class ShopListComponent extends BaseComponent {
     if (this.currentFilters['deleted'] != '' && this.currentFilters['deleted'] != null ) paramString = paramString + `&deleted=${this.currentFilters['deleted']}`
     // if (this.currentFilters['fromDate'] != '') paramString = paramString + `&start_time=${this.currentFilters['fromDate']}`
     // if (this.currentFilters['toDate'] != '') paramString = paramString + `&end_time=${this.currentFilters['toDate']}`
-    if (this.currentFilters['sortorder'] != '' && this.currentFilters['sortorder'] != null) paramString = paramString + `&sort_order=${this.currentFilters['sortorder']}`
-    if (this.currentFilters['query'] != '' && this.currentFilters['query'] != null) paramString = paramString + `&name=${this.currentFilters['query']}`
+    if (this.currentFilters['sortOrder'] != '' && this.currentFilters['sortOrder'] != null) paramString = paramString + `&sort_order=${this.currentFilters['sortOrder']}`
+    if (this.currentFilters['searchText'] != '' && this.currentFilters['searchText'] != null) paramString = paramString + `&name=${this.currentFilters['searchText']}`
     this.updateUrl()
 
     this.shopService.getShopList(paramString)
@@ -154,7 +154,7 @@ export class ShopListComponent extends BaseComponent {
   }
 
   onRowClick(event) {
-     if(event.type == 'click') {
+    if(event.type == 'click') {
         this.router.navigateByUrl(APP_ROUTES.SHOP + '/' + event.row.id)
     }
   }
@@ -175,10 +175,10 @@ export class ShopListComponent extends BaseComponent {
   }
 
   resetFilters() {
-    this.currentFilters['query'] = ''
+    this.currentFilters['searchText'] = ''
     this.currentFilters['deleted'] = ''
     this.currentFilters['status'] = ''
-    this.currentFilters['sortorder'] = ''
+    this.currentFilters['sortOrder'] = ''
     this.currentFilters['fromDate'] = ''
     this.currentFilters['toDate'] = this.datepipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss')
   }
