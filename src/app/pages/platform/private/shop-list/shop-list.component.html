@@ -6,7 +6,7 @@
       </div> 
       <div class="col-6">
         <label>Search</label>
-        <form-input inputType="text" name="query" placeholder="Shop id or name "></form-input>
+        <form-input inputType="text" name="query" placeholder="Shop Id or Name "></form-input>
       </div>
     </div>
     <div class="row">
@@ -38,15 +38,18 @@
            </div>
 
            <div class="col-3 custom-control custom-radio">
-              <input id="dsc" type="radio" class="custom-control-input" value="DSC" name="sortorder" formControlName="sortorder">
-              <label class="custom-control-label" for="dsc">DSC</label>
+              <input id="dsc" type="radio" class="custom-control-input" value="DESC" name="sortorder" formControlName="sortorder">
+              <label class="custom-control-label" for="dsc">DESC</label>
            </div>
           </div>
           <div class="form-control-feedback has-danger"></div>
         </div>
       </div>
       <div class="col-1 mt-3">
-        <input type="submit" name="Submit" class="btn btn-primary mt-4"/>
+        <button type="button" class="btn btn-primary mt-4" (click)="reset()">Clear</button>
+      </div>
+      <div class="col-1 mt-3">
+        <input type="submit" name="Apply" class="btn btn-primary mt-4"/>
       </div>
     </div>
     <div class="form-feedback has-danger mt-1 ml-3"></div>
@@ -55,7 +58,7 @@
   <div class="p-4">
     <p class="mt-2"> 
       <span class="h6">Shop</span> | 
-      <span class="h6"> Total({{page.totalElements}}) </span>
+      <span class="h6"> Total ({{page.totalElements}}) </span>
     </p>
     <ngx-datatable
       #shopList

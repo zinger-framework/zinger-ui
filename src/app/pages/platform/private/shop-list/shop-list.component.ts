@@ -67,7 +67,7 @@ export class ShopListComponent extends BaseComponent {
             }
             if(value == null || value == []) continue
           }
-          this.updateSearchText()
+          this.updateUrl()
           this.currentFilters[key] = value
           this.shopSearchForm.get(key)?.setValue(value)
         }
@@ -76,13 +76,13 @@ export class ShopListComponent extends BaseComponent {
     this.setPage({ offset: 0 })
   }
 
-  updateSearchText() {
+  updateUrl() {
     let query = {}
     for (let key of Object.keys(this.currentFilters)) {
-      if(this.currentFilters[key] != '')
+      if(this.currentFilters[key] != ''){
         query[key] = this.currentFilters[key]
+      }
     }
-
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: query,
@@ -122,16 +122,16 @@ export class ShopListComponent extends BaseComponent {
 
     this.isLoading = true
     let paramString = 'offset=' + offset;
-    for(let i = 0; i < this.currentFilters['status'].length ; i++) {
+    for(let i = 0; i < this.currentFilters['status']?.length ; i++) {
       paramString = paramString + `&statuses[]=${this.currentFilters['status'][i]}`
     }
 
-    if (this.currentFilters['deleted'] != '') paramString = paramString + `&deleted=${this.currentFilters['deleted']}`
+    if (this.currentFilters['deleted'] != '' && this.currentFilters['deleted'] != null ) paramString = paramString + `&deleted=${this.currentFilters['deleted']}`
     // if (this.currentFilters['fromDate'] != '') paramString = paramString + `&start_time=${this.currentFilters['fromDate']}`
     // if (this.currentFilters['toDate'] != '') paramString = paramString + `&end_time=${this.currentFilters['toDate']}`
-    if (this.currentFilters['sortorder'] != '') paramString = paramString + `&sort_order=${this.currentFilters['sortorder']}`
-    if (this.currentFilters['query'] != '') paramString = paramString + `&name=${this.currentFilters['query']}` 
-    this.updateSearchText()
+    if (this.currentFilters['sortorder'] != '' && this.currentFilters['sortorder'] != null) paramString = paramString + `&sort_order=${this.currentFilters['sortorder']}`
+    if (this.currentFilters['query'] != '' && this.currentFilters['query'] != null) paramString = paramString + `&name=${this.currentFilters['query']}`
+    this.updateUrl()
 
     this.shopService.getShopList(paramString)
     .then(response => {
@@ -167,6 +167,11 @@ export class ShopListComponent extends BaseComponent {
   updateCache(offset: number, response: Object) {
     this.cache.set(offset, response['data']['shops'])
     this.cache.set('total', response['data']['total'])
+  }
+
+  reset() {
+    this.shopSearchForm.reset({className: 'shop-search'});
+    this.updateFilters()
   }
 
   resetFilters() {
