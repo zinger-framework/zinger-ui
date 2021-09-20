@@ -36,7 +36,7 @@ export class ShopListComponent extends BaseComponent {
     private router: Router, private route: ActivatedRoute) {
   
     super()
-    this.toDate = calendar.getPrev(calendar.getToday(), 'd', 10)
+    // this.toDate = calendar.getPrev(calendar.getToday(), 'd', 10)
     this.page.pageNumber = 0
     this.page.size = this.pageSize
     this.shopSearchForm = this.fb.group({
@@ -170,7 +170,9 @@ export class ShopListComponent extends BaseComponent {
   }
 
   reset() {
-    this.shopSearchForm.reset({className: 'shop-search'});
+    this.toDate = null
+    this.fromDate = null
+    this.shopSearchForm.reset({deleted: null, className: 'shop-search'});
     this.updateFilters()
   }
 
@@ -180,6 +182,7 @@ export class ShopListComponent extends BaseComponent {
     this.currentFilters['status'] = ''
     this.currentFilters['sortOrder'] = ''
     this.currentFilters['fromDate'] = ''
-    this.currentFilters['toDate'] = this.datepipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss')
+    this.currentFilters['toDate'] = ''
+    // this.currentFilters['toDate'] = this.datepipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss')
   }
 }

@@ -25,31 +25,11 @@
     </div>
   </div>
 
-  <div class="col-6">
-    <label class="mb-2 pb-1">From</label>
+  <div class="col-12">
+    <label class="mb-2 pb-1">Date Range</label>
     <div class="form-group">
       <div class="input-group">
-        <input #dpFromDate
-               class="form-control" placeholder="yyyy-mm-dd"
-               name="dpFromDate"
-               [value]="formatter.format(fromDate)"
-               (input)="fromDate = validateInput(fromDate, dpFromDate.value)">
-        <div class="input-group-append">
-          <button class="btn btn-outline-grey calendar" (click)="datepicker.toggle()" type="button"></button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="col-6">
-    <label class="mb-2 pb-1">To</label>
-    <div class="form-group">
-      <div class="input-group">
-        <input #dpToDate
-               class="form-control" placeholder="yyyy-mm-dd"
-               name="dpToDate"
-               [value]="formatter.format(toDate)"
-               (input)="toDate = validateInput(toDate, dpToDate.value)">
+        <input class="form-control" type="text" name="dateRange" [value]="this.dateRange" readonly="true">
         <div class="input-group-append">
           <button class="btn btn-outline-grey calendar" (click)="datepicker.toggle()" type="button"></button>
         </div>

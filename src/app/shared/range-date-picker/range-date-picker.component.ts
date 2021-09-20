@@ -9,10 +9,11 @@ import {BaseComponent} from "../../base.component"
 })
 export class RangeDatePickerComponent extends BaseComponent {
 
-  @Input() hoveredDate: NgbDate | null = null
+  @Input() hoveredDate: NgbDate | null
   @Input() fromDate: NgbDate | null
   @Input() toDate: NgbDate | null
   @Output() dateSelectionEvent = new EventEmitter<Map<string, NgbDate>>()
+  dateRange: string = 'yyyy-MM-dd to yyyy-MM-dd'
 
   constructor(private calendar: NgbCalendar, public formatter: NgbDateParserFormatter) {
     super()
@@ -32,6 +33,9 @@ export class RangeDatePickerComponent extends BaseComponent {
     selectedDates.set('fromDate', this.fromDate)
     selectedDates.set('toDate', this.toDate)
     this.dateSelectionEvent.emit(selectedDates)
+
+    if(this.fromDate) this.dateRange = this.formatter.format(this.fromDate).toString() 
+    if(this.toDate) this.dateRange += ' to ' + this.formatter.format(this.toDate).toString()
   }
 
   isHovered(date: NgbDate) {
