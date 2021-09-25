@@ -97,11 +97,13 @@ export class ShopListComponent extends BaseComponent {
     this.currentFilters['searchText'] = this.shopSearchForm.get('searchText').value
     if (this.shopSearchForm.get('status').value != '') 
       this.currentFilters['status'] = this.shopSearchForm.get('status').value
-    switch (this.shopSearchForm.get('deleted').value) {
-      case 'TRUE': this.currentFilters['deleted'] = 'true'; break;
-      case 'FALSE': this.currentFilters['deleted'] = 'false'; break;
-      default: this.currentFilters['deleted'] = ''
-    }
+    // switch (this.shopSearchForm.get('deleted').value) {
+    //   case 'TRUE': this.currentFilters['deleted'] = 'true'; break;
+    //   case 'FALSE': this.currentFilters['deleted'] = 'false'; break;
+    //   default: this.currentFilters['deleted'] = ''
+    // }
+    if(this.shopSearchForm.get('deleted').value != '')
+      this.currentFilters['deleted'] = this.shopSearchForm.get('deleted').value
     if (this.shopSearchForm.get('sortOrder').value != '') 
       this.currentFilters['sortOrder'] = this.shopSearchForm.get('sortOrder').value;
     if(this.fromDate != null)
@@ -184,5 +186,14 @@ export class ShopListComponent extends BaseComponent {
     this.currentFilters['fromDate'] = ''
     this.currentFilters['toDate'] = ''
     // this.currentFilters['toDate'] = this.datepipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss')
+  }
+
+  updateDeleteFilter() {
+    switch(this.shopSearchForm.get('deleted').value) {
+      case 'true': this.shopSearchForm.get('deleted').setValue('false'); break;
+      case 'false': 
+      default: this.shopSearchForm.get('deleted').setValue('true'); break;
+    }
+    console.log(`update delete filter ${this.shopSearchForm.get('deleted').value}`)
   }
 }

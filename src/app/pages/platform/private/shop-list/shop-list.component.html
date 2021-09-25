@@ -22,9 +22,10 @@
       <div class="col-3">
         <label>Deleted</label> 
         <div class="form-group form-group-deleted">
-          <ng-select [clearable]="false" [items]="deletedStatus" [searchable]="false" formControlName="deleted"
-           [multiple]="false" placeholder="Delete Status">
-          </ng-select>
+            <div class="custom-control custom-checkbox mt-2">
+              <input class="custom-control-input" id="deleted" type="checkbox" (click)="updateDeleteFilter()">
+              <label class="custom-control-label" for="deleted">Is Shop Deleted?</label>
+            </div>
           <div class="form-control-feedback has-danger"></div>
         </div> 
       </div>
