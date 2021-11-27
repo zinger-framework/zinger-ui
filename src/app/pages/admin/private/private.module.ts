@@ -17,6 +17,8 @@ import {HeaderComponent} from './header/header.component';
 import {ProfileComponent} from './profile/profile.component';
 import {ShopDetailsComponent} from './shop-details/shop-details.component';
 import {FormInputModule} from "../../../shared/form-elements/form-input.module";
+import { ShopListComponent } from './shop-list/shop-list.component';
+import {NgxDatatableModule} from '@swimlane/ngx-datatable';
 
 @NgModule({
   declarations: [
@@ -25,7 +27,8 @@ import {FormInputModule} from "../../../shared/form-elements/form-input.module";
     DashboardComponent,
     HeaderComponent,
     ProfileComponent,
-    ShopDetailsComponent
+    ShopDetailsComponent,
+    ShopListComponent
   ],
   exports: [
     PrivateComponent
@@ -41,7 +44,8 @@ import {FormInputModule} from "../../../shared/form-elements/form-input.module";
     NgbAccordionModule,
     NgbNavModule,
     NgxMaterialTimepickerModule,
-    FormInputModule
+    FormInputModule,
+    NgxDatatableModule
   ],
   providers: [DatePipe]
 })

@@ -13,7 +13,8 @@ export class RangeDatePickerComponent extends BaseComponent {
   @Input() fromDate: NgbDate | null
   @Input() toDate: NgbDate | null
   @Output() dateSelectionEvent = new EventEmitter<Map<string, NgbDate>>()
-  dateRange: string = 'yyyy-MM-dd to yyyy-MM-dd'
+  // dateRange: string = 'yyyy-MM-dd to yyyy-MM-dd'
+  dateRange: string = 'From Date - To Date'
 
   constructor(private calendar: NgbCalendar, public formatter: NgbDateParserFormatter) {
     super()
