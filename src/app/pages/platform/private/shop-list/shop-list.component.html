@@ -63,20 +63,16 @@
     </p>
     <ngx-datatable
       #shopList
-      class="material bg-white box-shadow-none border-1"
+      class="material bg-white box-shadow-none border-1 server-scrolling-demo"
       [rows]="rows"
       [columnMode]="ColumnMode.standard"
       [loadingIndicator]="isLoading"
-      [headerHeight]="50"
-      [footerHeight]="50"
-      rowHeight="auto"
+      [headerHeight]="headerHeight"
+      [rowHeight]="rowHeight"
       reorderable="false"
-      [externalPaging]="true"
-      [count]="page.totalElements"
-      [offset]="page.pageNumber"
-      [limit]="page.size"
-      (page)="setPage($event)"
       (activate)="onRowClick($event)"
+      [scrollbarV]="true"
+      (scroll)="onScroll($event.offsetY)"
     >
 
      <ngx-datatable-column name="Id" prop="id" [width]="50" [sortable]="false">
@@ -109,7 +105,7 @@
         </ng-template>
       </ngx-datatable-column>
       
-      <ngx-datatable-footer>
+      <!-- <ngx-datatable-footer>
         <ng-template 
           ngx-datatable-footer-template
           let-rowCount="rowCount"
@@ -128,7 +124,7 @@
                 (change)="table.onFooterPage($event)">
             </datatable-pager>
         </ng-template>
-      </ngx-datatable-footer>
+      </ngx-datatable-footer> -->
       
     </ngx-datatable>
   </div>

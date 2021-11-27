@@ -1,4 +1,4 @@
-import {Component, ViewChild} from '@angular/core'
+import {Component, ViewChild, ElementRef} from '@angular/core'
 import {DatePipe} from '@angular/common'
 import {Router, ActivatedRoute} from '@angular/router'
 import {FormBuilder, FormGroup} from '@angular/forms'
@@ -17,6 +17,9 @@ import {BaseComponent} from '../../../../base.component'
   styleUrls: ['./shop-list.component.css']
 })
 export class ShopListComponent extends BaseComponent {
+  readonly headerHeight = 50;
+  readonly rowHeight = 50;
+  readonly pageLimit = 2;
   rows = []
   page = new Page()
   isLoading = false
@@ -27,13 +30,14 @@ export class ShopListComponent extends BaseComponent {
   hoveredDate: NgbDate | null = null
   fromDate: NgbDate | null
   toDate: NgbDate | null
-  pageSize = 25
+  pageSize = 2
   currentFilters = {}
   cache = new Map()
   @ViewChild('shopList') table
+  endReached = false
 
   constructor(private fb: FormBuilder, private calendar: NgbCalendar, public datepipe: DatePipe, private shopService: ShopService, 
-    private router: Router, private route: ActivatedRoute) {
+    private router: Router, private route: ActivatedRoute, private el: ElementRef) {
   
     super()
     // this.toDate = calendar.getPrev(calendar.getToday(), 'd', 10)
@@ -61,6 +65,7 @@ export class ShopListComponent extends BaseComponent {
                 break
               default:
                 value = []
+
                 params[key].forEach(val => {
                   if(this.statuses.includes(val)) value.push(val)
                 })
@@ -74,6 +79,7 @@ export class ShopListComponent extends BaseComponent {
       }
     })
     this.setPage({ offset: 0 })
+    this.onScroll(0);
   }
 
   updateUrl() {
@@ -116,12 +122,13 @@ export class ShopListComponent extends BaseComponent {
   }
 
   getShopList() {
+    console.log("place 0")
     let offset = this.page.pageNumber * this.pageSize
-    if(this.cache.get(offset) != null) {
-      this.rows = this.cache.get(offset)
-      return
-    }
-
+    // if(this.cache.get(offset) != null) {
+    //   this.rows = this.cache.get(offset)
+    //   return
+    // }
+    console.log("place 1")
     this.isLoading = true
     let paramString = 'offset=' + offset;
     for(let i = 0; i < this.currentFilters['status']?.length ; i++) {
@@ -137,15 +144,20 @@ export class ShopListComponent extends BaseComponent {
 
     this.shopService.getShopList(paramString)
     .then(response => {
-      this.rows = response['data']['shops']
+      console.log("place 2")
+      this.rows = this.rows.concat(response['data']['shops'])
+      if (response['data']['shops'] == 0) this.endReached = true
       this.page.totalElements = response['data']['total']
       this.page.totalPages = response['data']['total'] / this.pageSize
       this.updateCache(offset, response)
     })
     .catch(error => {
+      console.log("place 3")
       handleError(error, this.shopSearchForm)
     })
     .finally(() => {
+      console.log("place 4")
+      console.log(this.rows)
       this.isLoading = false
     })
   }
@@ -196,4 +208,31 @@ export class ShopListComponent extends BaseComponent {
     }
     console.log(`update delete filter ${this.shopSearchForm.get('deleted').value}`)
   }
+
+
+  onScroll(offsetY: number) {
+    console.log("on scroll called " + this.el.nativeElement.getBoundingClientRect().height)
+    // total height of all rows in the viewport
+    const viewHeight = this.el.nativeElement.getBoundingClientRect().height - this.headerHeight;
+
+    // check if we scrolled to the end of the viewport
+    if (!this.isLoading && offsetY + viewHeight >= this.rows.length * this.rowHeight && this.endReached == false ) {
+      // total number of results to load
+      let limit = this.pageLimit;
+
+      // check if we haven't fetched any results yet
+      if (this.rows.length === 0) {
+        // calculate the number of rows that fit within viewport
+        const pageSize = Math.ceil(viewHeight / this.rowHeight);
+
+        // change the limit to pageSize such that we fill the first page entirely
+        // (otherwise, we won't be able to scroll past it)
+        limit = Math.max(pageSize, this.pageLimit);
+      }
+      console.log("inside on scroll")
+      this.page.pageNumber = this.page.pageNumber + 1
+      this.getShopList()
+    }
+  }
+
 }

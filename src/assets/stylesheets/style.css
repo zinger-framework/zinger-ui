@@ -4468,6 +4468,20 @@ button.calendar, button.calendar:active {
   border-radius: 15px !important;
 }
 
+/*.datatable-body {
+  height: 150px;
+}*/
+
+.server-scrolling-demo {
+  height: calc(100vh - 250px);
+  /*height: 250px;*/
+}
+
+/*::ng-deep .progress-linear {
+  position: fixed !important;
+  bottom: 0px;
+}
+*/
 @media (min-width: 1301px) and (max-width: 1400px) {
   .header {
     width: calc(100% - 250px)
