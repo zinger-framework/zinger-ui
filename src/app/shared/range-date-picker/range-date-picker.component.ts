@@ -26,9 +26,12 @@ export class RangeDatePickerComponent extends BaseComponent {
   }
 
   onDateSelection(date: NgbDate) {
+    console.log('on date selection called')
+    console.log(this.fromDate)
+    console.log(this.toDate)
+    console.log('on date selection end')
     if (!this.fromDate && !this.toDate) {
       this.fromDate = date
-      this.dateRange = 'From Date - To Date'
     } else if (this.fromDate && !this.toDate && date && date.after(this.fromDate)) {
       this.toDate = date
     } else {

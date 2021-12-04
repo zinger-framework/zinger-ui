@@ -31,6 +31,7 @@ export class ShopListComponent extends BaseComponent {
   endDate: NgbDate | null
   currentFilters = {}
   @ViewChild('shopList') table
+  @ViewChild('datePicker') datePicker
   endReached = false
   nextPageToken = null
   totalElements = 0
@@ -49,6 +50,12 @@ export class ShopListComponent extends BaseComponent {
   }
 
   ngOnInit(): void {
+  }
+
+  ngAfterViewInit() {
+    // console.log('start end')
+    // this.datePicker.onDateSelection(this.startDate)
+    // this.datePicker.onDateSelection(this.endDate)
     this.resetFilters()
     this.route.queryParams.subscribe(params => {
       for (let key of Object.keys(this.currentFilters)) {
@@ -66,6 +73,16 @@ export class ShopListComponent extends BaseComponent {
                 })
             }
             if(value == null || value == []) continue
+          }
+          else if(key == 'startDate') {
+            const [year, month, day] = params[key].split('-');
+            this.startDate = new NgbDate(parseInt(year), parseInt(month), parseInt(day));
+            this.datePicker.onDateSelection(this.startDate)
+          }
+          else if(key == 'endDate') {
+            const [year, month, day] = params[key].split('-');
+            this.endDate = new NgbDate(parseInt(year), parseInt(month), parseInt(day));
+            this.datePicker.onDateSelection(this.endDate)
           }
           this.currentFilters[key] = value
           this.shopSearchForm.get(key)?.setValue(value)
