@@ -67,12 +67,12 @@ export class ShopListComponent extends BaseComponent {
             }
             if(value == null || value == []) continue
           }
-          this.updateUrl()
           this.currentFilters[key] = value
           this.shopSearchForm.get(key)?.setValue(value)
         }
       }
     })
+    this.updateUrl()
     this.getShopList()
     this.onScroll(0);
   }
@@ -154,14 +154,14 @@ export class ShopListComponent extends BaseComponent {
   }
 
   reset() {
-    this.endDate = null
     this.startDate = null
+    this.endDate = null
     this.shopSearchForm.reset({deleted: null, className: 'shop-search'});
     this.updateFilters()
   }
 
   resetFilters() {
-    this.currentFilters['searchText'] = ''
+    this.currentFilters['id'] = ''
     this.currentFilters['status'] = ''
     this.currentFilters['sortOrder'] = ''
     this.currentFilters['startDate'] = ''

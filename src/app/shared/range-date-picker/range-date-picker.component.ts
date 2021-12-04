@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core'
+import {Component, EventEmitter, Input, Output, SimpleChanges} from '@angular/core'
 import {NgbDate, NgbCalendar, NgbDateParserFormatter} from '@ng-bootstrap/ng-bootstrap'
 import {BaseComponent} from "../../base.component"
 
@@ -13,16 +13,22 @@ export class RangeDatePickerComponent extends BaseComponent {
   @Input() fromDate: NgbDate | null
   @Input() toDate: NgbDate | null
   @Output() dateSelectionEvent = new EventEmitter<Map<string, NgbDate>>()
-  // dateRange: string = 'yyyy-MM-dd to yyyy-MM-dd'
   dateRange: string = 'From Date - To Date'
 
   constructor(private calendar: NgbCalendar, public formatter: NgbDateParserFormatter) {
     super()
   }
 
+   ngOnChanges(changes: SimpleChanges) {
+    if(changes.fromDate && changes.toDate && changes.fromDate.currentValue == null && changes.toDate.currentValue == null) {
+      this.dateRange = 'From Date - To Date'
+    }
+  }
+
   onDateSelection(date: NgbDate) {
     if (!this.fromDate && !this.toDate) {
       this.fromDate = date
+      this.dateRange = 'From Date - To Date'
     } else if (this.fromDate && !this.toDate && date && date.after(this.fromDate)) {
       this.toDate = date
     } else {
