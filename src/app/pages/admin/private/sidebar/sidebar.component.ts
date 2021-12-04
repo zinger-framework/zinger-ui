@@ -18,13 +18,13 @@ export class SidebarComponent extends BaseComponent {
   ngOnInit(): void {
   }
 
-  addShop() {
-    this.shopService.addNewShop()
-      .then(response => {
-        this.router.navigate([APP_ROUTES.SHOP + '/' + response['data']['shop']['id']], {state: response['data']})
-      })
-      .catch(error => {
-        this.toastr.error(error['error']['message']);
-      })
-  }
+  // addShop() {
+  //   this.shopService.addNewShop()
+  //     .then(response => {
+  //       this.router.navigate([APP_ROUTES.SHOP + '/' + response['data']['shop']['id']], {state: response['data']})
+  //     })
+  //     .catch(error => {
+  //       this.toastr.error(error['error']['message']);
+  //     })
+  // }
 }
