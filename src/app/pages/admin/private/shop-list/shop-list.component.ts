@@ -44,7 +44,6 @@ export class ShopListComponent extends BaseComponent {
       id: new ExtendedFormControl('', [], 'id'),
       status: new ExtendedFormControl('', [], 'status'),
       sortOrder: new ExtendedFormControl('', [], 'sortOrder'),
-      deleted: new ExtendedFormControl(null, [], 'deleted'),
       className: 'shop-search'
     })
   }
@@ -53,10 +52,7 @@ export class ShopListComponent extends BaseComponent {
   }
 
   ngAfterViewInit() {
-    // console.log('start end')
-    // this.datePicker.onDateSelection(this.startDate)
-    // this.datePicker.onDateSelection(this.endDate)
-    this.resetFilters()
+    this.currentFilters = {'id': '', 'status': '', 'sortOrder': '', 'startDate': null, 'endDate': null}
     this.route.queryParams.subscribe(params => {
       for (let key of Object.keys(this.currentFilters)) {
         if(key in params && params[key] != '') {
@@ -109,13 +105,10 @@ export class ShopListComponent extends BaseComponent {
   }
 
   updateFilters() {
-    this.resetFilters()
-    this.nextPageToken = null
+    this.currentFilters = {'id': '', 'status': '', 'sortOrder': '', 'startDate': null, 'endDate': null}
     this.currentFilters['id'] = this.shopSearchForm.get('id').value
     if (this.shopSearchForm.get('status').value != '') 
       this.currentFilters['status'] = this.shopSearchForm.get('status').value
-    if(this.shopSearchForm.get('deleted').value != '')
-      this.currentFilters['deleted'] = this.shopSearchForm.get('deleted').value
     if (this.shopSearchForm.get('sortOrder').value != '') 
       this.currentFilters['sortOrder'] = this.shopSearchForm.get('sortOrder').value;
     if(this.startDate != null)
@@ -126,21 +119,26 @@ export class ShopListComponent extends BaseComponent {
         this.endDate.day), 'yyyy-MM-dd')
     this.rows = []
     this.endReached = false
+    this.nextPageToken = null
     this.getShopList()
   }
 
   getShopList() {
     this.isLoading = true
     let paramString = '';
-    for(let i = 0; i < this.currentFilters['status']?.length ; i++) {
-      paramString = paramString + `&statuses[]=${this.currentFilters['status'][i]}`
+
+    if (this.nextPageToken != null) 
+      paramString = paramString + `&next_page_token=${this.nextPageToken}`
+    else {
+      for(let i = 0; i < this.currentFilters['status']?.length ; i++) {
+        paramString = paramString + `&statuses[]=${this.currentFilters['status'][i]}`
+      }
+      if (this.currentFilters['startDate'] != null) paramString = paramString + `&start_date=${this.currentFilters['startDate']}`
+      if (this.currentFilters['endDate'] != null) paramString = paramString + `&end_date=${this.currentFilters['endDate']}`
+      if (this.currentFilters['sortOrder'] != '' && this.currentFilters['sortOrder'] != null) paramString = paramString + `&sort_order=${this.currentFilters['sortOrder']}`
+      if (this.currentFilters['id'] != '' && this.currentFilters['id'] != null) paramString = paramString + `&id=${this.currentFilters['id']}`
+      this.updateUrl()
     }
-    if (this.currentFilters['startDate'] != '') paramString = paramString + `&start_date=${this.currentFilters['startDate']}`
-    if (this.currentFilters['endDate'] != '') paramString = paramString + `&end_date=${this.currentFilters['endDate']}`
-    if (this.currentFilters['sortOrder'] != '' && this.currentFilters['sortOrder'] != null) paramString = paramString + `&sort_order=${this.currentFilters['sortOrder']}`
-    if (this.currentFilters['id'] != '' && this.currentFilters['id'] != null) paramString = paramString + `&id=${this.currentFilters['id']}`
-    this.updateUrl()
-    if (this.nextPageToken != null) paramString = paramString + `&next_page_token=${this.nextPageToken}`
 
     this.shopService.getShopList(paramString + `&page_size=10`)
     .then(response => {
@@ -173,27 +171,16 @@ export class ShopListComponent extends BaseComponent {
   reset() {
     this.startDate = null
     this.endDate = null
-    this.shopSearchForm.reset({deleted: null, className: 'shop-search'});
+    this.shopSearchForm.reset({className: 'shop-search'});
     this.updateFilters()
   }
 
-  resetFilters() {
-    this.currentFilters['id'] = ''
-    this.currentFilters['status'] = ''
-    this.currentFilters['sortOrder'] = ''
-    this.currentFilters['startDate'] = ''
-    this.currentFilters['endDate'] = ''
-    // this.currentFilters['endDate'] = this.datepipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss')
-  }
-
   onScroll(offsetY: number) {
-    console.log("on scroll called " + this.el.nativeElement.getBoundingClientRect().height)
     // total height of all rows in the viewport
     const viewHeight = this.el.nativeElement.getBoundingClientRect().height - this.headerHeight;
 
     // check if we scrolled to the end of the viewport
     if (!this.isLoading && offsetY + viewHeight >= this.rows.length * this.rowHeight && this.endReached == false ) {
-      console.log("scroll request made")
       // total number of results to load
       let limit = this.pageLimit;
 
@@ -219,5 +206,4 @@ export class ShopListComponent extends BaseComponent {
         this.toastr.error(error['error']['message']);
       })
   }
-
 }
