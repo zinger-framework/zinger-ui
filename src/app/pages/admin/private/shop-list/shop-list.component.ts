@@ -13,7 +13,7 @@ import {BaseComponent} from '../../../../base.component'
 import {ToastrService} from "ngx-toastr";
 
 @Component({
-  selector: 'app-shop-list',
+  selector: 'shop-list',
   templateUrl: './shop-list.component.html',
   styleUrls: ['./shop-list.component.css']
 })
@@ -69,14 +69,10 @@ export class ShopListComponent extends BaseComponent {
               if(status_value != null && status_value != []) this.shopSearchForm.get('status')?.setValue(status_value)
               break
             case 'start_date':
-              var [year, month, day] = params[key].split('-');
-              this.shopSearchForm.get('start_date').setValue(new NgbDate(parseInt(year), parseInt(month), parseInt(day)))
-              this.datePicker.onDateSelection(this.shopSearchForm.get('start_date').value)
-              break
             case 'end_date':
               var [year, month, day] = params[key].split('-');
-              this.shopSearchForm.get('end_date').setValue(new NgbDate(parseInt(year), parseInt(month), parseInt(day)))
-              this.datePicker.onDateSelection(this.shopSearchForm.get('end_date').value)
+              this.shopSearchForm.get(key).setValue(new NgbDate(parseInt(year), parseInt(month), parseInt(day)))
+              this.datePicker.onDateSelection(this.shopSearchForm.get(key).value)
               break
             case 'sort_order':
             case 'id':
