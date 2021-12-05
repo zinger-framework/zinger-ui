@@ -22,7 +22,7 @@ export class ShopListComponent extends BaseComponent {
   readonly rowHeight = 50;
   readonly pageLimit = 2;
   rows = []
-  isLoading = false
+  isLoading = true
   statuses = ['PENDING', 'ACTIVE', 'INACTIVE', 'BLOCKED']
   ColumnMode = ColumnMode
   shopSearchForm: FormGroup
