@@ -19,7 +19,7 @@ export class RangeDatePickerComponent extends BaseComponent {
     super()
   }
 
-   ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges(changes: SimpleChanges) {
     if(changes.fromDate && changes.toDate && changes.fromDate.currentValue == null && changes.toDate.currentValue == null) {
       this.dateRange = 'From Date - To Date'
     }

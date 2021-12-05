@@ -27,23 +27,21 @@ export class ShopListComponent extends BaseComponent {
   ColumnMode = ColumnMode
   shopSearchForm: FormGroup
   hoveredDate: NgbDate | null = null
-  startDate: NgbDate | null
-  endDate: NgbDate | null
-  currentFilters = {}
   @ViewChild('shopList') table
   @ViewChild('datePicker') datePicker
   endReached = false
   nextPageToken = null
   totalElements = 0
 
-  constructor(private fb: FormBuilder, private calendar: NgbCalendar, public datepipe: DatePipe, private shopService: ShopService, 
-    private router: Router, private route: ActivatedRoute, private el: ElementRef, private toastr: ToastrService) {
-  
+  constructor(private fb: FormBuilder, public datepipe: DatePipe, private shopService: ShopService, private router: Router, 
+    private route: ActivatedRoute, private el: ElementRef, private toastr: ToastrService) {
     super()
     this.shopSearchForm = this.fb.group({
       id: new ExtendedFormControl('', [], 'id'),
       status: new ExtendedFormControl('', [], 'status'),
-      sortOrder: new ExtendedFormControl('', [], 'sortOrder'),
+      sort_order: new ExtendedFormControl('', [], 'sort_order'),
+      start_date: new ExtendedFormControl(null, [], 'start_date'),
+      end_date: new ExtendedFormControl(null, [], 'end_date'),
       className: 'shop-search'
     })
   }
@@ -52,38 +50,40 @@ export class ShopListComponent extends BaseComponent {
   }
 
   ngAfterViewInit() {
-    this.currentFilters = {'id': '', 'status': '', 'sortOrder': '', 'startDate': null, 'endDate': null}
     this.route.queryParams.subscribe(params => {
-      for (let key of Object.keys(this.currentFilters)) {
-        if(key in params && params[key] != '') {
-          let value = params[key]
-          if(key == 'status') {
-            switch(typeof params[key]) {
-              case 'string': 
-                value = this.statuses.includes(params[key]) ? [params[key]] : null
-                break
-              default:
-                value = []
-                params[key].forEach(val => {
-                  if(this.statuses.includes(val)) value.push(val)
-                })
-            }
-            if(value == null || value == []) continue
+      Object.entries(params).forEach(
+        ([key, value]) => {
+          switch(key) {
+            case 'status':
+              var status_value = [] 
+              switch(typeof value) {
+                case 'string':
+                  status_value = this.statuses.includes(params[key]) ? [params[key]] : null
+                  break
+                default:
+                  status_value = []
+                  value.forEach(val => {
+                    if(this.statuses.includes(val)) status_value.push(val)
+                  })
+              }
+              if(status_value != null && status_value != []) this.shopSearchForm.get('status')?.setValue(status_value)
+              break
+            case 'start_date':
+              var [year, month, day] = params[key].split('-');
+              this.shopSearchForm.get('start_date').setValue(new NgbDate(parseInt(year), parseInt(month), parseInt(day)))
+              this.datePicker.onDateSelection(this.shopSearchForm.get('start_date').value)
+              break
+            case 'end_date':
+              var [year, month, day] = params[key].split('-');
+              this.shopSearchForm.get('end_date').setValue(new NgbDate(parseInt(year), parseInt(month), parseInt(day)))
+              this.datePicker.onDateSelection(this.shopSearchForm.get('end_date').value)
+              break
+            case 'sort_order':
+            case 'id':
+              this.shopSearchForm.get(key)?.setValue(value)
           }
-          else if(key == 'startDate') {
-            const [year, month, day] = params[key].split('-');
-            this.startDate = new NgbDate(parseInt(year), parseInt(month), parseInt(day));
-            this.datePicker.onDateSelection(this.startDate)
-          }
-          else if(key == 'endDate') {
-            const [year, month, day] = params[key].split('-');
-            this.endDate = new NgbDate(parseInt(year), parseInt(month), parseInt(day));
-            this.datePicker.onDateSelection(this.endDate)
-          }
-          this.currentFilters[key] = value
-          this.shopSearchForm.get(key)?.setValue(value)
         }
-      }
+      )
     })
     this.updateUrl()
     this.getShopList()
@@ -92,10 +92,19 @@ export class ShopListComponent extends BaseComponent {
 
   updateUrl() {
     let query = {}
-    for (let key of Object.keys(this.currentFilters)) {
-      if(this.currentFilters[key] != ''){
-        query[key] = this.currentFilters[key]
-      }
+    for (const field in this.shopSearchForm.controls) { 
+      if(field != 'className' && this.shopSearchForm.get(field).value != '' && this.shopSearchForm.get(field).value != null)
+        switch(field) {
+          case 'start_date':
+          case 'end_date':
+            var date_field = this.shopSearchForm.get(field).value
+            query[field] = `${this.datepipe.transform(new Date(date_field.year, date_field.month - 1, date_field.day), 'yyyy-MM-dd')}`
+            break
+          default:
+            query[field] = this.shopSearchForm.get(field).value
+        }
+       else 
+        query[field] = null
     }
     this.router.navigate([], {
       relativeTo: this.route,
@@ -105,18 +114,6 @@ export class ShopListComponent extends BaseComponent {
   }
 
   updateFilters() {
-    this.currentFilters = {'id': '', 'status': '', 'sortOrder': '', 'startDate': null, 'endDate': null}
-    this.currentFilters['id'] = this.shopSearchForm.get('id').value
-    if (this.shopSearchForm.get('status').value != '') 
-      this.currentFilters['status'] = this.shopSearchForm.get('status').value
-    if (this.shopSearchForm.get('sortOrder').value != '') 
-      this.currentFilters['sortOrder'] = this.shopSearchForm.get('sortOrder').value;
-    if(this.startDate != null)
-      this.currentFilters['startDate'] = this.datepipe.transform(new Date(this.startDate.year, this.startDate.month - 1, 
-        this.startDate.day), 'yyyy-MM-dd')
-    if(this.endDate != null)
-      this.currentFilters['endDate'] = this.datepipe.transform(new Date(this.endDate.year, this.endDate.month - 1, 
-        this.endDate.day), 'yyyy-MM-dd')
     this.rows = []
     this.endReached = false
     this.nextPageToken = null
@@ -126,17 +123,27 @@ export class ShopListComponent extends BaseComponent {
   getShopList() {
     this.isLoading = true
     let paramString = '';
-
     if (this.nextPageToken != null) 
       paramString = paramString + `&next_page_token=${this.nextPageToken}`
     else {
-      for(let i = 0; i < this.currentFilters['status']?.length ; i++) {
-        paramString = paramString + `&statuses[]=${this.currentFilters['status'][i]}`
+      for (const field in this.shopSearchForm.controls) {
+        if(this.shopSearchForm.get(field).value != null && this.shopSearchForm.get(field).value != '')
+          switch(field) {
+            case 'status':
+              for(let i = 0; i < this.shopSearchForm.get('status').value.length ; i++) {
+                  paramString = paramString + `&statuses[]=${this.shopSearchForm.get('status').value[i]}`
+              } break
+            case 'start_date':
+            case 'end_date':
+              var date_field = this.shopSearchForm.get(field).value
+              paramString = paramString + `&${field}=${this.datepipe.transform(new Date(date_field.year, date_field.month - 1, 
+                date_field.day), 'yyyy-MM-dd')}`; break
+            case 'id':
+            case 'sort_order':
+              paramString = paramString + `&${field}=${this.shopSearchForm.get(field).value}`
+              break
+          }
       }
-      if (this.currentFilters['startDate'] != null) paramString = paramString + `&start_date=${this.currentFilters['startDate']}`
-      if (this.currentFilters['endDate'] != null) paramString = paramString + `&end_date=${this.currentFilters['endDate']}`
-      if (this.currentFilters['sortOrder'] != '' && this.currentFilters['sortOrder'] != null) paramString = paramString + `&sort_order=${this.currentFilters['sortOrder']}`
-      if (this.currentFilters['id'] != '' && this.currentFilters['id'] != null) paramString = paramString + `&id=${this.currentFilters['id']}`
       this.updateUrl()
     }
 
@@ -164,13 +171,13 @@ export class ShopListComponent extends BaseComponent {
   }
 
   onDateSelection(selectedDate: Map<string, NgbDate>) {
-    this.startDate = selectedDate.get('fromDate')
-    this.endDate = selectedDate.get('toDate')
+    this.shopSearchForm.get('start_date').setValue(selectedDate.get('fromDate'))
+    this.shopSearchForm.get('end_date').setValue(selectedDate.get('toDate'))
   }
 
   reset() {
-    this.startDate = null
-    this.endDate = null
+    this.shopSearchForm.get('start_date').setValue(null)
+    this.shopSearchForm.get('end_date').setValue(null)
     this.shopSearchForm.reset({className: 'shop-search'});
     this.updateFilters()
   }
