@@ -2,7 +2,9 @@
   <form (ngSubmit)="updateFilters()" [formGroup]="shopSearchForm" class="shop-search p-4"> 
     <div class="row">
       <div class="col-6">
-        <range-date-picker #datePicker [fromDate]="this.shopSearchForm.get('start_date').value" [toDate]="this.shopSearchForm.get('end_date').value" [hoveredDate]="hoveredDate" (dateSelectionEvent)="onDateSelection($event)"></range-date-picker>
+        <range-date-picker #datePicker [fromDate]="this.shopSearchForm.get('start_date').value" 
+        [toDate]="this.shopSearchForm.get('end_date').value" [hoveredDate]="hoveredDate" 
+        (dateSelectionEvent)="onDateSelection($event)"></range-date-picker>
       </div> 
       <div class="col-6">
         <label>Search</label>
@@ -27,7 +29,6 @@
               <input id="asc" type="radio" class="custom-control-input" value="ASC" name="sort_order" formControlName="sort_order">
               <label class="custom-control-label" for="asc">ASC</label>
            </div>
-
            <div class="col-3 custom-control custom-radio">
             <input id="dsc" type="radio" class="custom-control-input" value="DESC" name="sort_order" formControlName="sort_order">
               <label class="custom-control-label" for="dsc">DESC</label>
@@ -66,8 +67,7 @@
       reorderable="false"
       (activate)="onRowClick($event)"
       [scrollbarV]="true"
-      (scroll)="onScroll($event.offsetY)"
-    >
+      (scroll)="onScroll($event.offsetY)">
 
      <ngx-datatable-column name="Id" prop="id" [width]="50" [sortable]="false">
         <ng-template let-id="value" ngx-datatable-cell-template>
@@ -98,7 +98,6 @@
             {{ area }} 
         </ng-template>
       </ngx-datatable-column>
-      
     </ngx-datatable>
   </div>
 </div>
