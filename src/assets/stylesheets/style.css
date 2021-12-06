@@ -4426,15 +4426,6 @@ form.otp div.resend-otp span:hover {
   border: 1px solid #ecf0f4;
 }
 
-.datatable-footer-inner .active a {
-  color: white !important;
-  background-color: red !important;
-}
-
-.datatable-footer-inner ul {
-  margin-right: 45% !important;
-}
-
 .filters input {
   border:  solid 0.5px lightgray;
 }
@@ -4464,24 +4455,11 @@ button.calendar, button.calendar:active {
   color: #FF4141 !important;
 }
 
-.ngx-datatable.material .datatable-footer .datatable-pager a {
-  border-radius: 15px !important;
-}
-
-/*.datatable-body {
-  height: 150px;
-}*/
-
 .server-scrolling-demo {
   height: calc(100vh - 250px);
   /*height: 250px;*/
 }
 
-/*::ng-deep .progress-linear {
-  position: fixed !important;
-  bottom: 0px;
-}
-*/
 @media (min-width: 1301px) and (max-width: 1400px) {
   .header {
     width: calc(100% - 250px)
