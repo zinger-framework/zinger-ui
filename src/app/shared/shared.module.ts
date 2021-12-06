@@ -14,7 +14,6 @@ import {ReasonModalComponent} from './reason-modal/reason-modal.component';
 import {RangeDatePickerComponent} from './range-date-picker/range-date-picker.component';
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 
-
 @NgModule({
   declarations: [CardComponent, ImagePreviewComponent, AccordionHeaderComponent, CommentComponent, BreadcrumbComponent, ReasonModalComponent, RangeDatePickerComponent],
   exports: [
