@@ -19,7 +19,7 @@ import {ToastrService} from "ngx-toastr";
 export class ShopListComponent extends BaseComponent {
   readonly headerHeight = 50;
   readonly rowHeight = 50;
-  readonly pageLimit = 2;
+  readonly pageLimit = 10;
   rows = []
   isLoading = true
   statuses = ['PENDING', 'ACTIVE', 'INACTIVE', 'BLOCKED']
