@@ -5,8 +5,9 @@ import {NgSelectModule} from '@ng-select/ng-select';
 import {ReactiveFormsModule} from "@angular/forms";
 import {NgApexchartsModule} from 'ng-apexcharts';
 import {UiSwitchModule} from 'ngx-ui-switch';
-import {NgbAccordionModule, NgbNavModule} from "@ng-bootstrap/ng-bootstrap";
+import {NgbAccordionModule, NgbNavModule, NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import {NgxMaterialTimepickerModule} from "ngx-material-timepicker";
+import {NgxDatatableModule} from '@swimlane/ngx-datatable';
 
 import {SharedModule} from '../../../shared/shared.module';
 import {FormInputModule} from "../../../shared/form-elements/form-input.module";
@@ -17,6 +18,7 @@ import {DashboardComponent} from './dashboard/dashboard.component';
 import {HeaderComponent} from './header/header.component';
 import {ProfileComponent} from './profile/profile.component';
 import {ShopDetailsComponent} from "./shop-details/shop-details.component";
+import {ShopListComponent} from './shop-list/shop-list.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +27,8 @@ import {ShopDetailsComponent} from "./shop-details/shop-details.component";
     DashboardComponent,
     HeaderComponent,
     ProfileComponent,
-    ShopDetailsComponent
+    ShopDetailsComponent,
+    ShopListComponent
   ],
   exports: [
     PrivateComponent
@@ -41,7 +44,9 @@ import {ShopDetailsComponent} from "./shop-details/shop-details.component";
     NgbAccordionModule,
     NgxMaterialTimepickerModule,
     FormInputModule,
-    NgbNavModule
+    NgbNavModule,
+    NgxDatatableModule,
+    NgbModule
   ]
 })
 export class PrivateModule {

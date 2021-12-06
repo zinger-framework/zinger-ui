@@ -4421,6 +4421,45 @@ form.otp div.resend-otp span:hover {
   overflow: scroll;
 }
 
+.box-shadow-none {
+  box-shadow: none !important;
+  border: 1px solid #ecf0f4;
+}
+
+.filters input {
+  border:  solid 0.5px lightgray;
+}
+
+button.calendar, button.calendar:active {
+  width: 2.75rem;
+  background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACIAAAAcCAYAAAAEN20fAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAOxAAADsQBlSsOGwAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAEUSURBVEiJ7ZQxToVAEIY/YCHGxN6XGOIpnpaEsBSeQC9ArZbm9TZ6ADyBNzAhQGGl8Riv4BLAWAgmkpBYkH1b8FWT2WK/zJ8ZJ4qiI6XUI3ANnGKWBnht2/ZBDRK3hgVGNsCd7/ui+JkEIrKtqurLpEWaphd933+IyI3LEIdpCYCiKD6HcuOa/nwOa0ScJEnk0BJg0UTUWJRl6RxCYEzEmomsIlPU3IPW+grIAbquy+q6fluy/28RIBeRMwDXdXMgXLj/B2uimRXpui4D9sBeRLKl+1N+L+t6RwbWrZliTTTr1oxYtzVWiTQAcRxvTX+eJMnlUDaO1vpZRO5NS0x48sIwfPc87xg4B04MCzQi8hIEwe4bl1DnFMCN2zsAAAAASUVORK5CYII=') !important;
+  background-repeat: no-repeat;
+  background-size: 23px;
+  background-position: center;
+  filter: invert(1);
+}
+
+.datatable-header-cell-label {
+  color: #031e23;
+  font-weight: 400;
+  font-family: 'Inter', sans-serif;
+  font-size: 16px !important; 
+}
+
+.btn-outline-grey {
+  color: #343a40;
+  border-color: #343a40 !important;
+}
+
+.ngb-dp-weekday {
+  color: #FF4141 !important;
+}
+
+.server-scrolling-demo {
+  height: calc(100vh - 250px);
+  /*height: 250px;*/
+}
+
 @media (min-width: 1301px) and (max-width: 1400px) {
   .header {
     width: calc(100% - 250px)

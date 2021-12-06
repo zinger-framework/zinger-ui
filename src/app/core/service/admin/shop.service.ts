@@ -11,6 +11,11 @@ export class ShopService extends AdminService {
     return this.get(API_ENDPOINTS.SHOP_NEW);
   }
 
+  getShopList(params = ''){
+    let endPoint = (params == '') ? API_ENDPOINTS.SHOP : API_ENDPOINTS.SHOP + '?' + params;
+    return this.get(endPoint);
+  }
+
   getShopDetails(shopId) {
     return this.get(API_ENDPOINTS.SHOP + '/' + shopId);
   }

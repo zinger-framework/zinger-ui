@@ -11,6 +11,11 @@ export class ShopService extends PlatformService {
     return this.get(API_ENDPOINTS.SHOP + '/' + shopId);
   }
 
+  getShopList(params = ''){
+    let endPoint = (params == '') ? API_ENDPOINTS.SHOP : API_ENDPOINTS.SHOP + '?' + params;
+    return this.get(endPoint);
+  }
+
   updateShopDetails(shopId, requestBody) {
     return this.put(API_ENDPOINTS.SHOP + '/' + shopId, requestBody);
   }
