@@ -1,3 +1,11 @@
+<h1 align="center">
+  Zinger Admin Panel
+</h1>
+
+This repo contains admin panel for both shop admin and zinger admin to manage zinger core. It provides functionality to manage shops, inventory, users etc.
+
+**This repo is under heavy development and is undergoing a lot of changes**
+
 ## Build Instructions
 #### Prerequisites
 - npm version > 7.20.0
