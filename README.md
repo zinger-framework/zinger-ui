@@ -11,7 +11,7 @@ A web dashboard for shop owners and platform admin to manage the Zinger core ope
 - angular - `v9.1`
  
 #### Update Hosts
-- Add the below lines to your hosts file to run the application in custom subdomain.
+Add the below lines to your hosts file to run the application in custom subdomain.
 ```shell
 127.0.0.1	admin.zinger.pw 
 127.0.0.1	platform.zinger.pw
