@@ -1,27 +1,27 @@
-# ZingerUi
+## Build Instructions
+#### Prerequisites
+- npm version > 7.20.0
+- angular version > 9.1
+#### Fork Project
+- Fork the Main Repository
+- Clone the forked repository locally git clone forked_repo_url
+#### Update the hosts file
+Add the below lines to your hosts file. This will allow angular to run in zinger.pw subdomain.
+>    127.0.0.1	admin.zinger.pw 
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.1.0.
+>    127.0.0.1	platform.zinger.pw
 
-## Development server
+>    127.0.0.1	api.zinger.pw
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+The host file is located in the below locations
+> linux/mac os - /etc/hosts
 
-## Code scaffolding
+>windows - C:\Windows\System32\drivers\etc\hosts 
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+#### Run the Angular code
+- Navigate to the forked repo directory
+- ng s
 
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+The angular app will be running in the following location
+- Admin/Seller Login -  admin.zinger.pw:4200
+- Zinger-Admin/Platform login - platform.zinger.pw:4200
