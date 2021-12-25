@@ -1,35 +1,32 @@
 <h1 align="center">
-  Zinger Admin Panel
+  Zinger Web Dashboard
 </h1>
 
-This repo contains admin panel for both shop admin and zinger admin to manage zinger core. It provides functionality to manage shops, inventory, users etc.
+A web dashboard for shop owners and platform admin to manage the Zinger core operations. It also provides a functionality to manage shops, inventory, users, etc.
 
-**This repo is under heavy development and is undergoing a lot of changes**
+## Prerequisites
+#### Dependencies
+- npm - `v7.20.0`
+- node - `v14.15.0`
+- angular - `v9.1`
+ 
+#### Update Hosts
+- Add the below lines to your hosts file to run the application in custom subdomain.
+```shell
+127.0.0.1	admin.zinger.pw 
+127.0.0.1	platform.zinger.pw
+```
+Host file location
+- Linux/Mac - `/etc/hosts`
+- Windows - `C:\Windows\System32\drivers\etc\hosts`
 
-## Build Instructions
-#### Prerequisites
-- npm version > 7.20.0
-- angular version > 9.1
+## Setup instructions
 #### Fork Project
-- Fork the Main Repository
-- Clone the forked repository locally git clone forked_repo_url
-#### Update the hosts file
-Add the below lines to your hosts file. This will allow angular to run in zinger.pw subdomain.
->    127.0.0.1	admin.zinger.pw 
+- Fork the main repository
+- Clone the forked repository locally `git clone forked_repo_url`
 
->    127.0.0.1	platform.zinger.pw
-
->    127.0.0.1	api.zinger.pw
-
-The host file is located in the below locations
-> linux/mac os - /etc/hosts
-
->windows - C:\Windows\System32\drivers\etc\hosts 
-
-#### Run the Angular code
-- Navigate to the forked repo directory
-- ng s
-
-The angular app will be running in the following location
-- Admin/Seller Login -  admin.zinger.pw:4200
-- Zinger-Admin/Platform login - platform.zinger.pw:4200
+#### Run Project
+- Navigate to root directory & run `ng s`
+- The angular application will be running in the following endpoints:
+  - Admin(Shop Owner) login -  `admin.zinger.pw:4200`
+  - Platform login - `platform.zinger.pw:4200`
