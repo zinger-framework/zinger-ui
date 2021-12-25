@@ -19,6 +19,7 @@ import {ShopDetailsComponent} from './shop-details/shop-details.component';
 import {FormInputModule} from "../../../shared/form-elements/form-input.module";
 import {ShopListComponent} from './shop-list/shop-list.component';
 import {NgxDatatableModule} from '@swimlane/ngx-datatable';
+import { ItemDetailsComponent } from './item-details/item-details.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import {NgxDatatableModule} from '@swimlane/ngx-datatable';
     HeaderComponent,
     ProfileComponent,
     ShopDetailsComponent,
-    ShopListComponent
+    ShopListComponent,
+    ItemDetailsComponent
   ],
   exports: [
     PrivateComponent

@@ -1,0 +1,98 @@
+<breadcrumb [data]="breadCrumbData" title="Add New Item"></breadcrumb>
+<form (ngSubmit)="submitItemDetails(accordion)" [formGroup]="itemDetailsForm" class="item-details">
+  <ngb-accordion #accordion="ngbAccordion" [destroyOnHide]="false" activeIds="ngb-panel-0">
+    <ngb-panel id="basicInfoPanel">
+      <ng-template class="panel-header" let-opened="opened" ngbPanelHeader>
+        <accordion-header [accordion]="accordion" [opened]="opened" [panelId]="'basicInfoPanel'"
+                          title='Basic Information'></accordion-header>
+      </ng-template>
+      <ng-template ngbPanelContent>
+        <div class="row">
+          <div class="col-md-6 col-lg-6">
+            <label class="required">Item Name</label>
+            <form-input inputType="text" name="name" placeholder="Margherita Pizza"></form-input>
+          </div>
+          <div class="col-md-6 col-lg-6">
+            <label class="required">Description</label>
+            <form-input inputType="text" name="description" placeholder="A classic delight loaded with extra cheese"></form-input>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6 col-lg-6">
+            <label class="required">Category</label>
+            <div class="form-group form-group-category">
+              <ng-select [clearable]="false" [items]="categories" [searchable]="false" formControlName="category"
+                         placeholder="Select">
+              </ng-select>
+              <div class="form-control-feedback has-danger"></div>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-6">
+            <label class="required">Sub Category</label>
+            <form-input inputType="text" name="description" placeholder="Breakfast / South Indian / Quick Bites"></form-input>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6 col-lg-6">
+            <label class="required">Property</label>
+            <form-input inputType="text" name="icon" placeholder="Domino's Pizza"></form-input>
+          </div>
+        </div>
+      </ng-template>
+    </ngb-panel>
+
+      <ngb-panel id="mediaInfoPanel">
+        <ng-template class="panel-header" let-opened="opened" ngbPanelHeader>
+          <accordion-header [accordion]="accordion" [opened]="opened" [panelId]="'mediaInfoPanel'"
+                            title='Media Information'></accordion-header>
+        </ng-template>
+        <ng-template ngbPanelContent>
+          <div class="row m-1">
+            <div class="col-md-12 col-lg-12">
+              <label class="required">Upload Icon</label>
+              <br>
+              <div class="row">
+                <div *ngIf="iconSrc; else placeholderimage">
+                  <image-preview (deleteImageEvent)="deleteImage($event, 'icon')" [imageSrc]="iconSrc"
+                                 imageType="icon"></image-preview>
+                </div>
+                <ng-template #placeholderimage>
+                  <img (click)="browseFiles('icon')" class="ml-3 cursor-pointer" height="70"
+                       src="/assets/images/upload-image.png"
+                       width="70"/>
+                </ng-template>
+              </div>
+              <form-input (change)="onFileChange($event, 'icon')" inputType="file"
+                          name="icon"></form-input>
+              <span class="small text-light-gray">• Image size: < 1 MB <br>• Image type: JPG, PNG<br>• Dimensions: 512x512 px<br>• File name: Can be alphanumeric, hyphen and underscore with a maximum of 100 characters</span>
+            </div>
+          </div>
+
+          <div class="row mt-4 m-1">
+            <div class="col-md-12 col-lg-12">
+              <label class="required">Upload Cover Photos</label>
+              <br>
+              <div class="row">
+                <div *ngFor="let imgSrc of coverImgSrcList;">
+                  <image-preview (deleteImageEvent)="deleteImage($event, 'cover_photos')" [imageId]="imgSrc['id']"
+                                 [imageSrc]="imgSrc['url']"
+                                 imageType="cover_photos"></image-preview>
+                </div>
+                <div *ngIf="coverImgSrcList.length<10">
+                  <img (click)="browseFiles('cover_photos')" class="ml-3 cursor-pointer" height="34"
+                       src="/assets/images/upload-image.png"
+                       width="70"/>
+                </div>
+              </div>
+              <form-input (change)="onFileChange($event, 'cover_photos')" inputType="file"
+                          name="cover_photos"></form-input>
+              <span class="small text-light-gray">• Image size: < 1 MB <br>• Image type: JPG, PNG<br>• Dimensions: 1024x500 px<br>• Maximum limit: 10 images<br>• File name: Can be alphanumeric, hyphen and underscore with a maximum of 100 characters</span>
+            </div>
+          </div>
+        </ng-template>
+    </ngb-panel>
+
+  </ngb-accordion>
+
+</form>
