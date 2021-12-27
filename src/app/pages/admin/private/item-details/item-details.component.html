@@ -42,57 +42,89 @@
       </ng-template>
     </ngb-panel>
 
-      <ngb-panel id="mediaInfoPanel">
-        <ng-template class="panel-header" let-opened="opened" ngbPanelHeader>
-          <accordion-header [accordion]="accordion" [opened]="opened" [panelId]="'mediaInfoPanel'"
-                            title='Media Information'></accordion-header>
-        </ng-template>
-        <ng-template ngbPanelContent>
-          <div class="row m-1">
-            <div class="col-md-12 col-lg-12">
-              <label class="required">Upload Icon</label>
-              <br>
-              <div class="row">
-                <div *ngIf="iconSrc; else placeholderimage">
-                  <image-preview (deleteImageEvent)="deleteImage($event, 'icon')" [imageSrc]="iconSrc"
-                                 imageType="icon"></image-preview>
-                </div>
-                <ng-template #placeholderimage>
-                  <img (click)="browseFiles('icon')" class="ml-3 cursor-pointer" height="70"
-                       src="/assets/images/upload-image.png"
-                       width="70"/>
-                </ng-template>
+    <ngb-panel id="mediaInfoPanel">
+      <ng-template class="panel-header" let-opened="opened" ngbPanelHeader>
+        <accordion-header [accordion]="accordion" [opened]="opened" [panelId]="'mediaInfoPanel'"
+                          title='Media Information'></accordion-header>
+      </ng-template>
+      <ng-template ngbPanelContent>
+        <div class="row m-1">
+          <div class="col-md-12 col-lg-12">
+            <label class="required">Upload Icon</label>
+            <br>
+            <div class="row">
+              <div *ngIf="iconSrc; else placeholderimage">
+                <image-preview (deleteImageEvent)="deleteImage($event, 'icon')" [imageSrc]="iconSrc"
+                               imageType="icon"></image-preview>
               </div>
-              <form-input (change)="onFileChange($event, 'icon')" inputType="file"
-                          name="icon"></form-input>
-              <span class="small text-light-gray">• Image size: < 1 MB <br>• Image type: JPG, PNG<br>• Dimensions: 512x512 px<br>• File name: Can be alphanumeric, hyphen and underscore with a maximum of 100 characters</span>
+              <ng-template #placeholderimage>
+                <img (click)="browseFiles('icon')" class="ml-3 cursor-pointer" height="70"
+                     src="/assets/images/upload-image.png"
+                     width="70"/>
+              </ng-template>
             </div>
+            <form-input (change)="onFileChange($event, 'icon')" inputType="file"
+                        name="icon"></form-input>
+            <span class="small text-light-gray">• Image size: < 1 MB <br>• Image type: JPG, PNG<br>• Dimensions: 512x512 px<br>• File name: Can be alphanumeric, hyphen and underscore with a maximum of 100 characters</span>
           </div>
+        </div>
 
-          <div class="row mt-4 m-1">
-            <div class="col-md-12 col-lg-12">
-              <label class="required">Upload Cover Photos</label>
-              <br>
-              <div class="row">
-                <div *ngFor="let imgSrc of coverImgSrcList;">
-                  <image-preview (deleteImageEvent)="deleteImage($event, 'cover_photos')" [imageId]="imgSrc['id']"
-                                 [imageSrc]="imgSrc['url']"
-                                 imageType="cover_photos"></image-preview>
-                </div>
-                <div *ngIf="coverImgSrcList.length<10">
-                  <img (click)="browseFiles('cover_photos')" class="ml-3 cursor-pointer" height="34"
-                       src="/assets/images/upload-image.png"
-                       width="70"/>
-                </div>
+        <div class="row mt-4 m-1">
+          <div class="col-md-12 col-lg-12">
+            <label class="required">Upload Cover Photos</label>
+            <br>
+            <div class="row">
+              <div *ngFor="let imgSrc of coverImgSrcList;">
+                <image-preview (deleteImageEvent)="deleteImage($event, 'cover_photos')" [imageId]="imgSrc['id']"
+                               [imageSrc]="imgSrc['url']"
+                               imageType="cover_photos"></image-preview>
               </div>
-              <form-input (change)="onFileChange($event, 'cover_photos')" inputType="file"
-                          name="cover_photos"></form-input>
-              <span class="small text-light-gray">• Image size: < 1 MB <br>• Image type: JPG, PNG<br>• Dimensions: 1024x500 px<br>• Maximum limit: 10 images<br>• File name: Can be alphanumeric, hyphen and underscore with a maximum of 100 characters</span>
+              <div *ngIf="coverImgSrcList.length<10">
+                <img (click)="browseFiles('cover_photos')" class="ml-3 cursor-pointer" height="34"
+                     src="/assets/images/upload-image.png"
+                     width="70"/>
+              </div>
             </div>
+            <form-input (change)="onFileChange($event, 'cover_photos')" inputType="file"
+                        name="cover_photos"></form-input>
+            <span class="small text-light-gray">• Image size: < 1 MB <br>• Image type: JPG, PNG<br>• Dimensions: 1024x500 px<br>• Maximum limit: 10 images<br>• File name: Can be alphanumeric, hyphen and underscore with a maximum of 100 characters</span>
           </div>
-        </ng-template>
+        </div>
+      </ng-template>
     </ngb-panel>
 
+    <ngb-panel id="variantInfoPanel">
+      <ng-template class="panel-header" let-opened="opened" ngbPanelHeader>
+        <accordion-header [accordion]="accordion" [opened]="opened" [panelId]="'variantInfoPanel'"
+                          title='Variant Information'></accordion-header>
+      </ng-template>
+      <ng-template ngbPanelContent>
+        <div class="row">
+          <div class="col-md-6 col-lg-6">
+            <label class="required">Variant Property</label>
+            <form-input inputType="text" name="variant_property" placeholder="Size"></form-input>
+          </div>
+        </div>
+        <div class="mt-2">
+          <label>Variant Options</label>
+        </div>
+        <div formArrayName="variant_details" *ngFor="let item of itemDetailsForm.get('variant_details')['controls']; let i = index;">
+          <!-- <div  class="row"> -->
+          <div [formGroupName]="i" class="row">
+            <div class="col-md-3 col-lg-3">
+                <input formControlName="name1" placeholder="name1">
+              <!-- <form-input inputType="text" name="name1" placeholder="Regular"></form-input> -->
+            </div>
+            <div class="col-md-3 col-lg-3">
+                <input formControlName="price1" placeholder="price1">
+              <!-- <form-input inputType="text" name="price1" placeholder="120"></form-input> -->
+            </div>
+          </div>
+        </div>
+        <br>
+        <button type="button" class="btn btn-primary mt-6" (click)="addNewVariant()">Add Variant</button>
+      </ng-template>
+    </ngb-panel>
   </ngb-accordion>
-
+<div class="form-feedback has-danger mt-1 mb-1 text-center"></div>
 </form>

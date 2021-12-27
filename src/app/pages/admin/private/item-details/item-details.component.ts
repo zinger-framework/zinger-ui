@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder, FormGroup, FormArray, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 
 import {BaseComponent} from '../../../../base.component';
@@ -8,6 +8,11 @@ import {SHOP_NAME_REGEX} from '../../../../core/utils/constants.utils';
 import {handleError, setErrorMessage} from '../../../../core/utils/common.utils';
 import {ToastrService} from 'ngx-toastr';
 import $ from 'jquery';
+
+export class variant {
+  group_name: string
+  details: Map<string, number>
+}
 
 @Component({
   selector: 'app-item-details',
@@ -20,6 +25,9 @@ export class ItemDetailsComponent extends BaseComponent {
   categories = ['Food', 'Fashion']
   iconSrc = ''
   coverImgSrcList = []
+  itemVariant: variant
+  variantPropertyList = {'Food': ['quantity-small, medium, large', 'size - ', '']}
+  variantDetails: FormArray
   
   constructor(private fb: FormBuilder, private toastr: ToastrService) { 
     super()
@@ -32,6 +40,8 @@ export class ItemDetailsComponent extends BaseComponent {
       tags: new ExtendedFormControl('', [Validators.required], 'tags'),
       icon: new ExtendedFormControl('', [], 'icon'),
       cover_photos: new ExtendedFormControl('', [], 'cover_photos'),
+      variant_property: new ExtendedFormControl('', [], 'variant_property'),
+      variant_details: this.fb.array([ this.createVariantItem() ]),
       className: 'item-details'
     });
   }
@@ -141,6 +151,19 @@ export class ItemDetailsComponent extends BaseComponent {
       };
     }
   }
+
+  createVariantItem(): FormGroup {
+    return this.fb.group({
+      name1: ['', Validators.required],
+      price1: ['', Validators.required]
+    });
+  }
+
+  addNewVariant(): void {
+    this.variantDetails = this.itemDetailsForm.get('variant_details') as FormArray;
+    this.variantDetails.push(this.createVariantItem());
+    console.log(this.itemDetailsForm)
+  }
 }
 
 /*
@@ -156,7 +179,8 @@ Item:
 - Tags - fast-food, chinese
 - Item Variant
     Variant Group Name - Size
-  Variant Property - regular/medium/large, 36/ 28/ 40 
-  Variant Price - 25/35/45
+    Variant Property - regular/medium/large, 36/ 28/ 40 
+    Variant Price - 25/35/45
 */ 
+
 
