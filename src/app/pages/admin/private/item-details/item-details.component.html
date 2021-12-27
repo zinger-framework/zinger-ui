@@ -108,18 +108,28 @@
         <div class="mt-2">
           <label>Variant Options</label>
         </div>
-        <div formArrayName="variant_details" *ngFor="let item of itemDetailsForm.get('variant_details')['controls']; let i = index;">
-          <!-- <div  class="row"> -->
-          <div [formGroupName]="i" class="row">
+        <div formArrayName="variant_details" *ngFor="let item of itemDetailsForm.get('variant_details')['controls']; let i = index;">  
+          <form [formGroupName]="i" class="row {{this.itemDetailsForm.get('variant_details')['controls'][i]['controls'].className.value}}">
+            <!-- <p>{{ this.itemDetailsForm.get('variant_details')['controls'][0]['controls'].className.value }}</p> -->
             <div class="col-md-3 col-lg-3">
-                <input formControlName="name1" placeholder="name1">
-              <!-- <form-input inputType="text" name="name1" placeholder="Regular"></form-input> -->
+                <!-- <input formControlName="name1" placeholder="name1"> -->
+              <div class="form-group form-group-name1">
+                <input formControlName="name1" placeholder="regular" type="text" class="form-control form-control-lg"/>
+                <div class="form-control-feedback has-danger"></div>
+              </div>
             </div>
             <div class="col-md-3 col-lg-3">
-                <input formControlName="price1" placeholder="price1">
-              <!-- <form-input inputType="text" name="price1" placeholder="120"></form-input> -->
+                <!-- <input formControlName="price1" placeholder="price1"> -->
+              <div class="form-group form-group-price1">
+                <input formControlName="price1" placeholder="120" type="text" class="form-control form-control-lg"/>
+                <div class="form-control-feedback has-danger"></div>
+              </div>
             </div>
-          </div>
+            <div class="col-md-3 col-lg-3 mt-3">
+                <i type="button" class="mt-6 dw dw-delete-3" (click)="deleteVariant(i)"></i>
+            </div>
+            <div class="form-feedback has-danger mt-1 mb-1 text-center"></div>
+          </form>
         </div>
         <br>
         <button type="button" class="btn btn-primary mt-6" (click)="addNewVariant()">Add Variant</button>

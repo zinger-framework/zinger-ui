@@ -28,6 +28,7 @@ export class ItemDetailsComponent extends BaseComponent {
   itemVariant: variant
   variantPropertyList = {'Food': ['quantity-small, medium, large', 'size - ', '']}
   variantDetails: FormArray
+  variant_index = -1
   
   constructor(private fb: FormBuilder, private toastr: ToastrService) { 
     super()
@@ -153,9 +154,13 @@ export class ItemDetailsComponent extends BaseComponent {
   }
 
   createVariantItem(): FormGroup {
+    this.variant_index = this.variant_index + 1
     return this.fb.group({
-      name1: ['', Validators.required],
-      price1: ['', Validators.required]
+      // name1: ['', Validators.required],
+      // price1: ['', Validators.required]
+      name1: new ExtendedFormControl('', [Validators.required], 'name1'),
+      price1: new ExtendedFormControl('', [Validators.required], 'price1'),
+      className: "variant_property-" + this.variant_index
     });
   }
 
@@ -163,7 +168,15 @@ export class ItemDetailsComponent extends BaseComponent {
     this.variantDetails = this.itemDetailsForm.get('variant_details') as FormArray;
     this.variantDetails.push(this.createVariantItem());
     console.log(this.itemDetailsForm)
+    console.log(this.itemDetailsForm.get('variant_details')['controls'][0]['controls'].className.value)
   }
+
+  deleteVariant(i:number){
+    const fa = (this.itemDetailsForm.get('variant_details')as FormArray);
+    fa.removeAt(i);
+    if(fa.length===0) this.createVariantItem();
+  }
+
 }
 
 /*
