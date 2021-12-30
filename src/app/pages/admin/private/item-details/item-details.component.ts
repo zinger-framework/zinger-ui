@@ -9,10 +9,10 @@ import {handleError, setErrorMessage} from '../../../../core/utils/common.utils'
 import {ToastrService} from 'ngx-toastr';
 import $ from 'jquery';
 
-export class variant {
-  group_name: string
-  details: Map<string, number>
-}
+// Add placeholder functions in itemdetails service
+// Handle cases for new product and existing product
+// Write functions to load data into form model
+// Handle navigation from shop to items
 
 @Component({
   selector: 'app-item-details',
@@ -23,8 +23,8 @@ export class ItemDetailsComponent extends BaseComponent {
   breadCrumbData = [{label: 'Home', link: '/dashboard'}, {label: 'Shop', link: '/shop'}, {label: 'Item', link: ''}]
   itemDetailsForm: FormGroup
   details = {
-    categories: ['Food', 'Fashion'],
-    subCategories: {
+    types: ['Food', 'Fashion'],
+    categories: {
                     'Food': ['North India', 'chinese', 'south india', 'beverages', 'dessert', 'biriyani', 'fast-food', 'kebab'], 
                     'Fashion': ['shirts', 'jackets', 'jeans', 'ethnic_wear', 'accessories', 'footwear', 'innerwear']
                    },
@@ -33,18 +33,26 @@ export class ItemDetailsComponent extends BaseComponent {
   }
   iconSrc = ''
   coverImgSrcList = []
-  itemVariant: variant
   variantDetails: FormArray
   variant_index = -1
   attr_index = -1
+  shopId: number
+  itemId: number
+
   
-  constructor(private fb: FormBuilder, private toastr: ToastrService) { 
+  constructor(private fb: FormBuilder, private toastr: ToastrService, private route: ActivatedRoute,) { 
     super()
+    this.route.params.subscribe(params => {
+      this.shopId = params['shop_id']
+      this.itemId = params['id']
+      this.breadCrumbData = [{label: 'Home', link: '/dashboard'}, {label: 'Shop', link: '/shop'}, 
+      {label: String(this.shopId), link: '/shop/'+this.shopId }, {label: 'Item', link: ''}]
+    });
     this.itemDetailsForm = this.fb.group({
       name: new ExtendedFormControl('', [Validators.required, Validators.pattern(SHOP_NAME_REGEX)], 'name'),
       description: new ExtendedFormControl('', [Validators.required, Validators.maxLength(250)], 'description'),
+      type: new ExtendedFormControl(null, [Validators.required], 'type'),
       category: new ExtendedFormControl(null, [Validators.required], 'category'),
-      sub_category: new ExtendedFormControl(null, [Validators.required], 'sub_category'),
       attributes: this.fb.array([ this.createFormArrayItem('attributes') ]),
       icon: new ExtendedFormControl('', [], 'icon'),
       cover_photos: new ExtendedFormControl('', [], 'cover_photos'),
@@ -63,6 +71,7 @@ export class ItemDetailsComponent extends BaseComponent {
   deleteImage(imageId, imgType) {
     switch (imgType) {
       case 'icon':
+      this.deleteIcon()
         // this.shopService.deleteIcon(this.shopId)
         //   .then(response => {
         //     this.deleteIcon()
@@ -83,7 +92,7 @@ export class ItemDetailsComponent extends BaseComponent {
         //   })
         //   .finally(() => {
         //     if (this.coverImgSrcList.length == 0)
-        //       setErrorMessage('Cover Photos cannot be empty', 'shop-details', 'cover_photos')
+        //       setErrorMessage('Cover Photos cannot be empty', 'item-details', 'cover_photos')
         //   })
         break;
     }
@@ -91,7 +100,7 @@ export class ItemDetailsComponent extends BaseComponent {
 
   deleteIcon() {
     this.iconSrc = ''
-    setErrorMessage('Icon cannot be empty', 'shop-details', 'icon')
+    setErrorMessage('Icon cannot be empty', 'item-details', 'icon')
   }
 
   browseFiles(imgType) {
