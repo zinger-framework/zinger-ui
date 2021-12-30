@@ -22,7 +22,7 @@
           <div class="col-md-6 col-lg-6">
             <label class="required">Category</label>
             <div class="form-group form-group-category">
-              <ng-select [clearable]="false" [items]="categories" [searchable]="false" formControlName="category"
+              <ng-select [clearable]="false" [items]="details['categories']" [searchable]="false" formControlName="category"
                          placeholder="Select">
               </ng-select>
               <div class="form-control-feedback has-danger"></div>
@@ -30,13 +30,17 @@
           </div>
           <div class="col-md-6 col-lg-6">
             <label class="required">Sub Category</label>
-            <form-input inputType="text" name="description" placeholder="Breakfast / South Indian / Quick Bites"></form-input>
+            <div class="form-group form-group-sub_category">
+              <ng-select [clearable]="false" [items]="details['subCategories'][this.itemDetailsForm.get('category').value]" [searchable]="false" formControlName="sub_category" placeholder="Select">
+              </ng-select>
+              <div class="form-control-feedback has-danger"></div>
+            </div>
           </div>
         </div>
         <div class="row">
           <div class="col-md-6 col-lg-6">
             <label class="required">Property</label>
-            <form-input inputType="text" name="icon" placeholder="Domino's Pizza"></form-input>
+            <form-input inputType="text" name="property" placeholder="Domino's Pizza"></form-input>
           </div>
         </div>
       </ng-template>
@@ -101,8 +105,13 @@
       <ng-template ngbPanelContent>
         <div class="row">
           <div class="col-md-6 col-lg-6">
-            <label class="required">Variant Property</label>
-            <form-input inputType="text" name="variant_property" placeholder="Size"></form-input>
+            <div class="form-group form-group-variant_property">
+              <label class="required">Variant Property</label>
+              <ng-select [clearable]="false" [items]="details['variantProperty'][this.itemDetailsForm.get('category').value]" 
+              [searchable]="false" formControlName="variant_property" placeholder="Select">
+              </ng-select>
+              <div class="form-control-feedback has-danger"></div>
+            </div>
           </div>
         </div>
         <div class="mt-2">
@@ -110,16 +119,13 @@
         </div>
         <div formArrayName="variant_details" *ngFor="let item of itemDetailsForm.get('variant_details')['controls']; let i = index;">  
           <form [formGroupName]="i" class="row {{this.itemDetailsForm.get('variant_details')['controls'][i]['controls'].className.value}}">
-            <!-- <p>{{ this.itemDetailsForm.get('variant_details')['controls'][0]['controls'].className.value }}</p> -->
             <div class="col-md-3 col-lg-3">
-                <!-- <input formControlName="name1" placeholder="name1"> -->
               <div class="form-group form-group-name1">
                 <input formControlName="name1" placeholder="regular" type="text" class="form-control form-control-lg"/>
                 <div class="form-control-feedback has-danger"></div>
               </div>
             </div>
             <div class="col-md-3 col-lg-3">
-                <!-- <input formControlName="price1" placeholder="price1"> -->
               <div class="form-group form-group-price1">
                 <input formControlName="price1" placeholder="120" type="text" class="form-control form-control-lg"/>
                 <div class="form-control-feedback has-danger"></div>
@@ -128,7 +134,7 @@
             <div class="col-md-3 col-lg-3 mt-3">
                 <i type="button" class="mt-6 dw dw-delete-3" (click)="deleteVariant(i)"></i>
             </div>
-            <div class="form-feedback has-danger mt-1 mb-1 text-center"></div>
+            <!-- <div class="form-feedback has-danger mt-1 mb-1 text-center"></div> -->
           </form>
         </div>
         <br>

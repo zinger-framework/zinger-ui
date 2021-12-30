@@ -20,13 +20,20 @@ export class variant {
   styleUrls: ['./item-details.component.css']
 })
 export class ItemDetailsComponent extends BaseComponent {
-  breadCrumbData = [{label: 'Home', link: '/dashboard'}, {label: 'Shop', link: '/shop'}, {label: 'Item', link: ''}];
-  itemDetailsForm: FormGroup;
-  categories = ['Food', 'Fashion']
+  breadCrumbData = [{label: 'Home', link: '/dashboard'}, {label: 'Shop', link: '/shop'}, {label: 'Item', link: ''}]
+  itemDetailsForm: FormGroup
+  details = {
+    categories: ['Food', 'Fashion'],
+    subCategories: {
+                    'Food': ['North India', 'chinese', 'south india', 'beverages', 'dessert', 'biriyani', 'fast-food', 'kebab'], 
+                    'Fashion': ['shirts', 'jackets', 'jeans', 'ethnic_wear', 'accessories', 'footwear', 'innerwear']
+                   },
+    variantProperty: {'Food': ['quantity', 'size'], 'Fashion': ['size', 'color']}
+
+  }
   iconSrc = ''
   coverImgSrcList = []
   itemVariant: variant
-  variantPropertyList = {'Food': ['quantity-small, medium, large', 'size - ', '']}
   variantDetails: FormArray
   variant_index = -1
   
@@ -35,13 +42,12 @@ export class ItemDetailsComponent extends BaseComponent {
     this.itemDetailsForm = this.fb.group({
       name: new ExtendedFormControl('', [Validators.required, Validators.pattern(SHOP_NAME_REGEX)], 'name'),
       description: new ExtendedFormControl('', [Validators.required, Validators.maxLength(250)], 'description'),
-      category: new ExtendedFormControl('', [Validators.required], 'category'),
-      sub_category: new ExtendedFormControl('', [Validators.required], 'sub_category'),
+      category: new ExtendedFormControl(null, [Validators.required], 'category'),
+      sub_category: new ExtendedFormControl(null, [Validators.required], 'sub_category'),
       property: new ExtendedFormControl('', [Validators.required], 'property'),
-      tags: new ExtendedFormControl('', [Validators.required], 'tags'),
       icon: new ExtendedFormControl('', [], 'icon'),
       cover_photos: new ExtendedFormControl('', [], 'cover_photos'),
-      variant_property: new ExtendedFormControl('', [], 'variant_property'),
+      variant_property: new ExtendedFormControl(null, [Validators.required], 'variant_property'),
       variant_details: this.fb.array([ this.createVariantItem() ]),
       className: 'item-details'
     });
