@@ -37,11 +37,33 @@
             </div>
           </div>
         </div>
-        <div class="row">
-          <div class="col-md-6 col-lg-6">
-            <label class="required">Property</label>
-            <form-input inputType="text" name="property" placeholder="Domino's Pizza"></form-input>
+        <div>
+          <div>
+            <label class="required">Attribute</label>
           </div>
+          
+          <div formArrayName="attributes" *ngFor="let item of itemDetailsForm.get('attributes')['controls']; let i = index;">  
+            <form [formGroupName]="i" class="row {{this.itemDetailsForm.get('attributes')['controls'][i]['controls'].className.value}}">
+              <div class="col-md-3 col-lg-3">
+                <div class="form-group form-group-attribute_name">
+                  <input formControlName="attribute_name" placeholder="regular" type="text" class="form-control form-control-lg"/>
+                  <div class="form-control-feedback has-danger"></div>
+                </div>
+              </div>
+              <div class="col-md-3 col-lg-3">
+                <div class="form-group form-group-attribute_value">
+                  <input formControlName="attribute_value" placeholder="120" type="text" class="form-control form-control-lg"/>
+                  <div class="form-control-feedback has-danger"></div>
+                </div>
+              </div>
+              <div class="col-md-3 col-lg-3 mt-3">
+                  <i type="button" class="mt-6 dw dw-delete-3" (click)="deleteFormArrayItem('attributes', i)"></i>
+              </div>
+              <div class="form-feedback has-danger mt-1 mb-1 text-center"></div>
+            </form>
+          </div>
+          <br>
+          <button type="button" class="btn btn-primary mt-6" (click)="addFormArrayItem('attributes')">Add Attribute</button>
         </div>
       </ng-template>
     </ngb-panel>
@@ -105,8 +127,8 @@
       <ng-template ngbPanelContent>
         <div class="row">
           <div class="col-md-6 col-lg-6">
+            <label class="required">Variant Property</label>
             <div class="form-group form-group-variant_property">
-              <label class="required">Variant Property</label>
               <ng-select [clearable]="false" [items]="details['variantProperty'][this.itemDetailsForm.get('category').value]" 
               [searchable]="false" formControlName="variant_property" placeholder="Select">
               </ng-select>
@@ -115,30 +137,30 @@
           </div>
         </div>
         <div class="mt-2">
-          <label>Variant Options</label>
+          <label>Variant Details</label>
         </div>
         <div formArrayName="variant_details" *ngFor="let item of itemDetailsForm.get('variant_details')['controls']; let i = index;">  
           <form [formGroupName]="i" class="row {{this.itemDetailsForm.get('variant_details')['controls'][i]['controls'].className.value}}">
             <div class="col-md-3 col-lg-3">
-              <div class="form-group form-group-name1">
-                <input formControlName="name1" placeholder="regular" type="text" class="form-control form-control-lg"/>
+              <div class="form-group form-group-variant_name">
+                <input formControlName="variant_name" placeholder="regular" type="text" class="form-control form-control-lg"/>
                 <div class="form-control-feedback has-danger"></div>
               </div>
             </div>
             <div class="col-md-3 col-lg-3">
-              <div class="form-group form-group-price1">
-                <input formControlName="price1" placeholder="120" type="text" class="form-control form-control-lg"/>
+              <div class="form-group form-group-variant_price">
+                <input formControlName="variant_price" placeholder="120" type="text" class="form-control form-control-lg"/>
                 <div class="form-control-feedback has-danger"></div>
               </div>
             </div>
             <div class="col-md-3 col-lg-3 mt-3">
-                <i type="button" class="mt-6 dw dw-delete-3" (click)="deleteVariant(i)"></i>
+                <i type="button" class="mt-6 dw dw-delete-3" (click)="deleteFormArrayItem('variant_details', i)"></i>
             </div>
-            <!-- <div class="form-feedback has-danger mt-1 mb-1 text-center"></div> -->
+            <div class="form-feedback has-danger mt-1 mb-1 text-center"></div>
           </form>
         </div>
         <br>
-        <button type="button" class="btn btn-primary mt-6" (click)="addNewVariant()">Add Variant</button>
+        <button type="button" class="btn btn-primary mt-6" (click)="addFormArrayItem('variant_details')">Add Variant</button>
       </ng-template>
     </ngb-panel>
   </ngb-accordion>

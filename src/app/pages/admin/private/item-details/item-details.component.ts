@@ -36,6 +36,7 @@ export class ItemDetailsComponent extends BaseComponent {
   itemVariant: variant
   variantDetails: FormArray
   variant_index = -1
+  attr_index = -1
   
   constructor(private fb: FormBuilder, private toastr: ToastrService) { 
     super()
@@ -44,11 +45,11 @@ export class ItemDetailsComponent extends BaseComponent {
       description: new ExtendedFormControl('', [Validators.required, Validators.maxLength(250)], 'description'),
       category: new ExtendedFormControl(null, [Validators.required], 'category'),
       sub_category: new ExtendedFormControl(null, [Validators.required], 'sub_category'),
-      property: new ExtendedFormControl('', [Validators.required], 'property'),
+      attributes: this.fb.array([ this.createFormArrayItem('attributes') ]),
       icon: new ExtendedFormControl('', [], 'icon'),
       cover_photos: new ExtendedFormControl('', [], 'cover_photos'),
       variant_property: new ExtendedFormControl(null, [Validators.required], 'variant_property'),
-      variant_details: this.fb.array([ this.createVariantItem() ]),
+      variant_details: this.fb.array([ this.createFormArrayItem('variant_details') ]),
       className: 'item-details'
     });
   }
@@ -94,7 +95,6 @@ export class ItemDetailsComponent extends BaseComponent {
   }
 
   browseFiles(imgType) {
-    // if (this.shopStatus == 'BLOCKED') return this.handleBlockingError(imgType, 'upload')
     this.itemDetailsForm.get(imgType).markAsTouched();
     $(`div.form-group-${imgType} input`)[0].click();
   }
@@ -159,47 +159,37 @@ export class ItemDetailsComponent extends BaseComponent {
     }
   }
 
-  createVariantItem(): FormGroup {
-    this.variant_index = this.variant_index + 1
-    return this.fb.group({
-      // name1: ['', Validators.required],
-      // price1: ['', Validators.required]
-      name1: new ExtendedFormControl('', [Validators.required], 'name1'),
-      price1: new ExtendedFormControl('', [Validators.required], 'price1'),
-      className: "variant_property-" + this.variant_index
-    });
+  createFormArrayItem(type: string): FormGroup {
+    switch(type) {
+      case 'variant_details': {
+        this.variant_index = this.variant_index + 1
+        return this.fb.group({
+          variant_name: new ExtendedFormControl('', [Validators.required], 'variant_name'),
+          variant_price: new ExtendedFormControl('', [Validators.required], 'variant_price'),
+          className: "variant_property-" + this.variant_index
+        });
+      } break;
+
+      case 'attributes': {
+        this.attr_index = this.attr_index + 1
+        return this.fb.group({
+          attribute_name: new ExtendedFormControl('', [Validators.required], 'attribute_name'),
+          attribute_value: new ExtendedFormControl('', [Validators.required], 'attribute_value'),
+          className: "attr-" + this.attr_index
+        })
+      } break;
+    }
   }
 
-  addNewVariant(): void {
-    this.variantDetails = this.itemDetailsForm.get('variant_details') as FormArray;
-    this.variantDetails.push(this.createVariantItem());
-    console.log(this.itemDetailsForm)
-    console.log(this.itemDetailsForm.get('variant_details')['controls'][0]['controls'].className.value)
+  addFormArrayItem(type: string): void {
+    this.variantDetails = this.itemDetailsForm.get(type) as FormArray;
+    this.variantDetails.push(this.createFormArrayItem(type));
   }
 
-  deleteVariant(i:number){
-    const fa = (this.itemDetailsForm.get('variant_details')as FormArray);
-    fa.removeAt(i);
-    if(fa.length===0) this.createVariantItem();
+  deleteFormArrayItem(type: string, index: number): void {
+    const fa = (this.itemDetailsForm.get(type) as FormArray);
+    fa.removeAt(index);
+    if(fa.length===0) this.createFormArrayItem(type);
   }
 
 }
-
-/*
-Examples -  Item Name, Item 
-
-Item:
-- Item Name
-- Item Description
-- Item picture
-- Item category - food, dress
-- Item sub category - tiffen/lunch/tandoori, jeans/t-shirts
-- Property - veg/non-veg, cotton
-- Tags - fast-food, chinese
-- Item Variant
-    Variant Group Name - Size
-    Variant Property - regular/medium/large, 36/ 28/ 40 
-    Variant Price - 25/35/45
-*/ 
-
-
