@@ -20,6 +20,7 @@ import {ProfileComponent} from './profile/profile.component';
 import {ShopDetailsComponent} from "./shop-details/shop-details.component";
 import {ShopListComponent} from './shop-list/shop-list.component';
 import { ItemListComponent } from './item-list/item-list.component';
+import { PlatformConfigComponent } from './platform-config/platform-config.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { ItemListComponent } from './item-list/item-list.component';
     ProfileComponent,
     ShopDetailsComponent,
     ShopListComponent,
-    ItemListComponent
+    ItemListComponent,
+    PlatformConfigComponent
   ],
   exports: [
     PrivateComponent

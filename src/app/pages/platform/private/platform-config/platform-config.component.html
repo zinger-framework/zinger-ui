@@ -1,0 +1,23 @@
+<div class="bg-white rounded p-3 height-consistent">
+	<form (ngSubmit)="updateConfig()" [formGroup]="platformConfigForm" class="platform-config">
+		<div class="row">
+	      <div class="col-md-6 col-lg-6">
+	        <label class="required">Type</label>
+	        <div class="form-group form-group-type">
+	          <ng-select [clearable]="false" [items]="details['types']" [searchable]="false" formControlName="type"
+	                     placeholder="Select">
+	          </ng-select>
+	          <div class="form-control-feedback has-danger"></div>
+	        </div>
+	      </div>
+	    </div>
+
+	    <div class="row">
+	      <div class="col-md-6 col-lg-6">
+	        <label class="required">Categories</label>
+	        <form-input inputType="text" name="categories" placeholder="Fast Food, Biriyani, Pizza"></form-input>
+	      </div>
+	    </div>
+	    <div class="form-feedback has-danger mt-1 mb-1 text-center"></div>
+    </form>
+</div>
