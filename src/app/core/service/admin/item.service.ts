@@ -11,9 +11,10 @@ export class ItemService extends AdminService {
     // return this.get(API_ENDPOINTS.SHOP_NEW);
   }
 
-  getItemList(params = ''){
-    // let endPoint = (params == '') ? API_ENDPOINTS.SHOP : API_ENDPOINTS.SHOP + '?' + params;
-    // return this.get(endPoint);
+  getItemList(shopId, params = ''){
+    let url = `${API_ENDPOINTS.SHOP}/${String(shopId)}/${API_ENDPOINTS.ITEM}`
+    let endPoint = (params == '') ? url : `${url}?${params}`
+    return this.get(endPoint);
   }
 
   getItemDetails(shopId) {

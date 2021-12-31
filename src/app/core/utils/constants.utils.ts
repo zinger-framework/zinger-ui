@@ -13,9 +13,9 @@ export const API_ENDPOINTS = {
   SHOP: 'v1/shop',
   SHOP_NEW: 'v1/shop/new',
   SHOP_DELETE: 'v1/shop/delete',
-  ITEM: 'v1/item',
-  ITEM_NEW: 'v1/item/new',
-  ITEM_DELETE: 'v1/item/delete',
+  ITEM: 'item',
+  ITEM_NEW: 'item/new',
+  ITEM_DELETE: 'item/delete',
 };
 
 export const APP_ROUTES = {
@@ -23,7 +23,8 @@ export const APP_ROUTES = {
   AUTH_LOGIN: '/auth/login',
   AUTH_FORGOT_PASSWORD: '/auth/forgot_password',
   AUTH_SIGNUP: '/auth/signup',
-  SHOP: '/shop'
+  SHOP: '/shop',
+  ITEM: '/item'
 };
 
 export const SESSION_KEY = {

@@ -20,6 +20,7 @@ import {FormInputModule} from "../../../shared/form-elements/form-input.module";
 import {ShopListComponent} from './shop-list/shop-list.component';
 import {NgxDatatableModule} from '@swimlane/ngx-datatable';
 import { ItemDetailsComponent } from './item-details/item-details.component';
+import { ItemListComponent } from './item-list/item-list.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { ItemDetailsComponent } from './item-details/item-details.component';
     ProfileComponent,
     ShopDetailsComponent,
     ShopListComponent,
-    ItemDetailsComponent
+    ItemDetailsComponent,
+    ItemListComponent
   ],
   exports: [
     PrivateComponent
