@@ -1,0 +1,93 @@
+<div class="card-box overflow-hidden">
+  <form (ngSubmit)="updateFilters()" [formGroup]="itemSearchForm" class="item-search p-4"> 
+    <div class="row"> 
+      <div class="col-3">
+        <label>Search</label>
+        <form-input inputType="text" name="id" placeholder="Item Id"></form-input>
+      </div>
+      <div class="col-3">
+	      <label>Category</label>
+	      <div class="form-group form-group-category">
+	        <ng-select [clearable]="false" [items]="details['categories']['Food']" [searchable]="false" formControlName="category"
+	          [multiple]="true" placeholder="Category">
+	        </ng-select>
+	        <div class="form-control-feedback has-danger"></div>
+	      </div>
+      </div>
+      <div class="col-3">
+        <label>Inactive</label> 
+        <div class="form-group form-group-include_inactive">
+            <div class="custom-control custom-checkbox mt-3">
+              <input class="custom-control-input" id="include_inactive" formControlName="include_inactive" type="checkbox">
+              <label class="custom-control-label" for="include_inactive">Include Inactive?</label>
+            </div>
+          <div class="form-control-feedback has-danger"></div>
+        </div> 
+      </div>
+      <div class="col-1 mt-3">
+        <button type="button" class="btn btn-outline-primary mt-4" (click)="reset()">Reset</button>
+      </div>
+      <div class="col-1 mt-3">
+        <input type="submit" value="Apply" class="btn btn-primary mt-4"/>
+      </div>
+    </div>
+    <div class="form-feedback has-danger mt-1 ml-3"></div>
+  </form>
+
+  <div class="p-4">
+    <div class="d-flex pb-2"> 
+      <div class="align-self-start">
+        <span class="h6">Item</span> | 
+        <span class="h6"> Total ({{totalElements}}) </span>
+      </div>
+    </div>
+    <ngx-datatable
+      #shopList
+      class="material bg-white box-shadow-none border-1 server-scrolling-demo"
+      [rows]="rows"
+      [columnMode]="ColumnMode.standard"
+      [loadingIndicator]="isLoading"
+      [headerHeight]="headerHeight"
+      [rowHeight]="rowHeight"
+      reorderable="false"
+      (activate)="onRowClick($event)"
+      [scrollbarV]="true"
+      (scroll)="onScroll($event.offsetY)">
+
+     <ngx-datatable-column name="Id" prop="id" [width]="200" [sortable]="false">
+        <ng-template let-id="value" ngx-datatable-cell-template>
+           {{id}}
+        </ng-template>
+      </ngx-datatable-column>
+
+      <ngx-datatable-column name="Icon" prop="icon" [width]="200" [sortable]="false">
+        <ng-template let-icon="value" ngx-datatable-cell-template>
+           <div *ngIf="icon; else placeholderimage">
+            <image-preview [imageSrc]="icon" imageType="icon"></image-preview>
+          </div>
+          <ng-template #placeholderimage>
+            <img class="ml-3 cursor-pointer" height="70" src="/assets/images/upload-image.png" width="30"/>
+          </ng-template>
+        </ng-template>
+      </ngx-datatable-column>
+
+      <ngx-datatable-column name="Name" prop="name" [width]="250" [sortable]="false">
+        <ng-template let-name="value" ngx-datatable-cell-template>
+            {{name}}
+        </ng-template>
+      </ngx-datatable-column>
+
+      <ngx-datatable-column name="Category" prop="category" [width]="200" [sortable]="false">
+        <ng-template let-category="value" ngx-datatable-cell-template>
+            {{category}}
+        </ng-template>
+      </ngx-datatable-column>
+
+      <ngx-datatable-column name="Status" prop="status" [width]="200" [sortable]="false">
+        <ng-template let-status="value" ngx-datatable-cell-template>
+            {{status}}
+        </ng-template>
+      </ngx-datatable-column>
+    </ngx-datatable>
+  </div>
+</div>

@@ -1,11 +1,11 @@
-import {Component, OnInit, ElementRef, ViewChild, TemplateRef} from '@angular/core';
+import {Component, OnInit, ElementRef} from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router'
 import {FormBuilder, FormGroup, Validators} from '@angular/forms'
 
 import {SortType, ColumnMode} from '@swimlane/ngx-datatable'
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
-import {ItemService} from '../../../../core/service/admin/item.service'
+import {ItemService} from '../../../../core/service/platform/item.service'
 import {ExtendedFormControl} from '../../../../core/utils/extended-form-control.utils'
 import {BaseComponent} from '../../../../base.component'
 import {APP_ROUTES} from '../../../../core/utils/constants.utils'
@@ -34,15 +34,13 @@ export class ItemListComponent extends BaseComponent {
   types = ['Food', 'Fashion']
   ColumnMode = ColumnMode
   itemSearchForm: FormGroup
-  createItemForm: FormGroup
   endReached = false
   nextPageToken = null
   totalElements = 0
   shopId: number
-  @ViewChild('createItemModal', {read: TemplateRef}) createItemModal: TemplateRef<any>;
 
   constructor(private fb: FormBuilder, private route: ActivatedRoute, private router: Router, private el: ElementRef,
-    private itemService: ItemService, private modalService: NgbModal) {
+    private itemService: ItemService) {
     super()
     this.route.params.subscribe(params => this.shopId = params['shop_id']);
     this.itemSearchForm = this.fb.group({
@@ -50,14 +48,6 @@ export class ItemListComponent extends BaseComponent {
       category: new ExtendedFormControl(null, [], 'category'),
       include_inactive: new ExtendedFormControl(null, [], 'include_inactive'),
       className: 'item-search'
-    })
-
-    this.createItemForm = this.fb.group({
-      name: new ExtendedFormControl('', [Validators.required], 'name'),
-      description: new ExtendedFormControl('', [Validators.required], 'description'),
-      category: new ExtendedFormControl(null, [], 'category'),
-      item_type: new ExtendedFormControl(null, [], 'item_type'),
-      className: 'item-create'
     })
   }
 
@@ -172,27 +162,6 @@ export class ItemListComponent extends BaseComponent {
       }
       this.getItemList()
     }
-  }
-
-  addItem() {
-    let requestObj = {}
-    Object.keys(this.createItemForm.value)
-      .map(k => requestObj[k] = this.createItemForm.get(k).value)
-    this.itemService.addNewItem(this.shopId, requestObj)
-    .then(response => {
-        this.rows = []
-        this.getItemList()
-        this.modalService.dismissAll();
-      })
-      .catch(error => {
-        let reason = error['error']['reason']
-        handleError(error, this.createItemForm);
-      });
-  }
-
-  showCreateItemModal() {
-    this.createItemForm.reset({className: 'item-create'});
-    this.modalService.open(this.createItemModal, {centered: true});
   }
 
   updateFilters() {
