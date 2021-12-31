@@ -64,7 +64,7 @@
       <ngx-datatable-column name="Icon" prop="icon" [width]="200" [sortable]="false">
         <ng-template let-icon="value" ngx-datatable-cell-template>
            <div *ngIf="icon; else placeholderimage">
-            <image-preview [imageSrc]="icon" imageType="icon"></image-preview>
+            <img class="ml-3 cursor-pointer" height="70" src="icon" width="30"/>
           </div>
           <ng-template #placeholderimage>
             <img class="ml-3 cursor-pointer" height="70" src="/assets/images/upload-image.png" width="30"/>

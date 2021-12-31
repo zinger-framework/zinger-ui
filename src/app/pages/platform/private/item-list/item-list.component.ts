@@ -112,6 +112,7 @@ export class ItemListComponent extends BaseComponent {
               for(let i = 0; i < this.itemSearchForm.get('category').value.length ; i++) {
                   paramString = paramString + `&category[]=${this.itemSearchForm.get('category').value[i]}`
               } break
+            case 'id':
             case 'include_inactive':
               paramString = paramString + `&${field}=${this.itemSearchForm.get(field).value}`
           }

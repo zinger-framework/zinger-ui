@@ -44,7 +44,8 @@ export class ItemDetailsComponent extends BaseComponent {
       this.shopId = params['shop_id']
       this.itemId = params['id']
       this.breadCrumbData = [{label: 'Home', link: '/dashboard'}, {label: 'Shop', link: '/shop'}, 
-      {label: String(this.shopId), link: '/shop/'+this.shopId }, {label: 'Item', link: ''}]
+      {label: String(this.shopId), link: `/shop/${this.shopId}`}, {label: 'Item', link: `/shop/${this.shopId}/item`}
+      , {label: String(this.itemId), link: ''}]
     });
     this.itemDetailsForm = this.fb.group({
       name: new ExtendedFormControl('', [Validators.required, Validators.pattern(SHOP_NAME_REGEX)], 'name'),
