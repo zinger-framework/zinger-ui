@@ -7,8 +7,8 @@ import {API_ENDPOINTS} from "../../utils/constants.utils";
   providedIn: 'root'
 })
 export class ItemService extends AdminService {
-  addNewItem() {
-    // return this.get(API_ENDPOINTS.SHOP_NEW);
+  addNewItem(shopId, requestBody) {
+    return this.post(`${API_ENDPOINTS.SHOP}/${String(shopId)}/${API_ENDPOINTS.ITEM}`, requestBody);
   }
 
   getItemList(shopId, params = ''){

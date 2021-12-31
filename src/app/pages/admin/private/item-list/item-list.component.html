@@ -8,7 +8,7 @@
       <div class="col-3">
 	      <label>Category</label>
 	      <div class="form-group form-group-category">
-	        <ng-select [clearable]="false" [items]="categories" [searchable]="false" formControlName="category"
+	        <ng-select [clearable]="false" [items]="details['categories']['Food']" [searchable]="false" formControlName="category"
 	          [multiple]="true" placeholder="Category">
 	        </ng-select>
 	        <div class="form-control-feedback has-danger"></div>
@@ -40,7 +40,7 @@
         <span class="h6">Item</span> | 
         <span class="h6"> Total ({{totalElements}}) </span>
       </div>
-      <div class="ml-auto pr-2 text-primary"><a class="cursor-pointer" (click)="addItem()">New Item</a></div>
+      <div class="ml-auto pr-2 text-primary"><a class="cursor-pointer" (click)="showCreateItemModal()">New Item</a></div>
     </div>
     <ngx-datatable
       #shopList
@@ -58,6 +58,17 @@
      <ngx-datatable-column name="Id" prop="id" [width]="200" [sortable]="false">
         <ng-template let-id="value" ngx-datatable-cell-template>
            {{id}}
+        </ng-template>
+      </ngx-datatable-column>
+
+      <ngx-datatable-column name="Icon" prop="icon" [width]="200" [sortable]="false">
+        <ng-template let-icon="value" ngx-datatable-cell-template>
+           <div *ngIf="icon; else placeholderimage">
+            <image-preview [imageSrc]="icon" imageType="icon"></image-preview>
+          </div>
+          <ng-template #placeholderimage>
+            <img class="ml-3 cursor-pointer" height="70" src="/assets/images/upload-image.png" width="30"/>
+          </ng-template>
         </ng-template>
       </ngx-datatable-column>
 
@@ -82,4 +93,49 @@
   </div>
 </div>
 
+
+<ng-template #createItemModal let-modal>
+  <form (ngSubmit)="addItem()" [formGroup]="createItemForm" class="item-create p-2">
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Add New Item</h4>
+      <button (click)="modal.dismiss()" aria-label="Close" class="close" type="button">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+    <div class="modal-body">
+    	<div>
+    		<label>Name</label>
+      		<form-input inputType="text" name="name" placeholder="Chicken Biriyani"></form-input>
+    	</div>
+    	<div>
+    		<label>Description</label>
+      		<form-input inputType="text" name="description" placeholder="Hot and Spicy Biriyani"></form-input>
+    	</div>
+    	<div>
+    		<label>Type</label>
+      		<div class="form-group form-group-item_type">
+	        <ng-select [clearable]="false" [items]="details['types']" [searchable]="false" formControlName="item_type"
+	         placeholder="Type">
+	        </ng-select>
+	        <div class="form-control-feedback has-danger"></div>
+	      </div>
+    	</div>
+    	<div>
+    		<label>Category</label>
+      		<div class="form-group form-group-category">
+	        <ng-select [clearable]="false" [items]="details['categories'][this.createItemForm.get('item_type').value]" [searchable]="false" formControlName="category"
+	     	 placeholder="Category">
+	        </ng-select>
+	        <div class="form-control-feedback has-danger"></div>
+	      </div>
+    	</div>
+    </div>
+    <div class="form-feedback has-danger mt-1 mb-1 text-center"></div>
+
+    <div class="modal-footer">
+      <input [disabled]="!this.createItemForm.valid" class="btn btn-primary" type="submit" value="Create">
+    </div>
+  </form>
+</ng-template>
 
