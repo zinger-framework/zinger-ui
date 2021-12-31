@@ -2,17 +2,15 @@ import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, FormArray, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 
+import {ToastrService} from 'ngx-toastr';
+
 import {BaseComponent} from '../../../../base.component';
 import {ExtendedFormControl} from '../../../../core/utils/extended-form-control.utils';
 import {SHOP_NAME_REGEX} from '../../../../core/utils/constants.utils';
 import {handleError, setErrorMessage} from '../../../../core/utils/common.utils';
-import {ToastrService} from 'ngx-toastr';
+import {ItemService} from '../../../../core/service/admin/item.service';
 import $ from 'jquery';
 
-// Add placeholder functions in itemdetails service
-// Handle cases for new product and existing product
-// Write functions to load data into form model
-// Handle navigation from shop to items
 
 @Component({
   selector: 'app-item-details',
@@ -37,10 +35,10 @@ export class ItemDetailsComponent extends BaseComponent {
   variant_index = -1
   attr_index = -1
   shopId: number
-  itemId: number
+  itemId: string
 
   
-  constructor(private fb: FormBuilder, private toastr: ToastrService, private route: ActivatedRoute,) { 
+  constructor(private fb: FormBuilder, private toastr: ToastrService, private route: ActivatedRoute, private itemService: ItemService) { 
     super()
     this.route.params.subscribe(params => {
       this.shopId = params['shop_id']
@@ -72,28 +70,28 @@ export class ItemDetailsComponent extends BaseComponent {
     switch (imgType) {
       case 'icon':
       this.deleteIcon()
-        // this.shopService.deleteIcon(this.shopId)
-        //   .then(response => {
-        //     this.deleteIcon()
-        //   })
-        //   .catch(error => {
-        //     if (error['status'] == 404) this.deleteIcon()
-        //     handleError(error, this.shopDetailsForm)
-        //   })
+        this.itemService.deleteIcon(this.shopId, this.itemId)
+          .then(response => {
+            this.deleteIcon()
+          })
+          .catch(error => {
+            if (error['status'] == 404) this.deleteIcon()
+            handleError(error, this.itemDetailsForm)
+          })
         break;
       case 'cover_photos':
-        // this.shopService.deleteCoverPhoto(this.shopId, imageId)
-        //   .then(response => {
-        //     this.coverImgSrcList = response['data']['cover_photos']
-        //   })
-        //   .catch(error => {
-        //     if (error['status'] == 404) this.coverImgSrcList = this.coverImgSrcList.filter(x => x['id'] != imageId)
-        //     handleError(error, this.shopDetailsForm)
-        //   })
-        //   .finally(() => {
-        //     if (this.coverImgSrcList.length == 0)
-        //       setErrorMessage('Cover Photos cannot be empty', 'item-details', 'cover_photos')
-        //   })
+        this.itemService.deleteCoverPhoto(this.shopId, this.itemId, imageId)
+          .then(response => {
+            this.coverImgSrcList = response['data']['cover_photos']
+          })
+          .catch(error => {
+            if (error['status'] == 404) this.coverImgSrcList = this.coverImgSrcList.filter(x => x['id'] != imageId)
+            handleError(error, this.itemDetailsForm)
+          })
+          .finally(() => {
+            if (this.coverImgSrcList.length == 0)
+              setErrorMessage('Cover Photos cannot be empty', 'item-details', 'cover_photos')
+          })
         break;
     }
   }
@@ -135,13 +133,13 @@ export class ItemDetailsComponent extends BaseComponent {
               this.itemDetailsForm.get('icon').setValue('')
               if (img.naturalWidth == 512 && img.naturalHeight == 512) {
                 formData.append('icon_file', file);
-                // this.shopService.uploadIcon(this.shopId, formData)
-                //   .then(response => {
-                //     this.iconSrc = response['data']['icon']
-                //   })
-                //   .catch(error => {
-                //     handleError(error, this.shopDetailsForm)
-                //   })
+                this.itemService.uploadIcon(this.shopId, this.itemId, formData)
+                  .then(response => {
+                    this.iconSrc = response['data']['icon']
+                  })
+                  .catch(error => {
+                    handleError(error, this.itemDetailsForm)
+                  })
               } else {
                 this.toastr.error('Please upload a valid image file of 512 x 512 dimension')
               }
@@ -151,13 +149,13 @@ export class ItemDetailsComponent extends BaseComponent {
               this.itemDetailsForm.get('cover_photos').setValue('')
               if (img.naturalWidth == 1024 && img.naturalHeight == 500) {
                 formData.append('cover_file', file);
-                // this.shopService.uploadCoverPhoto(this.shopId, formData)
-                //   .then(response => {
-                //     this.coverImgSrcList = response['data']['cover_photos']
-                //   })
-                //   .catch(error => {
-                //     handleError(error, this.shopDetailsForm)
-                //   })
+                this.itemService.uploadCoverPhoto(this.shopId, this.itemId, formData)
+                  .then(response => {
+                    this.coverImgSrcList = response['data']['cover_photos']
+                  })
+                  .catch(error => {
+                    handleError(error, this.itemDetailsForm)
+                  })
               } else {
                 this.toastr.error('Please upload a valid image file of 1024 x 500 dimension')
               }

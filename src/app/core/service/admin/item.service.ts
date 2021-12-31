@@ -25,19 +25,23 @@ export class ItemService extends AdminService {
     // return this.put(API_ENDPOINTS.SHOP + '/' + shopId, requestBody);
   }
 
-  uploadIcon(shopId, requestBody) {
-    // return this.sendFormData(API_ENDPOINTS.SHOP + '/' + shopId + '/icon', requestBody)
+  uploadIcon(shopId, itemId, requestBody) {
+    let url = `${API_ENDPOINTS.SHOP}/${String(shopId)}/${API_ENDPOINTS.ITEM}/${itemId}/icon`
+    return this.sendFormData(url, requestBody)
   }
 
-  uploadCoverPhoto(shopId, requestBody) {
-    // return this.sendFormData(API_ENDPOINTS.SHOP + '/' + shopId + '/cover_photo', requestBody)
+  uploadCoverPhoto(shopId, itemId, requestBody) {
+    let url = `${API_ENDPOINTS.SHOP}/${String(shopId)}/${API_ENDPOINTS.ITEM}/${itemId}/cover_photo`
+    return this.sendFormData(url, requestBody)
   }
 
-  deleteIcon(shopId) {
-    // return this.delete(API_ENDPOINTS.SHOP + '/' + shopId + '/icon')
+  deleteIcon(shopId, itemId) {
+    let url = `${API_ENDPOINTS.SHOP}/${String(shopId)}/${API_ENDPOINTS.ITEM}/${itemId}/icon`
+    return this.delete(url)
   }
 
-  deleteCoverPhoto(shopId, imageId) {
-    // return this.delete(API_ENDPOINTS.SHOP + '/' + shopId + '/cover_photo/' + imageId)
+  deleteCoverPhoto(shopId, itemId, imageId) {
+    let url = `${API_ENDPOINTS.SHOP}/${String(shopId)}/${API_ENDPOINTS.ITEM}/${itemId}/cover_photo/${imageId}`
+    return this.delete(url)
   }
 }
