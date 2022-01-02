@@ -16,7 +16,7 @@ export enum KeyCodes {
 
 // Reference - https://github.com/coryrylan/ngx-lite/tree/master/projects/ngx-input-tag
 
-export type TagFormatter = (tag: string) => string;
+export type ChipFormater = (chip: string) => string;
 
 @Component({
   selector: 'chip',
@@ -50,21 +50,19 @@ export class ChipComponent implements ControlValueAccessor {
   }
 
   @ViewChild('inputElement', { static: false }) inputElement?: ElementRef;
-  @Input() tagSuggestions: string[] = [];
-  @Input() maxTagLength = 25;
-  @Input() maxNumberOfTags = 1000;
+  @Input() chipSuggestions: string[] = [];
+  @Input() maxChipLength = 25;
+  @Input() maxNumberOfChips = 1000;
   @Output() readonly textChange = new EventEmitter<string>();
 
   private _value: string[] = [];
-  private prevTagInput = '';
-  private currentNumberOfTags = 0;
-  private tagError: { message: string } | null = null;
-  private tagFormatter: TagFormatter;
-  private config = {}
+  private prevChipInput = '';
+  private currentNumberOfChips = 0;
+  private chipValueError: { message: string } | null = null;
+  private chipFormatter: ChipFormater;
 
   constructor() {
-    this.config = { formatter }
-    this.tagFormatter = formatter
+    this.chipFormatter = formatter
   }
 
   ngOnInit(): void {
@@ -84,13 +82,13 @@ export class ChipComponent implements ControlValueAccessor {
 
   writeValue(value: string[]) {
     if (value) {
-      this.value = value.map((v) => this.tagFormatter(v));
-      this.setCurrentNumberOfTags();
+      this.value = value.map((v) => this.chipFormatter(v));
+      this.setCurrentNumberOfChips();
     }
   }
 
   validate() {
-    return this.tagError;
+    return this.chipValueError;
   }
 
   @HostListener('document:click', ['$event'])
@@ -100,47 +98,47 @@ export class ChipComponent implements ControlValueAccessor {
       !this.inputElement.nativeElement.contains(event.target) &&
       this.inputElement.nativeElement.value
     ) {
-      this.addTag(this.inputElement.nativeElement.value);
+      this.addChip(this.inputElement.nativeElement.value);
     }
   }
 
-  addTag(tag: string) {
-    const formattedTag = this.tagFormatter(tag);
-    const tagIsEmpty = formattedTag.length === 0;
-    const invalidTagLength =
-      !formattedTag.length ||
-      (this.maxTagLength && formattedTag.length > this.maxTagLength);
-    const duplicateTag = this.value.indexOf(formattedTag) > -1;
-    const exceedsMaxNumberOfTags =
-      this.currentNumberOfTags > this.maxNumberOfTags;
+  addChip(chip: string) {
+    const formattedChip = this.chipFormatter(chip);
+    const chipIsEmpty = formattedChip.length === 0;
+    const invalidChipLength =
+      !formattedChip.length ||
+      (this.maxChipLength && formattedChip.length > this.maxChipLength);
+    const duplicateChip = this.value.indexOf(formattedChip) > -1;
+    const exceedsMaxNumberOfChips =
+      this.currentNumberOfChips > this.maxNumberOfChips;
 
-    if (!tagIsEmpty && invalidTagLength) {
-      this.tagError = {
-        message: `Tag length cannot exceed ${this.maxTagLength} characters`,
+    if (!chipIsEmpty && invalidChipLength) {
+      this.chipValueError = {
+        message: `Chip length cannot exceed ${this.maxChipLength} characters`,
       };
     }
 
-    if (duplicateTag) {
-      this.tagError = { message: 'Cannot add duplicate tag' };
+    if (duplicateChip) {
+      this.chipValueError = { message: 'Cannot add duplicate Chip' };
     }
 
-    if (exceedsMaxNumberOfTags) {
-      const plural = this.maxNumberOfTags === 1 ? '' : 's';
-      this.tagError = {
-        message: `Cannot exceed ${this.maxNumberOfTags} tag${plural}`,
+    if (exceedsMaxNumberOfChips) {
+      const plural = this.maxNumberOfChips === 1 ? '' : 's';
+      this.chipValueError = {
+        message: `Cannot exceed ${this.maxNumberOfChips} chip${plural}`,
       };
     }
 
     if (
-      !tagIsEmpty &&
-      !invalidTagLength &&
-      !duplicateTag &&
-      !exceedsMaxNumberOfTags &&
+      !chipIsEmpty &&
+      !invalidChipLength &&
+      !duplicateChip &&
+      !exceedsMaxNumberOfChips &&
       this.inputElement
     ) {
-      this.tagError = null;
-      this.value.push(formattedTag);
-      this.setCurrentNumberOfTags();
+      this.chipValueError = null;
+      this.value.push(formattedChip);
+      this.setCurrentNumberOfChips();
       this.inputElement.nativeElement.value = '';
     }
 
@@ -148,51 +146,44 @@ export class ChipComponent implements ControlValueAccessor {
     this.focus();
   }
 
-  addTagEvent(event: KeyboardEvent) {
+  addChipEvent(event: KeyboardEvent) {
     const input = event.target as HTMLInputElement;
 
-    this.tagError = null;
+    this.chipValueError = null;
     this.value = this.value;
 
     this.textChange.emit(input.value);
     if (
       event.keyCode === KeyCodes.Backspace &&
-      this.prevTagInput.length === 0
+      this.prevChipInput.length === 0
     ) {
       this._value.pop();
-      this.setCurrentNumberOfTags();
+      this.setCurrentNumberOfChips();
     } else if (
       event.keyCode === KeyCodes.Enter ||
       event.keyCode === KeyCodes.Comma ||
       event.keyCode === KeyCodes.Tab
     ) {
-      this.addTag(input.value);
+      this.addChip(input.value);
     }
 
-    this.prevTagInput = input.value;
+    this.prevChipInput = input.value;
   }
 
   preventDefaultTabBehavior(event: KeyboardEvent) {
-    if (event.keyCode === KeyCodes.Tab && this.prevTagInput.length > 0) {
+    if (event.keyCode === KeyCodes.Tab && this.prevChipInput.length > 0) {
       event.preventDefault();
     }
   }
 
-  addTagClick(event: MouseEvent, value: string) {
-    event.preventDefault();
-    if (value.length > 0) {
-      this.addTag(value);
-    }
+  addSuggestedValue(chip: string) {
+    this.addChip(chip);
   }
 
-  addSuggestedTag(tag: string) {
-    this.addTag(tag);
-  }
-
-  removeTag(tag: string, event: any) {
+  removeChip(chip: string, event: any) {
     if (event.keyCode !== KeyCodes.Enter) {
-      this.value = this._value.filter((t) => t !== tag);
-      this.setCurrentNumberOfTags();
+      this.value = this._value.filter((t) => t !== chip);
+      this.setCurrentNumberOfChips();
     }
   }
 
@@ -200,17 +191,13 @@ export class ChipComponent implements ControlValueAccessor {
     this.inputElement?.nativeElement.focus();
   }
 
-  setCurrentNumberOfTags() {
-    this.currentNumberOfTags = this.value.length
+  setCurrentNumberOfChips() {
+    this.currentNumberOfChips = this.value.length
       ? this.value.toString().split(',').length
       : 0;
   }
 }
 
-export function formatter(tag: string): string {
-  return tag
-    .trim()
-    .replace(/(\s|-)+/g, '-')
-    .replace(/\,/g, '')
-    .toLowerCase();
+export function formatter(chip: string): string {
+  return chip.trim().replace(/(\s|-)+/g, '-').replace(/\,/g, '').toLowerCase();
 }

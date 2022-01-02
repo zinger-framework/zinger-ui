@@ -15,10 +15,10 @@
 	    <div class="row">
 	      <div class="col-md-6 col-lg-6">
 	        <label class="required">Categories</label>
-	        <chip formControlName="tags" [tagSuggestions]="tagSuggestions"></chip>
+	        <chip formControlName="tags" [chipSuggestions]="tagSuggestions"></chip>
 	      </div>
 	    </div>
 	    <div class="form-feedback has-danger mt-1 mb-1 text-center"></div>
-	    <button class="btn btn-primary" type="submit">Submit</button>
+	    <button class="btn btn-primary" disabled="false" type="submit">Submit</button>
     </form>
 </div>

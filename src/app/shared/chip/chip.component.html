@@ -1,14 +1,14 @@
-<div (click)="focus()" class="ngx-input-tag">
-  <div *ngFor="let tag of value" class="ngx-input-tag__tag">
-    {{tag}}
-    <button type="button" (click)="removeTag(tag, $event)">
+<div (click)="focus()" class="chip">
+  <div *ngFor="let chip_value of value" class="chip_container">
+    {{chip_value}}
+    <button type="button" (click)="removeChip(chip_value, $event)">
       &#10006;
     </button>
   </div>
-  <input type="text" #inputElement aria-label="Tags" [style.width]="inputElement.value.length * 10 + 10 + 'px'" (keyup)="addTagEvent($event)" (keydown)="preventDefaultTabBehavior($event)"
-    class="ngx-input-tag__input" />
+  <input type="text" #inputElement [style.width]="inputElement.value.length * 10 + 10 + 'px'" (keyup)="addChipEvent($event)" (keydown)="preventDefaultTabBehavior($event)"
+    class="chip_input" />
 </div>
 
-<div *ngIf="inputElement.value.length && tagSuggestions && tagSuggestions.length" class="ngx-input-tag-suggestions">
-  <button type="button" (click)="addSuggestedTag(tag)" *ngFor="let tag of tagSuggestions" class="ngx-input-tag-suggestions__tag">{{tag}}</button>
+<div *ngIf="inputElement.value.length && chipSuggestions && chipSuggestions.length" class="chip-suggestions">
+  <button type="button" (click)="addSuggestedValue(suggestion)" *ngFor="let suggestion of chipSuggestions" class="chip-suggestions_tag">{{suggestion}}</button>
 </div>
