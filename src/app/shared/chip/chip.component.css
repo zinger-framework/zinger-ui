@@ -1,0 +1,62 @@
+.ngx-input-tag {
+    padding: 5px 80px 4.5px 4px;
+    position: relative;
+    margin-bottom: 0;
+    border: 1px solid #dbdbdb;
+    background-color: #fff;
+    font-size: 16px;
+}
+
+.ngx-input-tag__tag {
+    display: inline-block;
+    border: 1px solid #dbdbdb;
+    padding: 4px;
+    margin-right: 4px;
+    border-radius: 2px;
+    height: 29px;
+    line-height: 18px;
+}
+
+.ngx-input-tag-suggestions__tag {
+    padding: 10px 14px;
+    border: 0;
+    background: #0000;
+    display: block;
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+}
+
+.ngx-input-tag__tag button {
+    background: #0000;
+    border: 0;
+    cursor: pointer;
+    color: var(--color-tag-close);
+}
+
+.ngx-input-tag__input {
+    border: 0;
+    padding: 4px 0;
+    outline: none;
+    width: 8px;
+    max-width: calc(100% + 70px);
+    margin-left: 4px;
+    min-width: 4px;
+    margin-bottom: 0;
+    font-size: 16px;
+    min-height: 29px;
+}
+
+.ngx-input-tag__btn {
+    position: absolute;
+    width: 50px;
+    height: 41px;
+    color: #ccc;
+    color: var(--color-add-button);
+    background-color: #fff;
+    background-color: var(--color-add-button-background);
+    top: -1px;
+    right: -1px;
+    cursor: pointer;
+    font-size: 30px;
+}

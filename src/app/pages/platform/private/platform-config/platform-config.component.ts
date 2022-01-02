@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, FormArray, Validators} from '@angular/forms';
 
 import {BaseComponent} from '../../../../base.component';
@@ -12,6 +12,8 @@ import {handleError, setErrorMessage} from '../../../../core/utils/common.utils'
 })
 export class PlatformConfigComponent extends BaseComponent {
   platformConfigForm: FormGroup
+  tagSuggestions = [];
+
   details = {
     types: ['Food', 'Fashion'],
     categories: {
@@ -29,6 +31,7 @@ export class PlatformConfigComponent extends BaseComponent {
       categories: new ExtendedFormControl(null, [Validators.required], 'categories'),
       variants: new ExtendedFormControl(null, [Validators.required], 'variants'),
       filters: new ExtendedFormControl(null, [Validators.required], 'filters'),
+      tags: [],
       className: 'platform-config'
     });
   }
@@ -37,6 +40,6 @@ export class PlatformConfigComponent extends BaseComponent {
   }
 
   updateConfig(): void {
-
+    console.log(this.platformConfigForm.value);
   }
 }
