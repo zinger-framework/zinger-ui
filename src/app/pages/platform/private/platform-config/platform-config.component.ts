@@ -31,7 +31,6 @@ export class PlatformConfigComponent extends BaseComponent {
       categories: new ExtendedFormControl(null, [Validators.required], 'categories'),
       variants: new ExtendedFormControl(null, [Validators.required], 'variants'),
       filters: new ExtendedFormControl(null, [Validators.required], 'filters'),
-      tags: [],
       className: 'platform-config'
     });
   }

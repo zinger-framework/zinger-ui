@@ -15,9 +15,33 @@
 	    <div class="row">
 	      <div class="col-md-6 col-lg-6">
 	        <label class="required">Categories</label>
-	        <chip formControlName="tags" [chipSuggestions]="tagSuggestions"></chip>
+	        <div class="form-group form-group-categories">
+	        	<chip formControlName="categories" [chipSuggestions]="tagSuggestions"></chip>
+	        	<div class="form-control-feedback has-danger"></div>
+	        </div>
 	      </div>
 	    </div>
+
+	    <div class="row">
+	      <div class="col-md-6 col-lg-6">
+	        <label class="required">Variants</label>
+	        <div class="form-group form-group-variants">
+	        	<chip formControlName="variants" [chipSuggestions]="tagSuggestions"></chip>
+	        	<div class="form-control-feedback has-danger"></div>
+	        </div>
+	      </div>
+	    </div>
+
+	    <div class="row">
+	      <div class="col-md-6 col-lg-6">
+	        <label class="required">Filters</label>
+	        <div class="form-group form-group-filters">
+	        	<chip formControlName="filters" [chipSuggestions]="tagSuggestions"></chip>
+	        	<div class="form-control-feedback has-danger"></div>
+	        </div>
+	      </div>
+	    </div>
+
 	    <div class="form-feedback has-danger mt-1 mb-1 text-center"></div>
 	    <button class="btn btn-primary" disabled="false" type="submit">Submit</button>
     </form>
