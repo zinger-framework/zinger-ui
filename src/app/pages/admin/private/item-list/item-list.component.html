@@ -6,20 +6,33 @@
         <form-input inputType="text" name="id" placeholder="Item Id"></form-input>
       </div>
       <div class="col-3">
+        <label>Item Type</label>
+        <div class="form-group form-group-item_type">
+          <ng-select [clearable]="false" [items] = "item_types"  [searchable]="false" formControlName="item_type"
+            placeholder="Item Type"></ng-select>
+          <div class="form-control-feedback has-danger"></div>
+        </div>
+      </div>
+      <div class="col-3">
 	      <label>Category</label>
 	      <div class="form-group form-group-category">
-	        <ng-select [clearable]="false" [items]="details['categories']['Food']" [searchable]="false" formControlName="category"
+	        <ng-select [clearable]="false"  [searchable]="false" formControlName="category"
 	          [multiple]="true" placeholder="Category">
+            <div *ngIf="itemSearchForm.get('item_type').value !== null && details[itemSearchForm.get('item_type').value] !== undefined">
+              <ng-option *ngFor="let category of details[itemSearchForm.get('item_type').value]['category'] | keyvalue" [value]="category.key">{{category.value['title']}}</ng-option>
+            </div>
 	        </ng-select>
 	        <div class="form-control-feedback has-danger"></div>
 	      </div>
       </div>
+    </div>
+    <div class="row">
       <div class="col-3">
         <label>Inactive</label> 
         <div class="form-group form-group-include_inactive">
             <div class="custom-control custom-checkbox mt-3">
               <input class="custom-control-input" id="include_inactive" formControlName="include_inactive" type="checkbox">
-              <label class="custom-control-label" for="include_inactive">Include Inactive?</label>
+              <label class="custom-control-label pt-1" for="include_inactive">Include Inactive?</label>
             </div>
           <div class="form-control-feedback has-danger"></div>
         </div> 
@@ -28,7 +41,7 @@
         <button type="button" class="btn btn-outline-primary mt-4" (click)="reset()">Reset</button>
       </div>
       <div class="col-1 mt-3">
-        <input type="submit" value="Apply" class="btn btn-primary mt-4"/>
+        <input type="submit" value="Apply" [disabled]="!itemSearchForm.valid" class="btn btn-primary mt-4"/>
       </div>
     </div>
     <div class="form-feedback has-danger mt-1 ml-3"></div>
@@ -78,13 +91,19 @@
         </ng-template>
       </ngx-datatable-column>
 
+      <ngx-datatable-column name="Type" prop="item_type" [width]="100" [sortable]="false">
+        <ng-template let-item_type="value" ngx-datatable-cell-template>
+            {{item_type}}
+        </ng-template>
+      </ngx-datatable-column>
+
       <ngx-datatable-column name="Category" prop="category" [width]="200" [sortable]="false">
         <ng-template let-category="value" ngx-datatable-cell-template>
             {{category}}
         </ng-template>
       </ngx-datatable-column>
 
-      <ngx-datatable-column name="Status" prop="status" [width]="200" [sortable]="false">
+      <ngx-datatable-column name="Status" prop="status" [width]="100" [sortable]="false">
         <ng-template let-status="value" ngx-datatable-cell-template>
             {{status}}
         </ng-template>
@@ -113,9 +132,9 @@
       		<form-input inputType="text" name="description" placeholder="Hot and Spicy Biriyani"></form-input>
     	</div>
     	<div>
-    		<label>Type</label>
+    		<label>Item Type</label>
       		<div class="form-group form-group-item_type">
-	        <ng-select [clearable]="false" [items]="details['types']" [searchable]="false" formControlName="item_type"
+	        <ng-select [clearable]="false" [items]="item_types" [searchable]="false" formControlName="item_type"
 	         placeholder="Type">
 	        </ng-select>
 	        <div class="form-control-feedback has-danger"></div>
@@ -124,8 +143,10 @@
     	<div>
     		<label>Category</label>
       		<div class="form-group form-group-category">
-	        <ng-select [clearable]="false" [items]="details['categories'][this.createItemForm.get('item_type').value]" [searchable]="false" formControlName="category"
-	     	 placeholder="Category">
+	        <ng-select [clearable]="false" [searchable]="false" formControlName="category" placeholder="Category">
+            <div *ngIf="createItemForm.get('item_type').value !== null && details[createItemForm.get('item_type').value] !== undefined">
+              <ng-option *ngFor="let category of details[createItemForm.get('item_type').value]['category'] | keyvalue" [value]="category.key">{{category.value['title']}}</ng-option>
+            </div>
 	        </ng-select>
 	        <div class="form-control-feedback has-danger"></div>
 	      </div>

@@ -1,6 +1,7 @@
 export const API_ENDPOINTS = {
   ADMIN_URL: 'http://api.zinger.pw/admin/',
   PLATFORM_URL: 'http://api.zinger.pw/platform/',
+  API_VERSION: 'v1',
   AUTH_RESET_PASSWORD: 'v1/auth/reset_password',
   AUTH_LOGIN: 'v1/auth/login',
   AUTH_SIGNUP: 'v1/auth/signup',
@@ -52,3 +53,7 @@ export const GST_REGEX = /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[0-9]{1}[A-Z]{1}[0-9A
 export const PINCODE_REGEX = /^[1-9][0-9]{5}$/;
 export const LATLNG_REGEX = /^[-+]?[0-9]{1,3}.?[0-9]{1,4}$/;
 export const TAGS_REGEX = /^[a-zA-Z_, -]{1,100}$/;
+export const ITEM_ID_REGEX = /^[a-zA-Z0-9]{1,100}$/;
+export const ITEM_NAME_REGEX = /^[a-zA-Z0-9 ]{1,20}$/;
+export const ITEM_DESC_REGEX = /^[a-zA-Z0-9 ,\\.]{1,100}$/;
+
