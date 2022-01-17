@@ -21,8 +21,8 @@
         <div class="row">
           <div class="col-md-6 col-lg-6">
             <label class="required">Type</label>
-            <div class="form-group form-group-type">
-              <ng-select [clearable]="false" [items]="details['types']" [searchable]="false" formControlName="type"
+            <div class="form-group form-group-item_type">
+              <ng-select [clearable]="false" [items]="item_types" [searchable]="false" formControlName="item_type"
                          placeholder="Select">
               </ng-select>
               <div class="form-control-feedback has-danger"></div>
@@ -31,40 +31,23 @@
           <div class="col-md-6 col-lg-6">
             <label class="required">Category</label>
             <div class="form-group form-group-category">
-              <ng-select [clearable]="false" [items]="details['categories'][this.itemDetailsForm.get('type').value]" [searchable]="false" formControlName="category" placeholder="Select">
+              <ng-select [clearable]="false" [searchable]="false" formControlName="category" placeholder="Select">
+                <div *ngIf="itemDetailsForm.get('item_type').value !== null && meta[itemDetailsForm.get('item_type').value] !== undefined">
+                  <ng-option *ngFor="let category of meta[itemDetailsForm.get('item_type').value]['category']" 
+                  [value]="category['reference_id']">{{category['title']}}</ng-option>
+                </div>
               </ng-select>
               <div class="form-control-feedback has-danger"></div>
             </div>
           </div>
         </div>
-        
-        <div>
-          <div>
-            <label class="required">Attribute</label>
+        <div class="row">
+          <div class="col-md-6 col-lg-6">
+            <div>
+              <label>Is Item Available?</label><br>
+              <ui-switch (click)="updateItemActiveStatus()" [(ngModel)]="isItemActive" [ngModelOptions]="{standalone: true}"></ui-switch>
+            </div>
           </div>
-          
-          <div formArrayName="attributes" *ngFor="let item of itemDetailsForm.get('attributes')['controls']; let i = index;">  
-            <form [formGroupName]="i" class="row {{this.itemDetailsForm.get('attributes')['controls'][i]['controls'].className.value}}">
-              <div class="col-md-3 col-lg-3">
-                <div class="form-group form-group-attribute_name">
-                  <input formControlName="attribute_name" placeholder="Brand" type="text" class="form-control form-control-lg"/>
-                  <div class="form-control-feedback has-danger"></div>
-                </div>
-              </div>
-              <div class="col-md-3 col-lg-3">
-                <div class="form-group form-group-attribute_value">
-                  <input formControlName="attribute_value" placeholder="Adidas" type="text" class="form-control form-control-lg"/>
-                  <div class="form-control-feedback has-danger"></div>
-                </div>
-              </div>
-              <div class="col-md-3 col-lg-3 mt-3">
-                  <i type="button" class="mt-6 dw dw-delete-3" (click)="deleteFormArrayItem('attributes', i)"></i>
-              </div>
-              <div class="form-feedback has-danger mt-1 mb-1 text-center"></div>
-            </form>
-          </div>
-          <br>
-          <button type="button" class="btn btn-primary mt-6" (click)="addFormArrayItem('attributes')">Add Attribute</button>
         </div>
       </ng-template>
     </ngb-panel>
@@ -130,8 +113,11 @@
           <div class="col-md-6 col-lg-6">
             <label class="required">Variant Property</label>
             <div class="form-group form-group-variant_property">
-              <ng-select [clearable]="false" [items]="details['variantProperty'][this.itemDetailsForm.get('type').value]" 
-              [searchable]="false" formControlName="variant_property" placeholder="Select">
+              <ng-select [clearable]="false" [searchable]="false" formControlName="variant_property" placeholder="Select">
+                <div *ngIf="itemDetailsForm.get('item_type').value !== null && meta[itemDetailsForm.get('item_type').value] !== undefined">
+                  <ng-option *ngFor="let variant of meta[this.itemDetailsForm.get('item_type').value]['variant']" 
+                    [value]="variant['reference_id']">{{variant['title']}}</ng-option>
+                </div>
               </ng-select>
               <div class="form-control-feedback has-danger"></div>
             </div>
@@ -141,7 +127,7 @@
           <label>Variant Details</label>
         </div>
         <div formArrayName="variant_details" *ngFor="let item of itemDetailsForm.get('variant_details')['controls']; let i = index;">  
-          <form [formGroupName]="i" class="row {{this.itemDetailsForm.get('variant_details')['controls'][i]['controls'].className.value}}">
+          <form [formGroupName]="i" class="row {{item['controls'].className.value}}">
             <div class="col-md-3 col-lg-3">
               <div class="form-group form-group-variant_name">
                 <input formControlName="variant_name" placeholder="regular" type="text" class="form-control form-control-lg"/>
@@ -164,6 +150,77 @@
         <button type="button" class="btn btn-primary mt-6" (click)="addFormArrayItem('variant_details')">Add Variant</button>
       </ng-template>
     </ngb-panel>
+
+    <ngb-panel id="filterPanel">
+        <ng-template class="panel-header" let-opened="opened" ngbPanelHeader>
+          <accordion-header [accordion]="accordion" [opened]="opened" [panelId]="'filterPanel'"
+                            title='Filter Information'></accordion-header>
+        </ng-template>
+        <ng-template ngbPanelContent>
+            <div>
+              <label class="required">Filterable Fields</label>
+            </div>
+            
+            <div formArrayName="filterable_fields" *ngFor="let item of itemDetailsForm.get('filterable_fields')['controls']; let i = index;">  
+              <form [formGroupName]="i" class="row {{item['controls'].className.value}}">
+                <div class="col-md-3 col-lg-3">
+                  <div class="form-group form-group-filter_name">
+                    <input formControlName="filter_name" placeholder="Brand" type="text" class="form-control form-control-lg"/>
+                    <div class="form-control-feedback has-danger"></div>
+                  </div>
+                </div>
+                <div class="col-md-3 col-lg-3">
+                  <div class="form-group form-group-filter_value">
+                    <input formControlName="filter_value" placeholder="Adidas" type="text" class="form-control form-control-lg"/>
+                    <div class="form-control-feedback has-danger"></div>
+                  </div>
+                </div>
+                <br>
+                <div class="form-feedback has-danger mt-1 mb-1 text-center"></div>
+              </form>
+          </div>
+        </ng-template>
+    </ngb-panel>
+
+    <ngb-panel id="metaPanel">
+        <ng-template class="panel-header" let-opened="opened" ngbPanelHeader>
+          <accordion-header [accordion]="accordion" [opened]="opened" [panelId]="'metaPanel'"
+                            title='Metadata'></accordion-header>
+        </ng-template>
+        <ng-template ngbPanelContent>
+           <div>
+            <div>
+              <label class="required">Meta-Data</label>
+            </div>
+            <div formArrayName="meta_data" *ngFor="let item of itemDetailsForm.get('meta_data')['controls']; let i = index;">  
+              <form [formGroupName]="i" class="row  {{this.itemDetailsForm.get('meta_data')['controls'][i]['controls'].className.value}}">
+                <div class="col-md-3 col-lg-3">
+                  <div class="form-group form-group-key">
+                    <input formControlName="key" placeholder="Brand" type="text" class="form-control form-control-lg"/>
+                    <div class="form-control-feedback has-danger"></div>
+                  </div>
+                </div>
+                <div class="col-md-3 col-lg-3">
+                  <div class="form-group form-group-value">
+                    <input formControlName="value" placeholder="Adidas" type="text" class="form-control form-control-lg"/>
+                    <div class="form-control-feedback has-danger"></div>
+                  </div>
+                </div>
+                <div class="col-md-3 col-lg-3 mt-3">
+                    <i type="button" class="mt-6 dw dw-delete-3" (click)="deleteFormArrayItem('meta_data', i)"></i>
+                </div>
+                <div class="form-feedback has-danger mt-1 mb-1 text-center"></div>
+              </form>
+            </div>
+            <br>
+            <button type="button" class="btn btn-primary mt-6" (click)="addFormArrayItem('meta_data')">Add metadata</button>
+          </div>
+        </ng-template>
+    </ngb-panel>
+
   </ngb-accordion>
-<div class="form-feedback has-danger mt-1 mb-1 text-center"></div>
+  <div class="form-feedback has-danger mt-1 mb-1 text-center"></div>
+  <div>
+    <input class="btn btn-primary mt-3" type="submit">
+  </div>
 </form>

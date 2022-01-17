@@ -19,7 +19,7 @@
 	        <ng-select [clearable]="false"  [searchable]="false" formControlName="category"
 	          [multiple]="true" placeholder="Category">
             <div *ngIf="itemSearchForm.get('item_type').value !== null && details[itemSearchForm.get('item_type').value] !== undefined">
-              <ng-option *ngFor="let category of details[itemSearchForm.get('item_type').value]['category'] | keyvalue" [value]="category.key">{{category.value['title']}}</ng-option>
+              <ng-option *ngFor="let category of details[itemSearchForm.get('item_type').value]['category']" [value]="category['reference_id']">{{category['title']}}</ng-option>
             </div>
 	        </ng-select>
 	        <div class="form-control-feedback has-danger"></div>

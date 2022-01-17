@@ -10,7 +10,7 @@ import {SHOP_NAME_REGEX} from '../../../../core/utils/constants.utils';
 import {handleError, setErrorMessage} from '../../../../core/utils/common.utils';
 import {ItemService} from '../../../../core/service/admin/item.service';
 import $ from 'jquery';
-
+import {APP_ROUTES} from '../../../../core/utils/constants.utils';
 
 @Component({
   selector: 'app-item-details',
@@ -20,25 +20,22 @@ import $ from 'jquery';
 export class ItemDetailsComponent extends BaseComponent {
   breadCrumbData = [{label: 'Home', link: '/dashboard'}, {label: 'Shop', link: '/shop'}, {label: 'Item', link: ''}]
   itemDetailsForm: FormGroup
-  details = {
-    types: ['Food', 'Fashion'],
-    categories: {
-                    'Food': ['North India', 'chinese', 'south india', 'beverages', 'dessert', 'biriyani', 'fast-food', 'kebab'], 
-                    'Fashion': ['shirts', 'jackets', 'jeans', 'ethnic_wear', 'accessories', 'footwear', 'innerwear']
-                   },
-    variantProperty: {'Food': ['quantity', 'size'], 'Fashion': ['size', 'color']}
-
-  }
+  meta = {}
+  itemDetails = {}
   iconSrc = ''
   coverImgSrcList = []
-  variantDetails: FormArray
+  // variantDetails: FormArray
   variant_index = -1
-  attr_index = -1
+  filter_index = -1
+  meta_index = -1
   shopId: number
   itemId: string
+  item_types = []
+  isItemActive = false
 
   
-  constructor(private fb: FormBuilder, private toastr: ToastrService, private route: ActivatedRoute, private itemService: ItemService) { 
+  constructor(private fb: FormBuilder, private toastr: ToastrService, private route: ActivatedRoute, private itemService: ItemService,
+    private router: Router) { 
     super()
     this.route.params.subscribe(params => {
       this.shopId = params['shop_id']
@@ -50,13 +47,15 @@ export class ItemDetailsComponent extends BaseComponent {
     this.itemDetailsForm = this.fb.group({
       name: new ExtendedFormControl('', [Validators.required, Validators.pattern(SHOP_NAME_REGEX)], 'name'),
       description: new ExtendedFormControl('', [Validators.required, Validators.maxLength(250)], 'description'),
-      type: new ExtendedFormControl(null, [Validators.required], 'type'),
+      item_type: new ExtendedFormControl(null, [Validators.required], 'item_type'),
       category: new ExtendedFormControl(null, [Validators.required], 'category'),
-      attributes: this.fb.array([ this.createFormArrayItem('attributes') ]),
+      status: new ExtendedFormControl(null, [Validators.required], 'status'),
+      meta_data: this.fb.array([ this.createFormArrayItem('meta_data')]),
+      filterable_fields: this.fb.array([]),
       icon: new ExtendedFormControl('', [], 'icon'),
       cover_photos: new ExtendedFormControl('', [], 'cover_photos'),
       variant_property: new ExtendedFormControl(null, [Validators.required], 'variant_property'),
-      variant_details: this.fb.array([ this.createFormArrayItem('variant_details') ]),
+      variant_details: this.fb.array([]),
       className: 'item-details'
     });
   }
@@ -64,7 +63,87 @@ export class ItemDetailsComponent extends BaseComponent {
   ngOnInit(): void {
   }
 
+  ngAfterViewInit(): void {
+    this.getMeta()
+    this.getItemDetails()
+  }
+
+  loadItemDetailsForm(itemData) {
+    // this.itemDetails = itemData
+    (this.itemDetailsForm.get('variant_details') as FormArray).clear();
+    (this.itemDetailsForm.get('meta_data') as FormArray).clear();
+    (this.itemDetailsForm.get('filterable_fields') as FormArray).clear();
+    this.itemDetailsForm.reset({className: 'item-details'})
+    Object.keys(itemData).forEach(field => {
+      if (itemData[field] != null) {
+        switch (field) {
+          case 'variants':
+            this.itemDetailsForm.get('variant_property').setValue(itemData['variants'][0]['reference_id'])
+            for(var i = 0; i < itemData['variants'][0]['values'].length; i++) {
+              let temp = this.itemDetailsForm.get('variant_details') as FormArray;
+              temp.push(this.createFormArrayItem('variant_details'));
+              (<FormArray> this.itemDetailsForm.get('variant_details')).at(i).get('variant_name').setValue(itemData['variants'][0]['values'][i]['value']);
+              (<FormArray> this.itemDetailsForm.get('variant_details')).at(i).get('variant_price').setValue(itemData['variants'][0]['values'][i]['price']);
+              // (<FormArray> this.itemDetailsForm.get('variant_details')).at(i).get('class').setValue(itemData['variants'][0]['values'][i]['price']);
+            }
+          break
+          case 'icon':
+            this.iconSrc = itemData[field]
+            break;
+          case 'cover_photos':
+            this.coverImgSrcList = itemData[field]
+            break;
+          case 'status':
+            this.isItemActive = itemData[field] == 'active' ?  true : false;
+            break;
+          case 'filterable_fields':
+            for(var i = 0; i < this.meta[itemData['item_type']]['filter'].length; i++) {
+              this.addFormArrayItem('filterable_fields');
+              let filter_name = this.meta[itemData['item_type']]['filter'][i]['title'];
+              (<FormArray> this.itemDetailsForm.get('filterable_fields')).at(i).get('filter_name').setValue(filter_name)
+            } 
+            break
+          case 'meta_data': break
+          default:
+          if (field != 'id' && this.itemDetailsForm.get(field) != null) {
+            this.itemDetailsForm.get(field).setValue(itemData[field])
+          }
+        }
+      }
+    })
+    var temp = this.itemDetailsForm.get('variant_details') as FormArray;
+    temp.push(this.createFormArrayItem('variant_details'));
+  }
+
   submitItemDetails(accordion) {
+    accordion.expandAll()
+    let requestBody = {}
+    Object.keys(this.itemDetailsForm.value).forEach(key => {
+      switch(key) {
+        case 'icon':
+        case 'cover_photos':
+        case 'status':
+        case 'variant_details':
+        case 'className':
+        case 'category':
+          break;
+        case 'meta_data':
+          console.log('meta_data: ')
+          requestBody['meta_data'] = {}
+          for(var i = 0; i < this.itemDetailsForm.value['meta_data'].length; i++)
+            requestBody['meta_data'][this.itemDetailsForm.value['meta_data'][0]['key']] = this.itemDetailsForm.value['meta_data'][0]['value'] 
+          console.log(this.itemDetailsForm.value['meta_data'])
+        case 'filterable_fields':
+          console.log('filterable_fields: ')
+          console.log(this.itemDetailsForm.value['filterable_fields'])
+        default:
+          console.log(key + ': ')
+          console.log(this.itemDetailsForm.value[key])
+          requestBody[key] = this.itemDetailsForm.value[key]
+      }
+    })
+    console.log('requestBody')
+    console.log(requestBody)
   }
 
   deleteImage(imageId, imgType) {
@@ -73,7 +152,8 @@ export class ItemDetailsComponent extends BaseComponent {
       this.deleteIcon()
         this.itemService.deleteIcon(this.shopId, this.itemId)
           .then(response => {
-            this.deleteIcon()
+            // this.deleteIcon()
+            this.loadItemDetailsForm(response['data']['item'])
           })
           .catch(error => {
             if (error['status'] == 404) this.deleteIcon()
@@ -83,7 +163,8 @@ export class ItemDetailsComponent extends BaseComponent {
       case 'cover_photos':
         this.itemService.deleteCoverPhoto(this.shopId, this.itemId, imageId)
           .then(response => {
-            this.coverImgSrcList = response['data']['cover_photos']
+            // this.coverImgSrcList = response['data']['cover_photos']
+            this.loadItemDetailsForm(response['data']['item'])
           })
           .catch(error => {
             if (error['status'] == 404) this.coverImgSrcList = this.coverImgSrcList.filter(x => x['id'] != imageId)
@@ -136,7 +217,8 @@ export class ItemDetailsComponent extends BaseComponent {
                 formData.append('icon_file', file);
                 this.itemService.uploadIcon(this.shopId, this.itemId, formData)
                   .then(response => {
-                    this.iconSrc = response['data']['icon']
+                    // this.iconSrc = response['data']['icon']
+                    this.loadItemDetailsForm(response['data']['item'])
                   })
                   .catch(error => {
                     handleError(error, this.itemDetailsForm)
@@ -152,7 +234,8 @@ export class ItemDetailsComponent extends BaseComponent {
                 formData.append('cover_file', file);
                 this.itemService.uploadCoverPhoto(this.shopId, this.itemId, formData)
                   .then(response => {
-                    this.coverImgSrcList = response['data']['cover_photos']
+                    // this.coverImgSrcList = response['data']['cover_photos']
+                    this.loadItemDetailsForm(response['data']['item'])
                   })
                   .catch(error => {
                     handleError(error, this.itemDetailsForm)
@@ -178,26 +261,101 @@ export class ItemDetailsComponent extends BaseComponent {
         });
       } break;
 
-      case 'attributes': {
-        this.attr_index = this.attr_index + 1
+      case 'filterable_fields': {
+        this.filter_index = this.filter_index + 1
         return this.fb.group({
-          attribute_name: new ExtendedFormControl('', [Validators.required], 'attribute_name'),
-          attribute_value: new ExtendedFormControl('', [Validators.required], 'attribute_value'),
-          className: "attr-" + this.attr_index
+          filter_name: new ExtendedFormControl('', [Validators.required], 'filter_name'),
+          filter_value: new ExtendedFormControl('', [Validators.required], 'filter_value'),
+          className: "filter-" + this.filter_index
+        })
+      } break;
+
+      case 'meta_data': {
+        this.meta_index = this.meta_index + 1
+        return this.fb.group({
+          key: new ExtendedFormControl('', [Validators.required], 'key'),
+          value: new ExtendedFormControl('', [Validators.required], 'value'),
+          className: "meta-" + this.meta_index
         })
       } break;
     }
   }
 
   addFormArrayItem(type: string): void {
-    this.variantDetails = this.itemDetailsForm.get(type) as FormArray;
-    this.variantDetails.push(this.createFormArrayItem(type));
+    var temp = this.itemDetailsForm.get(type) as FormArray
+    temp.push(this.createFormArrayItem(type))
+
+    switch(type) {
+      case 'variant_details':
+        if(this.itemDetailsForm.get('variant_property').value == null) {
+          console.log('variant property cannot be empty')
+        }
+        else {
+          let requestBody = {
+            variant_name: this.itemDetailsForm.get('variant_property').value,
+            variant_value: (<FormArray> this.itemDetailsForm.get('variant_details')).at(this.variant_index - 1).get('variant_name').value,
+            variant_price: (<FormArray> this.itemDetailsForm.get('variant_details')).at(this.variant_index - 1).get('variant_price').value
+          }
+          this.itemService.addNewVariant(this.shopId, this.itemId, requestBody)
+          .then(response => {
+            console.log("Before: ")
+            console.log(this.itemDetailsForm)
+            this.loadItemDetailsForm(response['data']['item'])
+            console.log("After: ")
+            console.log(this.itemDetailsForm)
+          })
+          .catch(error => {
+            let reason = error['error']['reason']
+            handleError(error, this.itemDetailsForm);
+          })
+        }
+        break;
+      default:
+    };
   }
 
   deleteFormArrayItem(type: string, index: number): void {
-    const fa = (this.itemDetailsForm.get(type) as FormArray);
-    fa.removeAt(index);
-    if(fa.length===0) this.createFormArrayItem(type);
+    if(type == 'variant_details') {
+      this.itemService.deleteVariant(this.shopId, this.itemId, this.itemDetails['variants'][0]['values'][index]['id'])
+      .then(response => {
+        this.loadItemDetailsForm(response['data']['item'])
+      })
+      .catch(error => {
+        let reason = error['error']['reason']
+        handleError(error, this.itemDetailsForm);
+      })
+    }
+    else {
+      const fa = (this.itemDetailsForm.get(type) as FormArray);
+      fa.removeAt(index);
+      if(fa.length===0) this.createFormArrayItem(type);  
+    }
   }
 
+  getMeta() {
+    this.itemService.getMeta()
+    .then(response => {
+      this.meta = response['data']
+      this.item_types = Object.keys(this.meta)
+    })
+    .catch(error => {
+      let reason = error['error']['reason']
+      handleError(error, this.itemDetailsForm);
+    });
+  }
+
+  getItemDetails() {
+    this.itemService.getItemDetails(this.shopId, this.itemId)
+      .then(response => { 
+        this.loadItemDetailsForm(response['data']['item'])
+      })
+      .catch(error => {
+        console.log(error)
+        // this.router.navigate([APP_ROUTES.DASHBOARD])
+      })
+  }
+
+  updateItemActiveStatus() {
+
+  }
 }
