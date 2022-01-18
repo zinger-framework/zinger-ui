@@ -12,6 +12,9 @@ import {ItemService} from '../../../../core/service/admin/item.service';
 import $ from 'jquery';
 import {APP_ROUTES} from '../../../../core/utils/constants.utils';
 
+// TODO store reference id in filterable fields
+// TODO: Update only fields that have changed in submitItemDetails
+
 @Component({
   selector: 'app-item-details',
   templateUrl: './item-details.component.html',
@@ -67,7 +70,7 @@ export class ItemDetailsComponent extends BaseComponent {
     this.getItemDetails()
   }
 
-  loadItemDetailsForm(itemData) {
+  loadItemDetailsForm(itemData = {}) {
     (this.itemDetailsForm.get('variant_details') as FormArray).clear();
     (this.itemDetailsForm.get('meta_data') as FormArray).clear();
     (this.itemDetailsForm.get('filterable_fields') as FormArray).clear();
@@ -96,7 +99,6 @@ export class ItemDetailsComponent extends BaseComponent {
           case 'filterable_fields':
             for(var i = 0; i < itemData['filterable_fields'].length; i++) {
               this.addFormArrayItem('filterable_fields');
-              // TODO store reference id
               (<FormArray> this.itemDetailsForm.get('filterable_fields')).at(i).get('filter_name').setValue(itemData['filterable_fields'][i]['title']);
               (<FormArray> this.itemDetailsForm.get('filterable_fields')).at(i).get('filter_value').setValue(itemData['filterable_fields'][i]['value']);
             } 
@@ -119,11 +121,10 @@ export class ItemDetailsComponent extends BaseComponent {
     })
     var temp = this.itemDetailsForm.get('variant_details') as FormArray;
     temp.push(this.createFormArrayItem('variant_details'));
-    this.itemDetails = this.itemDetailsForm.value
+    this.itemDetails = itemData
   }
 
   submitItemDetails(accordion) {
-    // TODO: Update only fields that have changed
     accordion.expandAll()
     let requestBody = {}
     Object.keys(this.itemDetailsForm.value).forEach(key => {
@@ -359,8 +360,7 @@ export class ItemDetailsComponent extends BaseComponent {
         this.loadItemDetailsForm(response['data']['item'])
       })
       .catch(error => {
-        console.log(error)
-        // this.router.navigate([APP_ROUTES.DASHBOARD])
+        this.router.navigate([APP_ROUTES.DASHBOARD])
       })
   }
 
@@ -370,9 +370,9 @@ export class ItemDetailsComponent extends BaseComponent {
     .then(response => {
         this.loadItemDetailsForm(response['data']['item'])
       })
-      .catch(error => {
-        if (error['status'] == 404) this.deleteIcon()
-        handleError(error, this.itemDetailsForm)
-      })
+    .catch(error => {
+      if (error['status'] == 404) this.deleteIcon()
+      handleError(error, this.itemDetailsForm)
+    })
   }
 }
