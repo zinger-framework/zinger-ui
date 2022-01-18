@@ -24,7 +24,6 @@ export class ItemDetailsComponent extends BaseComponent {
   itemDetails = {}
   iconSrc = ''
   coverImgSrcList = []
-  // variantDetails: FormArray
   variant_index = -1
   filter_index = -1
   meta_index = -1
@@ -83,7 +82,6 @@ export class ItemDetailsComponent extends BaseComponent {
               temp.push(this.createFormArrayItem('variant_details'));
               (<FormArray> this.itemDetailsForm.get('variant_details')).at(i).get('variant_name').setValue(itemData['variants'][0]['values'][i]['value']);
               (<FormArray> this.itemDetailsForm.get('variant_details')).at(i).get('variant_price').setValue(itemData['variants'][0]['values'][i]['price']);
-              // (<FormArray> this.itemDetailsForm.get('variant_details')).at(i).get('class').setValue(itemData['variants'][0]['values'][i]['price']);
             }
           break
           case 'icon':
@@ -125,6 +123,7 @@ export class ItemDetailsComponent extends BaseComponent {
   }
 
   submitItemDetails(accordion) {
+    // TODO: Update only fields that have changed
     accordion.expandAll()
     let requestBody = {}
     Object.keys(this.itemDetailsForm.value).forEach(key => {
@@ -158,7 +157,6 @@ export class ItemDetailsComponent extends BaseComponent {
         if (error['status'] == 404) this.deleteIcon()
         handleError(error, this.itemDetailsForm)
       })
-
   }
 
   deleteImage(imageId, imgType) {
@@ -367,6 +365,14 @@ export class ItemDetailsComponent extends BaseComponent {
   }
 
   updateItemActiveStatus() {
-
+    let requestBody = {'status': this.isItemActive == true ? 'active':'inactive'}
+    this.itemService.updateItemDetails(this.shopId, this.itemId, requestBody)
+    .then(response => {
+        this.loadItemDetailsForm(response['data']['item'])
+      })
+      .catch(error => {
+        if (error['status'] == 404) this.deleteIcon()
+        handleError(error, this.itemDetailsForm)
+      })
   }
 }
