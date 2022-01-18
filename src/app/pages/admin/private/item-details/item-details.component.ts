@@ -69,7 +69,6 @@ export class ItemDetailsComponent extends BaseComponent {
   }
 
   loadItemDetailsForm(itemData) {
-    // this.itemDetails = itemData
     (this.itemDetailsForm.get('variant_details') as FormArray).clear();
     (this.itemDetailsForm.get('meta_data') as FormArray).clear();
     (this.itemDetailsForm.get('filterable_fields') as FormArray).clear();
@@ -97,13 +96,22 @@ export class ItemDetailsComponent extends BaseComponent {
             this.isItemActive = itemData[field] == 'active' ?  true : false;
             break;
           case 'filterable_fields':
-            for(var i = 0; i < this.meta[itemData['item_type']]['filter'].length; i++) {
+            for(var i = 0; i < itemData['filterable_fields'].length; i++) {
               this.addFormArrayItem('filterable_fields');
-              let filter_name = this.meta[itemData['item_type']]['filter'][i]['title'];
-              (<FormArray> this.itemDetailsForm.get('filterable_fields')).at(i).get('filter_name').setValue(filter_name)
+              // TODO store reference id
+              (<FormArray> this.itemDetailsForm.get('filterable_fields')).at(i).get('filter_name').setValue(itemData['filterable_fields'][i]['title']);
+              (<FormArray> this.itemDetailsForm.get('filterable_fields')).at(i).get('filter_value').setValue(itemData['filterable_fields'][i]['value']);
             } 
             break
-          case 'meta_data': break
+          case 'meta_data': 
+            i=0;
+            Object.keys(itemData['meta_data']).forEach(key => {
+              this.addFormArrayItem('meta_data');
+              (<FormArray> this.itemDetailsForm.get('meta_data')).at(i).get('key').setValue(key);
+              (<FormArray> this.itemDetailsForm.get('meta_data')).at(i).get('value').setValue(itemData['meta_data'][key]);
+              i++;
+            })
+            break
           default:
           if (field != 'id' && this.itemDetailsForm.get(field) != null) {
             this.itemDetailsForm.get(field).setValue(itemData[field])
@@ -113,6 +121,7 @@ export class ItemDetailsComponent extends BaseComponent {
     })
     var temp = this.itemDetailsForm.get('variant_details') as FormArray;
     temp.push(this.createFormArrayItem('variant_details'));
+    this.itemDetails = this.itemDetailsForm.value
   }
 
   submitItemDetails(accordion) {
@@ -125,25 +134,31 @@ export class ItemDetailsComponent extends BaseComponent {
         case 'status':
         case 'variant_details':
         case 'className':
-        case 'category':
-          break;
+          break
         case 'meta_data':
-          console.log('meta_data: ')
           requestBody['meta_data'] = {}
           for(var i = 0; i < this.itemDetailsForm.value['meta_data'].length; i++)
-            requestBody['meta_data'][this.itemDetailsForm.value['meta_data'][0]['key']] = this.itemDetailsForm.value['meta_data'][0]['value'] 
-          console.log(this.itemDetailsForm.value['meta_data'])
+            requestBody['meta_data'][this.itemDetailsForm.value['meta_data'][i]['key']] = this.itemDetailsForm.value['meta_data'][i]['value'] 
+          break
         case 'filterable_fields':
-          console.log('filterable_fields: ')
-          console.log(this.itemDetailsForm.value['filterable_fields'])
+          requestBody['filterable_fields'] = {}
+          for(var i = 0; i < this.itemDetailsForm.value['filterable_fields'].length; i++)
+            requestBody['filterable_fields'][this.itemDetailsForm.value['filterable_fields'][i]['filter_name']] = this.itemDetailsForm.value['filterable_fields'][i]['filter_value'] 
+          break
         default:
-          console.log(key + ': ')
-          console.log(this.itemDetailsForm.value[key])
           requestBody[key] = this.itemDetailsForm.value[key]
       }
     })
-    console.log('requestBody')
-    console.log(requestBody)
+
+    this.itemService.updateItemDetails(this.shopId, this.itemId, requestBody)
+    .then(response => {
+        this.loadItemDetailsForm(response['data']['item'])
+      })
+      .catch(error => {
+        if (error['status'] == 404) this.deleteIcon()
+        handleError(error, this.itemDetailsForm)
+      })
+
   }
 
   deleteImage(imageId, imgType) {
@@ -298,11 +313,7 @@ export class ItemDetailsComponent extends BaseComponent {
           }
           this.itemService.addNewVariant(this.shopId, this.itemId, requestBody)
           .then(response => {
-            console.log("Before: ")
-            console.log(this.itemDetailsForm)
             this.loadItemDetailsForm(response['data']['item'])
-            console.log("After: ")
-            console.log(this.itemDetailsForm)
           })
           .catch(error => {
             let reason = error['error']['reason']
