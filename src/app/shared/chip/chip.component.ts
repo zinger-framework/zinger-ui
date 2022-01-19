@@ -1,6 +1,16 @@
-import {forwardRef, Component, ElementRef, EventEmitter, HostListener, Input, Output, 
-  ViewChild, Inject, ViewEncapsulation, ChangeDetectionStrategy, InjectionToken} from '@angular/core';
-import { ControlValueAccessor, NG_VALIDATORS, NG_VALUE_ACCESSOR} from '@angular/forms';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  EventEmitter,
+  forwardRef,
+  HostListener,
+  Input,
+  Output,
+  ViewChild,
+  ViewEncapsulation
+} from '@angular/core';
+import {ControlValueAccessor, NG_VALIDATORS, NG_VALUE_ACCESSOR} from '@angular/forms';
 
 export enum KeyCodes {
   Backspace = 8,
@@ -39,6 +49,22 @@ export type ChipFormater = (chip: string) => string;
 })
 export class ChipComponent implements ControlValueAccessor {
 
+  @ViewChild('inputElement', {static: false}) inputElement?: ElementRef;
+  @Input() chipSuggestions: string[] = [];
+  @Input() maxChipLength = 25;
+  @Input() maxNumberOfChips = 1000;
+  @Output() readonly textChange = new EventEmitter<string>();
+  private prevChipInput = '';
+  private currentNumberOfChips = 0;
+  private chipValueError: { message: string } | null = null;
+  private chipFormatter: ChipFormater;
+
+  constructor() {
+    this.chipFormatter = formatter
+  }
+
+  private _value: string[] = [];
+
   get value() {
     return this._value;
   }
@@ -49,28 +75,14 @@ export class ChipComponent implements ControlValueAccessor {
     this.onTouched();
   }
 
-  @ViewChild('inputElement', { static: false }) inputElement?: ElementRef;
-  @Input() chipSuggestions: string[] = [];
-  @Input() maxChipLength = 25;
-  @Input() maxNumberOfChips = 1000;
-  @Output() readonly textChange = new EventEmitter<string>();
-
-  private _value: string[] = [];
-  private prevChipInput = '';
-  private currentNumberOfChips = 0;
-  private chipValueError: { message: string } | null = null;
-  private chipFormatter: ChipFormater;
-
-  constructor() {
-    this.chipFormatter = formatter
-  }
-
   ngOnInit(): void {
   }
 
-  onChange = (_value: string[]) => {};
+  onChange = (_value: string[]) => {
+  };
 
-  onTouched = () => {};
+  onTouched = () => {
+  };
 
   registerOnChange(fn: (value: string[]) => void) {
     this.onChange = fn;
@@ -119,7 +131,7 @@ export class ChipComponent implements ControlValueAccessor {
     }
 
     if (duplicateChip) {
-      this.chipValueError = { message: 'Cannot add duplicate Chip' };
+      this.chipValueError = {message: 'Cannot add duplicate Chip'};
     }
 
     if (exceedsMaxNumberOfChips) {

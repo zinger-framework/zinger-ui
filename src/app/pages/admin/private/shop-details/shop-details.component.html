@@ -22,8 +22,8 @@
       </ng-template>
       <ng-template ngbPanelContent>
         <div *ngFor="let comment of conversations['rejected']" class="pt-1">
-          <comment [message]="comment.message" [time]="comment.time" [userName]="comment?.platform_user?.name"
-                   [image]="comment.profile_url"></comment>
+          <comment [image]="comment.profile_url" [message]="comment.message" [time]="comment.time"
+                   [userName]="comment?.platform_user?.name"></comment>
         </div>
       </ng-template>
     </ngb-panel>
@@ -38,8 +38,8 @@
       </ng-template>
       <ng-template ngbPanelContent>
         <div *ngFor="let comment of conversations['blocked']" class="pt-1">
-          <comment [message]="comment.message" [time]="comment.time" [userName]="comment?.platform_user?.name"
-                   [image]="comment.profile_url"></comment>
+          <comment [image]="comment.profile_url" [message]="comment.message" [time]="comment.time"
+                   [userName]="comment?.platform_user?.name"></comment>
         </div>
       </ng-template>
     </ngb-panel>
@@ -135,7 +135,8 @@
           <div class="col-md-6 col-lg-6">
             <div>
               <label>Is Shop Active?</label><br>
-              <ui-switch (click)="updateShopActiveStatus()" [(ngModel)]="isShopActive" [ngModelOptions]="{standalone: true}"></ui-switch>
+              <ui-switch (click)="updateShopActiveStatus()" [(ngModel)]="isShopActive"
+                         [ngModelOptions]="{standalone: true}"></ui-switch>
             </div>
           </div>
         </div>

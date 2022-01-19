@@ -1,15 +1,14 @@
-import {Component, OnInit, ElementRef, ViewChild, TemplateRef} from '@angular/core';
-import {Router, ActivatedRoute} from '@angular/router'
+import {Component, ElementRef, TemplateRef, ViewChild} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router'
 import {FormBuilder, FormGroup, Validators} from '@angular/forms'
 
-import {SortType, ColumnMode} from '@swimlane/ngx-datatable'
+import {ColumnMode} from '@swimlane/ngx-datatable'
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
-import {ITEM_ID_REGEX, ITEM_NAME_REGEX, ITEM_DESC_REGEX} from "../../../../core/utils/constants.utils";
+import {APP_ROUTES, ITEM_DESC_REGEX, ITEM_ID_REGEX, ITEM_NAME_REGEX} from "../../../../core/utils/constants.utils";
 import {ItemService} from '../../../../core/service/admin/item.service'
 import {ExtendedFormControl} from '../../../../core/utils/extended-form-control.utils'
 import {BaseComponent} from '../../../../base.component'
-import {APP_ROUTES} from '../../../../core/utils/constants.utils'
 import {handleError} from '../../../../core/utils/common.utils'
 
 @Component({
@@ -36,7 +35,7 @@ export class ItemListComponent extends BaseComponent {
   item_types = []
 
   constructor(private fb: FormBuilder, private route: ActivatedRoute, private router: Router, private el: ElementRef,
-    private itemService: ItemService, private modalService: NgbModal) {
+              private itemService: ItemService, private modalService: NgbModal) {
     super()
     this.route.params.subscribe(params => this.shopId = params['shop_id']);
     this.itemSearchForm = this.fb.group({
@@ -65,10 +64,10 @@ export class ItemListComponent extends BaseComponent {
       var item_type = params['item_type']
       Object.entries(params).forEach(
         ([key, value]) => {
-          switch(key) {
+          switch (key) {
             case 'category':
               var categoryValues = []
-              switch(typeof value) {
+              switch (typeof value) {
                 case 'string':
                   // TODO: Validate category and check console error on first launch
                   // categoryValues = Object.keys(this.details[item_type]['category']).includes(params[key]) ? [params[key]] : null
@@ -77,11 +76,11 @@ export class ItemListComponent extends BaseComponent {
                 default:
                   categoryValues = []
                   value.forEach(val => {
-                    // if(Object.keys(this.details[item_type]['category']).includes(val)) 
-                      categoryValues.push(val)
+                    // if(Object.keys(this.details[item_type]['category']).includes(val))
+                    categoryValues.push(val)
                   })
               }
-              if(categoryValues != null && categoryValues != []) this.itemSearchForm.get('category')?.setValue(categoryValues)
+              if (categoryValues != []) this.itemSearchForm.get('category')?.setValue(categoryValues)
               break
             default:
               this.itemSearchForm.get(key)?.setValue(value)
@@ -100,10 +99,10 @@ export class ItemListComponent extends BaseComponent {
 
   updateUrl() {
     let query = {}
-    for (const field in this.itemSearchForm.controls) { 
-      if(field != 'className' && this.itemSearchForm.get(field).value != '' && this.itemSearchForm.get(field).value != null)
+    for (const field in this.itemSearchForm.controls) {
+      if (field != 'className' && this.itemSearchForm.get(field).value != '' && this.itemSearchForm.get(field).value != null)
         query[field] = this.itemSearchForm.get(field).value
-      else 
+      else
         query[field] = null
     }
     this.router.navigate([], {
@@ -116,16 +115,17 @@ export class ItemListComponent extends BaseComponent {
   getItemList() {
     this.isLoading = true
     let paramString = 'page_size=10';
-    if (this.nextPageToken != null) 
+    if (this.nextPageToken != null)
       paramString = paramString + `&next_page_token=${this.nextPageToken}`
     else {
       for (const field in this.itemSearchForm.controls) {
-        if(this.itemSearchForm.get(field).value != null && this.itemSearchForm.get(field).value != '')
-          switch(field) {
+        if (this.itemSearchForm.get(field).value != null && this.itemSearchForm.get(field).value != '')
+          switch (field) {
             case 'category':
-              for(let i = 0; i < this.itemSearchForm.get('category').value.length ; i++) {
-                  paramString = paramString + `&categories[]=${this.itemSearchForm.get('category').value[i]}`
-              } break
+              for (let i = 0; i < this.itemSearchForm.get('category').value.length; i++) {
+                paramString = paramString + `&categories[]=${this.itemSearchForm.get('category').value[i]}`
+              }
+              break
             case 'id':
             case 'item_type':
             case 'include_inactive':
@@ -136,25 +136,25 @@ export class ItemListComponent extends BaseComponent {
     }
 
     this.itemService.getItemList(this.shopId, paramString)
-    .then(response => {
-      this.rows = this.rows.concat(response['data']['items'])
-      if ('next_page_token' in response['data'])
-        this.nextPageToken = response['data']['next_page_token']
-      else 
-        this.endReached = true
-      if ('total' in response['data']) this.totalElements = response['data']['total']
-    })
-    .catch(error => {
-      handleError(error, this.itemSearchForm)
-    })
-    .finally(() => {
-      this.isLoading = false
-    })
+      .then(response => {
+        this.rows = this.rows.concat(response['data']['items'])
+        if ('next_page_token' in response['data'])
+          this.nextPageToken = response['data']['next_page_token']
+        else
+          this.endReached = true
+        if ('total' in response['data']) this.totalElements = response['data']['total']
+      })
+      .catch(error => {
+        handleError(error, this.itemSearchForm)
+      })
+      .finally(() => {
+        this.isLoading = false
+      })
   }
 
   onRowClick(event) {
-    if(event.type == 'click') {
-        this.router.navigateByUrl(`${APP_ROUTES.SHOP}/${String(this.shopId)}${APP_ROUTES.ITEM}/${event.row.id}`)
+    if (event.type == 'click') {
+      this.router.navigateByUrl(`${APP_ROUTES.SHOP}/${String(this.shopId)}${APP_ROUTES.ITEM}/${event.row.id}`)
     }
   }
 
@@ -163,7 +163,7 @@ export class ItemListComponent extends BaseComponent {
     const viewHeight = this.el.nativeElement.getBoundingClientRect().height - this.headerHeight;
 
     // check if we scrolled to the end of the viewport
-    if (!this.isLoading && offsetY + viewHeight >= this.rows.length * this.rowHeight && this.endReached == false ) {
+    if (!this.isLoading && offsetY + viewHeight >= this.rows.length * this.rowHeight && this.endReached == false) {
       // total number of results to load
       let limit = this.pageLimit;
 
@@ -185,7 +185,7 @@ export class ItemListComponent extends BaseComponent {
     Object.keys(this.createItemForm.value)
       .map(k => requestObj[k] = this.createItemForm.get(k).value)
     this.itemService.addNewItem(this.shopId, requestObj)
-    .then(response => {
+      .then(response => {
         this.rows = []
         this.getItemList()
         this.modalService.dismissAll();
@@ -215,13 +215,13 @@ export class ItemListComponent extends BaseComponent {
 
   getMeta() {
     this.itemService.getMeta()
-    .then(response => {
-      this.details = response['data']
-      this.item_types = Object.keys(this.details)
-    })
-    .catch(error => {
-      let reason = error['error']['reason']
-      handleError(error, this.itemSearchForm);
-    });
+      .then(response => {
+        this.details = response['data']
+        this.item_types = Object.keys(this.details)
+      })
+      .catch(error => {
+        let reason = error['error']['reason']
+        handleError(error, this.itemSearchForm);
+      });
   }
 }

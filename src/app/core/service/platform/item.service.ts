@@ -7,8 +7,8 @@ import {API_ENDPOINTS} from "../../utils/constants.utils";
   providedIn: 'root'
 })
 export class ItemService extends PlatformService {
-  
-  getItemList(shopId, params = ''){
+
+  getItemList(shopId, params = '') {
     let url = `${API_ENDPOINTS.SHOP}/${String(shopId)}/${API_ENDPOINTS.ITEM}`
     let endPoint = (params == '') ? url : `${url}?${params}`
     return this.get(endPoint);

@@ -15,7 +15,7 @@ export class ItemService extends AdminService {
     return this.post(`${API_ENDPOINTS.SHOP}/${String(shopId)}/${API_ENDPOINTS.ITEM}/${itemId}/variant`, requestBody);
   }
 
-  getItemList(shopId, params = ''){
+  getItemList(shopId, params = '') {
     let url = `${API_ENDPOINTS.SHOP}/${String(shopId)}/${API_ENDPOINTS.ITEM}`
     let endPoint = (params == '') ? url : `${url}?${params}`
     return this.get(endPoint);

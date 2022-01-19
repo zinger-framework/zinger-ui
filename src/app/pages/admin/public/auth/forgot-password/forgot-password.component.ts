@@ -22,7 +22,7 @@ export class ForgotPasswordComponent extends BaseComponent {
   @ViewChild(WizardComponent)
   public wizard: WizardComponent;
 
-  constructor(private authService: AuthService, private  jwtService: JwtService, private router: Router, private fb: FormBuilder) {
+  constructor(private authService: AuthService, private jwtService: JwtService, private router: Router, private fb: FormBuilder) {
     super();
     this.otpForm = this.fb.group({
       email: new ExtendedFormControl('', [Validators.required, Validators.pattern(EMAIL_REGEX)], 'email'),

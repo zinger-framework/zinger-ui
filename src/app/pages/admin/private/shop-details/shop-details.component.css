@@ -1,17 +1,17 @@
 ::ng-deep ngx-material-timepicker-content {
-  --body-background-color: #fff;
-  --primary-font-family: 'Roboto', sans-serif;
-  --button-color: #FF4141 !important;
-  --dial-active-color: #fff;
-  --dial-inactive-color: rgba(255, 255, 255, .5);
-  --dial-background-color: #FF4141 !important;
-  --dial-editable-active-color: #FF4141 !important;
-  --dial-editable-background-color: #fff;
-  --clock-face-time-active-color: #fff;
-  --clock-face-time-inactive-color: #6c6c6c;
-  --clock-face-inner-time-inactive-color: #929292;
-  --clock-face-time-disabled-color: #c5c5c5;
-  --clock-face-background-color: #f0f0f0;
-  --clock-hand-color: #FF4141 !important;
+    --body-background-color: #fff;
+    --primary-font-family: 'Roboto', sans-serif;
+    --button-color: #FF4141 !important;
+    --dial-active-color: #fff;
+    --dial-inactive-color: rgba(255, 255, 255, .5);
+    --dial-background-color: #FF4141 !important;
+    --dial-editable-active-color: #FF4141 !important;
+    --dial-editable-background-color: #fff;
+    --clock-face-time-active-color: #fff;
+    --clock-face-time-inactive-color: #6c6c6c;
+    --clock-face-inner-time-inactive-color: #929292;
+    --clock-face-time-disabled-color: #c5c5c5;
+    --clock-face-background-color: #f0f0f0;
+    --clock-hand-color: #FF4141 !important;
 }
 

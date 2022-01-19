@@ -1,14 +1,17 @@
 <div (click)="focus()" class="chip">
   <div *ngFor="let chip_value of value" class="chip_container">
     {{chip_value}}
-    <button type="button" (click)="removeChip(chip_value, $event)">
+    <button (click)="removeChip(chip_value, $event)" type="button">
       &#10006;
     </button>
   </div>
-  <input type="text" #inputElement [style.width]="inputElement.value.length * 10 + 10 + 'px'" (keyup)="addChipEvent($event)" (keydown)="preventDefaultTabBehavior($event)"
-    class="chip_input" />
+  <input #inputElement (keydown)="preventDefaultTabBehavior($event)" (keyup)="addChipEvent($event)"
+         [style.width]="inputElement.value.length * 10 + 10 + 'px'" class="chip_input"
+         type="text"/>
 </div>
 
 <div *ngIf="inputElement.value.length && chipSuggestions && chipSuggestions.length" class="chip-suggestions">
-  <button type="button" (click)="addSuggestedValue(suggestion)" *ngFor="let suggestion of chipSuggestions" class="chip-suggestions_tag">{{suggestion}}</button>
+  <button (click)="addSuggestedValue(suggestion)" *ngFor="let suggestion of chipSuggestions"
+          class="chip-suggestions_tag"
+          type="button">{{suggestion}}</button>
 </div>

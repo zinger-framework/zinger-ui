@@ -180,7 +180,7 @@
 
 <ngb-accordion #accordion="ngbAccordion" *ngIf="data['status'] != 'DRAFT'" [destroyOnHide]="false"
                activeIds="ngb-panel-0">
-  <ngb-panel *ngIf="!data['deleted']" id="updateStatusPanel" cardClass="mt-4">
+  <ngb-panel *ngIf="!data['deleted']" cardClass="mt-4" id="updateStatusPanel">
     <ng-template class="panel-header" let-opened="opened" ngbPanelHeader>
       <accordion-header [accordion]="accordion" [opened]="opened" [panelId]="'updateStatusPanel'"
                         title='Update Status'></accordion-header>
@@ -224,31 +224,33 @@
         </div>
       </div>
 
-      <div *ngIf="['PENDING', 'REJECTED'].includes(data['status']) && data['rejected_conversations'].length > 0" class="p-1 mt-4">
+      <div *ngIf="['PENDING', 'REJECTED'].includes(data['status']) && data['rejected_conversations'].length > 0"
+           class="p-1 mt-4">
         <p class="font-weight-bold">Reason For Rejection</p>
         <div *ngFor="let comment of data['rejected_conversations']" class="pt-1">
-          <comment [message]="comment.message" [time]="comment.time" [userName]="comment?.platform_user?.name"
-                   [image]="comment.profile_url"></comment>
+          <comment [image]="comment.profile_url" [message]="comment.message" [time]="comment.time"
+                   [userName]="comment?.platform_user?.name"></comment>
         </div>
       </div>
       <div *ngIf="data['status'] == 'BLOCKED' && data['blocked_conversations'].length > 0" class="p-1 mt-4">
         <p class="font-weight-bold">Reason For Blocking</p>
         <div *ngFor="let comment of data['blocked_conversations']" class="pt-1">
-          <comment [message]="comment.message" [time]="comment.time" [userName]="comment?.platform_user?.name"
-                   [image]="comment.profile_url"></comment>
+          <comment [image]="comment.profile_url" [message]="comment.message" [time]="comment.time"
+                   [userName]="comment?.platform_user?.name"></comment>
         </div>
       </div>
     </ng-template>
   </ngb-panel>
-  <ngb-panel *ngIf="data['deleted'] && data['deleted_conversations'].length > 0" id="deletedConversationsPanel" cardClass="mt-4">
+  <ngb-panel *ngIf="data['deleted'] && data['deleted_conversations'].length > 0" cardClass="mt-4"
+             id="deletedConversationsPanel">
     <ng-template class="panel-header" let-opened="opened" ngbPanelHeader>
       <accordion-header [accordion]="accordion" [opened]="opened" [panelId]="'deletedConversationsPanel'"
                         title='Reason For Deletion'></accordion-header>
     </ng-template>
     <ng-template ngbPanelContent>
       <div *ngFor="let comment of data['deleted_conversations']" class="pt-1">
-        <comment [message]="comment.message" [time]="comment.time" [userName]="comment?.platform_user?.name"
-                 [image]="comment.profile_url"></comment>
+        <comment [image]="comment.profile_url" [message]="comment.message" [time]="comment.time"
+                 [userName]="comment?.platform_user?.name"></comment>
       </div>
     </ng-template>
   </ngb-panel>

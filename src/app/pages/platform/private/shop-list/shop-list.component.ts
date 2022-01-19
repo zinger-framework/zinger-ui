@@ -1,12 +1,12 @@
-import {Component, ViewChild, ElementRef} from '@angular/core'
+import {Component, ElementRef, ViewChild} from '@angular/core'
 import {DatePipe} from '@angular/common'
-import {Router, ActivatedRoute} from '@angular/router'
+import {ActivatedRoute, Router} from '@angular/router'
 import {FormBuilder, FormGroup} from '@angular/forms'
 import {ShopService} from '../../../../core/service/platform/shop.service'
-import {SortType, ColumnMode} from '@swimlane/ngx-datatable'
+import {ColumnMode} from '@swimlane/ngx-datatable'
 import {ExtendedFormControl} from '../../../../core/utils/extended-form-control.utils'
 import {handleError} from '../../../../core/utils/common.utils'
-import {NgbCalendar, NgbDate} from '@ng-bootstrap/ng-bootstrap'
+import {NgbDate} from '@ng-bootstrap/ng-bootstrap'
 import {APP_ROUTES} from '../../../../core/utils/constants.utils'
 import {BaseComponent} from '../../../../base.component'
 import {ToastrService} from "ngx-toastr";
@@ -32,8 +32,8 @@ export class ShopListComponent extends BaseComponent {
   nextPageToken = null
   totalElements = 0
 
-  constructor(private fb: FormBuilder, public datepipe: DatePipe, private shopService: ShopService, private router: Router, 
-    private route: ActivatedRoute, private el: ElementRef, private toastr: ToastrService) {
+  constructor(private fb: FormBuilder, public datepipe: DatePipe, private shopService: ShopService, private router: Router,
+              private route: ActivatedRoute, private el: ElementRef, private toastr: ToastrService) {
     super()
     this.shopSearchForm = this.fb.group({
       id: new ExtendedFormControl('', [], 'id'),
@@ -53,20 +53,20 @@ export class ShopListComponent extends BaseComponent {
     this.route.queryParams.subscribe(params => {
       Object.entries(params).forEach(
         ([key, value]) => {
-          switch(key) {
+          switch (key) {
             case 'status':
-              var status_value = [] 
-              switch(typeof value) {
+              var status_value = []
+              switch (typeof value) {
                 case 'string':
                   status_value = this.statuses.includes(params[key]) ? [params[key]] : null
                   break
                 default:
                   status_value = []
                   value.forEach(val => {
-                    if(this.statuses.includes(val)) status_value.push(val)
+                    if (this.statuses.includes(val)) status_value.push(val)
                   })
               }
-              if(status_value != null && status_value != []) this.shopSearchForm.get('status')?.setValue(status_value)
+              if (status_value != null && status_value != []) this.shopSearchForm.get('status')?.setValue(status_value)
               break
             case 'start_date':
             case 'end_date':
@@ -89,9 +89,9 @@ export class ShopListComponent extends BaseComponent {
 
   updateUrl() {
     let query = {}
-    for (const field in this.shopSearchForm.controls) { 
-      if(field != 'className' && this.shopSearchForm.get(field).value != '' && this.shopSearchForm.get(field).value != null)
-        switch(field) {
+    for (const field in this.shopSearchForm.controls) {
+      if (field != 'className' && this.shopSearchForm.get(field).value != '' && this.shopSearchForm.get(field).value != null)
+        switch (field) {
           case 'start_date':
           case 'end_date':
             var date_field = this.shopSearchForm.get(field).value
@@ -100,7 +100,7 @@ export class ShopListComponent extends BaseComponent {
           default:
             query[field] = this.shopSearchForm.get(field).value
         }
-       else 
+      else
         query[field] = null
     }
     this.router.navigate([], {
@@ -120,21 +120,23 @@ export class ShopListComponent extends BaseComponent {
   getShopList() {
     this.isLoading = true
     let paramString = '';
-    if (this.nextPageToken != null) 
+    if (this.nextPageToken != null)
       paramString = paramString + `&next_page_token=${this.nextPageToken}`
     else {
       for (const field in this.shopSearchForm.controls) {
-        if(this.shopSearchForm.get(field).value != null && this.shopSearchForm.get(field).value != '')
-          switch(field) {
+        if (this.shopSearchForm.get(field).value != null && this.shopSearchForm.get(field).value != '')
+          switch (field) {
             case 'status':
-              for(let i = 0; i < this.shopSearchForm.get('status').value.length ; i++) {
-                  paramString = paramString + `&statuses[]=${this.shopSearchForm.get('status').value[i]}`
-              } break
+              for (let i = 0; i < this.shopSearchForm.get('status').value.length; i++) {
+                paramString = paramString + `&statuses[]=${this.shopSearchForm.get('status').value[i]}`
+              }
+              break
             case 'start_date':
             case 'end_date':
               var date_field = this.shopSearchForm.get(field).value
-              paramString = paramString + `&${field}=${this.datepipe.transform(new Date(date_field.year, date_field.month - 1, 
-                date_field.day), 'yyyy-MM-dd')}`; break
+              paramString = paramString + `&${field}=${this.datepipe.transform(new Date(date_field.year, date_field.month - 1,
+                date_field.day), 'yyyy-MM-dd')}`;
+              break
             case 'id':
             case 'sort_order':
             case 'include_deleted':
@@ -150,7 +152,7 @@ export class ShopListComponent extends BaseComponent {
         this.rows = this.rows.concat(response['data']['shops'])
         if ('next_page_token' in response['data'])
           this.nextPageToken = response['data']['next_page_token']
-        else 
+        else
           this.endReached = true
         if ('total' in response['data']) this.totalElements = response['data']['total']
       })
@@ -163,8 +165,8 @@ export class ShopListComponent extends BaseComponent {
   }
 
   onRowClick(event) {
-    if(event.type == 'click') {
-        this.router.navigateByUrl(APP_ROUTES.SHOP + '/' + event.row.id)
+    if (event.type == 'click') {
+      this.router.navigateByUrl(APP_ROUTES.SHOP + '/' + event.row.id)
     }
   }
 
@@ -185,7 +187,7 @@ export class ShopListComponent extends BaseComponent {
     const viewHeight = this.el.nativeElement.getBoundingClientRect().height - this.headerHeight;
 
     // check if we scrolled to the end of the viewport
-    if (!this.isLoading && offsetY + viewHeight >= this.rows.length * this.rowHeight && this.endReached == false ) {
+    if (!this.isLoading && offsetY + viewHeight >= this.rows.length * this.rowHeight && this.endReached == false) {
       // total number of results to load
       let limit = this.pageLimit;
 

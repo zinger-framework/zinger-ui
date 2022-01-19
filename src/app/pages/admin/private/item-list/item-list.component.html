@@ -1,117 +1,113 @@
-<div class="card-box overflow-hidden">
-  <form (ngSubmit)="updateFilters()" [formGroup]="itemSearchForm" class="item-search p-4"> 
-    <div class="row"> 
+<div class="card-box overflow-hidden p-4">
+  <form (ngSubmit)="updateFilters()" [formGroup]="itemSearchForm" class="item-search">
+    <div class="row">
       <div class="col-3">
-        <label>Search</label>
-        <form-input inputType="text" name="id" placeholder="Item Id"></form-input>
-      </div>
-      <div class="col-3">
-        <label>Item Type</label>
+        <label>Type</label>
         <div class="form-group form-group-item_type">
-          <ng-select [clearable]="false" [items] = "item_types"  [searchable]="false" formControlName="item_type"
-            placeholder="Item Type"></ng-select>
+          <ng-select [clearable]="false" [items]="item_types" [searchable]="false" class="text-capitalize"
+                     formControlName="item_type" notFoundText="No type found" placeholder="Food"></ng-select>
           <div class="form-control-feedback has-danger"></div>
         </div>
       </div>
-      <div class="col-3">
-	      <label>Category</label>
-	      <div class="form-group form-group-category">
-	        <ng-select [clearable]="false"  [searchable]="false" formControlName="category"
-	          [multiple]="true" placeholder="Category">
+      <div class="col-5">
+        <label>Category</label>
+        <div class="form-group form-group-category">
+          <ng-select [clearable]="false" [multiple]="true" [searchable]="false" formControlName="category"
+                     notFoundText="No category found" placeholder="South Indian">
             <div *ngIf="itemSearchForm.get('item_type').value !== null && details[itemSearchForm.get('item_type').value] !== undefined">
-              <ng-option *ngFor="let category of details[itemSearchForm.get('item_type').value]['category']" [value]="category['reference_id']">{{category['title']}}</ng-option>
+              <ng-option *ngFor="let category of details[itemSearchForm.get('item_type').value]['category']"
+                         [value]="category['reference_id']">{{category['title']}}</ng-option>
             </div>
-	        </ng-select>
-	        <div class="form-control-feedback has-danger"></div>
-	      </div>
+          </ng-select>
+          <div class="form-control-feedback has-danger"></div>
+        </div>
+      </div>
+      <div class="col-4">
+        <label>Search</label>
+        <form-input inputType="text" name="id" placeholder="Item Id"></form-input>
       </div>
     </div>
-    <div class="row">
-      <div class="col-3">
-        <label>Inactive</label> 
+    <div class="row mt-1 mr-1">
+      <div class="col-3 mt-2">
         <div class="form-group form-group-include_inactive">
-            <div class="custom-control custom-checkbox mt-3">
-              <input class="custom-control-input" id="include_inactive" formControlName="include_inactive" type="checkbox">
-              <label class="custom-control-label pt-1" for="include_inactive">Include Inactive?</label>
-            </div>
+          <div class="custom-control custom-checkbox">
+            <input class="custom-control-input" formControlName="include_inactive" id="include_inactive"
+                   type="checkbox">
+            <label class="custom-control-label" for="include_inactive">Include INACTIVE</label>
+          </div>
           <div class="form-control-feedback has-danger"></div>
-        </div> 
+        </div>
       </div>
-      <div class="col-1 mt-3">
-        <button type="button" class="btn btn-outline-primary mt-4" (click)="reset()">Reset</button>
+      <div class="col-7"></div>
+      <div class="col-1">
+        <button (click)="reset()" class="btn btn-outline-primary" type="button">Reset</button>
       </div>
-      <div class="col-1 mt-3">
-        <input type="submit" value="Apply" [disabled]="!itemSearchForm.valid" class="btn btn-primary mt-4"/>
+      <div class="col-1">
+        <input [disabled]="!itemSearchForm.valid" class="btn btn-primary" type="submit" value="Apply"/>
       </div>
     </div>
     <div class="form-feedback has-danger mt-1 ml-3"></div>
   </form>
 
-  <div class="p-4">
-    <div class="d-flex pb-2"> 
-      <div class="align-self-start">
-        <span class="h6">Item</span> | 
-        <span class="h6"> Total ({{totalElements}}) </span>
-      </div>
-      <div class="ml-auto pr-2 text-primary"><a class="cursor-pointer" (click)="showCreateItemModal()">New Item</a></div>
+  <hr>
+  <div class="d-flex pb-3">
+    <div class="align-self-start">
+      <span class="h5">Items ({{totalElements}})</span>
     </div>
-    <ngx-datatable
-      #shopList
-      class="material bg-white box-shadow-none border-1 server-scrolling-demo"
-      [rows]="rows"
-      [columnMode]="ColumnMode.standard"
-      [loadingIndicator]="isLoading"
-      [headerHeight]="headerHeight"
-      [rowHeight]="rowHeight"
-      reorderable="false"
-      (activate)="onRowClick($event)"
-      [scrollbarV]="true"
-      (scroll)="onScroll($event.offsetY)">
-
-     <ngx-datatable-column name="Id" prop="id" [width]="200" [sortable]="false">
-        <ng-template let-id="value" ngx-datatable-cell-template>
-           {{id}}
-        </ng-template>
-      </ngx-datatable-column>
-
-      <ngx-datatable-column name="Icon" prop="icon" [width]="200" [sortable]="false">
-        <ng-template let-icon="value" ngx-datatable-cell-template>
-           <div *ngIf="icon; else placeholderimage">
-            <img class="ml-3 cursor-pointer" height="70" src="icon" width="30"/>
-          </div>
-          <ng-template #placeholderimage>
-            <img class="ml-3 cursor-pointer" height="70" src="/assets/images/upload-image.png" width="30"/>
-          </ng-template>
-        </ng-template>
-      </ngx-datatable-column>
-
-      <ngx-datatable-column name="Name" prop="name" [width]="250" [sortable]="false">
-        <ng-template let-name="value" ngx-datatable-cell-template>
-            {{name}}
-        </ng-template>
-      </ngx-datatable-column>
-
-      <ngx-datatable-column name="Type" prop="item_type" [width]="100" [sortable]="false">
-        <ng-template let-item_type="value" ngx-datatable-cell-template>
-            {{item_type}}
-        </ng-template>
-      </ngx-datatable-column>
-
-      <ngx-datatable-column name="Category" prop="category" [width]="200" [sortable]="false">
-        <ng-template let-category="value" ngx-datatable-cell-template>
-            {{category}}
-        </ng-template>
-      </ngx-datatable-column>
-
-      <ngx-datatable-column name="Status" prop="status" [width]="100" [sortable]="false">
-        <ng-template let-status="value" ngx-datatable-cell-template>
-            {{status}}
-        </ng-template>
-      </ngx-datatable-column>
-    </ngx-datatable>
+    <div class="ml-auto pr-2 text-primary">
+      <a (click)="showCreateItemModal()" class="cursor-pointer">Add Item</a>
+    </div>
   </div>
-</div>
+  <ngx-datatable
+    #itemList
+    (activate)="onRowClick($event)"
+    (scroll)="onScroll($event.offsetY)"
+    [columnMode]="ColumnMode.standard"
+    [headerHeight]="headerHeight"
+    [loadingIndicator]="isLoading"
+    [rowHeight]="rowHeight"
+    [rows]="rows"
+    [scrollbarV]="true"
+    class="material bg-white box-shadow-none border-1 server-scrolling-demo"
+    reorderable="false">
 
+    <ngx-datatable-column [sortable]="false" [width]="50" cellClass="p-2" name="" prop="icon">
+      <ng-template let-icon="value" ngx-datatable-cell-template>
+        <image-preview [disableDelete]="true" [disableSizing]="true" [imageSrc]="icon"></image-preview>
+      </ng-template>
+    </ngx-datatable-column>
+
+    <ngx-datatable-column [sortable]="false" [width]="250" name="Id" prop="id">
+      <ng-template let-id="value" ngx-datatable-cell-template>
+        {{id}}
+      </ng-template>
+    </ngx-datatable-column>
+
+    <ngx-datatable-column [sortable]="false" [width]="250" name="Name" prop="name">
+      <ng-template let-name="value" ngx-datatable-cell-template>
+        {{name}}
+      </ng-template>
+    </ngx-datatable-column>
+
+    <ngx-datatable-column [sortable]="false" [width]="175" cellClass="text-capitalize" name="Type" prop="item_type">
+      <ng-template let-item_type="value" ngx-datatable-cell-template>
+        {{item_type}}
+      </ng-template>
+    </ngx-datatable-column>
+
+    <ngx-datatable-column [sortable]="false" [width]="175" name="Category" prop="category">
+      <ng-template let-category="value" ngx-datatable-cell-template>
+        {{category}}
+      </ng-template>
+    </ngx-datatable-column>
+
+    <ngx-datatable-column [sortable]="false" [width]="150" cellClass="text-uppercase" name="Status" prop="status">
+      <ng-template let-status="value" ngx-datatable-cell-template>
+        {{status}}
+      </ng-template>
+    </ngx-datatable-column>
+  </ngx-datatable>
+</div>
 
 <ng-template #createItemModal let-modal>
   <form (ngSubmit)="addItem()" [formGroup]="createItemForm" class="item-create p-2">
@@ -123,34 +119,38 @@
     </div>
 
     <div class="modal-body">
-    	<div>
-    		<label>Name</label>
-      		<form-input inputType="text" name="name" placeholder="Chicken Biriyani"></form-input>
-    	</div>
-    	<div>
-    		<label>Description</label>
-      		<form-input inputType="text" name="description" placeholder="Hot and Spicy Biriyani"></form-input>
-    	</div>
-    	<div>
-    		<label>Item Type</label>
-      		<div class="form-group form-group-item_type">
-	        <ng-select [clearable]="false" [items]="item_types" [searchable]="false" formControlName="item_type"
-	         placeholder="Type">
-	        </ng-select>
-	        <div class="form-control-feedback has-danger"></div>
-	      </div>
-    	</div>
-    	<div>
-    		<label>Category</label>
-      		<div class="form-group form-group-category">
-	        <ng-select [clearable]="false" [searchable]="false" formControlName="category" placeholder="Category">
+      <div>
+        <label>Name</label>
+        <form-input inputType="text" name="name" placeholder="Chicken Biriyani"></form-input>
+      </div>
+      <div>
+        <label>Description</label>
+        <form-input inputType="text" name="description"
+                    placeholder="Andhra Style Spicy Chicken Biryani made with long Grain basmati rice"></form-input>
+      </div>
+      <div>
+        <label>Type</label>
+        <div class="form-group form-group-item_type">
+          <ng-select [clearable]="false" [items]="item_types" [searchable]="false" class="text-capitalize"
+                     formControlName="item_type" notFoundText="No type found" placeholder="Food">
+          </ng-select>
+          <div class="form-control-feedback has-danger"></div>
+        </div>
+      </div>
+      <div>
+        <label>Category</label>
+        <div class="form-group form-group-category">
+          <ng-select [clearable]="false" [searchable]="false" formControlName="category"
+                     notFoundText="No category found"
+                     placeholder="South Indian">
             <div *ngIf="createItemForm.get('item_type').value !== null && details[createItemForm.get('item_type').value] !== undefined">
-              <ng-option *ngFor="let category of details[createItemForm.get('item_type').value]['category'] | keyvalue" [value]="category.key">{{category.value['title']}}</ng-option>
+              <ng-option *ngFor="let category of details[createItemForm.get('item_type').value]['category'] | keyvalue"
+                         [value]="category.key">{{category.value['title']}}</ng-option>
             </div>
-	        </ng-select>
-	        <div class="form-control-feedback has-danger"></div>
-	      </div>
-    	</div>
+          </ng-select>
+          <div class="form-control-feedback has-danger"></div>
+        </div>
+      </div>
     </div>
     <div class="form-feedback has-danger mt-1 mb-1 text-center"></div>
 

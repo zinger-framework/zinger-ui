@@ -1,16 +1,15 @@
-import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, FormArray, Validators} from '@angular/forms';
+import {Component} from '@angular/core';
+import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 
 import {ToastrService} from 'ngx-toastr';
 
 import {BaseComponent} from '../../../../base.component';
 import {ExtendedFormControl} from '../../../../core/utils/extended-form-control.utils';
-import {SHOP_NAME_REGEX} from '../../../../core/utils/constants.utils';
+import {APP_ROUTES, SHOP_NAME_REGEX} from '../../../../core/utils/constants.utils';
 import {handleError, setErrorMessage} from '../../../../core/utils/common.utils';
 import {ItemService} from '../../../../core/service/admin/item.service';
 import $ from 'jquery';
-import {APP_ROUTES} from '../../../../core/utils/constants.utils';
 
 // TODO store reference id in filterable fields
 // TODO: Update only fields that have changed in submitItemDetails
@@ -35,16 +34,16 @@ export class ItemDetailsComponent extends BaseComponent {
   item_types = []
   isItemActive = false
 
-  
+
   constructor(private fb: FormBuilder, private toastr: ToastrService, private route: ActivatedRoute, private itemService: ItemService,
-    private router: Router) { 
+              private router: Router) {
     super()
     this.route.params.subscribe(params => {
       this.shopId = params['shop_id']
       this.itemId = params['id']
-      this.breadCrumbData = [{label: 'Home', link: '/dashboard'}, {label: 'Shop', link: '/shop'}, 
-      {label: String(this.shopId), link: `/shop/${this.shopId}`}, {label: 'Item', link: `/shop/${this.shopId}/item`}
-      , {label: String(this.itemId), link: ''}]
+      this.breadCrumbData = [{label: 'Home', link: '/dashboard'}, {label: 'Shop', link: '/shop'},
+        {label: String(this.shopId), link: `/shop/${this.shopId}`}, {label: 'Item', link: `/shop/${this.shopId}/item`}
+        , {label: String(this.itemId), link: ''}]
     });
     this.itemDetailsForm = this.fb.group({
       name: new ExtendedFormControl('', [Validators.required, Validators.pattern(SHOP_NAME_REGEX)], 'name'),
@@ -52,7 +51,7 @@ export class ItemDetailsComponent extends BaseComponent {
       item_type: new ExtendedFormControl(null, [Validators.required], 'item_type'),
       category: new ExtendedFormControl(null, [Validators.required], 'category'),
       status: new ExtendedFormControl(null, [Validators.required], 'status'),
-      meta_data: this.fb.array([ this.createFormArrayItem('meta_data')]),
+      meta_data: this.fb.array([this.createFormArrayItem('meta_data')]),
       filterable_fields: this.fb.array([]),
       icon: new ExtendedFormControl('', [], 'icon'),
       cover_photos: new ExtendedFormControl('', [], 'cover_photos'),
@@ -80,13 +79,13 @@ export class ItemDetailsComponent extends BaseComponent {
         switch (field) {
           case 'variants':
             this.itemDetailsForm.get('variant_property').setValue(itemData['variants'][0]['reference_id'])
-            for(var i = 0; i < itemData['variants'][0]['values'].length; i++) {
+            for (var i = 0; i < itemData['variants'][0]['values'].length; i++) {
               let temp = this.itemDetailsForm.get('variant_details') as FormArray;
               temp.push(this.createFormArrayItem('variant_details'));
-              (<FormArray> this.itemDetailsForm.get('variant_details')).at(i).get('variant_name').setValue(itemData['variants'][0]['values'][i]['value']);
-              (<FormArray> this.itemDetailsForm.get('variant_details')).at(i).get('variant_price').setValue(itemData['variants'][0]['values'][i]['price']);
+              (<FormArray>this.itemDetailsForm.get('variant_details')).at(i).get('variant_name').setValue(itemData['variants'][0]['values'][i]['value']);
+              (<FormArray>this.itemDetailsForm.get('variant_details')).at(i).get('variant_price').setValue(itemData['variants'][0]['values'][i]['price']);
             }
-          break
+            break
           case 'icon':
             this.iconSrc = itemData[field]
             break;
@@ -94,28 +93,28 @@ export class ItemDetailsComponent extends BaseComponent {
             this.coverImgSrcList = itemData[field]
             break;
           case 'status':
-            this.isItemActive = itemData[field] == 'active' ?  true : false;
+            this.isItemActive = itemData[field] == 'active' ? true : false;
             break;
           case 'filterable_fields':
-            for(var i = 0; i < itemData['filterable_fields'].length; i++) {
+            for (var i = 0; i < itemData['filterable_fields'].length; i++) {
               this.addFormArrayItem('filterable_fields');
-              (<FormArray> this.itemDetailsForm.get('filterable_fields')).at(i).get('filter_name').setValue(itemData['filterable_fields'][i]['title']);
-              (<FormArray> this.itemDetailsForm.get('filterable_fields')).at(i).get('filter_value').setValue(itemData['filterable_fields'][i]['value']);
-            } 
+              (<FormArray>this.itemDetailsForm.get('filterable_fields')).at(i).get('filter_name').setValue(itemData['filterable_fields'][i]['title']);
+              (<FormArray>this.itemDetailsForm.get('filterable_fields')).at(i).get('filter_value').setValue(itemData['filterable_fields'][i]['value']);
+            }
             break
-          case 'meta_data': 
-            i=0;
+          case 'meta_data':
+            i = 0;
             Object.keys(itemData['meta_data']).forEach(key => {
               this.addFormArrayItem('meta_data');
-              (<FormArray> this.itemDetailsForm.get('meta_data')).at(i).get('key').setValue(key);
-              (<FormArray> this.itemDetailsForm.get('meta_data')).at(i).get('value').setValue(itemData['meta_data'][key]);
+              (<FormArray>this.itemDetailsForm.get('meta_data')).at(i).get('key').setValue(key);
+              (<FormArray>this.itemDetailsForm.get('meta_data')).at(i).get('value').setValue(itemData['meta_data'][key]);
               i++;
             })
             break
           default:
-          if (field != 'id' && this.itemDetailsForm.get(field) != null) {
-            this.itemDetailsForm.get(field).setValue(itemData[field])
-          }
+            if (field != 'id' && this.itemDetailsForm.get(field) != null) {
+              this.itemDetailsForm.get(field).setValue(itemData[field])
+            }
         }
       }
     })
@@ -128,7 +127,7 @@ export class ItemDetailsComponent extends BaseComponent {
     accordion.expandAll()
     let requestBody = {}
     Object.keys(this.itemDetailsForm.value).forEach(key => {
-      switch(key) {
+      switch (key) {
         case 'icon':
         case 'cover_photos':
         case 'status':
@@ -137,13 +136,13 @@ export class ItemDetailsComponent extends BaseComponent {
           break
         case 'meta_data':
           requestBody['meta_data'] = {}
-          for(var i = 0; i < this.itemDetailsForm.value['meta_data'].length; i++)
-            requestBody['meta_data'][this.itemDetailsForm.value['meta_data'][i]['key']] = this.itemDetailsForm.value['meta_data'][i]['value'] 
+          for (var i = 0; i < this.itemDetailsForm.value['meta_data'].length; i++)
+            requestBody['meta_data'][this.itemDetailsForm.value['meta_data'][i]['key']] = this.itemDetailsForm.value['meta_data'][i]['value']
           break
         case 'filterable_fields':
           requestBody['filterable_fields'] = {}
-          for(var i = 0; i < this.itemDetailsForm.value['filterable_fields'].length; i++)
-            requestBody['filterable_fields'][this.itemDetailsForm.value['filterable_fields'][i]['filter_name']] = this.itemDetailsForm.value['filterable_fields'][i]['filter_value'] 
+          for (var i = 0; i < this.itemDetailsForm.value['filterable_fields'].length; i++)
+            requestBody['filterable_fields'][this.itemDetailsForm.value['filterable_fields'][i]['filter_name']] = this.itemDetailsForm.value['filterable_fields'][i]['filter_value']
           break
         default:
           requestBody[key] = this.itemDetailsForm.value[key]
@@ -151,7 +150,7 @@ export class ItemDetailsComponent extends BaseComponent {
     })
 
     this.itemService.updateItemDetails(this.shopId, this.itemId, requestBody)
-    .then(response => {
+      .then(response => {
         this.loadItemDetailsForm(response['data']['item'])
       })
       .catch(error => {
@@ -163,7 +162,7 @@ export class ItemDetailsComponent extends BaseComponent {
   deleteImage(imageId, imgType) {
     switch (imgType) {
       case 'icon':
-      this.deleteIcon()
+        this.deleteIcon()
         this.itemService.deleteIcon(this.shopId, this.itemId)
           .then(response => {
             // this.deleteIcon()
@@ -265,7 +264,7 @@ export class ItemDetailsComponent extends BaseComponent {
   }
 
   createFormArrayItem(type: string): FormGroup {
-    switch(type) {
+    switch (type) {
       case 'variant_details': {
         this.variant_index = this.variant_index + 1
         return this.fb.group({
@@ -273,7 +272,8 @@ export class ItemDetailsComponent extends BaseComponent {
           variant_price: new ExtendedFormControl('', [Validators.required], 'variant_price'),
           className: "variant_property-" + this.variant_index
         });
-      } break;
+      }
+        break;
 
       case 'filterable_fields': {
         this.filter_index = this.filter_index + 1
@@ -282,7 +282,8 @@ export class ItemDetailsComponent extends BaseComponent {
           filter_value: new ExtendedFormControl('', [Validators.required], 'filter_value'),
           className: "filter-" + this.filter_index
         })
-      } break;
+      }
+        break;
 
       case 'meta_data': {
         this.meta_index = this.meta_index + 1
@@ -291,7 +292,8 @@ export class ItemDetailsComponent extends BaseComponent {
           value: new ExtendedFormControl('', [Validators.required], 'value'),
           className: "meta-" + this.meta_index
         })
-      } break;
+      }
+        break;
     }
   }
 
@@ -299,64 +301,63 @@ export class ItemDetailsComponent extends BaseComponent {
     var temp = this.itemDetailsForm.get(type) as FormArray
     temp.push(this.createFormArrayItem(type))
 
-    switch(type) {
+    switch (type) {
       case 'variant_details':
-        if(this.itemDetailsForm.get('variant_property').value == null) {
+        if (this.itemDetailsForm.get('variant_property').value == null) {
           console.log('variant property cannot be empty')
-        }
-        else {
+        } else {
           let requestBody = {
             variant_name: this.itemDetailsForm.get('variant_property').value,
-            variant_value: (<FormArray> this.itemDetailsForm.get('variant_details')).at(this.variant_index - 1).get('variant_name').value,
-            variant_price: (<FormArray> this.itemDetailsForm.get('variant_details')).at(this.variant_index - 1).get('variant_price').value
+            variant_value: (<FormArray>this.itemDetailsForm.get('variant_details')).at(this.variant_index - 1).get('variant_name').value,
+            variant_price: (<FormArray>this.itemDetailsForm.get('variant_details')).at(this.variant_index - 1).get('variant_price').value
           }
           this.itemService.addNewVariant(this.shopId, this.itemId, requestBody)
-          .then(response => {
-            this.loadItemDetailsForm(response['data']['item'])
-          })
-          .catch(error => {
-            let reason = error['error']['reason']
-            handleError(error, this.itemDetailsForm);
-          })
+            .then(response => {
+              this.loadItemDetailsForm(response['data']['item'])
+            })
+            .catch(error => {
+              let reason = error['error']['reason']
+              handleError(error, this.itemDetailsForm);
+            })
         }
         break;
       default:
-    };
+    }
+
   }
 
   deleteFormArrayItem(type: string, index: number): void {
-    if(type == 'variant_details') {
+    if (type == 'variant_details') {
       this.itemService.deleteVariant(this.shopId, this.itemId, this.itemDetails['variants'][0]['values'][index]['id'])
-      .then(response => {
-        this.loadItemDetailsForm(response['data']['item'])
-      })
-      .catch(error => {
-        let reason = error['error']['reason']
-        handleError(error, this.itemDetailsForm);
-      })
-    }
-    else {
+        .then(response => {
+          this.loadItemDetailsForm(response['data']['item'])
+        })
+        .catch(error => {
+          let reason = error['error']['reason']
+          handleError(error, this.itemDetailsForm);
+        })
+    } else {
       const fa = (this.itemDetailsForm.get(type) as FormArray);
       fa.removeAt(index);
-      if(fa.length===0) this.createFormArrayItem(type);  
+      if (fa.length === 0) this.createFormArrayItem(type);
     }
   }
 
   getMeta() {
     this.itemService.getMeta()
-    .then(response => {
-      this.meta = response['data']
-      this.item_types = Object.keys(this.meta)
-    })
-    .catch(error => {
-      let reason = error['error']['reason']
-      handleError(error, this.itemDetailsForm);
-    });
+      .then(response => {
+        this.meta = response['data']
+        this.item_types = Object.keys(this.meta)
+      })
+      .catch(error => {
+        let reason = error['error']['reason']
+        handleError(error, this.itemDetailsForm);
+      });
   }
 
   getItemDetails() {
     this.itemService.getItemDetails(this.shopId, this.itemId)
-      .then(response => { 
+      .then(response => {
         this.loadItemDetailsForm(response['data']['item'])
       })
       .catch(error => {
@@ -365,14 +366,14 @@ export class ItemDetailsComponent extends BaseComponent {
   }
 
   updateItemActiveStatus() {
-    let requestBody = {'status': this.isItemActive == true ? 'active':'inactive'}
+    let requestBody = {'status': this.isItemActive == true ? 'active' : 'inactive'}
     this.itemService.updateItemDetails(this.shopId, this.itemId, requestBody)
-    .then(response => {
+      .then(response => {
         this.loadItemDetailsForm(response['data']['item'])
       })
-    .catch(error => {
-      if (error['status'] == 404) this.deleteIcon()
-      handleError(error, this.itemDetailsForm)
-    })
+      .catch(error => {
+        if (error['status'] == 404) this.deleteIcon()
+        handleError(error, this.itemDetailsForm)
+      })
   }
 }

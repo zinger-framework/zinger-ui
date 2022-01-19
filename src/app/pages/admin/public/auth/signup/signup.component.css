@@ -1,15 +1,15 @@
 form.signup-otp div.get-otp {
-  text-align: right;
+    text-align: right;
 }
 
 form.signup-otp div.get-otp button {
-  color: #555;
-  margin-bottom: 12px;
-  border: none;
-  background-color: transparent;
+    color: #555;
+    margin-bottom: 12px;
+    border: none;
+    background-color: transparent;
 }
 
 form.signup-otp div.get-otp button:hover:not(:disabled) {
-  color: #FF4141;
+    color: #FF4141;
 }
 

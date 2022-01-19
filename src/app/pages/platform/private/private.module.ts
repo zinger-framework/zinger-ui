@@ -5,7 +5,7 @@ import {NgSelectModule} from '@ng-select/ng-select';
 import {ReactiveFormsModule} from "@angular/forms";
 import {NgApexchartsModule} from 'ng-apexcharts';
 import {UiSwitchModule} from 'ngx-ui-switch';
-import {NgbAccordionModule, NgbNavModule, NgbModule} from "@ng-bootstrap/ng-bootstrap";
+import {NgbAccordionModule, NgbModule, NgbNavModule} from "@ng-bootstrap/ng-bootstrap";
 import {NgxMaterialTimepickerModule} from "ngx-material-timepicker";
 import {NgxDatatableModule} from '@swimlane/ngx-datatable';
 
@@ -19,8 +19,8 @@ import {HeaderComponent} from './header/header.component';
 import {ProfileComponent} from './profile/profile.component';
 import {ShopDetailsComponent} from "./shop-details/shop-details.component";
 import {ShopListComponent} from './shop-list/shop-list.component';
-import { ItemListComponent } from './item-list/item-list.component';
-import { PlatformConfigComponent } from './platform-config/platform-config.component';
+import {ItemListComponent} from './item-list/item-list.component';
+import {PlatformConfigComponent} from './platform-config/platform-config.component';
 
 @NgModule({
   declarations: [

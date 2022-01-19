@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { PlatformConfigComponent } from './platform-config.component';
+import {PlatformConfigComponent} from './platform-config.component';
 
 describe('PlatformConfigComponent', () => {
   let component: PlatformConfigComponent;
@@ -8,9 +8,9 @@ describe('PlatformConfigComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PlatformConfigComponent ]
+      declarations: [PlatformConfigComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
