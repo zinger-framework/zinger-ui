@@ -17,6 +17,7 @@ export class FormInputComponent {
   @Input() placeholder: string;
   @Input() name: string;
   @Input() readonly: boolean = false;
+  @Input() styleClass: string;
   @Input() onChange: any = (t) => {
   };
 }

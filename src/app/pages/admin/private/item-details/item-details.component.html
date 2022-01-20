@@ -13,26 +13,11 @@
             <form-input inputType="text" name="name" placeholder="Margherita Pizza"></form-input>
           </div>
           <div class="col-md-6 col-lg-6">
-            <label class="required">Description</label>
-            <form-input inputType="text" name="description"
-                        placeholder="A classic delight loaded with extra cheese"></form-input>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col-md-6 col-lg-6">
-            <label class="required">Type</label>
-            <div class="form-group form-group-item_type">
-              <ng-select [clearable]="false" [items]="item_types" [searchable]="false" formControlName="item_type"
-                         placeholder="Select">
-              </ng-select>
-              <div class="form-control-feedback has-danger"></div>
-            </div>
-          </div>
-          <div class="col-md-6 col-lg-6">
             <label class="required">Category</label>
             <div class="form-group form-group-category">
-              <ng-select [clearable]="false" [searchable]="false" formControlName="category" placeholder="Select">
+              <ng-select [clearable]="false" [searchable]="false" formControlName="category"
+                         notFoundText="No category found"
+                         placeholder="South Indian">
                 <div *ngIf="itemDetailsForm.get('item_type').value !== null && meta[itemDetailsForm.get('item_type').value] !== undefined">
                   <ng-option *ngFor="let category of meta[itemDetailsForm.get('item_type').value]['category']"
                              [value]="category['reference_id']">{{category['title']}}</ng-option>
@@ -42,6 +27,33 @@
             </div>
           </div>
         </div>
+
+        <div class="row">
+          <div class="col-md-6 col-lg-6">
+            <label class="required">Description</label>
+            <div class="form-group form-group-description">
+              <textarea class="form-control form-control-lg" formControlName="description"
+                        placeholder="Describe your restaurant in less than 250 words"
+                        rows="6"></textarea>
+              <div class="form-control-feedback has-danger"></div>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-6">
+            <div>
+              <label>Type</label>
+              <form-input inputType="text" name="item_type" placeholder="Food" readonly="true"
+                          styleClass="text-uppercase"></form-input>
+            </div>
+
+            <div>
+              <label>Status</label>
+              <form-input inputType="text" name="status" placeholder="ACTIVE" readonly="true"
+                          styleClass="text-uppercase"></form-input>
+            </div>
+          </div>
+        </div>
+
         <div class="row">
           <div class="col-md-6 col-lg-6">
             <div>
@@ -116,7 +128,7 @@
             <label class="required">Variant Property</label>
             <div class="form-group form-group-variant_property">
               <ng-select [clearable]="false" [searchable]="false" formControlName="variant_property"
-                         placeholder="Select">
+                         notFoundText="No variant found" placeholder="Small">
                 <div *ngIf="itemDetailsForm.get('item_type').value !== null && meta[itemDetailsForm.get('item_type').value] !== undefined">
                   <ng-option *ngFor="let variant of meta[this.itemDetailsForm.get('item_type').value]['variant']"
                              [value]="variant['reference_id']">{{variant['title']}}</ng-option>
@@ -200,7 +212,7 @@
       <ng-template ngbPanelContent>
         <div>
           <div>
-            <label class="required">Meta-Data</label>
+            <label class="required">Metadata</label>
           </div>
           <div *ngFor="let item of itemDetailsForm.get('meta_data')['controls']; let i = index;"
                formArrayName="meta_data">
