@@ -43,13 +43,13 @@ export function setErrorMessage(message: string, className: string, fieldKey = '
 
 export function clearErrorMessage(className: string, fieldKey = '') {
   if (fieldKey != '' && $(`form.${className} div.form-group-${fieldKey} div.form-control-feedback`)[0] != null) {
-    $(`form.${className} div.form-group-${fieldKey} div.form-control-feedback`).remove();
+    $(`form.${className} div.form-group-${fieldKey} div.form-control-feedback`)?.empty();
     if ($(`form.${className} div.form-group-${fieldKey} input`)[0] != null)
       $(`form.${className} div.form-group-${fieldKey} input`)[0].classList.remove('form-control-danger');
     else
       $(`form.${className} div.form-group-${fieldKey} textarea`)[0].classList.remove('form-control-danger');
   }
-  $(`form.${className} div.form-feedback`).remove();
+  $(`form.${className} div.form-feedback`)?.empty();
 }
 
 export function buildMessage(error: ValidationErrors, label: string): string {
