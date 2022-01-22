@@ -79,8 +79,9 @@ export class ItemDetailsComponent extends BaseComponent {
             }
             break
           case 'filterable_fields':
-            for (let filter of itemData['filterable_fields']) {
-              this.createFormArrayItem('filterable_fields', filter);
+            for (let filter of this.meta[itemData['item_type']]['filter']) {
+              let filterValue = itemData['filterable_fields']?.find(field => field.reference_id == filter.reference_id)
+              this.createFormArrayItem('filterable_fields', filterValue || filter, true);
             }
             break
           case 'meta_data':
@@ -274,7 +275,7 @@ export class ItemDetailsComponent extends BaseComponent {
           }, [Validators.required], 'filterName'),
           filterValue: new ExtendedFormControl({
             value: data['value'],
-            disabled: disabled
+            disabled: false
           }, [Validators.required], 'filterValue'),
           filterReferenceId: data['reference_id'],
           className: "filter-" + this.filter_index
