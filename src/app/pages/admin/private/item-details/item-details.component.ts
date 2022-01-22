@@ -6,7 +6,7 @@ import {ToastrService} from 'ngx-toastr';
 
 import {BaseComponent} from '../../../../base.component';
 import {ExtendedFormControl} from '../../../../core/utils/extended-form-control.utils';
-import {APP_ROUTES, SHOP_NAME_REGEX} from '../../../../core/utils/constants.utils';
+import {APP_ROUTES, PRICE_REGEX, SHOP_NAME_REGEX} from '../../../../core/utils/constants.utils';
 import {handleError, setErrorMessage} from '../../../../core/utils/common.utils';
 import {ItemService} from '../../../../core/service/admin/item.service';
 import $ from 'jquery';
@@ -41,9 +41,12 @@ export class ItemDetailsComponent extends BaseComponent {
     this.route.params.subscribe(params => {
       this.shopId = params['shop_id']
       this.itemId = params['id']
-      this.breadCrumbData = [{label: 'Home', link: '/dashboard'}, {label: 'Shop', link: '/shop'},
-        {label: String(this.shopId), link: `/shop/${this.shopId}`}, {label: 'Item', link: `/shop/${this.shopId}/item`}
-        , {label: String(this.itemId), link: ''}]
+      this.breadCrumbData = [{label: 'Home', link: APP_ROUTES.DASHBOARD}, {label: 'Shop', link: APP_ROUTES.SHOP},
+        {label: String(this.shopId), link: `${APP_ROUTES.SHOP}/${this.shopId}`}, {
+          label: 'Item',
+          link: `${APP_ROUTES.SHOP}/${this.shopId}${APP_ROUTES.ITEM}`
+        },
+        {label: String(this.itemId), link: ''}]
     });
     this.itemDetailsForm = this.fb.group({
       name: new ExtendedFormControl('', [Validators.required, Validators.pattern(SHOP_NAME_REGEX)], 'name'),
@@ -51,7 +54,7 @@ export class ItemDetailsComponent extends BaseComponent {
       item_type: new ExtendedFormControl(null, [Validators.required], 'item_type'),
       category: new ExtendedFormControl(null, [Validators.required], 'category'),
       status: new ExtendedFormControl(null, [Validators.required], 'status'),
-      meta_data: this.fb.array([this.createFormArrayItem('meta_data')]),
+      meta_data: this.fb.array([]),
       filterable_fields: this.fb.array([]),
       icon: new ExtendedFormControl('', [], 'icon'),
       cover_photos: new ExtendedFormControl('', [], 'cover_photos'),
@@ -75,12 +78,11 @@ export class ItemDetailsComponent extends BaseComponent {
       if (itemData[field] != null) {
         switch (field) {
           case 'variants':
-            this.itemDetailsForm.get('variant_property').setValue(itemData['variants'][0]['reference_id'])
-            for (var i = 0; i < itemData['variants'][0]['values'].length; i++) {
-              let temp = this.itemDetailsForm.get('variant_details') as FormArray;
-              temp.push(this.createFormArrayItem('variant_details'));
-              (<FormArray>this.itemDetailsForm.get('variant_details')).at(i).get('variant_name').setValue(itemData['variants'][0]['values'][i]['value']);
-              (<FormArray>this.itemDetailsForm.get('variant_details')).at(i).get('variant_price').setValue(itemData['variants'][0]['values'][i]['price']);
+            if (itemData['variants'].length > 0) {
+              this.itemDetailsForm.get('variant_property').setValue(itemData['variants'][0]['reference_id'])
+              for (let variant of itemData['variants'][0]['values']) {
+                this.createFormArrayItem('variant_details', variant, true)
+              }
             }
             break
           case 'icon':
@@ -90,20 +92,14 @@ export class ItemDetailsComponent extends BaseComponent {
             this.coverImgSrcList = itemData[field]
             break;
           case 'filterable_fields':
-            for (var i = 0; i < itemData['filterable_fields'].length; i++) {
-              this.addFormArrayItem('filterable_fields');
-              (<FormArray>this.itemDetailsForm.get('filterable_fields')).at(i).get('filter_name').setValue(itemData['filterable_fields'][i]['title']);
-              (<FormArray>this.itemDetailsForm.get('filterable_fields')).at(i).get('filter_value').setValue(itemData['filterable_fields'][i]['value']);
+            for (let filter of itemData['filterable_fields']) {
+              this.createFormArrayItem('filterable_fields', filter);
             }
             break
           case 'meta_data':
-            i = 0;
-            Object.keys(itemData['meta_data']).forEach(key => {
-              this.addFormArrayItem('meta_data');
-              (<FormArray>this.itemDetailsForm.get('meta_data')).at(i).get('key').setValue(key);
-              (<FormArray>this.itemDetailsForm.get('meta_data')).at(i).get('value').setValue(itemData['meta_data'][key]);
-              i++;
-            })
+            for (const data of Object.entries(itemData['meta_data'])) {
+              this.createFormArrayItem('meta_data', data);
+            }
             break
           default:
             if (field != 'id' && this.itemDetailsForm.get(field) != null) {
@@ -112,8 +108,6 @@ export class ItemDetailsComponent extends BaseComponent {
         }
       }
     })
-    var temp = this.itemDetailsForm.get('variant_details') as FormArray;
-    temp.push(this.createFormArrayItem('variant_details'));
     this.itemDetails = itemData
   }
 
@@ -130,13 +124,13 @@ export class ItemDetailsComponent extends BaseComponent {
           break
         case 'meta_data':
           requestBody['meta_data'] = {}
-          for (var i = 0; i < this.itemDetailsForm.value['meta_data'].length; i++)
+          for (let i = 0; i < this.itemDetailsForm.value['meta_data'].length; i++)
             requestBody['meta_data'][this.itemDetailsForm.value['meta_data'][i]['key']] = this.itemDetailsForm.value['meta_data'][i]['value']
           break
         case 'filterable_fields':
           requestBody['filterable_fields'] = {}
-          for (var i = 0; i < this.itemDetailsForm.value['filterable_fields'].length; i++)
-            requestBody['filterable_fields'][this.itemDetailsForm.value['filterable_fields'][i]['filter_name']] = this.itemDetailsForm.value['filterable_fields'][i]['filter_value']
+          for (let i = 0; i < this.itemDetailsForm.value['filterable_fields'].length; i++)
+            requestBody['filterable_fields'][this.itemDetailsForm.value['filterable_fields'][i]['filterName']] = this.itemDetailsForm.value['filterable_fields'][i]['filterValue']
           break
         default:
           requestBody[key] = this.itemDetailsForm.value[key]
@@ -257,83 +251,73 @@ export class ItemDetailsComponent extends BaseComponent {
     }
   }
 
-  createFormArrayItem(type: string): FormGroup {
-    switch (type) {
-      case 'variant_details': {
-        this.variant_index = this.variant_index + 1
-        return this.fb.group({
-          variant_name: new ExtendedFormControl('', [Validators.required], 'variant_name'),
-          variant_price: new ExtendedFormControl('', [Validators.required], 'variant_price'),
-          className: "variant_property-" + this.variant_index
-        });
-      }
-        break;
-
-      case 'filterable_fields': {
-        this.filter_index = this.filter_index + 1
-        return this.fb.group({
-          filter_name: new ExtendedFormControl('', [Validators.required], 'filter_name'),
-          filter_value: new ExtendedFormControl('', [Validators.required], 'filter_value'),
-          className: "filter-" + this.filter_index
-        })
-      }
-        break;
-
-      case 'meta_data': {
-        this.meta_index = this.meta_index + 1
-        return this.fb.group({
-          key: new ExtendedFormControl('', [Validators.required], 'key'),
-          value: new ExtendedFormControl('', [Validators.required], 'value'),
-          className: "meta-" + this.meta_index
-        })
-      }
-        break;
-    }
-  }
-
-  addFormArrayItem(type: string): void {
-    var temp = this.itemDetailsForm.get(type) as FormArray
-    temp.push(this.createFormArrayItem(type))
-
+  createFormArrayItem(type: string, data = {}, disabled = false) {
+    let formGroup = null;
     switch (type) {
       case 'variant_details':
         if (this.itemDetailsForm.get('variant_property').value == null) {
-          console.log('variant property cannot be empty')
-        } else {
-          let requestBody = {
-            variant_name: this.itemDetailsForm.get('variant_property').value,
-            variant_value: (<FormArray>this.itemDetailsForm.get('variant_details')).at(this.variant_index - 1).get('variant_name').value,
-            variant_price: (<FormArray>this.itemDetailsForm.get('variant_details')).at(this.variant_index - 1).get('variant_price').value
-          }
-          this.itemService.addNewVariant(this.shopId, this.itemId, requestBody)
-            .then(response => {
-              this.loadItemDetailsForm(response['data']['item'])
-            })
-            .catch(error => {
-              let reason = error['error']['reason']
-              handleError(error, this.itemDetailsForm);
-            })
+          setErrorMessage('Variant property cannot be empty', 'item-details', 'variant_property')
+          return;
         }
+        this.variant_index = this.variant_index + 1
+        formGroup = this.fb.group({
+          variant_reference_id: new ExtendedFormControl({
+            value: data['id'],
+            disabled: disabled
+          }, [], 'variant_reference_id'),
+          variant_name: new ExtendedFormControl({
+            value: data['value'],
+            disabled: disabled
+          }, [Validators.required], 'variant_name'),
+          variant_price: new ExtendedFormControl({
+            value: data['price']?.toFixed(2),
+            disabled: disabled
+          }, [Validators.required, Validators.pattern(PRICE_REGEX)], 'variant_price'),
+          disableAdd: disabled,
+          className: "variant_property-" + this.variant_index
+        });
         break;
-      default:
-    }
 
+      case 'filterable_fields':
+        this.filter_index = this.filter_index + 1
+        formGroup = this.fb.group({
+          filterName: new ExtendedFormControl({
+            value: data['title'],
+            disabled: disabled
+          }, [Validators.required], 'filterName'),
+          filterValue: new ExtendedFormControl({
+            value: data['value'],
+            disabled: disabled
+          }, [Validators.required], 'filterValue'),
+          className: "filter-" + this.filter_index
+        })
+        break;
+
+      case 'meta_data':
+        this.meta_index = this.meta_index + 1
+        formGroup = this.fb.group({
+          key: new ExtendedFormControl({value: data[0], disabled: disabled}, [Validators.required], 'key'),
+          value: new ExtendedFormControl({value: data[1], disabled: disabled}, [Validators.required], 'value'),
+          className: "meta-" + this.meta_index
+        })
+        break;
+    }
+    if (formGroup != null)
+      (this.itemDetailsForm.get(type) as FormArray).push(formGroup);
   }
 
   deleteFormArrayItem(type: string, index: number): void {
-    if (type == 'variant_details') {
+    if (type == 'variant_details' && this.itemDetails['variants'].length > 0 && this.itemDetails['variants'][0]['values'][index] != null) {
       this.itemService.deleteVariant(this.shopId, this.itemId, this.itemDetails['variants'][0]['values'][index]['id'])
         .then(response => {
           this.loadItemDetailsForm(response['data']['item'])
         })
         .catch(error => {
-          let reason = error['error']['reason']
           handleError(error, this.itemDetailsForm);
         })
     } else {
-      const fa = (this.itemDetailsForm.get(type) as FormArray);
-      fa.removeAt(index);
-      if (fa.length === 0) this.createFormArrayItem(type);
+      let formArray = (this.itemDetailsForm.get(type) as FormArray);
+      formArray.removeAt(index);
     }
   }
 
@@ -344,7 +328,6 @@ export class ItemDetailsComponent extends BaseComponent {
         this.item_types = Object.keys(this.meta)
       })
       .catch(error => {
-        let reason = error['error']['reason']
         handleError(error, this.itemDetailsForm);
       });
   }
@@ -355,8 +338,27 @@ export class ItemDetailsComponent extends BaseComponent {
         this.loadItemDetailsForm(response['data']['item'])
       })
       .catch(error => {
-        this.router.navigate([APP_ROUTES.DASHBOARD])
+        console.log(error);
+        handleError(error, this.itemDetailsForm)
       })
+  }
+
+  addVariant(index: number) {
+    let variant_property = this.itemDetailsForm.get('variant_property').value
+    if (variant_property != null) {
+      let requestBody = {
+        variant_name: variant_property,
+        variant_value: (<FormArray>this.itemDetailsForm.get('variant_details')).at(index).get('variant_name').value,
+        variant_price: (<FormArray>this.itemDetailsForm.get('variant_details')).at(index).get('variant_price').value
+      }
+      this.itemService.addNewVariant(this.shopId, this.itemId, requestBody)
+        .then(response => {
+          this.loadItemDetailsForm(response['data']['item'])
+        })
+        .catch(error => {
+          handleError(error, this.itemDetailsForm);
+        })
+    }
   }
 
   updateItemStatus(status) {
