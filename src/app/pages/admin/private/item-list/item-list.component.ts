@@ -21,8 +21,9 @@ export class ItemListComponent extends BaseComponent {
   readonly rowHeight = 50;
   readonly pageLimit = 10;
   rows = []
+  categories = {}
   isLoading = true
-  details = {}
+  meta = {}
   types = ['Food', 'Fashion']
   ColumnMode = ColumnMode
   itemSearchForm: FormGroup
@@ -32,7 +33,7 @@ export class ItemListComponent extends BaseComponent {
   totalElements = 0
   shopId: number
   @ViewChild('createItemModal', {read: TemplateRef}) createItemModal: TemplateRef<any>;
-  item_types = []
+  itemTypes = []
 
   constructor(private fb: FormBuilder, private route: ActivatedRoute, private router: Router, private el: ElementRef,
               private itemService: ItemService, private modalService: NgbModal) {
@@ -48,7 +49,7 @@ export class ItemListComponent extends BaseComponent {
 
     this.createItemForm = this.fb.group({
       name: new ExtendedFormControl('', [Validators.required, Validators.pattern(ITEM_NAME_REGEX)], 'name'),
-      description: new ExtendedFormControl('', [Validators.required, Validators.pattern(ITEM_DESC_REGEX)], 'description'),
+      description: new ExtendedFormControl('', [Validators.pattern(ITEM_DESC_REGEX)], 'description'),
       category: new ExtendedFormControl(null, [Validators.required], 'category'),
       item_type: new ExtendedFormControl(null, [Validators.required], 'item_type'),
       className: 'item-create'
@@ -56,45 +57,7 @@ export class ItemListComponent extends BaseComponent {
   }
 
   ngOnInit(): void {
-  }
-
-  ngAfterViewInit() {
     this.getMeta()
-    this.route.queryParams.subscribe(params => {
-      var item_type = params['item_type']
-      Object.entries(params).forEach(
-        ([key, value]) => {
-          switch (key) {
-            case 'category':
-              var categoryValues = []
-              switch (typeof value) {
-                case 'string':
-                  // TODO: Validate category and check console error on first launch
-                  // categoryValues = Object.keys(this.details[item_type]['category']).includes(params[key]) ? [params[key]] : null
-                  categoryValues = [params[key]]
-                  break
-                default:
-                  categoryValues = []
-                  value.forEach(val => {
-                    // if(Object.keys(this.details[item_type]['category']).includes(val))
-                    categoryValues.push(val)
-                  })
-              }
-              if (categoryValues != []) this.itemSearchForm.get('category')?.setValue(categoryValues)
-              break
-            default:
-              this.itemSearchForm.get(key)?.setValue(value)
-          }
-        }
-      )
-    })
-    this.updateUrl()
-    this.getItemList()
-    this.onScroll(0);
-
-    this.itemSearchForm.get('item_type').valueChanges.subscribe(val => {
-      this.itemSearchForm.get('category').setValue(null)
-    });
   }
 
   updateUrl() {
@@ -187,7 +150,7 @@ export class ItemListComponent extends BaseComponent {
     this.itemService.addNewItem(this.shopId, requestObj)
       .then(response => {
         this.rows = []
-        this.getItemList()
+        this.updateFilters()
         this.modalService.dismissAll();
       })
       .catch(error => {
@@ -213,11 +176,61 @@ export class ItemListComponent extends BaseComponent {
     this.updateFilters()
   }
 
+  loadPage() {
+    this.route.queryParams.subscribe(params => {
+      if(Object.keys(params).includes('item_type') && this.itemTypes.includes(params['item_type'])) 
+        this.itemSearchForm.get('item_type')?.setValue(params['item_type'])
+
+      if (Object.keys(params).includes('item_type') && Object.keys(params).includes('category') 
+        && this.itemTypes.includes(params['item_type'])) {
+        var categoryValues = []
+        var itemType = params['item_type']
+        switch (typeof params['category']) {
+          case 'string':
+            categoryValues = this.categories[itemType].includes(params['category']) ? [params['category']] : []
+            break
+          default:
+            categoryValues = []
+            params['category'].forEach(val => {
+              if(this.categories[itemType].includes(val))
+                categoryValues.push(val)
+            })
+        }
+        if (categoryValues != []) this.itemSearchForm.get('category').setValue(categoryValues)
+      }
+      
+      Object.entries(params).forEach(
+        ([key, value]) => {
+          switch (key) {
+            case 'item_type':
+            case 'category': 
+              break;
+            default:
+              this.itemSearchForm.get(key)?.setValue(value)
+          }
+        }
+      )
+    })
+
+    this.updateUrl()
+    this.getItemList()
+    this.onScroll(0);
+  }
+
+  resetCategoryFilter() {
+    this.itemSearchForm.get('category').setValue(null)
+  }
+
   getMeta() {
     this.itemService.getMeta()
       .then(response => {
-        this.details = response['data']
-        this.item_types = Object.keys(this.details)
+        this.meta = response['data']
+        this.itemTypes = Object.keys(this.meta)
+        for (let itemType of this.itemTypes) {
+          this.categories[itemType] = []
+          this.meta[itemType]['category'].map(category => this.categories[itemType].push(category.reference_id));
+        }
+        this.loadPage()
       })
       .catch(error => {
         let reason = error['error']['reason']

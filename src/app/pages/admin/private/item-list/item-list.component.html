@@ -4,7 +4,7 @@
       <div class="col-3">
         <label>Type</label>
         <div class="form-group form-group-item_type">
-          <ng-select [clearable]="false" [items]="item_types" [searchable]="false" class="text-capitalize"
+          <ng-select (change)="resetCategoryFilter()" [clearable]="false" [items]="itemTypes" [searchable]="false" class="text-capitalize"
                      formControlName="item_type" notFoundText="No type found" placeholder="Food"></ng-select>
           <div class="form-control-feedback has-danger"></div>
         </div>
@@ -14,8 +14,8 @@
         <div class="form-group form-group-category">
           <ng-select [clearable]="false" [multiple]="true" [searchable]="false" formControlName="category"
                      notFoundText="No category found" placeholder="South Indian">
-            <div *ngIf="itemSearchForm.get('item_type').value !== null && details[itemSearchForm.get('item_type').value] !== undefined">
-              <ng-option *ngFor="let category of details[itemSearchForm.get('item_type').value]['category']"
+            <div *ngIf="itemSearchForm.get('item_type').value !== null && meta[itemSearchForm.get('item_type').value] !== undefined">
+              <ng-option *ngFor="let category of meta[itemSearchForm.get('item_type').value]['category']"
                          [value]="category['reference_id']">{{category['title']}}</ng-option>
             </div>
           </ng-select>
@@ -59,7 +59,6 @@
     </div>
   </div>
   <ngx-datatable
-    #itemList
     (activate)="onRowClick($event)"
     (scroll)="onScroll($event.offsetY)"
     [columnMode]="ColumnMode.standard"
@@ -97,7 +96,7 @@
 
     <ngx-datatable-column [sortable]="false" [width]="175" name="Category" prop="category">
       <ng-template let-category="value" ngx-datatable-cell-template>
-        {{category}}
+        {{category['title']}}
       </ng-template>
     </ngx-datatable-column>
 
@@ -120,7 +119,7 @@
 
     <div class="modal-body">
       <div>
-        <label>Name</label>
+        <label class="required">Name</label>
         <form-input inputType="text" name="name" placeholder="Chicken Biriyani"></form-input>
       </div>
       <div>
@@ -129,23 +128,23 @@
                     placeholder="Andhra Style Spicy Chicken Biryani made with long Grain basmati rice"></form-input>
       </div>
       <div>
-        <label>Type</label>
+        <label class="required">Type</label>
         <div class="form-group form-group-item_type">
-          <ng-select [clearable]="false" [items]="item_types" [searchable]="false" class="text-capitalize"
+          <ng-select [clearable]="false" [items]="itemTypes" [searchable]="false" class="text-capitalize"
                      formControlName="item_type" notFoundText="No type found" placeholder="Food">
           </ng-select>
           <div class="form-control-feedback has-danger"></div>
         </div>
       </div>
       <div>
-        <label>Category</label>
+        <label class="required">Category</label>
         <div class="form-group form-group-category">
-          <ng-select [clearable]="false" [searchable]="false" formControlName="category"
-                     notFoundText="No category found"
-                     placeholder="South Indian">
-            <div *ngIf="createItemForm.get('item_type').value !== null && details[createItemForm.get('item_type').value] !== undefined">
-              <ng-option *ngFor="let category of details[createItemForm.get('item_type').value]['category'] | keyvalue"
-                         [value]="category.key">{{category.value['title']}}</ng-option>
+          <ng-select [clearable]="false" [searchable]="false" formControlName="category" 
+            notFoundText="No category found" placeholder="South Indian">
+            <div *ngIf="createItemForm.get('item_type').value !== null && 
+               meta[createItemForm.get('item_type').value] !== undefined">
+                <ng-option *ngFor="let category of meta[createItemForm.get('item_type').value]['category']"
+                           [value]="category['reference_id']">{{category['title']}}</ng-option>
             </div>
           </ng-select>
           <div class="form-control-feedback has-danger"></div>
