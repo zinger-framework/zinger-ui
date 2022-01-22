@@ -1,5 +1,6 @@
 <breadcrumb [data]="breadCrumbData" title="Add New Item"></breadcrumb>
 <form (ngSubmit)="submitItemDetails(accordion)" [formGroup]="itemDetailsForm" class="item-details">
+  <div class="form-feedback has-danger mt-1 mb-1 text-center"></div>
   <ngb-accordion #accordion="ngbAccordion" [destroyOnHide]="false" activeIds="ngb-panel-0">
     <ngb-panel id="basicInfoPanel">
       <ng-template class="panel-header" let-opened="opened" ngbPanelHeader>
@@ -232,6 +233,5 @@
       </ng-template>
     </ngb-panel>
   </ngb-accordion>
-  <div class="form-feedback has-danger mt-1 mb-1 text-center"></div>
-  <input class="btn btn-primary mt-3" type="submit" value="Update Details">
+  <input [disabled]="!canSubmitForm()" class="btn btn-primary mt-3" type="submit" value="Update Details">
 </form>

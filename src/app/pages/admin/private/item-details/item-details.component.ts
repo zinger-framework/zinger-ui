@@ -23,8 +23,8 @@ export class ItemDetailsComponent extends BaseComponent {
   breadCrumbData = [{label: 'Home', link: APP_ROUTES.DASHBOARD}, {label: 'Shop', link: APP_ROUTES.SHOP}]
   meta = {}
   itemDetails = {}
-  filter_index = -1
-  meta_index = -1
+  filterIndex = -1
+  metaIndex = -1
   shopId: number
   itemId: string
   itemDetailsForm: FormGroup
@@ -137,7 +137,7 @@ export class ItemDetailsComponent extends BaseComponent {
         this.loadItemDetailsForm(response['data']['item'])
       })
       .catch(error => {
-        handleError(error, this.itemDetailsForm)
+        this.updateError(error)
       })
   }
 
@@ -147,7 +147,6 @@ export class ItemDetailsComponent extends BaseComponent {
         this.deleteIcon()
         this.itemService.deleteIcon(this.shopId, this.itemId)
           .then(response => {
-            // this.deleteIcon()
             this.loadItemDetailsForm(response['data']['item'])
           })
           .catch(error => {
@@ -267,7 +266,7 @@ export class ItemDetailsComponent extends BaseComponent {
         break;
 
       case 'filterable_fields':
-        this.filter_index = this.filter_index + 1
+        this.filterIndex = this.filterIndex + 1
         formGroup = this.fb.group({
           filterName: new ExtendedFormControl({
             value: data['title'],
@@ -278,16 +277,16 @@ export class ItemDetailsComponent extends BaseComponent {
             disabled: false
           }, [Validators.required], 'filterValue'),
           filterReferenceId: data['reference_id'],
-          className: "filter-" + this.filter_index
+          className: "filter-" + this.filterIndex
         })
         break;
 
       case 'meta_data':
-        this.meta_index = this.meta_index + 1
+        this.metaIndex = this.metaIndex + 1
         formGroup = this.fb.group({
           key: new ExtendedFormControl({value: data[0], disabled: disabled}, [Validators.required], 'key'),
           value: new ExtendedFormControl({value: data[1], disabled: disabled}, [Validators.required], 'value'),
-          className: "meta-" + this.meta_index
+          className: "meta-" + this.metaIndex
         })
         break;
     }
@@ -332,10 +331,10 @@ export class ItemDetailsComponent extends BaseComponent {
   }
 
   addVariant(index: number) {
-    let variant_property = this.itemDetailsForm.get('variant_property').value
-    if (variant_property != null) {
+    let variantProperty = this.itemDetailsForm.get('variant_property').value
+    if (variantProperty != null) {
       let requestBody = {
-        variant_name: variant_property,
+        variant_name: variantProperty,
         variant_value: (<FormArray>this.itemDetailsForm.get('variant_details')).at(index).get('variant_name').value,
         variant_price: (<FormArray>this.itemDetailsForm.get('variant_details')).at(index).get('variant_price').value
       }
@@ -344,7 +343,7 @@ export class ItemDetailsComponent extends BaseComponent {
           this.loadItemDetailsForm(response['data']['item'])
         })
         .catch(error => {
-          handleError(error, this.itemDetailsForm);
+          this.updateError(error)
         })
     }
   }
@@ -356,7 +355,7 @@ export class ItemDetailsComponent extends BaseComponent {
         this.loadItemDetailsForm(response['data']['item'])
       })
       .catch(error => {
-        handleError(error, this.itemDetailsForm)
+        this.updateError(error)
       })
   }
 
@@ -378,5 +377,24 @@ export class ItemDetailsComponent extends BaseComponent {
     modalRef.componentInstance.updateStatus.subscribe((data) => {
       this.deleteItem(data['formObject']);
     })
+  }
+
+  updateError(error) {
+    let reason = error['error']['reason'];
+    let errorMsg = {};
+    if (reason != null) {
+      if (typeof reason != 'string') {
+        Object.entries(reason).forEach(([reasonKey, value]) => {
+          if (Array.isArray(value) && ['variant_name', 'variant_value', 'filterable_fields'].includes(reasonKey)) {
+            error['error']['reason'] = error['error']['reason'][reasonKey].join(', ')
+            handleError(error, this.itemDetailsForm);
+          }
+        });
+      }
+    }
+  }
+
+  canSubmitForm() {
+    return this.itemDetailsForm.valid && this.itemDetails['icon'].length > 0 && this.itemDetails['cover_photos'].length > 0
   }
 }
