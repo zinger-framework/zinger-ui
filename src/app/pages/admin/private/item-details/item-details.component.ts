@@ -117,13 +117,13 @@ export class ItemDetailsComponent extends BaseComponent {
           break
         case 'meta_data':
           requestBody['meta_data'] = {}
-          for (let metaData of value) {
+          for (let metaData of Object(value)) {
             requestBody['meta_data'][metaData['key']] = metaData['value']
           }
           break
         case 'filterable_fields':
           requestBody['filterable_fields'] = {}
-          for (let filter of value)
+          for (let filter of Object(value))
             requestBody['filterable_fields'][filter['filterReferenceId']] = filter['filterValue']
           break
         default:
