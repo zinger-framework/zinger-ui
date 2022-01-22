@@ -1,20 +1,18 @@
 import {Component} from '@angular/core';
 import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
+import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 
-import {ToastrService} from 'ngx-toastr';
-
-import {BaseComponent} from '../../../../base.component';
 import {ExtendedFormControl} from '../../../../core/utils/extended-form-control.utils';
 import {APP_ROUTES, PRICE_REGEX, SHOP_NAME_REGEX} from '../../../../core/utils/constants.utils';
 import {handleError, setErrorMessage} from '../../../../core/utils/common.utils';
-import {ItemService} from '../../../../core/service/admin/item.service';
 import $ from 'jquery';
-import {ReasonModalComponent} from "../../../../shared/reason-modal/reason-modal.component";
-import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 
-// TODO store reference id in filterable fields
-// TODO: Update only fields that have changed in submitItemDetails
+import {ItemService} from '../../../../core/service/admin/item.service';
+import {ToastrService} from 'ngx-toastr';
+
+import {BaseComponent} from '../../../../base.component';
+import {ReasonModalComponent} from "../../../../shared/reason-modal/reason-modal.component";
 
 @Component({
   selector: 'app-item-details',
@@ -22,18 +20,14 @@ import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
   styleUrls: ['./item-details.component.css']
 })
 export class ItemDetailsComponent extends BaseComponent {
-  breadCrumbData = [{label: 'Home', link: '/dashboard'}, {label: 'Shop', link: '/shop'}, {label: 'Item', link: ''}]
-  itemDetailsForm: FormGroup
+  breadCrumbData = [{label: 'Home', link: APP_ROUTES.DASHBOARD}, {label: 'Shop', link: APP_ROUTES.SHOP}]
   meta = {}
   itemDetails = {}
-  iconSrc = ''
-  coverImgSrcList = []
-  variant_index = -1
   filter_index = -1
   meta_index = -1
   shopId: number
   itemId: string
-  item_types = []
+  itemDetailsForm: FormGroup
 
   constructor(private fb: FormBuilder, private toastr: ToastrService, private route: ActivatedRoute, private itemService: ItemService,
               private router: Router, private modalService: NgbModal) {
@@ -41,24 +35,23 @@ export class ItemDetailsComponent extends BaseComponent {
     this.route.params.subscribe(params => {
       this.shopId = params['shop_id']
       this.itemId = params['id']
-      this.breadCrumbData = [{label: 'Home', link: APP_ROUTES.DASHBOARD}, {label: 'Shop', link: APP_ROUTES.SHOP},
-        {label: String(this.shopId), link: `${APP_ROUTES.SHOP}/${this.shopId}`}, {
-          label: 'Item',
-          link: `${APP_ROUTES.SHOP}/${this.shopId}${APP_ROUTES.ITEM}`
-        },
-        {label: String(this.itemId), link: ''}]
+      this.breadCrumbData.push(
+        {label: String(this.shopId), link: `${APP_ROUTES.SHOP}/${this.shopId}`},
+        {label: 'Item', link: `${APP_ROUTES.SHOP}/${this.shopId}${APP_ROUTES.ITEM}`},
+        {label: String(this.itemId), link: ''}
+      )
     });
     this.itemDetailsForm = this.fb.group({
       name: new ExtendedFormControl('', [Validators.required, Validators.pattern(SHOP_NAME_REGEX)], 'name'),
       description: new ExtendedFormControl('', [Validators.required, Validators.maxLength(250)], 'description'),
-      item_type: new ExtendedFormControl(null, [Validators.required], 'item_type'),
-      category: new ExtendedFormControl(null, [Validators.required], 'category'),
-      status: new ExtendedFormControl(null, [Validators.required], 'status'),
+      item_type: new ExtendedFormControl('', [Validators.required], 'item_type'),
+      category: new ExtendedFormControl('', [Validators.required], 'category'),
+      status: new ExtendedFormControl('', [Validators.required], 'status'),
       meta_data: this.fb.array([]),
       filterable_fields: this.fb.array([]),
       icon: new ExtendedFormControl('', [], 'icon'),
       cover_photos: new ExtendedFormControl('', [], 'cover_photos'),
-      variant_property: new ExtendedFormControl(null, [Validators.required], 'variant_property'),
+      variant_property: new ExtendedFormControl('', [Validators.required], 'variant_property'),
       variant_details: this.fb.array([]),
       className: 'item-details'
     });
@@ -85,12 +78,6 @@ export class ItemDetailsComponent extends BaseComponent {
               }
             }
             break
-          case 'icon':
-            this.iconSrc = itemData[field]
-            break;
-          case 'cover_photos':
-            this.coverImgSrcList = itemData[field]
-            break;
           case 'filterable_fields':
             for (let filter of itemData['filterable_fields']) {
               this.createFormArrayItem('filterable_fields', filter);
@@ -101,10 +88,15 @@ export class ItemDetailsComponent extends BaseComponent {
               this.createFormArrayItem('meta_data', data);
             }
             break
+          case 'category':
+            this.itemDetailsForm.get(field)?.setValue(itemData[field]['reference_id']);
+            break
+          case 'icon':
+          case 'cover_photos':
+          case 'id':
+            break;
           default:
-            if (field != 'id' && this.itemDetailsForm.get(field) != null) {
-              this.itemDetailsForm.get(field).setValue(itemData[field])
-            }
+            this.itemDetailsForm.get(field)?.setValue(itemData[field])
         }
       }
     })
@@ -114,35 +106,36 @@ export class ItemDetailsComponent extends BaseComponent {
   submitItemDetails(accordion) {
     accordion.expandAll()
     let requestBody = {}
-    Object.keys(this.itemDetailsForm.value).forEach(key => {
+    for (const [key, value] of Object.entries(this.itemDetailsForm.value)) {
       switch (key) {
         case 'icon':
         case 'cover_photos':
         case 'status':
         case 'variant_details':
+        case 'variant_property':
         case 'className':
           break
         case 'meta_data':
           requestBody['meta_data'] = {}
-          for (let i = 0; i < this.itemDetailsForm.value['meta_data'].length; i++)
-            requestBody['meta_data'][this.itemDetailsForm.value['meta_data'][i]['key']] = this.itemDetailsForm.value['meta_data'][i]['value']
+          for (let metaData of value) {
+            requestBody['meta_data'][metaData['key']] = metaData['value']
+          }
           break
         case 'filterable_fields':
           requestBody['filterable_fields'] = {}
-          for (let i = 0; i < this.itemDetailsForm.value['filterable_fields'].length; i++)
-            requestBody['filterable_fields'][this.itemDetailsForm.value['filterable_fields'][i]['filterName']] = this.itemDetailsForm.value['filterable_fields'][i]['filterValue']
+          for (let filter of value)
+            requestBody['filterable_fields'][filter['filterReferenceId']] = filter['filterValue']
           break
         default:
-          requestBody[key] = this.itemDetailsForm.value[key]
+          requestBody[key] = value
       }
-    })
+    }
 
     this.itemService.updateItemDetails(this.shopId, this.itemId, requestBody)
       .then(response => {
         this.loadItemDetailsForm(response['data']['item'])
       })
       .catch(error => {
-        if (error['status'] == 404) this.deleteIcon()
         handleError(error, this.itemDetailsForm)
       })
   }
@@ -164,15 +157,13 @@ export class ItemDetailsComponent extends BaseComponent {
       case 'cover_photos':
         this.itemService.deleteCoverPhoto(this.shopId, this.itemId, imageId)
           .then(response => {
-            // this.coverImgSrcList = response['data']['cover_photos']
             this.loadItemDetailsForm(response['data']['item'])
           })
           .catch(error => {
-            if (error['status'] == 404) this.coverImgSrcList = this.coverImgSrcList.filter(x => x['id'] != imageId)
             handleError(error, this.itemDetailsForm)
           })
           .finally(() => {
-            if (this.coverImgSrcList.length == 0)
+            if (this.itemDetails['cover_photos'].length == 0)
               setErrorMessage('Cover Photos cannot be empty', 'item-details', 'cover_photos')
           })
         break;
@@ -180,7 +171,6 @@ export class ItemDetailsComponent extends BaseComponent {
   }
 
   deleteIcon() {
-    this.iconSrc = ''
     setErrorMessage('Icon cannot be empty', 'item-details', 'icon')
   }
 
@@ -195,7 +185,7 @@ export class ItemDetailsComponent extends BaseComponent {
       if (!file.name.endsWith('jpg') && !file.name.endsWith('png') && !file.name.endsWith('jpeg')) {
         this.toastr.error('Please upload a valid image file')
         return;
-      } else if (imgType == 'cover_photos' && this.coverImgSrcList.length >= 10) {
+      } else if (imgType == 'cover_photos' && this.itemDetails['cover_photos'].length >= 10) {
         this.toastr.error('You have already uploaded 10 images. Please contact Zinger team to increase limit')
         return;
       }
@@ -218,7 +208,6 @@ export class ItemDetailsComponent extends BaseComponent {
                 formData.append('icon_file', file);
                 this.itemService.uploadIcon(this.shopId, this.itemId, formData)
                   .then(response => {
-                    // this.iconSrc = response['data']['icon']
                     this.loadItemDetailsForm(response['data']['item'])
                   })
                   .catch(error => {
@@ -235,7 +224,6 @@ export class ItemDetailsComponent extends BaseComponent {
                 formData.append('cover_file', file);
                 this.itemService.uploadCoverPhoto(this.shopId, this.itemId, formData)
                   .then(response => {
-                    // this.coverImgSrcList = response['data']['cover_photos']
                     this.loadItemDetailsForm(response['data']['item'])
                   })
                   .catch(error => {
@@ -259,7 +247,6 @@ export class ItemDetailsComponent extends BaseComponent {
           setErrorMessage('Variant property cannot be empty', 'item-details', 'variant_property')
           return;
         }
-        this.variant_index = this.variant_index + 1
         formGroup = this.fb.group({
           variant_reference_id: new ExtendedFormControl({
             value: data['id'],
@@ -274,7 +261,7 @@ export class ItemDetailsComponent extends BaseComponent {
             disabled: disabled
           }, [Validators.required, Validators.pattern(PRICE_REGEX)], 'variant_price'),
           disableAdd: disabled,
-          className: "variant_property-" + this.variant_index
+          className: `variant_property-${data['id']}`
         });
         break;
 
@@ -289,6 +276,7 @@ export class ItemDetailsComponent extends BaseComponent {
             value: data['value'],
             disabled: disabled
           }, [Validators.required], 'filterValue'),
+          filterReferenceId: data['reference_id'],
           className: "filter-" + this.filter_index
         })
         break;
@@ -325,7 +313,6 @@ export class ItemDetailsComponent extends BaseComponent {
     this.itemService.getMeta()
       .then(response => {
         this.meta = response['data']
-        this.item_types = Object.keys(this.meta)
       })
       .catch(error => {
         handleError(error, this.itemDetailsForm);

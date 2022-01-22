@@ -15,13 +15,11 @@
           <div class="col-md-6 col-lg-6">
             <label class="required">Category</label>
             <div class="form-group form-group-category">
-              <ng-select [clearable]="false" [searchable]="false" formControlName="category"
-                         notFoundText="No category found"
-                         placeholder="South Indian">
-                <div *ngIf="itemDetailsForm.get('item_type').value && meta[itemDetailsForm.get('item_type').value]">
-                  <ng-option *ngFor="let category of meta[itemDetailsForm.get('item_type').value]['category']"
-                             [value]="category['reference_id']">{{category['title']}}</ng-option>
-                </div>
+              <ng-select *ngIf="itemDetails['item_type'] && meta[itemDetails['item_type']]"
+                         [clearable]="false" [items]="meta[itemDetails['item_type']]['category']" [searchable]="false"
+                         bindLabel="title"
+                         bindValue="reference_id" formControlName="category"
+                         notFoundText="No category found" placeholder="South Indian">
               </ng-select>
               <div class="form-control-feedback has-danger"></div>
             </div>
@@ -67,8 +65,8 @@
             <label class="required">Upload Icon</label>
             <br>
             <div class="row">
-              <div *ngIf="iconSrc; else placeholderimage">
-                <image-preview (deleteImageEvent)="deleteImage($event, 'icon')" [imageSrc]="iconSrc"
+              <div *ngIf="itemDetails['icon']; else placeholderimage">
+                <image-preview (deleteImageEvent)="deleteImage($event, 'icon')" [imageSrc]="itemDetails['icon']"
                                imageType="icon"></image-preview>
               </div>
               <ng-template #placeholderimage>
@@ -88,12 +86,12 @@
             <label class="required">Upload Cover Photos</label>
             <br>
             <div class="row">
-              <div *ngFor="let imgSrc of coverImgSrcList;">
+              <div *ngFor="let imgSrc of itemDetails['cover_photos'];">
                 <image-preview (deleteImageEvent)="deleteImage($event, 'cover_photos')" [imageId]="imgSrc['id']"
                                [imageSrc]="imgSrc['url']"
                                imageType="cover_photos"></image-preview>
               </div>
-              <div *ngIf="coverImgSrcList.length<10">
+              <div *ngIf="itemDetails['cover_photos']?.length < 10">
                 <img (click)="browseFiles('cover_photos')" class="ml-3 cursor-pointer" height="34"
                      src="/assets/images/upload-image.png"
                      width="70"/>
