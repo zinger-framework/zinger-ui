@@ -56,4 +56,4 @@ export const TAGS_REGEX = /^[a-zA-Z_, -]{1,100}$/;
 export const ITEM_ID_REGEX = /^[a-zA-Z0-9]{1,100}$/;
 export const ITEM_NAME_REGEX = /^[a-zA-Z0-9 ]{1,20}$/;
 export const ITEM_DESC_REGEX = /^[a-zA-Z0-9 ,\\.]{1,100}$/;
-
+export const PRICE_REGEX = /^[0-9]*\.[0-9]{2}$/;

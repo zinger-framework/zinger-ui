@@ -15,13 +15,11 @@
           <div class="col-md-6 col-lg-6">
             <label class="required">Category</label>
             <div class="form-group form-group-category">
-              <ng-select [clearable]="false" [searchable]="false" formControlName="category"
-                         notFoundText="No category found"
-                         placeholder="South Indian">
-                <div *ngIf="itemDetailsForm.get('item_type').value !== null && meta[itemDetailsForm.get('item_type').value] !== undefined">
-                  <ng-option *ngFor="let category of meta[itemDetailsForm.get('item_type').value]['category']"
-                             [value]="category['reference_id']">{{category['title']}}</ng-option>
-                </div>
+              <ng-select *ngIf="itemDetails['item_type'] && meta[itemDetails['item_type']]"
+                         [clearable]="false" [items]="meta[itemDetails['item_type']]['category']" [searchable]="false"
+                         bindLabel="title"
+                         bindValue="reference_id" formControlName="category"
+                         notFoundText="No category found" placeholder="South Indian">
               </ng-select>
               <div class="form-control-feedback has-danger"></div>
             </div>
@@ -67,8 +65,8 @@
             <label class="required">Upload Icon</label>
             <br>
             <div class="row">
-              <div *ngIf="iconSrc; else placeholderimage">
-                <image-preview (deleteImageEvent)="deleteImage($event, 'icon')" [imageSrc]="iconSrc"
+              <div *ngIf="itemDetails['icon']; else placeholderimage">
+                <image-preview (deleteImageEvent)="deleteImage($event, 'icon')" [imageSrc]="itemDetails['icon']"
                                imageType="icon"></image-preview>
               </div>
               <ng-template #placeholderimage>
@@ -88,12 +86,12 @@
             <label class="required">Upload Cover Photos</label>
             <br>
             <div class="row">
-              <div *ngFor="let imgSrc of coverImgSrcList;">
+              <div *ngFor="let imgSrc of itemDetails['cover_photos'];">
                 <image-preview (deleteImageEvent)="deleteImage($event, 'cover_photos')" [imageId]="imgSrc['id']"
                                [imageSrc]="imgSrc['url']"
                                imageType="cover_photos"></image-preview>
               </div>
-              <div *ngIf="coverImgSrcList.length<10">
+              <div *ngIf="itemDetails['cover_photos']?.length < 10">
                 <img (click)="browseFiles('cover_photos')" class="ml-3 cursor-pointer" height="34"
                      src="/assets/images/upload-image.png"
                      width="70"/>
@@ -114,13 +112,13 @@
       </ng-template>
       <ng-template ngbPanelContent>
         <div class="row">
-          <div class="col-md-6 col-lg-6">
-            <label class="required">Variant Property</label>
+          <div class="col-md-3 col-lg-3">
+            <label class="required">Property</label>
             <div class="form-group form-group-variant_property">
               <ng-select [clearable]="false" [searchable]="false" formControlName="variant_property"
                          notFoundText="No variant found" placeholder="Small">
-                <div *ngIf="itemDetailsForm.get('item_type').value !== null && meta[itemDetailsForm.get('item_type').value] !== undefined">
-                  <ng-option *ngFor="let variant of meta[this.itemDetailsForm.get('item_type').value]['variant']"
+                <div *ngIf="meta[itemDetailsForm.get('item_type').value]">
+                  <ng-option *ngFor="let variant of meta[itemDetailsForm.get('item_type').value]['variant']"
                              [value]="variant['reference_id']">{{variant['title']}}</ng-option>
                 </div>
               </ng-select>
@@ -131,31 +129,25 @@
         <div class="mt-2">
           <label>Variant Details</label>
         </div>
-        <div *ngFor="let item of itemDetailsForm.get('variant_details')['controls']; let i = index;"
+        <div *ngFor="let variant of itemDetailsForm.get('variant_details')['controls']; let i = index;"
              formArrayName="variant_details">
-          <form [formGroupName]="i" class="row {{item['controls'].className.value}}">
-            <div class="col-md-3 col-lg-3">
-              <div class="form-group form-group-variant_name">
-                <input class="form-control form-control-lg" formControlName="variant_name" placeholder="regular"
-                       type="text"/>
-                <div class="form-control-feedback has-danger"></div>
-              </div>
+          <form [formGroup]="variant" class="row {{variant['controls'].className.value}}">
+            <div class="col-md-3 col-lg-4">
+              <form-input inputType="text" name="variant_name" placeholder="Small"></form-input>
             </div>
-            <div class="col-md-3 col-lg-3">
-              <div class="form-group form-group-variant_price">
-                <input class="form-control form-control-lg" formControlName="variant_price" placeholder="120"
-                       type="text"/>
-                <div class="form-control-feedback has-danger"></div>
-              </div>
+            <div class="col-md-2 col-lg-2">
+              <form-input inputType="text" name="variant_price" placeholder="120.00"></form-input>
             </div>
             <div class="col-md-3 col-lg-3 mt-3">
-              <i (click)="deleteFormArrayItem('variant_details', i)" class="mt-6 dw dw-delete-3" type="button"></i>
+              <i (click)="deleteFormArrayItem('variant_details', i)" class="dw dw-delete-3 text-primary"
+                 type="button"></i>&nbsp;&nbsp;
+              <i (click)="addVariant(i)" [class.d-none]="variant['controls'].disableAdd.value" class="dw dw-check"
+                 type="button"></i>
             </div>
             <div class="form-feedback has-danger mt-1 mb-1 text-center"></div>
           </form>
         </div>
-        <br>
-        <button (click)="addFormArrayItem('variant_details')" class="btn btn-primary mt-6" type="button">Add Variant
+        <button (click)="createFormArrayItem('variant_details')" class="btn btn-primary mt-6" type="button">Add Variant
         </button>
       </ng-template>
     </ngb-panel>
@@ -169,23 +161,14 @@
         <div>
           <label class="required">Filterable Fields</label>
         </div>
-
-        <div *ngFor="let item of itemDetailsForm.get('filterable_fields')['controls']; let i = index;"
+        <div *ngFor="let filter of itemDetailsForm.get('filterable_fields')['controls']; let i = index;"
              formArrayName="filterable_fields">
-          <form [formGroupName]="i" class="row {{item['controls'].className.value}}">
+          <form [formGroup]="filter" class="row {{filter['controls'].className.value}}">
             <div class="col-md-3 col-lg-3">
-              <div class="form-group form-group-filter_name">
-                <input class="form-control form-control-lg" formControlName="filter_name" placeholder="Brand"
-                       type="text"/>
-                <div class="form-control-feedback has-danger"></div>
-              </div>
+              <form-input inputType="text" name="filterName" placeholder="Brand"></form-input>
             </div>
             <div class="col-md-3 col-lg-3">
-              <div class="form-group form-group-filter_value">
-                <input class="form-control form-control-lg" formControlName="filter_value" placeholder="Adidas"
-                       type="text"/>
-                <div class="form-control-feedback has-danger"></div>
-              </div>
+              <form-input inputType="text" name="filterValue" placeholder="Adidas"></form-input>
             </div>
             <br>
             <div class="form-feedback has-danger mt-1 mb-1 text-center"></div>
@@ -204,23 +187,23 @@
           <div>
             <label class="required">Metadata</label>
           </div>
-          <div *ngFor="let item of this.itemDetailsForm.get('meta_data')['controls']; let i = index;"
+          <div *ngFor="let meta_data of this.itemDetailsForm.get('meta_data')['controls']; let i = index;"
                formArrayName="meta_data">
-            <form [formGroup]="item" class="row {{item['controls'].className.value}}">
+            <form [formGroup]="meta_data" class="row {{meta_data['controls'].className.value}}">
               <div class="col-md-3 col-lg-3">
-                <form-input inputType="text" name="key" placeholder="Brand"></form-input>
+                <form-input inputType="text" name="key" placeholder="Occasion"></form-input>
               </div>
               <div class="col-md-3 col-lg-3">
-                <form-input inputType="text" name="value" placeholder="Adidas"></form-input>
+                <form-input inputType="text" name="value" placeholder="Casual"></form-input>
               </div>
               <div class="col-md-3 col-lg-3 mt-3">
-                <i (click)="deleteFormArrayItem('meta_data', i)" class="mt-6 dw dw-delete-3" type="button"></i>
+                <i (click)="deleteFormArrayItem('meta_data', i)" class="mt-6 dw dw-delete-3 text-primary"
+                   type="button"></i>
               </div>
               <div class="form-feedback has-danger mt-1 mb-1 text-center"></div>
             </form>
           </div>
-          <br>
-          <button (click)="addFormArrayItem('meta_data')" class="btn btn-primary mt-6" type="button">Add metadata
+          <button (click)="createFormArrayItem('meta_data')" class="btn btn-primary mt-6" type="button">Add metadata
           </button>
         </div>
       </ng-template>
@@ -250,7 +233,5 @@
     </ngb-panel>
   </ngb-accordion>
   <div class="form-feedback has-danger mt-1 mb-1 text-center"></div>
-  <div>
-    <input class="btn btn-primary mt-3" type="submit">
-  </div>
+  <input class="btn btn-primary mt-3" type="submit" value="Update Details">
 </form>
