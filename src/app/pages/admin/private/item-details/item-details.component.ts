@@ -10,6 +10,8 @@ import {APP_ROUTES, SHOP_NAME_REGEX} from '../../../../core/utils/constants.util
 import {handleError, setErrorMessage} from '../../../../core/utils/common.utils';
 import {ItemService} from '../../../../core/service/admin/item.service';
 import $ from 'jquery';
+import {ReasonModalComponent} from "../../../../shared/reason-modal/reason-modal.component";
+import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 
 // TODO store reference id in filterable fields
 // TODO: Update only fields that have changed in submitItemDetails
@@ -32,11 +34,9 @@ export class ItemDetailsComponent extends BaseComponent {
   shopId: number
   itemId: string
   item_types = []
-  isItemActive = false
-
 
   constructor(private fb: FormBuilder, private toastr: ToastrService, private route: ActivatedRoute, private itemService: ItemService,
-              private router: Router) {
+              private router: Router, private modalService: NgbModal) {
     super()
     this.route.params.subscribe(params => {
       this.shopId = params['shop_id']
@@ -59,9 +59,6 @@ export class ItemDetailsComponent extends BaseComponent {
       variant_details: this.fb.array([]),
       className: 'item-details'
     });
-  }
-
-  ngOnInit(): void {
   }
 
   ngAfterViewInit(): void {
@@ -91,9 +88,6 @@ export class ItemDetailsComponent extends BaseComponent {
             break;
           case 'cover_photos':
             this.coverImgSrcList = itemData[field]
-            break;
-          case 'status':
-            this.isItemActive = itemData[field] == 'active' ? true : false;
             break;
           case 'filterable_fields':
             for (var i = 0; i < itemData['filterable_fields'].length; i++) {
@@ -365,15 +359,34 @@ export class ItemDetailsComponent extends BaseComponent {
       })
   }
 
-  updateItemActiveStatus() {
-    let requestBody = {'status': this.isItemActive == true ? 'active' : 'inactive'}
+  updateItemStatus(status) {
+    let requestBody = {'status': status}
     this.itemService.updateItemDetails(this.shopId, this.itemId, requestBody)
       .then(response => {
         this.loadItemDetailsForm(response['data']['item'])
       })
       .catch(error => {
-        if (error['status'] == 404) this.deleteIcon()
         handleError(error, this.itemDetailsForm)
       })
+  }
+
+  deleteItem(reasonForm) {
+    let requestBody = {id: this.itemId, reason: reasonForm.get('reason').value}
+    this.itemService.deleteItem(this.shopId, requestBody)
+      .then(response => {
+        this.modalService.dismissAll()
+        this.router.navigateByUrl(`${APP_ROUTES.SHOP}/${String(this.shopId)}${APP_ROUTES.ITEM}`)
+      })
+      .catch(error => {
+        this.modalService.hasOpenModals() ? handleError(error, reasonForm) : this.modalService.dismissAll()
+      })
+  }
+
+  getReasonModal() {
+    const modalRef = this.modalService.open(ReasonModalComponent, {centered: true});
+    modalRef.componentInstance.title = 'Deletion';
+    modalRef.componentInstance.updateStatus.subscribe((data) => {
+      this.deleteItem(data['formObject']);
+    })
   }
 }

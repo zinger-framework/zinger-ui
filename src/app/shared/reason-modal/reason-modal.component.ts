@@ -22,9 +22,6 @@ export class ReasonModalComponent extends BaseComponent {
     })
   }
 
-  ngOnInit(): void {
-  }
-
   onSubmit() {
     this.updateStatus.emit({title: this.title, formObject: this.reasonForm})
   }

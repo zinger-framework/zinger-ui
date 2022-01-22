@@ -56,6 +56,11 @@ export class ItemService extends AdminService {
     return this.delete(url)
   }
 
+  deleteItem(shopId, requestBody) {
+    let url = `${API_ENDPOINTS.SHOP}/${String(shopId)}/${API_ENDPOINTS.ITEM}/delete`
+    return this.post(url, requestBody)
+  }
+
   getMeta() {
     return this.get(`${API_ENDPOINTS.API_VERSION}/${API_ENDPOINTS.ITEM}/meta`)
   }

@@ -53,16 +53,6 @@
             </div>
           </div>
         </div>
-
-        <div class="row">
-          <div class="col-md-6 col-lg-6">
-            <div>
-              <label>Is Item Available?</label><br>
-              <ui-switch (click)="updateItemActiveStatus()" [(ngModel)]="isItemActive"
-                         [ngModelOptions]="{standalone: true}"></ui-switch>
-            </div>
-          </div>
-        </div>
       </ng-template>
     </ngb-panel>
 
@@ -236,6 +226,28 @@
       </ng-template>
     </ngb-panel>
 
+    <ngb-panel id="updateStatusPanel">
+      <ng-template class="panel-header" let-opened="opened" ngbPanelHeader>
+        <accordion-header [accordion]="accordion" [opened]="opened" [panelId]="'updateStatusPanel'"
+                          title='Update Status'></accordion-header>
+      </ng-template>
+      <ng-template ngbPanelContent>
+        <div [ngSwitch]="this.itemDetailsForm.get('status').value" class="row">
+          <div *ngSwitchCase="'active'" class="col-2">
+            <button (click)="updateItemStatus('inactive')" class="btn btn-outline-primary btn-block" type="button">
+              Deactivate
+            </button>
+          </div>
+          <div *ngSwitchCase="'inactive'" class="col-2">
+            <button (click)="updateItemStatus('active')" class="btn btn-primary btn-block" type="button">Activate
+            </button>
+          </div>
+          <div class="col-2">
+            <button (click)="getReasonModal()" class="btn btn-outline-primary btn-block" type="button">Delete</button>
+          </div>
+        </div>
+      </ng-template>
+    </ngb-panel>
   </ngb-accordion>
   <div class="form-feedback has-danger mt-1 mb-1 text-center"></div>
   <div>
