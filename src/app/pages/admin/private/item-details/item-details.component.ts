@@ -59,7 +59,6 @@ export class ItemDetailsComponent extends BaseComponent {
 
   ngAfterViewInit(): void {
     this.getMeta()
-    this.getItemDetails()
   }
 
   loadItemDetailsForm(itemData = {}) {
@@ -79,10 +78,12 @@ export class ItemDetailsComponent extends BaseComponent {
             }
             break
           case 'filterable_fields':
-            for (let filter of this.meta[itemData['item_type']]['filter']) {
-              let filterValue = itemData['filterable_fields']?.find(field => field.reference_id == filter.reference_id)
-              this.createFormArrayItem('filterable_fields', filterValue || filter, true);
-            }
+            if (this.meta[itemData['item_type']]['filter'] && this.meta[itemData['item_type']]['filter'].length > 0) {
+              for (let filter of this.meta[itemData['item_type']]['filter']) {
+                let filterValue = itemData['filterable_fields']?.find(field => field.reference_id == filter.reference_id)
+                this.createFormArrayItem('filterable_fields', filterValue || filter, true);
+              }
+            };
             break
           case 'meta_data':
             for (const data of Object.entries(itemData['meta_data'])) {
@@ -313,6 +314,7 @@ export class ItemDetailsComponent extends BaseComponent {
     this.itemService.getMeta()
       .then(response => {
         this.meta = response['data']
+        this.getItemDetails()
       })
       .catch(error => {
         handleError(error, this.itemDetailsForm);
@@ -332,11 +334,26 @@ export class ItemDetailsComponent extends BaseComponent {
 
   addVariant(index: number) {
     let variantProperty = this.itemDetailsForm.get('variant_property').value
+    let variantValue = (<FormArray>this.itemDetailsForm.get('variant_details')).at(index).get('variant_name').value
+    let variantPrice = (<FormArray>this.itemDetailsForm.get('variant_details')).at(index).get('variant_price').value
     if (variantProperty != null) {
+      if(!this.itemDetailsForm.controls.variant_details.controls[index].valid) {
+        if(this.itemDetailsForm.controls.variant_details.controls[index].get('variant_name').errors != null){
+          let error = {'error': {'reason': {'variant_name': ['Invalid Variant name']}}}
+          handleError(error, this.itemDetailsForm.controls.variant_details.controls[index])
+        }
+
+        if(this.itemDetailsForm.controls.variant_details.controls[index].get('variant_price').errors != null){
+          let error = {'error': {'reason': {'variant_price': ['Invalid Variant price']}}}
+          handleError(error, this.itemDetailsForm.controls.variant_details.controls[index])
+        }
+        return
+      }
+
       let requestBody = {
         variant_name: variantProperty,
-        variant_value: (<FormArray>this.itemDetailsForm.get('variant_details')).at(index).get('variant_name').value,
-        variant_price: (<FormArray>this.itemDetailsForm.get('variant_details')).at(index).get('variant_price').value
+        variant_value: variantValue,
+        variant_price: variantPrice
       }
       this.itemService.addNewVariant(this.shopId, this.itemId, requestBody)
         .then(response => {
@@ -349,6 +366,20 @@ export class ItemDetailsComponent extends BaseComponent {
   }
 
   updateItemStatus(status) {
+    if(status == 'active') {
+      if (!(this.itemDetails["variants"].length > 0 && this.itemDetails["variants"][0]["values"].length > 0)) {
+         let error = {'error': {'reason': 'Variant value cannot be empty'}}
+         handleError(error, this.itemDetailsForm)
+         return
+      }
+
+      if(!(this.itemDetails["filterable_fields"].length > 0 && this.itemDetails["filterable_fields"][0]["value"].length > 0)) {
+         let error = {'error': {'reason': 'Filterable Fields cannot be empty'}}
+         handleError(error, this.itemDetailsForm)
+         return
+      }
+    }
+
     let requestBody = {'status': status}
     this.itemService.updateItemDetails(this.shopId, this.itemId, requestBody)
       .then(response => {
@@ -394,6 +425,7 @@ export class ItemDetailsComponent extends BaseComponent {
   }
 
   canSubmitForm() {
-    return this.itemDetailsForm.valid && this.itemDetails['icon'].length > 0 && this.itemDetails['cover_photos'].length > 0
+    return this.itemDetailsForm.valid && this.itemDetails['icon'] && this.itemDetails['cover_photos'] && 
+      this.itemDetails['icon'].length > 0 && this.itemDetails['cover_photos'].length > 0
   }
 }
