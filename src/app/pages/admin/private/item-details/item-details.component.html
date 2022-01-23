@@ -1,6 +1,5 @@
 <breadcrumb [data]="breadCrumbData" title="Add New Item"></breadcrumb>
 <form (ngSubmit)="submitItemDetails(accordion)" [formGroup]="itemDetailsForm" class="item-details">
-  <div class="form-feedback has-danger mt-1 mb-1 text-center"></div>
   <ngb-accordion #accordion="ngbAccordion" [destroyOnHide]="false" activeIds="ngb-panel-0">
     <ngb-panel id="basicInfoPanel">
       <ng-template class="panel-header" let-opened="opened" ngbPanelHeader>
@@ -145,7 +144,6 @@
               <i (click)="addVariant(i)" [class.d-none]="variant['controls'].disableAdd.value" class="dw dw-check"
                  type="button"></i>
             </div>
-            <div class="form-feedback has-danger mt-1 mb-1 text-center"></div>
           </form>
         </div>
         <button (click)="createFormArrayItem('variant_details')" class="btn btn-primary mt-6" type="button">Add Variant
@@ -171,8 +169,6 @@
             <div class="col-md-3 col-lg-3">
               <form-input inputType="text" name="filterValue" placeholder="Adidas"></form-input>
             </div>
-            <br>
-            <div class="form-feedback has-danger mt-1 mb-1 text-center"></div>
           </form>
         </div>
       </ng-template>
@@ -201,7 +197,6 @@
                 <i (click)="deleteFormArrayItem('meta_data', i)" class="mt-6 dw dw-delete-3 text-primary"
                    type="button"></i>
               </div>
-              <div class="form-feedback has-danger mt-1 mb-1 text-center"></div>
             </form>
           </div>
           <button (click)="createFormArrayItem('meta_data')" class="btn btn-primary mt-6" type="button">Add metadata
@@ -233,5 +228,8 @@
       </ng-template>
     </ngb-panel>
   </ngb-accordion>
-  <input [disabled]="!canSubmitForm()" class="btn btn-primary mt-3" type="submit" value="Update Details">
+  <div class="d-inline-flex">
+    <input [disabled]="!canSubmitForm()" class="btn btn-primary mt-3" type="submit" value="Update Details">
+    <div class="form-feedback has-danger mt-4 ml-3"></div>
+  </div>
 </form>

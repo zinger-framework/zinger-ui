@@ -381,7 +381,6 @@ export class ItemDetailsComponent extends BaseComponent {
 
   updateError(error) {
     let reason = error['error']['reason'];
-    let errorMsg = {};
     if (reason != null) {
       if (typeof reason != 'string') {
         Object.entries(reason).forEach(([reasonKey, value]) => {
