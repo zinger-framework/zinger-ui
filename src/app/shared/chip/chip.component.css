@@ -1,0 +1,62 @@
+.chip {
+    padding: 5px 80px 4.5px 4px;
+    position: relative;
+    margin-bottom: 0;
+    border: 1px solid #dbdbdb;
+    background-color: #fff;
+    font-size: 16px;
+}
+
+.chip_container {
+    display: inline-block;
+    border: 1px solid #dbdbdb;
+    padding: 4px;
+    margin-right: 4px;
+    border-radius: 2px;
+    height: 29px;
+    line-height: 18px;
+}
+
+.chip-suggestions_tag {
+    padding: 10px 14px;
+    border: 0;
+    background: #0000;
+    display: block;
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+}
+
+.chip_container button {
+    background: #0000;
+    border: 0;
+    cursor: pointer;
+    color: var(--color-tag-close);
+}
+
+.chip_input {
+    border: 0;
+    padding: 4px 0;
+    outline: none;
+    width: 8px;
+    max-width: calc(100% + 70px);
+    margin-left: 4px;
+    min-width: 4px;
+    margin-bottom: 0;
+    font-size: 16px;
+    min-height: 29px;
+}
+
+.chip__btn {
+    position: absolute;
+    width: 50px;
+    height: 41px;
+    color: #ccc;
+    color: var(--color-add-button);
+    background-color: #fff;
+    background-color: var(--color-add-button-background);
+    top: -1px;
+    right: -1px;
+    cursor: pointer;
+    font-size: 30px;
+}

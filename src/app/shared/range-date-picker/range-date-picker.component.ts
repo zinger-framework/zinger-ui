@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, Output, SimpleChanges} from '@angular/core'
-import {NgbDate, NgbCalendar, NgbDateParserFormatter} from '@ng-bootstrap/ng-bootstrap'
+import {NgbCalendar, NgbDate, NgbDateParserFormatter} from '@ng-bootstrap/ng-bootstrap'
 import {BaseComponent} from "../../base.component"
 
 @Component({
@@ -20,7 +20,7 @@ export class RangeDatePickerComponent extends BaseComponent {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if(changes.fromDate && changes.toDate && changes.fromDate.currentValue == null && changes.toDate.currentValue == null) {
+    if (changes.fromDate && changes.toDate && changes.fromDate.currentValue == null && changes.toDate.currentValue == null) {
       this.dateRange = 'From Date - To Date'
     }
   }
@@ -40,8 +40,8 @@ export class RangeDatePickerComponent extends BaseComponent {
     selectedDates.set('toDate', this.toDate)
     this.dateSelectionEvent.emit(selectedDates)
 
-    if(this.fromDate) this.dateRange = this.formatter.format(this.fromDate).toString() 
-    if(this.toDate) this.dateRange += ' to ' + this.formatter.format(this.toDate).toString()
+    if (this.fromDate) this.dateRange = this.formatter.format(this.fromDate).toString()
+    if (this.toDate) this.dateRange += ' to ' + this.formatter.format(this.toDate).toString()
   }
 
   isHovered(date: NgbDate) {

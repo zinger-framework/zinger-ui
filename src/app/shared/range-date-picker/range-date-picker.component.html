@@ -1,24 +1,24 @@
 <div class="row">
   <div class="form-group hidden">
     <div class="input-group">
-      <input name="datepicker"
-             class="form-control d-none"
-             ngbDatepicker
-             #datepicker="ngbDatepicker"
-             [autoClose]="'outside'"
+      <input #datepicker="ngbDatepicker"
              (dateSelect)="onDateSelection($event)"
-             [displayMonths]="2"
+             [autoClose]="'outside'"
              [dayTemplate]="t"
-             outsideDays="hidden"
+             [displayMonths]="2"
              [startDate]="fromDate!"
+             class="form-control d-none"
+             name="datepicker"
+             ngbDatepicker
+             outsideDays="hidden"
              tabindex="-1">
       <ng-template #t let-date let-focused="focused">
-        <span class="custom-day"
+        <span (mouseenter)="hoveredDate = date"
+              (mouseleave)="hoveredDate = null"
+              [class.faded]="isHovered(date) || isInside(date)"
               [class.focused]="focused"
               [class.range]="isRange(date)"
-              [class.faded]="isHovered(date) || isInside(date)"
-              (mouseenter)="hoveredDate = date"
-              (mouseleave)="hoveredDate = null">
+              class="custom-day">
           {{ date.day }}
         </span>
       </ng-template>
@@ -29,9 +29,11 @@
     <label class="mb-2 pb-1">Date Range</label>
     <div class="form-group">
       <div class="input-group">
-        <input class="form-control bg-white" type="text" name="dateRange" [value]="this.dateRange" readonly="true" placeholder="From Date - To Date">
+        <input [value]="this.dateRange" class="form-control bg-white" name="dateRange" placeholder="From Date - To Date"
+               readonly="true"
+               type="text">
         <div class="input-group-append">
-          <button class="btn btn-outline-grey calendar" (click)="datepicker.toggle()" type="button"></button>
+          <button (click)="datepicker.toggle()" class="btn btn-outline-grey calendar" type="button"></button>
         </div>
       </div>
     </div>

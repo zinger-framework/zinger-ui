@@ -1,11 +1,11 @@
 <div class="card-box overflow-hidden">
-  <form (ngSubmit)="updateFilters()" [formGroup]="shopSearchForm" class="shop-search p-4"> 
+  <form (ngSubmit)="updateFilters()" [formGroup]="shopSearchForm" class="shop-search p-4">
     <div class="row">
       <div class="col-6">
-        <range-date-picker #datePicker [fromDate]="this.shopSearchForm.get('start_date').value" 
-        [toDate]="this.shopSearchForm.get('end_date').value" [hoveredDate]="hoveredDate" 
-        (dateSelectionEvent)="onDateSelection($event)"></range-date-picker>
-      </div> 
+        <range-date-picker #datePicker (dateSelectionEvent)="onDateSelection($event)"
+                           [fromDate]="this.shopSearchForm.get('start_date').value" [hoveredDate]="hoveredDate"
+                           [toDate]="this.shopSearchForm.get('end_date').value"></range-date-picker>
+      </div>
       <div class="col-6">
         <label>Search</label>
         <form-input inputType="text" name="id" placeholder="Shop Id"></form-input>
@@ -15,95 +15,97 @@
       <div class="col-3">
         <label>Status</label>
         <div class="form-group form-group-status">
-          <ng-select [clearable]="false" [items]="statuses" [searchable]="false" formControlName="status"
-            [multiple]="true" placeholder="Status">
+          <ng-select [clearable]="false" [items]="statuses" [multiple]="true" [searchable]="false"
+                     formControlName="status" placeholder="Status">
           </ng-select>
           <div class="form-control-feedback has-danger"></div>
         </div>
       </div>
       <div class="col-3">
-        <label>Deleted</label> 
+        <label>Deleted</label>
         <div class="form-group form-group-include_deleted">
-            <div class="custom-control custom-checkbox mt-2">
-              <input class="custom-control-input" id="include_deleted" formControlName="include_deleted" type="checkbox">
-              <label class="custom-control-label" for="include_deleted">Include Deleted?</label>
-            </div>
+          <div class="custom-control custom-checkbox mt-2">
+            <input class="custom-control-input" formControlName="include_deleted" id="include_deleted" type="checkbox">
+            <label class="custom-control-label" for="include_deleted">Include Deleted?</label>
+          </div>
           <div class="form-control-feedback has-danger"></div>
-        </div> 
+        </div>
       </div>
       <div class="col-3">
-        <label>Sort</label> 
+        <label>Sort</label>
         <div class="form-group form-group-sort_order ml-2 pl-1">
           <div class="row mt-2">
-           <div class="col-4 custom-control custom-radio">
-              <input id="asc" type="radio" class="custom-control-input" value="ASC" name="sort_order" formControlName="sort_order">
+            <div class="col-4 custom-control custom-radio">
+              <input class="custom-control-input" formControlName="sort_order" id="asc" name="sort_order" type="radio"
+                     value="ASC">
               <label class="custom-control-label" for="asc">ASC</label>
-           </div>
-           <div class="col-3 custom-control custom-radio">
-            <input id="dsc" type="radio" class="custom-control-input" value="DESC" name="sort_order" formControlName="sort_order">
+            </div>
+            <div class="col-3 custom-control custom-radio">
+              <input class="custom-control-input" formControlName="sort_order" id="dsc" name="sort_order" type="radio"
+                     value="DESC">
               <label class="custom-control-label" for="dsc">DESC</label>
-           </div>
+            </div>
           </div>
           <div class="form-control-feedback has-danger"></div>
         </div>
       </div>
       <div class="col-1 mt-3">
-        <button type="button" class="btn btn-outline-primary mt-4" (click)="reset()">Reset</button>
+        <button (click)="reset()" class="btn btn-outline-primary mt-4" type="button">Reset</button>
       </div>
       <div class="col-1 mt-3">
-        <input type="submit" value="Apply" class="btn btn-primary mt-4"/>
+        <input class="btn btn-primary mt-4" type="submit" value="Apply"/>
       </div>
     </div>
     <div class="form-feedback has-danger mt-1 ml-3"></div>
   </form>
 
   <div class="p-4">
-    <div class="d-flex pb-2"> 
+    <div class="d-flex pb-2">
       <div class="align-self-start">
-        <span class="h6">Shop</span> | 
+        <span class="h6">Shop</span> |
         <span class="h6"> Total ({{totalElements}}) </span>
       </div>
     </div>
     <ngx-datatable
       #shopList
-      class="material bg-white box-shadow-none border-1 server-scrolling-demo"
-      [rows]="rows"
-      [columnMode]="ColumnMode.standard"
-      [loadingIndicator]="isLoading"
-      [headerHeight]="headerHeight"
-      [rowHeight]="rowHeight"
-      reorderable="false"
       (activate)="onRowClick($event)"
+      (scroll)="onScroll($event.offsetY)"
+      [columnMode]="ColumnMode.standard"
+      [headerHeight]="headerHeight"
+      [loadingIndicator]="isLoading"
+      [rowHeight]="rowHeight"
+      [rows]="rows"
       [scrollbarV]="true"
-      (scroll)="onScroll($event.offsetY)">
+      class="material bg-white box-shadow-none border-1 server-scrolling-demo"
+      reorderable="false">
 
-     <ngx-datatable-column name="Id" prop="id" [width]="50" [sortable]="false">
+      <ngx-datatable-column [sortable]="false" [width]="50" name="Id" prop="id">
         <ng-template let-id="value" ngx-datatable-cell-template>
-           {{id}}
+          {{id}}
         </ng-template>
       </ngx-datatable-column>
 
-      <ngx-datatable-column name="Name" prop="name" [width]="250" [sortable]="false">
+      <ngx-datatable-column [sortable]="false" [width]="250" name="Name" prop="name">
         <ng-template let-name="value" ngx-datatable-cell-template>
-            {{name}}
+          {{name}}
         </ng-template>
       </ngx-datatable-column>
 
-      <ngx-datatable-column name="Category" prop="category" [width]="200" [sortable]="false">
+      <ngx-datatable-column [sortable]="false" [width]="200" name="Category" prop="category">
         <ng-template let-category="value" ngx-datatable-cell-template>
-            {{category}}
+          {{category}}
         </ng-template>
       </ngx-datatable-column>
 
-      <ngx-datatable-column name="Status" prop="status" [width]="200" [sortable]="false">
+      <ngx-datatable-column [sortable]="false" [width]="200" name="Status" prop="status">
         <ng-template let-status="value" ngx-datatable-cell-template>
-            {{status}}
+          {{status}}
         </ng-template>
       </ngx-datatable-column>
 
-      <ngx-datatable-column name="Area" prop="area" [width]="200" [sortable]="false">
+      <ngx-datatable-column [sortable]="false" [width]="200" name="Area" prop="area">
         <ng-template let-area="value" ngx-datatable-cell-template>
-            {{area}} 
+          {{area}}
         </ng-template>
       </ngx-datatable-column>
     </ngx-datatable>

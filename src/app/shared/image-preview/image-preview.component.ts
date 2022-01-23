@@ -12,6 +12,7 @@ export class ImagePreviewComponent extends BaseComponent {
   @Input() imageType: string;
   @Input() imageId: string = '';
   @Input() disableDelete = false;
+  @Input() disableSizing = false;
   @Output() deleteImageEvent = new EventEmitter<string>();
   width = 75;
   height = 75;

@@ -5,6 +5,7 @@ import {ReactiveFormsModule} from '@angular/forms';
 import {FormInputModule} from "./form-elements/form-input.module";
 
 import {CardComponent} from './card/card.component';
+import {ChipComponent} from './chip/chip.component';
 import {ImagePreviewComponent} from './image-preview/image-preview.component';
 import {AccordionHeaderComponent} from "./accordion-header/accordion-header.component";
 import {CommentComponent} from './comment/comment.component';
@@ -15,9 +16,10 @@ import {RangeDatePickerComponent} from './range-date-picker/range-date-picker.co
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 
 @NgModule({
-  declarations: [CardComponent, ImagePreviewComponent, AccordionHeaderComponent, CommentComponent, BreadcrumbComponent, ReasonModalComponent, RangeDatePickerComponent],
+  declarations: [CardComponent, ImagePreviewComponent, AccordionHeaderComponent, CommentComponent, BreadcrumbComponent, ReasonModalComponent, RangeDatePickerComponent, ChipComponent],
   exports: [
     CardComponent,
+    ChipComponent,
     ImagePreviewComponent,
     AccordionHeaderComponent,
     CommentComponent,

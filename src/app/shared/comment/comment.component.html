@@ -1,6 +1,7 @@
 <div class="p-1">
   <div class="row">
-    <div class="pl-3"><img (error)="this.onImageLoadError($event)" [src]="image" width="50" height="50" class="rounded-circle" /></div>
+    <div class="pl-3"><img (error)="this.onImageLoadError($event)" [src]="image" class="rounded-circle" height="50"
+                           width="50"/></div>
     <div class="col-6 border-bottom">
       <div class="d-flex justify-content-between">
         <span class="font-weight-bold">{{ userName }}</span>

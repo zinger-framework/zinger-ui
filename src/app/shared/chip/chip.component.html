@@ -1,0 +1,17 @@
+<div (click)="focus()" class="chip">
+  <div *ngFor="let chip_value of value" class="chip_container">
+    {{chip_value}}
+    <button (click)="removeChip(chip_value, $event)" type="button">
+      &#10006;
+    </button>
+  </div>
+  <input #inputElement (keydown)="preventDefaultTabBehavior($event)" (keyup)="addChipEvent($event)"
+         [style.width]="inputElement.value.length * 10 + 10 + 'px'" class="chip_input"
+         type="text"/>
+</div>
+
+<div *ngIf="inputElement.value.length && chipSuggestions && chipSuggestions.length" class="chip-suggestions">
+  <button (click)="addSuggestedValue(suggestion)" *ngFor="let suggestion of chipSuggestions"
+          class="chip-suggestions_tag"
+          type="button">{{suggestion}}</button>
+</div>

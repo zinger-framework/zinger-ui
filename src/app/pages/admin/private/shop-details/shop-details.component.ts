@@ -119,7 +119,7 @@ export class ShopDetailsComponent extends BaseComponent {
             break;
           case 'status':
             this.shopStatus = shopData[field]
-            this.isShopActive = this.shopStatus == 'ACTIVE' ?  true : false;
+            this.isShopActive = this.shopStatus == 'ACTIVE' ? true : false;
             break;
           case 'rejected_conversations':
             this.conversations['rejected'] = shopData[field]
