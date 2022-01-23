@@ -1,1 +1,183 @@
-<p>item-details works!</p>
+<breadcrumb [data]="breadCrumbData" title="Add New Item"></breadcrumb>
+<form [formGroup]="itemDetailsForm" class="item-details">
+  <ngb-accordion #accordion="ngbAccordion" [destroyOnHide]="false" activeIds="ngb-panel-0">
+    <ngb-panel id="basicInfoPanel">
+      <ng-template class="panel-header" let-opened="opened" ngbPanelHeader>
+        <accordion-header [accordion]="accordion" [opened]="opened" [panelId]="'basicInfoPanel'"
+                          title='Basic Information'></accordion-header>
+      </ng-template>
+      <ng-template ngbPanelContent>
+        <div class="row">
+          <div class="col-md-6 col-lg-6">
+            <label class="required">Name</label>
+            <form-input inputType="text" name="name" placeholder="Margherita Pizza" readonly="true"></form-input>
+          </div>
+          <div class="col-md-6 col-lg-6">
+            <label class="required">Category</label>
+            <form-input inputType="text" name="category" placeholder="Margherita Pizza" readonly="true"></form-input>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6 col-lg-6">
+            <label class="required">Description</label>
+            <div class="form-group form-group-description">
+              <textarea class="form-control form-control-lg" formControlName="description" readonly="true"
+                        placeholder="Describe your restaurant in less than 250 words"
+                        rows="6"></textarea>
+              <div class="form-control-feedback has-danger"></div>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-6">
+            <div>
+              <label>Type</label>
+              <form-input inputType="text" name="item_type" placeholder="Food" readonly="true"
+                          styleClass="text-uppercase"></form-input>
+            </div>
+
+            <div>
+              <label>Status</label>
+              <form-input inputType="text" name="status" placeholder="ACTIVE" readonly="true"
+                          styleClass="text-uppercase"></form-input>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+    </ngb-panel>
+
+    <ngb-panel id="mediaInfoPanel">
+      <ng-template class="panel-header" let-opened="opened" ngbPanelHeader>
+        <accordion-header [accordion]="accordion" [opened]="opened" [panelId]="'mediaInfoPanel'"
+                          title='Media Information'></accordion-header>
+      </ng-template>
+      <ng-template ngbPanelContent>
+        <div class="row m-1">
+          <div class="col-md-12 col-lg-12">
+            <label class="required">Icon</label>
+            <br>
+            <div class="row">
+              <div *ngIf="itemDetails['icon']; else iconNotFound">
+                <image-preview  [imageSrc]="itemDetails['icon']" disableDelete="true"></image-preview>
+              </div>
+              <ng-template #iconNotFound>
+                <span class="small text-light-gray">No icon found</span>
+              </ng-template>
+            </div>
+          </div>
+        </div>
+
+        <div class="row mt-4 m-1">
+          <div class="col-md-12 col-lg-12">
+            <label class="required">Cover Photos</label>
+            <br>
+            <div class="row">
+            <div *ngIf="itemDetails['cover_photos'] && itemDetails['cover_photos'].length == 0; else coverPhotos">
+                <span class="small text-light-gray">No cover photos found</span>
+             </div>
+             <ng-template #coverPhotos>
+              <div *ngFor="let imgSrc of itemDetails['cover_photos'];">
+                <image-preview disableDelete="true" [imageSrc]="imgSrc['url']" imageType="cover_photos"></image-preview>
+              </div>
+          	 </ng-template>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+    </ngb-panel>
+
+    <ngb-panel id="variantInfoPanel">
+      <ng-template class="panel-header" let-opened="opened" ngbPanelHeader>
+        <accordion-header [accordion]="accordion" [opened]="opened" [panelId]="'variantInfoPanel'"
+                          title='Variant Information'></accordion-header>
+      </ng-template>
+      <ng-template ngbPanelContent>
+        <div class="row">
+          <div class="col-md-3 col-lg-3">
+            <label class="required">Property</label>
+            <form-input inputType="text" name="variant_property" placeholder="Margherita Pizza" readonly="true"></form-input>
+          </div>
+        </div>
+        <div class="mt-2">
+          <label>Variant Details</label>
+        </div>
+        <div *ngFor="let variant of itemDetailsForm.get('variant_details')['controls']; let i = index;"
+             formArrayName="variant_details">
+          <form [formGroup]="variant" class="row {{variant['controls'].className.value}}">
+            <div class="col-md-3 col-lg-4">
+              <form-input inputType="text" name="variant_name" placeholder="Small" readonly="true"></form-input>
+            </div>
+            <div class="col-md-2 col-lg-2">
+              <form-input inputType="text" name="variant_price" placeholder="120.00" readonly="true"></form-input>
+            </div>
+          </form>
+        </div>
+      </ng-template>
+    </ngb-panel>
+
+    <ngb-panel id="filterPanel">
+      <ng-template class="panel-header" let-opened="opened" ngbPanelHeader>
+        <accordion-header [accordion]="accordion" [opened]="opened" [panelId]="'filterPanel'"
+                          title='Filter Information'></accordion-header>
+      </ng-template>
+      <ng-template ngbPanelContent>
+        <div>
+          <label class="required">Filterable Fields</label>
+        </div>
+        <div *ngFor="let filter of itemDetailsForm.get('filterable_fields')['controls']; let i = index;"
+             formArrayName="filterable_fields">
+          <form [formGroup]="filter" class="row {{filter['controls'].className.value}}">
+            <div class="col-md-3 col-lg-3">
+              <form-input inputType="text" name="filter_name" placeholder="Brand" readonly="true"></form-input>
+            </div>
+            <div class="col-md-3 col-lg-3">
+              <form-input inputType="text" name="filter_value" placeholder="Adidas" readonly="true"></form-input>
+            </div>
+          </form>
+        </div>
+      </ng-template>
+    </ngb-panel>
+
+    <ngb-panel id="metaPanel">
+      <ng-template class="panel-header" let-opened="opened" ngbPanelHeader>
+        <accordion-header [accordion]="accordion" [opened]="opened" [panelId]="'metaPanel'"
+                          title='Metadata'></accordion-header>
+      </ng-template>
+      <ng-template ngbPanelContent>
+        <div>
+          <div>
+            <label class="required">Metadata</label>
+          </div>
+          <div *ngFor="let meta_data of this.itemDetailsForm.get('meta_data')['controls']; let i = index;"
+               formArrayName="meta_data">
+            <form [formGroup]="meta_data" class="row {{meta_data['controls'].className.value}}">
+              <div class="col-md-3 col-lg-3">
+                <form-input inputType="text" name="key" placeholder="Occasion" readonly="true"></form-input>
+              </div>
+              <div class="col-md-3 col-lg-3">
+                <form-input inputType="text" name="value" placeholder="Casual" readonly="true"></form-input>
+              </div>
+            </form>
+          </div>
+        </div>
+      </ng-template>
+    </ngb-panel>
+
+    <ngb-panel id="updateStatusPanel">
+      <ng-template class="panel-header" let-opened="opened" ngbPanelHeader>
+        <accordion-header [accordion]="accordion" [opened]="opened" [panelId]="'updateStatusPanel'"
+                          title='Update Status'></accordion-header>
+      </ng-template>
+      <ng-template ngbPanelContent>
+      	<div class="row">
+          <div class="col-md-3 col-lg-3">
+            <label>Item Status</label>
+            <div>
+            	<form-input inputType="text" name="status" placeholder="Margherita Pizza" readonly="true"></form-input>
+            </div>
+          </div>
+      	</div>
+      </ng-template>
+    </ngb-panel>
+  </ngb-accordion>
+</form>
