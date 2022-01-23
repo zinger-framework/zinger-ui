@@ -17,4 +17,8 @@ export class ItemService extends PlatformService {
   getItemDetails(shopId) {
     // return this.get(API_ENDPOINTS.SHOP + '/' + shopId);
   }
+
+  getMeta() {
+    return this.get(`${API_ENDPOINTS.API_VERSION}/${API_ENDPOINTS.ITEM}/meta`)
+  }
 }

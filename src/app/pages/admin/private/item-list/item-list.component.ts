@@ -24,7 +24,6 @@ export class ItemListComponent extends BaseComponent {
   categories = {}
   isLoading = true
   meta = {}
-  types = ['Food', 'Fashion']
   ColumnMode = ColumnMode
   itemSearchForm: FormGroup
   createItemForm: FormGroup

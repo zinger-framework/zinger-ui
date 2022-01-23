@@ -1,13 +1,14 @@
-import {Component, ElementRef} from '@angular/core';
+import {Component, ElementRef, TemplateRef, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router'
-import {FormBuilder, FormGroup} from '@angular/forms'
+import {FormBuilder, FormGroup, Validators} from '@angular/forms'
 
 import {ColumnMode} from '@swimlane/ngx-datatable'
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
+import {APP_ROUTES, ITEM_DESC_REGEX, ITEM_ID_REGEX, ITEM_NAME_REGEX} from "../../../../core/utils/constants.utils";
 import {ItemService} from '../../../../core/service/platform/item.service'
 import {ExtendedFormControl} from '../../../../core/utils/extended-form-control.utils'
 import {BaseComponent} from '../../../../base.component'
-import {APP_ROUTES} from '../../../../core/utils/constants.utils'
 import {handleError} from '../../../../core/utils/common.utils'
 
 @Component({
@@ -20,30 +21,24 @@ export class ItemListComponent extends BaseComponent {
   readonly rowHeight = 50;
   readonly pageLimit = 10;
   rows = []
+  categories = {}
   isLoading = true
-  details = {
-    types: ['Food', 'Fashion'],
-    categories: {
-      'Food': ['North India', 'chinese', 'south india', 'beverages', 'dessert', 'Biriyani', 'FastFood', 'kebab'],
-      'Fashion': ['shirts', 'jackets', 'jeans', 'ethnic_wear', 'accessories', 'footwear', 'innerwear']
-    },
-    variantProperty: {'Food': ['quantity', 'size'], 'Fashion': ['size', 'color']}
-
-  }
-  types = ['Food', 'Fashion']
+  meta = {}
   ColumnMode = ColumnMode
   itemSearchForm: FormGroup
   endReached = false
   nextPageToken = null
   totalElements = 0
   shopId: number
+  itemTypes = []
 
   constructor(private fb: FormBuilder, private route: ActivatedRoute, private router: Router, private el: ElementRef,
-              private itemService: ItemService) {
+              private itemService: ItemService, private modalService: NgbModal) {
     super()
     this.route.params.subscribe(params => this.shopId = params['shop_id']);
     this.itemSearchForm = this.fb.group({
-      id: new ExtendedFormControl('', [], 'id'),
+      id: new ExtendedFormControl('', [Validators.pattern(ITEM_ID_REGEX)], 'id'),
+      item_type: new ExtendedFormControl(null, [], 'item_type'),
       category: new ExtendedFormControl(null, [], 'category'),
       include_inactive: new ExtendedFormControl(null, [], 'include_inactive'),
       className: 'item-search'
@@ -51,33 +46,62 @@ export class ItemListComponent extends BaseComponent {
   }
 
   ngOnInit(): void {
+    this.getMeta()
   }
 
-  ngAfterViewInit() {
+  getMeta() {
+    this.itemService.getMeta()
+      .then(response => {
+        this.meta = response['data']
+        this.itemTypes = Object.keys(this.meta)
+        for (let itemType of this.itemTypes) {
+          this.categories[itemType] = []
+          this.meta[itemType]['category'].map(category => this.categories[itemType].push(category.reference_id));
+        }
+        this.loadItemSearchForm()
+      })
+      .catch(error => {
+        let reason = error['error']['reason']
+        handleError(error, this.itemSearchForm);
+      });
+  }
+
+  loadItemSearchForm() {
     this.route.queryParams.subscribe(params => {
+      if(Object.keys(params).includes('item_type') && this.itemTypes.includes(params['item_type'])) 
+        this.itemSearchForm.get('item_type')?.setValue(params['item_type'])
+
+      if (Object.keys(params).includes('item_type') && Object.keys(params).includes('category') 
+        && this.itemTypes.includes(params['item_type'])) {
+        var categoryValues = []
+        var itemType = params['item_type']
+        switch (typeof params['category']) {
+          case 'string':
+            categoryValues = this.categories[itemType].includes(params['category']) ? [params['category']] : []
+            break
+          default:
+            categoryValues = []
+            params['category'].forEach(val => {
+              if(this.categories[itemType].includes(val))
+                categoryValues.push(val)
+            })
+        }
+        if (categoryValues != []) this.itemSearchForm.get('category').setValue(categoryValues)
+      }
+      
       Object.entries(params).forEach(
         ([key, value]) => {
           switch (key) {
-            case 'category':
-              var categoryValues = []
-              switch (typeof value) {
-                case 'string':
-                  categoryValues = this.details['categories']['Food'].includes(params[key]) ? [params[key]] : null
-                  break
-                default:
-                  categoryValues = []
-                  value.forEach(val => {
-                    if (this.details['categories']['Food'].includes(val)) categoryValues.push(val)
-                  })
-              }
-              if (categoryValues != null && categoryValues != []) this.itemSearchForm.get('category')?.setValue(categoryValues)
-              break
+            case 'item_type':
+            case 'category': 
+              break;
             default:
               this.itemSearchForm.get(key)?.setValue(value)
           }
         }
       )
     })
+
     this.updateUrl()
     this.getItemList()
     this.onScroll(0);
@@ -109,10 +133,11 @@ export class ItemListComponent extends BaseComponent {
           switch (field) {
             case 'category':
               for (let i = 0; i < this.itemSearchForm.get('category').value.length; i++) {
-                paramString = paramString + `&category[]=${this.itemSearchForm.get('category').value[i]}`
+                paramString = paramString + `&categories[]=${this.itemSearchForm.get('category').value[i]}`
               }
               break
             case 'id':
+            case 'item_type':
             case 'include_inactive':
               paramString = paramString + `&${field}=${this.itemSearchForm.get(field).value}`
           }
@@ -135,6 +160,22 @@ export class ItemListComponent extends BaseComponent {
       .finally(() => {
         this.isLoading = false
       })
+  }
+
+  updateFilters() {
+    this.rows = []
+    this.endReached = false
+    this.nextPageToken = null
+    this.getItemList()
+  }
+
+  resetCategoryFilter() {
+    this.itemSearchForm.get('category').setValue(null)
+  }
+
+  reset() {
+    this.itemSearchForm.reset({className: 'item-search'});
+    this.updateFilters()
   }
 
   onRowClick(event) {
@@ -165,15 +206,4 @@ export class ItemListComponent extends BaseComponent {
     }
   }
 
-  updateFilters() {
-    this.rows = []
-    this.endReached = false
-    this.nextPageToken = null
-    this.getItemList()
-  }
-
-  reset() {
-    this.itemSearchForm.reset({className: 'item-search'});
-    this.updateFilters()
-  }
 }
