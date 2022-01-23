@@ -63,7 +63,14 @@ export class ItemListComponent extends BaseComponent {
   getMeta() {
     this.itemService.getMeta()
       .then(response => {
-        this.meta = response['data']
+        this.meta = {}
+        for (let config of response['data']) {
+          if (this.meta[config.item_type] == null)
+            this.meta[config.item_type] = {}
+          if (this.meta[config.item_type][config.item_config] == null)
+            this.meta[config.item_type][config.item_config] = []
+          this.meta[config.item_type][config.item_config].push({ reference_id: config.reference_id, title: config.title })
+        }
         this.itemTypes = Object.keys(this.meta)
         for (let itemType of this.itemTypes) {
           this.categories[itemType] = []
