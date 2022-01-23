@@ -61,7 +61,7 @@ export class ItemDetailsComponent extends BaseComponent {
   ngAfterViewInit(): void {
     this.getMeta()
   }
-  
+
   getMeta() {
     this.itemService.getMeta()
       .then(response => {
@@ -302,7 +302,7 @@ export class ItemDetailsComponent extends BaseComponent {
             disabled: false
           }, [Validators.required], 'filter_value'),
           filter_reference_id: data['reference_id'],
-          className: "filter-" + this.filterIndex
+          className: `filter-${this.filterIndex}`
         })
         break;
 
@@ -311,7 +311,7 @@ export class ItemDetailsComponent extends BaseComponent {
         formGroup = this.fb.group({
           key: new ExtendedFormControl({value: data[0], disabled: disabled}, [Validators.required], 'key'),
           value: new ExtendedFormControl({value: data[1], disabled: disabled}, [Validators.required], 'value'),
-          className: "meta-" + this.metaIndex
+          className: `meta-${this.metaIndex}`
         })
         break;
     }
