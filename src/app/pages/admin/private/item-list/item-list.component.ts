@@ -60,6 +60,64 @@ export class ItemListComponent extends BaseComponent {
     this.getMeta()
   }
 
+  getMeta() {
+    this.itemService.getMeta()
+      .then(response => {
+        this.meta = response['data']
+        this.itemTypes = Object.keys(this.meta)
+        for (let itemType of this.itemTypes) {
+          this.categories[itemType] = []
+          this.meta[itemType]['category'].map(category => this.categories[itemType].push(category.reference_id));
+        }
+        this.loadItemSearchForm()
+      })
+      .catch(error => {
+        let reason = error['error']['reason']
+        handleError(error, this.itemSearchForm);
+      });
+  }
+
+  loadItemSearchForm() {
+    this.route.queryParams.subscribe(params => {
+      if(Object.keys(params).includes('item_type') && this.itemTypes.includes(params['item_type'])) 
+        this.itemSearchForm.get('item_type')?.setValue(params['item_type'])
+
+      if (Object.keys(params).includes('item_type') && Object.keys(params).includes('category') 
+        && this.itemTypes.includes(params['item_type'])) {
+        var categoryValues = []
+        var itemType = params['item_type']
+        switch (typeof params['category']) {
+          case 'string':
+            categoryValues = this.categories[itemType].includes(params['category']) ? [params['category']] : []
+            break
+          default:
+            categoryValues = []
+            params['category'].forEach(val => {
+              if(this.categories[itemType].includes(val))
+                categoryValues.push(val)
+            })
+        }
+        if (categoryValues != []) this.itemSearchForm.get('category').setValue(categoryValues)
+      }
+      
+      Object.entries(params).forEach(
+        ([key, value]) => {
+          switch (key) {
+            case 'item_type':
+            case 'category': 
+              break;
+            default:
+              this.itemSearchForm.get(key)?.setValue(value)
+          }
+        }
+      )
+    })
+
+    this.updateUrl()
+    this.getItemList()
+    this.onScroll(0);
+  }
+
   updateUrl() {
     let query = {}
     for (const field in this.itemSearchForm.controls) {
@@ -115,6 +173,43 @@ export class ItemListComponent extends BaseComponent {
       })
   }
 
+  updateFilters() {
+    this.rows = []
+    this.endReached = false
+    this.nextPageToken = null
+    this.getItemList()
+  }
+
+  resetCategoryFilter() {
+    this.itemSearchForm.get('category').setValue(null)
+  }
+
+  reset() {
+    this.itemSearchForm.reset({className: 'item-search'});
+    this.updateFilters()
+  }
+
+  addItem() {
+    let requestObj = {}
+    Object.keys(this.createItemForm.value)
+      .map(k => requestObj[k] = this.createItemForm.get(k).value)
+    this.itemService.addNewItem(this.shopId, requestObj)
+      .then(response => {
+        this.rows = []
+        this.updateFilters()
+        this.modalService.dismissAll();
+      })
+      .catch(error => {
+        let reason = error['error']['reason']
+        handleError(error, this.createItemForm);
+      });
+  }
+
+  showCreateItemModal() {
+    this.modalService.open(this.createItemModal, {centered: true});
+    this.createItemForm.reset({className: 'item-create'});
+  }
+
   onRowClick(event) {
     if (event.type == 'click') {
       this.router.navigateByUrl(`${APP_ROUTES.SHOP}/${String(this.shopId)}${APP_ROUTES.ITEM}/${event.row.id}`)
@@ -143,98 +238,4 @@ export class ItemListComponent extends BaseComponent {
     }
   }
 
-  addItem() {
-    let requestObj = {}
-    Object.keys(this.createItemForm.value)
-      .map(k => requestObj[k] = this.createItemForm.get(k).value)
-    this.itemService.addNewItem(this.shopId, requestObj)
-      .then(response => {
-        this.rows = []
-        this.updateFilters()
-        this.modalService.dismissAll();
-      })
-      .catch(error => {
-        let reason = error['error']['reason']
-        handleError(error, this.createItemForm);
-      });
-  }
-
-  showCreateItemModal() {
-    this.modalService.open(this.createItemModal, {centered: true});
-    this.createItemForm.reset({className: 'item-create'});
-  }
-
-  updateFilters() {
-    this.rows = []
-    this.endReached = false
-    this.nextPageToken = null
-    this.getItemList()
-  }
-
-  reset() {
-    this.itemSearchForm.reset({className: 'item-search'});
-    this.updateFilters()
-  }
-
-  loadPage() {
-    this.route.queryParams.subscribe(params => {
-      if(Object.keys(params).includes('item_type') && this.itemTypes.includes(params['item_type'])) 
-        this.itemSearchForm.get('item_type')?.setValue(params['item_type'])
-
-      if (Object.keys(params).includes('item_type') && Object.keys(params).includes('category') 
-        && this.itemTypes.includes(params['item_type'])) {
-        var categoryValues = []
-        var itemType = params['item_type']
-        switch (typeof params['category']) {
-          case 'string':
-            categoryValues = this.categories[itemType].includes(params['category']) ? [params['category']] : []
-            break
-          default:
-            categoryValues = []
-            params['category'].forEach(val => {
-              if(this.categories[itemType].includes(val))
-                categoryValues.push(val)
-            })
-        }
-        if (categoryValues != []) this.itemSearchForm.get('category').setValue(categoryValues)
-      }
-      
-      Object.entries(params).forEach(
-        ([key, value]) => {
-          switch (key) {
-            case 'item_type':
-            case 'category': 
-              break;
-            default:
-              this.itemSearchForm.get(key)?.setValue(value)
-          }
-        }
-      )
-    })
-
-    this.updateUrl()
-    this.getItemList()
-    this.onScroll(0);
-  }
-
-  resetCategoryFilter() {
-    this.itemSearchForm.get('category').setValue(null)
-  }
-
-  getMeta() {
-    this.itemService.getMeta()
-      .then(response => {
-        this.meta = response['data']
-        this.itemTypes = Object.keys(this.meta)
-        for (let itemType of this.itemTypes) {
-          this.categories[itemType] = []
-          this.meta[itemType]['category'].map(category => this.categories[itemType].push(category.reference_id));
-        }
-        this.loadPage()
-      })
-      .catch(error => {
-        let reason = error['error']['reason']
-        handleError(error, this.itemSearchForm);
-      });
-  }
 }

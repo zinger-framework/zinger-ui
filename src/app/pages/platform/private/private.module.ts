@@ -28,7 +28,7 @@ import {ShopListComponent} from './shop-list/shop-list.component';
     HeaderComponent,
     ProfileComponent,
     ShopDetailsComponent,
-    ShopListComponent,
+    ShopListComponent
   ],
   exports: [
     PrivateComponent

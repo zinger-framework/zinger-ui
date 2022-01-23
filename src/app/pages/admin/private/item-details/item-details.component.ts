@@ -61,6 +61,28 @@ export class ItemDetailsComponent extends BaseComponent {
   ngAfterViewInit(): void {
     this.getMeta()
   }
+  
+  getMeta() {
+    this.itemService.getMeta()
+      .then(response => {
+        this.meta = response['data']
+        this.getItemDetails()
+      })
+      .catch(error => {
+        handleError(error, this.itemDetailsForm);
+      });
+  }
+
+  getItemDetails() {
+    this.itemService.getItemDetails(this.shopId, this.itemId)
+      .then(response => {
+        this.loadItemDetailsForm(response['data']['item'])
+      })
+      .catch(error => {
+        console.log(error);
+        handleError(error, this.itemDetailsForm)
+      })
+  }
 
   loadItemDetailsForm(itemData = {}) {
     (this.itemDetailsForm.get('variant_details') as FormArray).clear();
@@ -310,28 +332,6 @@ export class ItemDetailsComponent extends BaseComponent {
       let formArray = (this.itemDetailsForm.get(type) as FormArray);
       formArray.removeAt(index);
     }
-  }
-
-  getMeta() {
-    this.itemService.getMeta()
-      .then(response => {
-        this.meta = response['data']
-        this.getItemDetails()
-      })
-      .catch(error => {
-        handleError(error, this.itemDetailsForm);
-      });
-  }
-
-  getItemDetails() {
-    this.itemService.getItemDetails(this.shopId, this.itemId)
-      .then(response => {
-        this.loadItemDetailsForm(response['data']['item'])
-      })
-      .catch(error => {
-        console.log(error);
-        handleError(error, this.itemDetailsForm)
-      })
   }
 
   addVariant(index: number) {
