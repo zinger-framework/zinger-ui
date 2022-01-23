@@ -65,7 +65,14 @@ export class ItemDetailsComponent extends BaseComponent {
   getMeta() {
     this.itemService.getMeta()
       .then(response => {
-        this.meta = response['data']
+        this.meta = {}
+        for (let config of response['data']) {
+          if (this.meta[config.item_type] == null)
+            this.meta[config.item_type] = {}
+          if (this.meta[config.item_type][config.item_config] == null)
+            this.meta[config.item_type][config.item_config] = []
+          this.meta[config.item_type][config.item_config].push({reference_id: config.reference_id, title: config.title})
+        }
         this.getItemDetails()
       })
       .catch(error => {
@@ -106,7 +113,7 @@ export class ItemDetailsComponent extends BaseComponent {
                 let filterValue = itemData['filterable_fields']?.find(field => field.reference_id == filter.reference_id)
                 this.createFormArrayItem('filterable_fields', filterValue || filter, true);
               }
-            };
+            }
             break
           case 'meta_data':
             for (const data of Object.entries(itemData['meta_data'])) {
@@ -427,7 +434,7 @@ export class ItemDetailsComponent extends BaseComponent {
   }
 
   canSubmitForm() {
-    return this.itemDetailsForm.valid && this.itemDetails['icon'] && this.itemDetails['cover_photos'] && 
+    return this.itemDetailsForm.valid && this.itemDetails['icon'] && this.itemDetails['cover_photos'] &&
       this.itemDetails['icon'].length > 0 && this.itemDetails['cover_photos'].length > 0
   }
 }

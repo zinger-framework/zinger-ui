@@ -24,8 +24,8 @@ export class ItemListComponent extends BaseComponent {
   categories = {}
   isLoading = true
   meta = {}
-  types = ['Food', 'Fashion']
   ColumnMode = ColumnMode
+  Object = Object;
   itemSearchForm: FormGroup
   createItemForm: FormGroup
   endReached = false
@@ -72,10 +72,6 @@ export class ItemListComponent extends BaseComponent {
           this.meta[config.item_type][config.item_config].push({ reference_id: config.reference_id, title: config.title })
         }
         this.itemTypes = Object.keys(this.meta)
-        for (let itemType of this.itemTypes) {
-          this.categories[itemType] = []
-          this.meta[itemType]['category'].map(category => this.categories[itemType].push(category.reference_id));
-        }
         this.loadItemSearchForm()
       })
       .catch(error => {
