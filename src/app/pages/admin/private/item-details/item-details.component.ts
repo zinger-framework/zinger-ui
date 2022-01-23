@@ -23,6 +23,7 @@ export class ItemDetailsComponent extends BaseComponent {
   breadCrumbData = [{label: 'Home', link: APP_ROUTES.DASHBOARD}, {label: 'Shop', link: APP_ROUTES.SHOP}]
   meta = {}
   itemDetails = {}
+  variantIndex = -1
   filterIndex = -1
   metaIndex = -1
   shopId: number
@@ -248,6 +249,7 @@ export class ItemDetailsComponent extends BaseComponent {
           setErrorMessage('Variant property cannot be empty', 'item-details', 'variant_property')
           return;
         }
+        this.variantIndex = this.variantIndex + 1
         formGroup = this.fb.group({
           variant_reference_id: new ExtendedFormControl({
             value: data['id'],
@@ -262,7 +264,7 @@ export class ItemDetailsComponent extends BaseComponent {
             disabled: disabled
           }, [Validators.required, Validators.pattern(PRICE_REGEX)], 'variant_price'),
           disableAdd: disabled,
-          className: `variant_property-${data['id']}`
+          className: `variant_property-${this.variantIndex}`
         });
         break;
 
