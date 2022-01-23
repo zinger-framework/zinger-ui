@@ -125,7 +125,7 @@ export class ItemDetailsComponent extends BaseComponent {
         case 'filterable_fields':
           requestBody['filterable_fields'] = {}
           for (let filter of Object(value))
-            requestBody['filterable_fields'][filter['filterReferenceId']] = filter['filterValue']
+            requestBody['filterable_fields'][filter['filter_reference_id']] = filter['filter_value']
           break
         default:
           requestBody[key] = value
@@ -268,15 +268,15 @@ export class ItemDetailsComponent extends BaseComponent {
       case 'filterable_fields':
         this.filterIndex = this.filterIndex + 1
         formGroup = this.fb.group({
-          filterName: new ExtendedFormControl({
+          filter_name: new ExtendedFormControl({
             value: data['title'],
             disabled: disabled
-          }, [Validators.required], 'filterName'),
-          filterValue: new ExtendedFormControl({
+          }, [Validators.required], 'filter_name'),
+          filter_value: new ExtendedFormControl({
             value: data['value'],
             disabled: false
-          }, [Validators.required], 'filterValue'),
-          filterReferenceId: data['reference_id'],
+          }, [Validators.required], 'filter_value'),
+          filter_reference_id: data['reference_id'],
           className: "filter-" + this.filterIndex
         })
         break;
