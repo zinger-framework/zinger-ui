@@ -337,15 +337,15 @@ export class ItemDetailsComponent extends BaseComponent {
     let variantValue = (<FormArray>this.itemDetailsForm.get('variant_details')).at(index).get('variant_name').value
     let variantPrice = (<FormArray>this.itemDetailsForm.get('variant_details')).at(index).get('variant_price').value
     if (variantProperty != null) {
-      if(!this.itemDetailsForm.controls.variant_details.controls[index].valid) {
-        if(this.itemDetailsForm.controls.variant_details.controls[index].get('variant_name').errors != null){
+      if(!this.itemDetailsForm.controls.variant_details['controls'][index].valid) {
+        if(this.itemDetailsForm.controls.variant_details['controls'][index].get('variant_name').errors != null){
           let error = {'error': {'reason': {'variant_name': ['Invalid Variant name']}}}
-          handleError(error, this.itemDetailsForm.controls.variant_details.controls[index])
+          handleError(error, this.itemDetailsForm.controls.variant_details['controls'][index])
         }
 
-        if(this.itemDetailsForm.controls.variant_details.controls[index].get('variant_price').errors != null){
+        if(this.itemDetailsForm.controls.variant_details['controls'][index].get('variant_price').errors != null){
           let error = {'error': {'reason': {'variant_price': ['Invalid Variant price']}}}
-          handleError(error, this.itemDetailsForm.controls.variant_details.controls[index])
+          handleError(error, this.itemDetailsForm.controls.variant_details['controls'][index])
         }
         return
       }
