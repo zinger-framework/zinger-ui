@@ -1,5 +1,5 @@
-<div class="card-box overflow-hidden">
-  <form (ngSubmit)="updateFilters()" [formGroup]="shopSearchForm" class="shop-search p-4">
+<div class="card-box overflow-hidden p-4">
+  <form (ngSubmit)="updateFilters()" [formGroup]="shopSearchForm" class="shop-search">
     <div class="row">
       <div class="col-6">
         <range-date-picker #datePicker (dateSelectionEvent)="onDateSelection($event)"
@@ -50,56 +50,60 @@
     <div class="form-feedback has-danger mt-1 ml-3"></div>
   </form>
 
-  <div class="p-4">
-    <div class="d-flex pb-2">
-      <div class="align-self-start">
-        <span class="h6">Shop</span> |
-        <span class="h6"> Total ({{totalElements}}) </span>
-      </div>
-      <div class="ml-auto pr-2 text-primary"><a (click)="addShop()" class="cursor-pointer">New Shop</a></div>
+  <hr>
+  <div class="d-flex pb-3">
+    <div class="align-self-start">
+      <span class="h5">Shops ({{totalElements}})</span>
     </div>
-    <ngx-datatable
-      #shopList
-      (activate)="onRowClick($event)"
-      (scroll)="onScroll($event.offsetY)"
-      [columnMode]="ColumnMode.standard"
-      [headerHeight]="headerHeight"
-      [loadingIndicator]="isLoading"
-      [rowHeight]="rowHeight"
-      [rows]="rows"
-      [scrollbarV]="true"
-      class="material bg-white box-shadow-none border-1 server-scrolling-demo"
-      reorderable="false">
-
-      <ngx-datatable-column [sortable]="false" [width]="50" name="Id" prop="id">
-        <ng-template let-id="value" ngx-datatable-cell-template>
-          {{id}}
-        </ng-template>
-      </ngx-datatable-column>
-
-      <ngx-datatable-column [sortable]="false" [width]="250" name="Name" prop="name">
-        <ng-template let-name="value" ngx-datatable-cell-template>
-          {{name}}
-        </ng-template>
-      </ngx-datatable-column>
-
-      <ngx-datatable-column [sortable]="false" [width]="200" name="Category" prop="category">
-        <ng-template let-category="value" ngx-datatable-cell-template>
-          {{category}}
-        </ng-template>
-      </ngx-datatable-column>
-
-      <ngx-datatable-column [sortable]="false" [width]="200" name="Status" prop="status">
-        <ng-template let-status="value" ngx-datatable-cell-template>
-          {{status}}
-        </ng-template>
-      </ngx-datatable-column>
-
-      <ngx-datatable-column [sortable]="false" [width]="200" name="Area" prop="area">
-        <ng-template let-area="value" ngx-datatable-cell-template>
-          {{area}}
-        </ng-template>
-      </ngx-datatable-column>
-    </ngx-datatable>
+    <div class="ml-auto pr-2 text-primary"><a (click)="addShop()" class="cursor-pointer">New Shop</a></div>
   </div>
+  <ngx-datatable
+    #shopList
+    (activate)="onRowClick($event)"
+    (scroll)="onScroll($event.offsetY)"
+    [columnMode]="ColumnMode.standard"
+    [headerHeight]="headerHeight"
+    [loadingIndicator]="isLoading"
+    [rowHeight]="rowHeight"
+    [rows]="rows"
+    [scrollbarV]="true"
+    class="material bg-white box-shadow-none border-1 server-scrolling-demo cursor-pointer"
+    reorderable="false">
+
+    <ngx-datatable-column [sortable]="false" [width]="50" name="Id" prop="id">
+      <ng-template let-id="value" ngx-datatable-cell-template>
+        {{id}}
+      </ng-template>
+    </ngx-datatable-column>
+
+    <ngx-datatable-column [sortable]="false" [width]="250" name="Name" prop="name">
+      <ng-template let-name="value" ngx-datatable-cell-template>
+        {{name}}
+      </ng-template>
+    </ngx-datatable-column>
+
+    <ngx-datatable-column [sortable]="false" [width]="175" name="Category" prop="category">
+      <ng-template let-category="value" ngx-datatable-cell-template>
+        {{category}}
+      </ng-template>
+    </ngx-datatable-column>
+
+    <ngx-datatable-column [sortable]="false" [width]="150" name="Status" prop="status">
+      <ng-template let-status="value" ngx-datatable-cell-template>
+        {{status}}
+      </ng-template>
+    </ngx-datatable-column>
+
+    <ngx-datatable-column [sortable]="false" [width]="200" name="Area" prop="area">
+      <ng-template let-area="value" ngx-datatable-cell-template>
+        {{area}}
+      </ng-template>
+    </ngx-datatable-column>
+
+    <ngx-datatable-column [sortable]="false" [width]="50" cellClass="p-3" name="" prop="item">
+      <ng-template ngx-datatable-cell-template>
+        <image-preview [disableDelete]="true" [disableSizing]="true" imageSrc="assets/images/shelf.png"></image-preview>
+      </ng-template>
+    </ngx-datatable-column>
+  </ngx-datatable>
 </div>
