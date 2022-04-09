@@ -17,6 +17,7 @@ export const API_ENDPOINTS = {
   ITEM: 'item',
   ITEM_NEW: 'item/new',
   ITEM_DELETE: 'item/delete',
+  ITEM_CONFIG: 'v1/item_config',
 };
 
 export const APP_ROUTES = {

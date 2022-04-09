@@ -1,90 +1,41 @@
 <div class="card-box overflow-hidden p-4">
   <div class="d-flex pb-2">
     <div class="align-self-start">
-      <span class="h6">Item</span> |
-      <span class="h6"> Total ({{totalElements}}) </span>
+      <span class="h6">Item Configs</span>
     </div>
   </div>
   <ngx-datatable
-    (scroll)="onScroll($event.offsetY)"
-    [columnMode]="ColumnMode.standard"
-    [headerHeight]="headerHeight"
-    [loadingIndicator]="isLoading"
-    [rowHeight]="rowHeight"
-    [rows]="rows"
-    [scrollbarV]="true"
-    class="material bg-white box-shadow-none border-1 server-scrolling-demo"
-    reorderable="false">
+          [columnMode]="ColumnMode.standard"
+          [headerHeight]="headerHeight"
+          [loadingIndicator]="isLoading"
+          [rowHeight]="rowHeight"
+          [rows]="rows"
+          [scrollbarV]="true"
+          class="material bg-white box-shadow-none border-1 server-scrolling-demo"
+          reorderable="false">
 
-    <ngx-datatable-column [sortable]="false" [width]="200" name="Id" prop="id">
-      <ng-template let-id="value" ngx-datatable-cell-template>
-        {{id}}
+    <ngx-datatable-column [sortable]="false" [width]="200" cellClass="text-capitalize" name="Type" prop="item_type">
+      <ng-template let-item_type="value" ngx-datatable-cell-template>
+        {{item_type}}
       </ng-template>
     </ngx-datatable-column>
 
-    <ngx-datatable-column [sortable]="false" [width]="250" name="Name" prop="name">
-      <ng-template let-name="value" ngx-datatable-cell-template>
-        {{name}}
+    <ngx-datatable-column [sortable]="false" [width]="200" cellClass="text-capitalize" name="Config" prop="item_config">
+      <ng-template let-item_config="value" ngx-datatable-cell-template>
+        {{item_config}}
       </ng-template>
     </ngx-datatable-column>
 
-    <ngx-datatable-column [sortable]="false" [width]="200" name="Category" prop="category">
-      <ng-template let-category="value" ngx-datatable-cell-template>
-        {{category}}
+    <ngx-datatable-column [sortable]="false" [width]="200" name="Reference Id" prop="reference_id">
+      <ng-template let-reference_id="value" ngx-datatable-cell-template>
+        {{reference_id}}
       </ng-template>
     </ngx-datatable-column>
 
-    <ngx-datatable-column [sortable]="false" [width]="200" name="Status" prop="status">
-      <ng-template let-status="value" ngx-datatable-cell-template>
-        {{status}}
+    <ngx-datatable-column [sortable]="false" [width]="250" name="Title" prop="title">
+      <ng-template let-title="value" ngx-datatable-cell-template>
+        {{title}}
       </ng-template>
     </ngx-datatable-column>
   </ngx-datatable>
-
-  <form (ngSubmit)="updateConfig()" [formGroup]="configForm" class="platform-config">
-    <div class="row">
-      <div class="col-md-6 col-lg-6">
-        <label class="required">Type</label>
-        <div class="form-group form-group-type">
-          <ng-select [clearable]="false" [items]="details['types']" [searchable]="false" formControlName="type"
-                     placeholder="Select">
-          </ng-select>
-          <div class="form-control-feedback has-danger"></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-md-6 col-lg-6">
-        <label class="required">Categories</label>
-        <div class="form-group form-group-categories">
-          <chip [chipSuggestions]="tagSuggestions" formControlName="categories"></chip>
-          <div class="form-control-feedback has-danger"></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-md-6 col-lg-6">
-        <label class="required">Variants</label>
-        <div class="form-group form-group-variants">
-          <chip [chipSuggestions]="tagSuggestions" formControlName="variants"></chip>
-          <div class="form-control-feedback has-danger"></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-md-6 col-lg-6">
-        <label class="required">Filters</label>
-        <div class="form-group form-group-filters">
-          <chip [chipSuggestions]="tagSuggestions" formControlName="filters"></chip>
-          <div class="form-control-feedback has-danger"></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="form-feedback has-danger mt-1 mb-1 text-center"></div>
-    <button class="btn btn-primary" disabled="false" type="submit">Submit</button>
-  </form>
 </div>
