@@ -42,12 +42,17 @@ export class ShopDetailsComponent extends BaseComponent {
   coverImgSrcList = []
   conversations = {'rejected': [], 'blocked': []}
   shopId: number;
-  breadCrumbData = [{label: 'Home', link: '/dashboard'}, {label: 'Shop', link: ''}];
+  breadCrumbData = [{label: 'Home', link: APP_ROUTES.DASHBOARD}, {label: 'Shops', link: APP_ROUTES.SHOP}];
   isShopActive: boolean = false;
 
   constructor(private fb: FormBuilder, private toastr: ToastrService, private shopService: ShopService, private route: ActivatedRoute, private router: Router) {
     super();
-    this.route.params.subscribe(params => this.shopId = params['id']);
+    this.route.params.subscribe(params => {
+      this.shopId = params['id']
+      this.breadCrumbData.push(
+        {label: String(this.shopId), link: ''}
+      )
+    });
     this.shopDetailsForm = this.fb.group({
       name: new ExtendedFormControl('', [Validators.required, Validators.pattern(SHOP_NAME_REGEX)], 'name'),
       category: new ExtendedFormControl(null, [Validators.required], 'category'),

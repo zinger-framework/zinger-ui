@@ -20,7 +20,7 @@ import {ReasonModalComponent} from "../../../../shared/reason-modal/reason-modal
   styleUrls: ['./item-details.component.css']
 })
 export class ItemDetailsComponent extends BaseComponent {
-  breadCrumbData = [{label: 'Home', link: APP_ROUTES.DASHBOARD}, {label: 'Shop', link: APP_ROUTES.SHOP}]
+  breadCrumbData = [{label: 'Home', link: APP_ROUTES.DASHBOARD}, {label: 'Shops', link: APP_ROUTES.SHOP}]
   meta = {}
   itemDetails = {}
   variantIndex = -1
@@ -38,7 +38,7 @@ export class ItemDetailsComponent extends BaseComponent {
       this.itemId = params['id']
       this.breadCrumbData.push(
         {label: String(this.shopId), link: `${APP_ROUTES.SHOP}/${this.shopId}`},
-        {label: 'Item', link: `${APP_ROUTES.SHOP}/${this.shopId}${APP_ROUTES.ITEM}`},
+        {label: 'Items', link: `${APP_ROUTES.SHOP}/${this.shopId}${APP_ROUTES.ITEM}`},
         {label: String(this.itemId), link: ''}
       )
     });
