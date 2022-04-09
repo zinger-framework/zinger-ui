@@ -1,11 +1,15 @@
+<breadcrumb [data]="breadCrumbData" title="Items"></breadcrumb>
 <div class="card-box overflow-hidden p-4">
   <form (ngSubmit)="updateFilters()" [formGroup]="itemSearchForm" class="item-search">
     <div class="row">
       <div class="col-3">
         <label>Type</label>
         <div class="form-group form-group-item_type">
-          <ng-select (change)="resetCategoryFilter()" [clearable]="false" [items]="itemTypes" [searchable]="false" class="text-capitalize"
-                     formControlName="item_type" notFoundText="No type found" placeholder="Food"></ng-select>
+          <ng-select (change)="resetCategoryFilter()" [clearable]="false" [searchable]="false"
+                     class="text-capitalize" formControlName="item_type" notFoundText="No type found"
+                     placeholder="Food">
+            <ng-option *ngFor="let type of Array.from(meta.keys())" [value]="type">{{type}}</ng-option>
+          </ng-select>
           <div class="form-control-feedback has-danger"></div>
         </div>
       </div>
@@ -13,8 +17,10 @@
         <label>Category</label>
         <div class="form-group form-group-category">
           <ng-select [clearable]="false" [multiple]="true" [searchable]="false" formControlName="category"
-                     [items]="meta[itemSearchForm.get('item_type').value]?.category" bindLabel="title"
-                     bindValue="reference_id" notFoundText="No category found" placeholder="South Indian">
+                     notFoundText="No category found" placeholder="South Indian">
+            <ng-option
+                    *ngFor="let category of meta?.get(itemSearchForm.get('item_type').value)?.get('category') | keyvalue"
+                    [value]="category.key">{{category.value}}</ng-option>
           </ng-select>
           <div class="form-control-feedback has-danger"></div>
         </div>
@@ -56,16 +62,16 @@
     </div>
   </div>
   <ngx-datatable
-    (activate)="onRowClick($event)"
-    (scroll)="onScroll($event.offsetY)"
-    [columnMode]="ColumnMode.standard"
-    [headerHeight]="headerHeight"
-    [loadingIndicator]="isLoading"
-    [rowHeight]="rowHeight"
-    [rows]="rows"
-    [scrollbarV]="true"
-    class="material bg-white box-shadow-none border-1 server-scrolling-demo cursor-pointer"
-    reorderable="false">
+          (activate)="onRowClick($event)"
+          (scroll)="onScroll($event.offsetY)"
+          [columnMode]="ColumnMode.standard"
+          [headerHeight]="headerHeight"
+          [loadingIndicator]="isLoading"
+          [rowHeight]="rowHeight"
+          [rows]="rows"
+          [scrollbarV]="true"
+          class="material bg-white box-shadow-none border-1 server-scrolling-demo cursor-pointer"
+          reorderable="false">
 
     <ngx-datatable-column [sortable]="false" [width]="50" cellClass="p-2" name="" prop="icon">
       <ng-template let-icon="value" ngx-datatable-cell-template>
@@ -93,7 +99,7 @@
 
     <ngx-datatable-column [sortable]="false" [width]="175" name="Category" prop="category">
       <ng-template let-row="row" ngx-datatable-cell-template>
-        {{this.meta[row.item_type]['category'][row.category]}}
+        {{this.meta?.get(row.item_type)?.get('category')?.get(row.category) || row.category}}
       </ng-template>
     </ngx-datatable-column>
 
@@ -127,8 +133,10 @@
       <div>
         <label class="required">Type</label>
         <div class="form-group form-group-item_type">
-          <ng-select [clearable]="false" [items]="itemTypes" [searchable]="false" class="text-capitalize"
-                     formControlName="item_type" notFoundText="No type found" placeholder="Food">
+          <ng-select [clearable]="false" [searchable]="false"
+                     class="text-capitalize" formControlName="item_type" notFoundText="No type found"
+                     placeholder="Food">
+            <ng-option *ngFor="let type of Array.from(meta.keys())" [value]="type">{{type}}</ng-option>
           </ng-select>
           <div class="form-control-feedback has-danger"></div>
         </div>

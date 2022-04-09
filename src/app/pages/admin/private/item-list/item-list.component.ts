@@ -2,7 +2,6 @@ import {Component, ElementRef, TemplateRef, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router'
 import {FormBuilder, FormGroup, Validators} from '@angular/forms'
 
-import {ColumnMode} from '@swimlane/ngx-datatable'
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 import {APP_ROUTES, ITEM_DESC_REGEX, ITEM_ID_REGEX, ITEM_NAME_REGEX} from "../../../../core/utils/constants.utils";
@@ -17,15 +16,13 @@ import {handleError} from '../../../../core/utils/common.utils'
   styleUrls: ['./item-list.component.css']
 })
 export class ItemListComponent extends BaseComponent {
+  breadCrumbData = [{label: 'Home', link: APP_ROUTES.DASHBOARD}, {label: 'Shops', link: APP_ROUTES.SHOP}]
   readonly headerHeight = 50;
   readonly rowHeight = 50;
   readonly pageLimit = 10;
   rows = []
-  categories = {}
   isLoading = true
-  meta = {}
-  ColumnMode = ColumnMode
-  Object = Object;
+  meta = new Map
   itemSearchForm: FormGroup
   createItemForm: FormGroup
   endReached = false
@@ -33,12 +30,17 @@ export class ItemListComponent extends BaseComponent {
   totalElements = 0
   shopId: number
   @ViewChild('createItemModal', {read: TemplateRef}) createItemModal: TemplateRef<any>;
-  itemTypes = []
 
   constructor(private fb: FormBuilder, private route: ActivatedRoute, private router: Router, private el: ElementRef,
               private itemService: ItemService, private modalService: NgbModal) {
     super()
-    this.route.params.subscribe(params => this.shopId = params['shop_id']);
+    this.route.params.subscribe(params => {
+      this.shopId = params['shop_id']
+      this.breadCrumbData.push(
+        {label: String(this.shopId), link: `${APP_ROUTES.SHOP}/${this.shopId}`},
+        {label: 'Items', link: ''}
+      )
+    });
     this.itemSearchForm = this.fb.group({
       id: new ExtendedFormControl('', [Validators.pattern(ITEM_ID_REGEX)], 'id'),
       item_type: new ExtendedFormControl(null, [], 'item_type'),
@@ -56,64 +58,51 @@ export class ItemListComponent extends BaseComponent {
     })
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.getMeta()
   }
 
   getMeta() {
     this.itemService.getMeta()
       .then(response => {
-        this.meta = {}
         for (let config of response['data']) {
-          if (this.meta[config.item_type] == null)
-            this.meta[config.item_type] = {}
-          if (this.meta[config.item_type][config.item_config] == null)
-            this.meta[config.item_type][config.item_config] = []
-          this.meta[config.item_type][config.item_config].push({ reference_id: config.reference_id, title: config.title })
+          if (!this.meta.has(config.item_type))
+            this.meta.set(config.item_type, new Map)
+          if (!this.meta.get(config.item_type).has(config.item_config))
+            this.meta.get(config.item_type).set(config.item_config, new Map)
+          this.meta.get(config.item_type).get(config.item_config).set(config.reference_id, config.title)
         }
-        this.itemTypes = Object.keys(this.meta)
         this.loadItemSearchForm()
       })
       .catch(error => {
-        let reason = error['error']['reason']
         handleError(error, this.itemSearchForm);
       });
   }
 
   loadItemSearchForm() {
     this.route.queryParams.subscribe(params => {
-      if(Object.keys(params).includes('item_type') && this.itemTypes.includes(params['item_type'])) 
-        this.itemSearchForm.get('item_type')?.setValue(params['item_type'])
-
-      if (Object.keys(params).includes('item_type') && Object.keys(params).includes('category') 
-        && this.itemTypes.includes(params['item_type'])) {
-        var categoryValues = []
-        var itemType = params['item_type']
+      if (this.meta.has(params['item_type'])) {
+        this.itemSearchForm.get('item_type').setValue(params['item_type'])
         switch (typeof params['category']) {
           case 'string':
-            categoryValues = this.categories[itemType].includes(params['category']) ? [params['category']] : []
+            if (this.meta.get(params['item_type']).has(params['category']))
+              this.itemSearchForm.get('category').setValue([params['category']])
             break
           default:
-            categoryValues = []
-            params['category'].forEach(val => {
-              if(this.categories[itemType].includes(val))
-                categoryValues.push(val)
-            })
+            let categories = params['category'].filter(category => !this.meta.get(params['item_type']).has(category))
+            if (categories.size > 0) this.itemSearchForm.get('category').setValue(categories)
         }
-        if (categoryValues != []) this.itemSearchForm.get('category').setValue(categoryValues)
       }
-      
-      Object.entries(params).forEach(
-        ([key, value]) => {
-          switch (key) {
-            case 'item_type':
-            case 'category': 
-              break;
-            default:
-              this.itemSearchForm.get(key)?.setValue(value)
-          }
+
+      Object.entries(params).forEach(([key, value]) => {
+        switch (key) {
+          case 'item_type':
+          case 'category':
+            break;
+          default:
+            this.itemSearchForm.get(key)?.setValue(value)
         }
-      )
+      })
     })
 
     this.updateUrl()
@@ -140,20 +129,19 @@ export class ItemListComponent extends BaseComponent {
     this.isLoading = true
     let paramString = 'page_size=10';
     if (this.nextPageToken != null)
-      paramString = paramString + `&next_page_token=${this.nextPageToken}`
+      paramString = `${paramString}&next_page_token=${this.nextPageToken}`
     else {
       for (const field in this.itemSearchForm.controls) {
         if (this.itemSearchForm.get(field).value != null && this.itemSearchForm.get(field).value != '')
           switch (field) {
             case 'category':
-              for (let i = 0; i < this.itemSearchForm.get('category').value.length; i++) {
-                paramString = paramString + `&categories[]=${this.itemSearchForm.get('category').value[i]}`
-              }
+              for (let category of this.itemSearchForm.get('category').value)
+                paramString = `${paramString}&categories[]=${category}`
               break
             case 'id':
             case 'item_type':
             case 'include_inactive':
-              paramString = paramString + `&${field}=${this.itemSearchForm.get(field).value}`
+              paramString = `${paramString}&${field}=${this.itemSearchForm.get(field).value}`
           }
       }
       this.updateUrl()
