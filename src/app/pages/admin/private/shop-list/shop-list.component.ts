@@ -3,7 +3,6 @@ import {DatePipe} from '@angular/common'
 import {ActivatedRoute, Router} from '@angular/router'
 import {FormBuilder, FormGroup} from '@angular/forms'
 import {ShopService} from '../../../../core/service/admin/shop.service'
-import {ColumnMode} from '@swimlane/ngx-datatable'
 import {ExtendedFormControl} from '../../../../core/utils/extended-form-control.utils'
 import {handleError} from '../../../../core/utils/common.utils'
 import {NgbDate} from '@ng-bootstrap/ng-bootstrap'
@@ -23,7 +22,6 @@ export class ShopListComponent extends BaseComponent {
   rows = []
   isLoading = true
   statuses = ['PENDING', 'ACTIVE', 'INACTIVE', 'BLOCKED']
-  ColumnMode = ColumnMode
   shopSearchForm: FormGroup
   hoveredDate: NgbDate | null = null
   @ViewChild('shopList') table
