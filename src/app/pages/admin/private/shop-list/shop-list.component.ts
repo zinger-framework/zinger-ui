@@ -16,10 +16,10 @@ import {ToastrService} from "ngx-toastr";
   styleUrls: ['./shop-list.component.css']
 })
 export class ShopListComponent extends BaseComponent {
+  breadCrumbData = [{label: 'Home', link: APP_ROUTES.DASHBOARD}, {label: 'Shops', link: ''}];
   readonly headerHeight = 50;
   readonly rowHeight = 50;
   readonly pageLimit = 10;
-  breadCrumbData = [{label: 'Home', link: APP_ROUTES.DASHBOARD}, {label: 'Shops', link: ''}];
   rows = []
   isLoading = true
   statuses = ['DRAFT', 'PENDING', 'ACTIVE', 'BLOCKED', 'REJECTED', 'INACTIVE']

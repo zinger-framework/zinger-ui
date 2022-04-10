@@ -21,7 +21,6 @@ export class ItemListComponent extends BaseComponent {
   readonly rowHeight = 50;
   readonly pageLimit = 10;
   rows = []
-  categories = {}
   isLoading = true
   meta = new Map
   itemSearchForm: FormGroup
@@ -29,7 +28,6 @@ export class ItemListComponent extends BaseComponent {
   nextPageToken = null
   totalElements = 0
   shopId: number
-  itemTypes = []
 
   constructor(private fb: FormBuilder, private route: ActivatedRoute, private router: Router, private el: ElementRef,
               private itemService: ItemService, private modalService: NgbModal) {

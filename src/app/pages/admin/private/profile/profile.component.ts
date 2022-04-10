@@ -20,13 +20,13 @@ import {AuthService} from "../../../../core/service/admin/auth.service";
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent extends BaseComponent {
+  breadCrumbData = [{label: 'Home', link: '/dashboard'}, {label: 'Profile', link: ''}];
   profileForm: FormGroup;
   verifyMobileForm: FormGroup;
   resetPwdForm: FormGroup;
   profileApiResponse: JSON;
   authToken = '';
   @ViewChild('verifyMobileModal', {read: TemplateRef}) verifyMobileModal: TemplateRef<any>;
-  breadCrumbData = [{label: 'Home', link: '/dashboard'}, {label: 'Profile', link: ''}];
 
   constructor(private profileService: ProfileService, private authService: AuthService, private fb: FormBuilder, private modalService: NgbModal) {
     super();

@@ -32,6 +32,7 @@ import {
   styleUrls: ['./shop-details.component.css']
 })
 export class ShopDetailsComponent extends BaseComponent {
+  breadCrumbData = [{label: 'Home', link: APP_ROUTES.DASHBOARD}, {label: 'Shops', link: APP_ROUTES.SHOP}];
   shopStatus = ''
   shopDetailsForm: FormGroup;
   shopDetailsInitialValue = {}
@@ -42,7 +43,6 @@ export class ShopDetailsComponent extends BaseComponent {
   coverImgSrcList = []
   conversations = {'rejected': [], 'blocked': []}
   shopId: number;
-  breadCrumbData = [{label: 'Home', link: APP_ROUTES.DASHBOARD}, {label: 'Shops', link: APP_ROUTES.SHOP}];
   isShopActive: boolean = false;
 
   constructor(private fb: FormBuilder, private toastr: ToastrService, private shopService: ShopService, private route: ActivatedRoute, private router: Router) {
