@@ -6,7 +6,7 @@ import {ShopDetailsComponent} from "../../pages/platform/private/shop-details/sh
 import {ShopListComponent} from "../../pages/platform/private/shop-list/shop-list.component";
 import {ItemListComponent} from "../../pages/platform/private/item-list/item-list.component";
 import {ItemDetailsComponent} from "../../pages/platform/private/item-details/item-details.component";
-import {ConfigListComponent} from "../../pages/platform/private/config-list/config-list.component";
+import {ItemConfigListComponent} from "../../pages/platform/private/item-config-list/item-config-list.component";
 import {AuthComponent} from "../../pages/platform/public/auth/auth.component";
 import {ForgotPasswordComponent} from "../../pages/platform/public/auth/forgot-password/forgot-password.component";
 import {LoginComponent} from "../../pages/platform/public/auth/login/login.component";
@@ -18,7 +18,7 @@ export const PLATFORM_ROUTES: Routes = [
   {path: 'shop', component: ShopListComponent, canActivate: [AuthGuardService]},
   {path: 'shop/:shop_id/item', component: ItemListComponent, canActivate: [AuthGuardService]},
   {path: 'shop/:shop_id/item/:id', component: ItemDetailsComponent, canActivate: [AuthGuardService]},
-  {path: 'config', component: ConfigListComponent, canActivate: [AuthGuardService]},
+  {path: 'config', component: ItemConfigListComponent, canActivate: [AuthGuardService]},
   {
     path: 'auth', component: AuthComponent, children: [
       {path: 'login', component: LoginComponent, canActivate: [AuthGuardService], data: {page: 'PUBLIC'}},

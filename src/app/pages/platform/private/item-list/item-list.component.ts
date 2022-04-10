@@ -1,11 +1,10 @@
-import {Component, ElementRef, TemplateRef, ViewChild} from '@angular/core';
+import {Component, ElementRef} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router'
 import {FormBuilder, FormGroup, Validators} from '@angular/forms'
 
-import {ColumnMode} from '@swimlane/ngx-datatable'
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
-import {APP_ROUTES, ITEM_DESC_REGEX, ITEM_ID_REGEX, ITEM_NAME_REGEX} from "../../../../core/utils/constants.utils";
+import {APP_ROUTES, ITEM_ID_REGEX} from "../../../../core/utils/constants.utils";
 import {ItemService} from '../../../../core/service/platform/item.service'
 import {ExtendedFormControl} from '../../../../core/utils/extended-form-control.utils'
 import {BaseComponent} from '../../../../base.component'
@@ -25,7 +24,6 @@ export class ItemListComponent extends BaseComponent {
   categories = {}
   isLoading = true
   meta = new Map
-  ColumnMode = ColumnMode
   itemSearchForm: FormGroup
   endReached = false
   nextPageToken = null

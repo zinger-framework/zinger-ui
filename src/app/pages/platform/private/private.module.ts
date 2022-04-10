@@ -21,7 +21,7 @@ import {ShopDetailsComponent} from "./shop-details/shop-details.component";
 import {ShopListComponent} from './shop-list/shop-list.component';
 import {ItemListComponent} from './item-list/item-list.component';
 import {ItemDetailsComponent} from './item-details/item-details.component';
-import {ConfigListComponent} from './config-list/config-list.component';
+import {ItemConfigListComponent} from './item-config-list/item-config-list.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +34,7 @@ import {ConfigListComponent} from './config-list/config-list.component';
     ShopListComponent,
     ItemListComponent,
     ItemDetailsComponent,
-    ConfigListComponent
+    ItemConfigListComponent
   ],
   exports: [
     PrivateComponent

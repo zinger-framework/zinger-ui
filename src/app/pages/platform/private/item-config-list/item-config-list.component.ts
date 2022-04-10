@@ -5,11 +5,11 @@ import {ItemConfigService} from "../../../../core/service/platform/item-config.s
 import {BaseComponent} from '../../../../base.component';
 
 @Component({
-  selector: 'app-platform-config',
-  templateUrl: './config-list.component.html',
-  styleUrls: ['./config-list.component.css']
+  selector: 'app-item-config-list',
+  templateUrl: './item-config-list.component.html',
+  styleUrls: ['./item-config-list.component.css']
 })
-export class ConfigListComponent extends BaseComponent {
+export class ItemConfigListComponent extends BaseComponent {
   readonly headerHeight = 50;
   readonly rowHeight = 50;
   readonly pageLimit = 10;

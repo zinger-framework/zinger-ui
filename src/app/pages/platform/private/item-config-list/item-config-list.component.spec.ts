@@ -1,20 +1,20 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {PlatformConfigComponent} from './platform-config.component';
+import {ItemConfigListComponent} from './item-config-list.component';
 
-describe('PlatformConfigComponent', () => {
-  let component: PlatformConfigComponent;
-  let fixture: ComponentFixture<PlatformConfigComponent>;
+describe('ItemConfigListComponent', () => {
+  let component: ItemConfigListComponent;
+  let fixture: ComponentFixture<ItemConfigListComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [PlatformConfigComponent]
+      declarations: [ItemConfigListComponent]
     })
       .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PlatformConfigComponent);
+    fixture = TestBed.createComponent(ItemConfigListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
