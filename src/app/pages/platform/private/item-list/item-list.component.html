@@ -1,11 +1,15 @@
+<breadcrumb [data]="breadCrumbData" title="Items"></breadcrumb>
 <div class="card-box overflow-hidden p-4">
   <form (ngSubmit)="updateFilters()" [formGroup]="itemSearchForm" class="item-search">
     <div class="row">
       <div class="col-3">
         <label>Type</label>
         <div class="form-group form-group-item_type">
-          <ng-select (change)="resetCategoryFilter()" [clearable]="false" [items]="itemTypes" [searchable]="false" class="text-capitalize"
-                     formControlName="item_type" notFoundText="No type found" placeholder="Food"></ng-select>
+          <ng-select (change)="resetCategoryFilter()" [clearable]="false" [searchable]="false"
+                     class="text-capitalize" formControlName="item_type" notFoundText="No type found"
+                     placeholder="Food">
+            <ng-option *ngFor="let type of Array.from(meta.keys())" [value]="type">{{type}}</ng-option>
+          </ng-select>
           <div class="form-control-feedback has-danger"></div>
         </div>
       </div>
@@ -14,10 +18,9 @@
         <div class="form-group form-group-category">
           <ng-select [clearable]="false" [multiple]="true" [searchable]="false" formControlName="category"
                      notFoundText="No category found" placeholder="South Indian">
-            <div *ngIf="itemSearchForm.get('item_type').value !== null && meta[itemSearchForm.get('item_type').value] !== undefined">
-              <ng-option *ngFor="let category of meta[itemSearchForm.get('item_type').value]['category']"
-                         [value]="category['reference_id']">{{category['title']}}</ng-option>
-            </div>
+            <ng-option
+                    *ngFor="let category of meta?.get(itemSearchForm.get('item_type').value)?.get('category') | keyvalue"
+                    [value]="category.key">{{category.value}}</ng-option>
           </ng-select>
           <div class="form-control-feedback has-danger"></div>
         </div>
@@ -92,8 +95,8 @@
     </ngx-datatable-column>
 
     <ngx-datatable-column [sortable]="false" [width]="175" name="Category" prop="category">
-      <ng-template let-category="value" ngx-datatable-cell-template>
-        {{category['title']}}
+      <ng-template let-row="row" ngx-datatable-cell-template>
+        {{this.meta?.get(row.item_type)?.get('category')?.get(row.category) || row.category}}
       </ng-template>
     </ngx-datatable-column>
 
@@ -104,4 +107,3 @@
     </ngx-datatable-column>
   </ngx-datatable>
 </div>
-

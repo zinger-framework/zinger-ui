@@ -17,13 +17,14 @@ import {handleError} from '../../../../core/utils/common.utils'
   styleUrls: ['./item-list.component.css']
 })
 export class ItemListComponent extends BaseComponent {
+  breadCrumbData = [{label: 'Home', link: APP_ROUTES.DASHBOARD}, {label: 'Shops', link: APP_ROUTES.SHOP}]
   readonly headerHeight = 50;
   readonly rowHeight = 50;
   readonly pageLimit = 10;
   rows = []
   categories = {}
   isLoading = true
-  meta = {}
+  meta = new Map
   ColumnMode = ColumnMode
   itemSearchForm: FormGroup
   endReached = false
@@ -35,7 +36,13 @@ export class ItemListComponent extends BaseComponent {
   constructor(private fb: FormBuilder, private route: ActivatedRoute, private router: Router, private el: ElementRef,
               private itemService: ItemService, private modalService: NgbModal) {
     super()
-    this.route.params.subscribe(params => this.shopId = params['shop_id']);
+    this.route.params.subscribe(params => {
+      this.shopId = params['shop_id']
+      this.breadCrumbData.push(
+        {label: String(this.shopId), link: `${APP_ROUTES.SHOP}/${this.shopId}`},
+        {label: 'Items', link: ''}
+      )
+    });
     this.itemSearchForm = this.fb.group({
       id: new ExtendedFormControl('', [Validators.pattern(ITEM_ID_REGEX)], 'id'),
       item_type: new ExtendedFormControl(null, [], 'item_type'),
@@ -52,11 +59,12 @@ export class ItemListComponent extends BaseComponent {
   getMeta() {
     this.itemService.getMeta()
       .then(response => {
-        this.meta = response['data']
-        this.itemTypes = Object.keys(this.meta)
-        for (let itemType of this.itemTypes) {
-          this.categories[itemType] = []
-          this.meta[itemType]['category'].map(category => this.categories[itemType].push(category.reference_id));
+        for (let config of response['data']) {
+          if (!this.meta.has(config.item_type))
+            this.meta.set(config.item_type, new Map)
+          if (!this.meta.get(config.item_type).has(config.item_config))
+            this.meta.get(config.item_type).set(config.item_config, new Map)
+          this.meta.get(config.item_type).get(config.item_config).set(config.reference_id, config.title)
         }
         this.loadItemSearchForm()
       })
@@ -68,38 +76,28 @@ export class ItemListComponent extends BaseComponent {
 
   loadItemSearchForm() {
     this.route.queryParams.subscribe(params => {
-      if(Object.keys(params).includes('item_type') && this.itemTypes.includes(params['item_type'])) 
-        this.itemSearchForm.get('item_type')?.setValue(params['item_type'])
-
-      if (Object.keys(params).includes('item_type') && Object.keys(params).includes('category') 
-        && this.itemTypes.includes(params['item_type'])) {
-        var categoryValues = []
-        var itemType = params['item_type']
+      if (this.meta.has(params['item_type'])) {
+        this.itemSearchForm.get('item_type').setValue(params['item_type'])
         switch (typeof params['category']) {
           case 'string':
-            categoryValues = this.categories[itemType].includes(params['category']) ? [params['category']] : []
+            if (this.meta.get(params['item_type']).has(params['category']))
+              this.itemSearchForm.get('category').setValue([params['category']])
             break
           default:
-            categoryValues = []
-            params['category'].forEach(val => {
-              if(this.categories[itemType].includes(val))
-                categoryValues.push(val)
-            })
+            let categories = params['category'].filter(category => !this.meta.get(params['item_type']).has(category))
+            if (categories.size > 0) this.itemSearchForm.get('category').setValue(categories)
         }
-        if (categoryValues != []) this.itemSearchForm.get('category').setValue(categoryValues)
       }
-      
-      Object.entries(params).forEach(
-        ([key, value]) => {
-          switch (key) {
-            case 'item_type':
-            case 'category': 
-              break;
-            default:
-              this.itemSearchForm.get(key)?.setValue(value)
-          }
+
+      Object.entries(params).forEach(([key, value]) => {
+        switch (key) {
+          case 'item_type':
+          case 'category':
+            break;
+          default:
+            this.itemSearchForm.get(key)?.setValue(value)
         }
-      )
+      })
     })
 
     this.updateUrl()
@@ -126,20 +124,19 @@ export class ItemListComponent extends BaseComponent {
     this.isLoading = true
     let paramString = 'page_size=10';
     if (this.nextPageToken != null)
-      paramString = paramString + `&next_page_token=${this.nextPageToken}`
+      paramString = `${paramString}&next_page_token=${this.nextPageToken}`
     else {
       for (const field in this.itemSearchForm.controls) {
         if (this.itemSearchForm.get(field).value != null && this.itemSearchForm.get(field).value != '')
           switch (field) {
             case 'category':
-              for (let i = 0; i < this.itemSearchForm.get('category').value.length; i++) {
-                paramString = paramString + `&categories[]=${this.itemSearchForm.get('category').value[i]}`
-              }
+              for (let category of this.itemSearchForm.get('category').value)
+                paramString = `${paramString}&categories[]=${category}`
               break
             case 'id':
             case 'item_type':
             case 'include_inactive':
-              paramString = paramString + `&${field}=${this.itemSearchForm.get(field).value}`
+              paramString = `${paramString}&${field}=${this.itemSearchForm.get(field).value}`
           }
       }
       this.updateUrl()

@@ -22,7 +22,7 @@ export class ShopDetailsComponent extends BaseComponent {
   constructor(private fb: FormBuilder, private modalService: NgbModal, private route: ActivatedRoute, private router: Router, private shopService: ShopService, private toastr: ToastrService) {
     super()
     this.route.params.subscribe(params => this.shopId = params['id']);
-    this.breadCrumbData = [{label: 'Home', link: '/dashboard'}, {label: 'Shop', link: '/shops'}, {
+    this.breadCrumbData = [{label: 'Home', link: APP_ROUTES.DASHBOARD}, {label: 'Shops', link: APP_ROUTES.SHOP}, {
       label: this.shopId,
       link: ''
     }]
