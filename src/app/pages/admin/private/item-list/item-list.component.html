@@ -146,11 +146,9 @@
         <div class="form-group form-group-category">
           <ng-select [clearable]="false" [searchable]="false" formControlName="category"
                      notFoundText="No category found" placeholder="South Indian">
-            <div *ngIf="createItemForm.get('item_type').value !== null &&
-               meta[createItemForm.get('item_type').value] !== undefined">
-              <ng-option *ngFor="let category of meta[createItemForm.get('item_type').value]['category']"
-                         [value]="category['reference_id']">{{category['title']}}</ng-option>
-            </div>
+            <ng-option
+                    *ngFor="let category of meta?.get(createItemForm.get('item_type').value)?.get('category') | keyvalue"
+                    [value]="category.key">{{category.value}}</ng-option>
           </ng-select>
           <div class="form-control-feedback has-danger"></div>
         </div>

@@ -186,12 +186,10 @@ export class ItemListComponent extends BaseComponent {
       .map(k => requestObj[k] = this.createItemForm.get(k).value)
     this.itemService.addNewItem(this.shopId, requestObj)
       .then(response => {
-        this.rows = []
-        this.updateFilters()
         this.modalService.dismissAll();
+        this.router.navigateByUrl(`${APP_ROUTES.SHOP}/${String(this.shopId)}${APP_ROUTES.ITEM}/${(response as any).data.item.id}`)
       })
       .catch(error => {
-        let reason = error['error']['reason']
         handleError(error, this.createItemForm);
       });
   }
