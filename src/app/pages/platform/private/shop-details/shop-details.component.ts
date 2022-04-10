@@ -15,17 +15,18 @@ import {ReasonModalComponent} from "../../../../shared/reason-modal/reason-modal
   styleUrls: ['./shop-details.component.css']
 })
 export class ShopDetailsComponent extends BaseComponent {
+  breadCrumbData = [{label: 'Home', link: APP_ROUTES.DASHBOARD}, {label: 'Shops', link: APP_ROUTES.SHOP}]
   data = {'address': {}, 'payment': {}, 'deleted_conversations': []}
   shopId = 0
-  breadCrumbData = []
 
   constructor(private fb: FormBuilder, private modalService: NgbModal, private route: ActivatedRoute, private router: Router, private shopService: ShopService, private toastr: ToastrService) {
     super()
-    this.route.params.subscribe(params => this.shopId = params['id']);
-    this.breadCrumbData = [{label: 'Home', link: '/dashboard'}, {label: 'Shop', link: '/shops'}, {
-      label: this.shopId,
-      link: ''
-    }]
+    this.route.params.subscribe(params => {
+      this.shopId = params['id']
+      this.breadCrumbData.push(
+        {label: String(this.shopId), link: ''}
+      )
+    });
   }
 
   ngOnInit(): void {

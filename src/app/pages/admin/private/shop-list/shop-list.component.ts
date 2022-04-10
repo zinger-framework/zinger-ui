@@ -3,7 +3,6 @@ import {DatePipe} from '@angular/common'
 import {ActivatedRoute, Router} from '@angular/router'
 import {FormBuilder, FormGroup} from '@angular/forms'
 import {ShopService} from '../../../../core/service/admin/shop.service'
-import {ColumnMode} from '@swimlane/ngx-datatable'
 import {ExtendedFormControl} from '../../../../core/utils/extended-form-control.utils'
 import {handleError} from '../../../../core/utils/common.utils'
 import {NgbDate} from '@ng-bootstrap/ng-bootstrap'
@@ -17,13 +16,13 @@ import {ToastrService} from "ngx-toastr";
   styleUrls: ['./shop-list.component.css']
 })
 export class ShopListComponent extends BaseComponent {
+  breadCrumbData = [{label: 'Home', link: APP_ROUTES.DASHBOARD}, {label: 'Shops', link: ''}];
   readonly headerHeight = 50;
   readonly rowHeight = 50;
   readonly pageLimit = 10;
   rows = []
   isLoading = true
-  statuses = ['PENDING', 'ACTIVE', 'INACTIVE', 'BLOCKED']
-  ColumnMode = ColumnMode
+  statuses = ['DRAFT', 'PENDING', 'ACTIVE', 'BLOCKED', 'REJECTED', 'INACTIVE']
   shopSearchForm: FormGroup
   hoveredDate: NgbDate | null = null
   @ViewChild('shopList') table

@@ -1,4 +1,4 @@
-<breadcrumb [data]="breadCrumbData" title="Add New Item"></breadcrumb>
+<breadcrumb [data]="breadCrumbData" title="Item Details"></breadcrumb>
 <form (ngSubmit)="submitItemDetails(accordion)" [formGroup]="itemDetailsForm" class="item-details">
   <ngb-accordion #accordion="ngbAccordion" [destroyOnHide]="false" activeIds="ngb-panel-0">
     <ngb-panel id="basicInfoPanel">
@@ -15,11 +15,11 @@
           <div class="col-md-6 col-lg-6">
             <label class="required">Category</label>
             <div class="form-group form-group-category">
-              <ng-select *ngIf="itemDetails['item_type'] && meta[itemDetails['item_type']]"
-                         [clearable]="false" [items]="meta[itemDetails['item_type']]['category']" [searchable]="false"
-                         bindLabel="title"
-                         bindValue="reference_id" formControlName="category"
+              <ng-select [clearable]="false" [searchable]="false" formControlName="category"
                          notFoundText="No category found" placeholder="South Indian">
+                <ng-option
+                        *ngFor="let category of meta?.get(itemDetails['item_type'])?.get('category') | keyvalue"
+                        [value]="category.key">{{category.value}}</ng-option>
               </ng-select>
               <div class="form-control-feedback has-danger"></div>
             </div>
@@ -41,7 +41,7 @@
             <div>
               <label>Type</label>
               <form-input inputType="text" name="item_type" placeholder="Food" readonly="true"
-                          styleClass="text-uppercase"></form-input>
+                          styleClass="text-capitalize"></form-input>
             </div>
 
             <div>
@@ -117,10 +117,9 @@
             <div class="form-group form-group-variant_property">
               <ng-select [clearable]="false" [searchable]="false" formControlName="variant_property"
                          notFoundText="No variant found" placeholder="Small">
-                <div *ngIf="meta[itemDetailsForm.get('item_type').value]">
-                  <ng-option *ngFor="let variant of meta[itemDetailsForm.get('item_type').value]['variant']"
-                             [value]="variant['reference_id']">{{variant['title']}}</ng-option>
-                </div>
+                <ng-option
+                        *ngFor="let variant of meta?.get(itemDetails['item_type'])?.get('variant') | keyvalue"
+                        [value]="variant.key">{{variant.value}}</ng-option>
               </ng-select>
               <div class="form-control-feedback has-danger"></div>
             </div>
@@ -132,7 +131,7 @@
         <div *ngFor="let variant of itemDetailsForm.get('variant_details')['controls']; let i = index;"
              formArrayName="variant_details">
           <form [formGroup]="variant" class="row {{variant['controls'].className.value}}">
-            <div class="col-md-3 col-lg-4">
+            <div class="col-md-3 col-lg-3">
               <form-input inputType="text" name="variant_name" placeholder="Small"></form-input>
             </div>
             <div class="col-md-2 col-lg-2">

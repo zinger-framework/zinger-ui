@@ -1,0 +1,41 @@
+<div class="card-box overflow-hidden p-4">
+  <div class="d-flex pb-2">
+    <div class="align-self-start">
+      <span class="h6">Item Configs</span>
+    </div>
+  </div>
+  <ngx-datatable
+          [columnMode]="ColumnMode.standard"
+          [headerHeight]="headerHeight"
+          [loadingIndicator]="isLoading"
+          [rowHeight]="rowHeight"
+          [rows]="rows"
+          [scrollbarV]="true"
+          class="material bg-white box-shadow-none border-1 server-scrolling-demo"
+          reorderable="false">
+
+    <ngx-datatable-column [sortable]="false" [width]="200" cellClass="text-capitalize" name="Type" prop="item_type">
+      <ng-template let-item_type="value" ngx-datatable-cell-template>
+        {{item_type}}
+      </ng-template>
+    </ngx-datatable-column>
+
+    <ngx-datatable-column [sortable]="false" [width]="200" cellClass="text-capitalize" name="Config" prop="item_config">
+      <ng-template let-item_config="value" ngx-datatable-cell-template>
+        {{item_config}}
+      </ng-template>
+    </ngx-datatable-column>
+
+    <ngx-datatable-column [sortable]="false" [width]="200" name="Reference Id" prop="reference_id">
+      <ng-template let-reference_id="value" ngx-datatable-cell-template>
+        {{reference_id}}
+      </ng-template>
+    </ngx-datatable-column>
+
+    <ngx-datatable-column [sortable]="false" [width]="250" name="Title" prop="title">
+      <ng-template let-title="value" ngx-datatable-cell-template>
+        {{title}}
+      </ng-template>
+    </ngx-datatable-column>
+  </ngx-datatable>
+</div>

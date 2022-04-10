@@ -1,7 +1,10 @@
 import {AfterViewInit, OnInit} from '@angular/core';
 import {APP_ROUTES} from './core/utils/constants.utils';
+import {ColumnMode} from '@swimlane/ngx-datatable'
 
 export class BaseComponent implements OnInit, AfterViewInit {
+  ColumnMode = ColumnMode
+  Array = Array
 
   constructor() {
   }

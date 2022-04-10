@@ -1,11 +1,11 @@
-import {Component, ElementRef, TemplateRef, ViewChild} from '@angular/core';
+import {Component, ElementRef} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router'
 import {FormBuilder, FormGroup, Validators} from '@angular/forms'
 
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
-import {APP_ROUTES, ITEM_DESC_REGEX, ITEM_ID_REGEX, ITEM_NAME_REGEX} from "../../../../core/utils/constants.utils";
-import {ItemService} from '../../../../core/service/admin/item.service'
+import {APP_ROUTES, ITEM_ID_REGEX} from "../../../../core/utils/constants.utils";
+import {ItemService} from '../../../../core/service/platform/item.service'
 import {ExtendedFormControl} from '../../../../core/utils/extended-form-control.utils'
 import {BaseComponent} from '../../../../base.component'
 import {handleError} from '../../../../core/utils/common.utils'
@@ -24,12 +24,10 @@ export class ItemListComponent extends BaseComponent {
   isLoading = true
   meta = new Map
   itemSearchForm: FormGroup
-  createItemForm: FormGroup
   endReached = false
   nextPageToken = null
   totalElements = 0
   shopId: number
-  @ViewChild('createItemModal', {read: TemplateRef}) createItemModal: TemplateRef<any>;
 
   constructor(private fb: FormBuilder, private route: ActivatedRoute, private router: Router, private el: ElementRef,
               private itemService: ItemService, private modalService: NgbModal) {
@@ -48,17 +46,9 @@ export class ItemListComponent extends BaseComponent {
       include_inactive: new ExtendedFormControl(null, [], 'include_inactive'),
       className: 'item-search'
     })
-
-    this.createItemForm = this.fb.group({
-      name: new ExtendedFormControl('', [Validators.required, Validators.pattern(ITEM_NAME_REGEX)], 'name'),
-      description: new ExtendedFormControl('', [Validators.pattern(ITEM_DESC_REGEX)], 'description'),
-      category: new ExtendedFormControl(null, [Validators.required], 'category'),
-      item_type: new ExtendedFormControl(null, [Validators.required], 'item_type'),
-      className: 'item-create'
-    })
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.getMeta()
   }
 
@@ -75,6 +65,7 @@ export class ItemListComponent extends BaseComponent {
         this.loadItemSearchForm()
       })
       .catch(error => {
+        let reason = error['error']['reason']
         handleError(error, this.itemSearchForm);
       });
   }
@@ -178,25 +169,6 @@ export class ItemListComponent extends BaseComponent {
   reset() {
     this.itemSearchForm.reset({className: 'item-search'});
     this.updateFilters()
-  }
-
-  addItem() {
-    let requestObj = {}
-    Object.keys(this.createItemForm.value)
-      .map(k => requestObj[k] = this.createItemForm.get(k).value)
-    this.itemService.addNewItem(this.shopId, requestObj)
-      .then(response => {
-        this.modalService.dismissAll();
-        this.router.navigateByUrl(`${APP_ROUTES.SHOP}/${String(this.shopId)}${APP_ROUTES.ITEM}/${(response as any).data.item.id}`)
-      })
-      .catch(error => {
-        handleError(error, this.createItemForm);
-      });
-  }
-
-  showCreateItemModal() {
-    this.modalService.open(this.createItemModal, {centered: true});
-    this.createItemForm.reset({className: 'item-create'});
   }
 
   onRowClick(event) {

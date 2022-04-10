@@ -14,7 +14,12 @@ export class ItemService extends PlatformService {
     return this.get(endPoint);
   }
 
-  getItemDetails(shopId) {
-    // return this.get(API_ENDPOINTS.SHOP + '/' + shopId);
+  getItemDetails(shopId, itemId) {
+    let url = `${API_ENDPOINTS.SHOP}/${String(shopId)}/${API_ENDPOINTS.ITEM}/${itemId}`
+    return this.get(url);
+  }
+
+  getMeta() {
+    return this.get(`${API_ENDPOINTS.API_VERSION}/${API_ENDPOINTS.ITEM}/meta`)
   }
 }

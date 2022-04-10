@@ -57,9 +57,6 @@
     <div class="align-self-start">
       <span class="h5">Items ({{totalElements}})</span>
     </div>
-    <div class="ml-auto pr-2 text-primary">
-      <a (click)="showCreateItemModal()" class="cursor-pointer">Add Item</a>
-    </div>
   </div>
   <ngx-datatable
           (activate)="onRowClick($event)"
@@ -110,55 +107,3 @@
     </ngx-datatable-column>
   </ngx-datatable>
 </div>
-
-<ng-template #createItemModal let-modal>
-  <form (ngSubmit)="addItem()" [formGroup]="createItemForm" class="item-create p-2">
-    <div class="modal-header">
-      <h4 class="modal-title" id="modal-basic-title">Add New Item</h4>
-      <button (click)="modal.dismiss()" aria-label="Close" class="close" type="button">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-
-    <div class="modal-body">
-      <div>
-        <label class="required">Name</label>
-        <form-input inputType="text" name="name" placeholder="Chicken Biriyani"></form-input>
-      </div>
-      <div>
-        <label>Description</label>
-        <form-input inputType="text" name="description"
-                    placeholder="Andhra Style Spicy Chicken Biryani made with long Grain basmati rice"></form-input>
-      </div>
-      <div>
-        <label class="required">Type</label>
-        <div class="form-group form-group-item_type">
-          <ng-select [clearable]="false" [searchable]="false"
-                     class="text-capitalize" formControlName="item_type" notFoundText="No type found"
-                     placeholder="Food">
-            <ng-option *ngFor="let type of Array.from(meta.keys())" [value]="type">{{type}}</ng-option>
-          </ng-select>
-          <div class="form-control-feedback has-danger"></div>
-        </div>
-      </div>
-      <div>
-        <label class="required">Category</label>
-        <div class="form-group form-group-category">
-          <ng-select [clearable]="false" [searchable]="false" formControlName="category"
-                     notFoundText="No category found" placeholder="South Indian">
-            <ng-option
-                    *ngFor="let category of meta?.get(createItemForm.get('item_type').value)?.get('category') | keyvalue"
-                    [value]="category.key">{{category.value}}</ng-option>
-          </ng-select>
-          <div class="form-control-feedback has-danger"></div>
-        </div>
-      </div>
-    </div>
-    <div class="form-feedback has-danger mt-1 mb-1 text-center"></div>
-
-    <div class="modal-footer">
-      <input [disabled]="!this.createItemForm.valid" class="btn btn-primary" type="submit" value="Create">
-    </div>
-  </form>
-</ng-template>
-
