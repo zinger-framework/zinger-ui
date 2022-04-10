@@ -19,9 +19,10 @@ export class ShopListComponent extends BaseComponent {
   readonly headerHeight = 50;
   readonly rowHeight = 50;
   readonly pageLimit = 10;
+  breadCrumbData = [{label: 'Home', link: APP_ROUTES.DASHBOARD}, {label: 'Shops', link: ''}];
   rows = []
   isLoading = true
-  statuses = ['PENDING', 'ACTIVE', 'INACTIVE', 'BLOCKED']
+  statuses = ['DRAFT', 'PENDING', 'ACTIVE', 'BLOCKED', 'REJECTED', 'INACTIVE']
   shopSearchForm: FormGroup
   hoveredDate: NgbDate | null = null
   @ViewChild('shopList') table

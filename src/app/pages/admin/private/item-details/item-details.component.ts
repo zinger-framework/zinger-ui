@@ -21,7 +21,7 @@ import {ReasonModalComponent} from "../../../../shared/reason-modal/reason-modal
 })
 export class ItemDetailsComponent extends BaseComponent {
   breadCrumbData = [{label: 'Home', link: APP_ROUTES.DASHBOARD}, {label: 'Shops', link: APP_ROUTES.SHOP}]
-  meta = {}
+  meta = new Map
   itemDetails = {}
   variantIndex = -1
   filterIndex = -1
@@ -65,13 +65,12 @@ export class ItemDetailsComponent extends BaseComponent {
   getMeta() {
     this.itemService.getMeta()
       .then(response => {
-        this.meta = {}
         for (let config of response['data']) {
-          if (this.meta[config.item_type] == null)
-            this.meta[config.item_type] = {}
-          if (this.meta[config.item_type][config.item_config] == null)
-            this.meta[config.item_type][config.item_config] = []
-          this.meta[config.item_type][config.item_config].push({reference_id: config.reference_id, title: config.title})
+          if (!this.meta.has(config.item_type))
+            this.meta.set(config.item_type, new Map)
+          if (!this.meta.get(config.item_type).has(config.item_config))
+            this.meta.get(config.item_type).set(config.item_config, new Map)
+          this.meta.get(config.item_type).get(config.item_config).set(config.reference_id, config.title)
         }
         this.getItemDetails()
       })
@@ -86,12 +85,12 @@ export class ItemDetailsComponent extends BaseComponent {
         this.loadItemDetailsForm(response['data']['item'])
       })
       .catch(error => {
-        console.log(error);
         handleError(error, this.itemDetailsForm)
       })
   }
 
   loadItemDetailsForm(itemData = {}) {
+    this.itemDetails = itemData;
     (this.itemDetailsForm.get('variant_details') as FormArray).clear();
     (this.itemDetailsForm.get('meta_data') as FormArray).clear();
     (this.itemDetailsForm.get('filterable_fields') as FormArray).clear();
@@ -101,17 +100,17 @@ export class ItemDetailsComponent extends BaseComponent {
         switch (field) {
           case 'variants':
             if (itemData['variants'].length > 0) {
-              this.itemDetailsForm.get('variant_property').setValue(itemData['variants'][0]['reference_id'])
-              for (let variant of itemData['variants'][0]['values']) {
+              this.itemDetailsForm.get('variant_property').setValue(itemData['variants'][0]['reference_id']);
+              for (let variant of itemData['variants'])
                 this.createFormArrayItem('variant_details', variant, true)
-              }
             }
             break
           case 'filterable_fields':
-            if (this.meta[itemData['item_type']]['filter'] && this.meta[itemData['item_type']]['filter'].length > 0) {
-              for (let filter of this.meta[itemData['item_type']]['filter']) {
-                let filterValue = itemData['filterable_fields']?.find(field => field.reference_id == filter.reference_id)
-                this.createFormArrayItem('filterable_fields', filterValue || filter, true);
+            for (let [reference_id, title] of this.meta?.get(itemData['item_type'])?.get('filter')) {
+              let filterValue = itemData['filterable_fields']?.find(field => field.reference_id == reference_id)
+              if (filterValue != null) {
+                filterValue['title'] = title;
+                this.createFormArrayItem('filterable_fields', filterValue, true);
               }
             }
             break
@@ -121,7 +120,7 @@ export class ItemDetailsComponent extends BaseComponent {
             }
             break
           case 'category':
-            this.itemDetailsForm.get(field)?.setValue(itemData[field]['reference_id']);
+            this.itemDetailsForm.get(field)?.setValue(itemData[field]);
             break
           case 'icon':
           case 'cover_photos':
@@ -132,7 +131,6 @@ export class ItemDetailsComponent extends BaseComponent {
         }
       }
     })
-    this.itemDetails = itemData
   }
 
   submitItemDetails(accordion) {
@@ -327,18 +325,23 @@ export class ItemDetailsComponent extends BaseComponent {
   }
 
   deleteFormArrayItem(type: string, index: number): void {
-    if (type == 'variant_details' && this.itemDetails['variants'].length > 0 && this.itemDetails['variants'][0]['values'][index] != null) {
-      this.itemService.deleteVariant(this.shopId, this.itemId, this.itemDetails['variants'][0]['values'][index]['id'])
-        .then(response => {
-          this.loadItemDetailsForm(response['data']['item'])
-        })
-        .catch(error => {
-          handleError(error, this.itemDetailsForm);
-        })
-    } else {
-      let formArray = (this.itemDetailsForm.get(type) as FormArray);
-      formArray.removeAt(index);
+    switch (type) {
+      case 'variant_details':
+        if (this.itemDetails['variants'].length > 0 && this.itemDetails['variants'][index] != null) {
+          this.itemService.deleteVariant(this.shopId, this.itemId, this.itemDetails['variants'][index]['id'])
+            .then(response => {
+              this.loadItemDetailsForm(response['data']['item'])
+            })
+            .catch(error => {
+              handleError(error, this.itemDetailsForm);
+            })
+          return;
+        }
+        break;
     }
+
+    let formArray = (this.itemDetailsForm.get(type) as FormArray);
+    formArray.removeAt(index);
   }
 
   addVariant(index: number) {
@@ -376,13 +379,13 @@ export class ItemDetailsComponent extends BaseComponent {
 
   updateItemStatus(status) {
     if(status == 'active') {
-      if (!(this.itemDetails["variants"].length > 0 && this.itemDetails["variants"][0]["values"].length > 0)) {
+      if (this.itemDetails["variants"].length <= 0) {
          let error = {'error': {'reason': 'Variant value cannot be empty'}}
          handleError(error, this.itemDetailsForm)
          return
       }
 
-      if(!(this.itemDetails["filterable_fields"].length > 0 && this.itemDetails["filterable_fields"][0]["value"].length > 0)) {
+      if(this.itemDetails["filterable_fields"].length <= 0) {
          let error = {'error': {'reason': 'Filterable Fields cannot be empty'}}
          handleError(error, this.itemDetailsForm)
          return
