@@ -22,8 +22,9 @@
           <div class="col-md-6 col-lg-6">
             <label class="required">Description</label>
             <div class="form-group form-group-description">
-              <textarea class="form-control form-control-lg" formControlName="description" readonly="true"
+              <textarea class="form-control form-control-lg" formControlName="description"
                         placeholder="Describe your restaurant in less than 250 words"
+                        readonly="true"
                         rows="6"></textarea>
               <div class="form-control-feedback has-danger"></div>
             </div>
@@ -58,7 +59,7 @@
             <br>
             <div class="row">
               <div *ngIf="itemDetails['icon']; else iconNotFound">
-                <image-preview  [imageSrc]="itemDetails['icon']" disableDelete="true"></image-preview>
+                <image-preview [imageSrc]="itemDetails['icon']" disableDelete="true"></image-preview>
               </div>
               <ng-template #iconNotFound>
                 <span class="small text-light-gray">No icon found</span>
@@ -72,14 +73,15 @@
             <label class="required">Cover Photos</label>
             <br>
             <div class="row">
-            <div *ngIf="itemDetails['cover_photos'] && itemDetails['cover_photos'].length == 0; else coverPhotos">
+              <div *ngIf="itemDetails['cover_photos'] && itemDetails['cover_photos'].length == 0; else coverPhotos">
                 <span class="small text-light-gray">No cover photos found</span>
-             </div>
-             <ng-template #coverPhotos>
-              <div *ngFor="let imgSrc of itemDetails['cover_photos'];">
-                <image-preview disableDelete="true" [imageSrc]="imgSrc['url']" imageType="cover_photos"></image-preview>
               </div>
-          	 </ng-template>
+              <ng-template #coverPhotos>
+                <div *ngFor="let imgSrc of itemDetails['cover_photos'];">
+                  <image-preview [imageSrc]="imgSrc['url']" disableDelete="true"
+                                 imageType="cover_photos"></image-preview>
+                </div>
+              </ng-template>
             </div>
           </div>
         </div>
@@ -95,7 +97,8 @@
         <div class="row">
           <div class="col-md-3 col-lg-3">
             <label class="required">Property</label>
-            <form-input inputType="text" name="variant_property" placeholder="Margherita Pizza" readonly="true"></form-input>
+            <form-input inputType="text" name="variant_property" placeholder="Margherita Pizza"
+                        readonly="true"></form-input>
           </div>
         </div>
         <div class="mt-2">

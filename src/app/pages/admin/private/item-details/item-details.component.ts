@@ -349,13 +349,13 @@ export class ItemDetailsComponent extends BaseComponent {
     let variantValue = (<FormArray>this.itemDetailsForm.get('variant_details')).at(index).get('variant_name').value
     let variantPrice = (<FormArray>this.itemDetailsForm.get('variant_details')).at(index).get('variant_price').value
     if (variantProperty != null) {
-      if(!this.itemDetailsForm.controls.variant_details['controls'][index].valid) {
-        if(this.itemDetailsForm.controls.variant_details['controls'][index].get('variant_name').errors != null){
+      if (!this.itemDetailsForm.controls.variant_details['controls'][index].valid) {
+        if (this.itemDetailsForm.controls.variant_details['controls'][index].get('variant_name').errors != null) {
           let error = {'error': {'reason': {'variant_name': ['Invalid Variant name']}}}
           handleError(error, this.itemDetailsForm.controls.variant_details['controls'][index])
         }
 
-        if(this.itemDetailsForm.controls.variant_details['controls'][index].get('variant_price').errors != null){
+        if (this.itemDetailsForm.controls.variant_details['controls'][index].get('variant_price').errors != null) {
           let error = {'error': {'reason': {'variant_price': ['Invalid Variant price']}}}
           handleError(error, this.itemDetailsForm.controls.variant_details['controls'][index])
         }
@@ -378,17 +378,17 @@ export class ItemDetailsComponent extends BaseComponent {
   }
 
   updateItemStatus(status) {
-    if(status == 'active') {
+    if (status == 'active') {
       if (this.itemDetails["variants"].length <= 0) {
-         let error = {'error': {'reason': 'Variant value cannot be empty'}}
-         handleError(error, this.itemDetailsForm)
-         return
+        let error = {'error': {'reason': 'Variant value cannot be empty'}}
+        handleError(error, this.itemDetailsForm)
+        return
       }
 
-      if(this.itemDetails["filterable_fields"].length <= 0) {
-         let error = {'error': {'reason': 'Filterable Fields cannot be empty'}}
-         handleError(error, this.itemDetailsForm)
-         return
+      if (this.itemDetails["filterable_fields"].length <= 0) {
+        let error = {'error': {'reason': 'Filterable Fields cannot be empty'}}
+        handleError(error, this.itemDetailsForm)
+        return
       }
     }
 

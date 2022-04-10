@@ -4,15 +4,13 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 
 import {ExtendedFormControl} from '../../../../core/utils/extended-form-control.utils';
-import {APP_ROUTES, PRICE_REGEX, SHOP_NAME_REGEX} from '../../../../core/utils/constants.utils';
+import {APP_ROUTES} from '../../../../core/utils/constants.utils';
 import {handleError, setErrorMessage} from '../../../../core/utils/common.utils';
-import $ from 'jquery';
 
 import {ItemService} from '../../../../core/service/platform/item.service';
 import {ToastrService} from 'ngx-toastr';
 
 import {BaseComponent} from '../../../../base.component';
-import {ReasonModalComponent} from "../../../../shared/reason-modal/reason-modal.component";
 
 @Component({
   selector: 'app-item-details',
