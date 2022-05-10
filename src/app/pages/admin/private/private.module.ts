@@ -21,6 +21,7 @@ import {ShopListComponent} from './shop-list/shop-list.component';
 import {NgxDatatableModule} from '@swimlane/ngx-datatable';
 import {ItemDetailsComponent} from './item-details/item-details.component';
 import {ItemListComponent} from './item-list/item-list.component';
+import {OrderListComponent} from './order-list/order-list.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import {ItemListComponent} from './item-list/item-list.component';
     ShopDetailsComponent,
     ShopListComponent,
     ItemDetailsComponent,
-    ItemListComponent
+    ItemListComponent,
+    OrderListComponent
   ],
   exports: [
     PrivateComponent

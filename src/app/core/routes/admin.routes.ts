@@ -6,6 +6,7 @@ import {ShopDetailsComponent} from "../../pages/admin/private/shop-details/shop-
 import {ShopListComponent} from "../../pages/admin/private/shop-list/shop-list.component";
 import {ItemDetailsComponent} from "../../pages/admin/private/item-details/item-details.component";
 import {ItemListComponent} from "../../pages/admin/private/item-list/item-list.component";
+import {OrderListComponent} from "../../pages/admin/private/order-list/order-list.component";
 import {AuthComponent} from "../../pages/admin/public/auth/auth.component";
 import {ForgotPasswordComponent} from "../../pages/admin/public/auth/forgot-password/forgot-password.component";
 import {LoginComponent} from "../../pages/admin/public/auth/login/login.component";
@@ -18,6 +19,7 @@ export const ADMIN_ROUTES: Routes = [
   {path: 'shop', component: ShopListComponent, canActivate: [AuthGuardService]},
   {path: 'shop/:shop_id/item', component: ItemListComponent, canActivate: [AuthGuardService]},
   {path: 'shop/:shop_id/item/:id', component: ItemDetailsComponent, canActivate: [AuthGuardService]},
+  {path: 'shop/:shop_id/order', component: OrderListComponent, canActivate: [AuthGuardService]},
   {
     path: 'auth', component: AuthComponent, children: [
       {path: 'login', component: LoginComponent, canActivate: [AuthGuardService], data: {page: 'PUBLIC'}},

@@ -106,5 +106,12 @@
         <image-preview [disableDelete]="true" [disableSizing]="true" imageSrc="assets/images/shelf.png"></image-preview>
       </ng-template>
     </ngx-datatable-column>
+
+    <ngx-datatable-column [sortable]="false" [width]="50" cellClass="p-3" name="" prop="order">
+      <ng-template ngx-datatable-cell-template>
+        <image-preview [disableDelete]="true" [disableSizing]="true"
+                       imageSrc="assets/images/clipboard.png"></image-preview>
+      </ng-template>
+    </ngx-datatable-column>
   </ngx-datatable>
 </div>

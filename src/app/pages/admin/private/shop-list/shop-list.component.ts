@@ -164,6 +164,8 @@ export class ShopListComponent extends BaseComponent {
     if (event.type == 'click') {
       if (event.cellIndex == 5)
         this.router.navigateByUrl(`${APP_ROUTES.SHOP}/${event.row.id}${APP_ROUTES.ITEM}`)
+      else if (event.cellIndex == 6)
+        this.router.navigateByUrl(`${APP_ROUTES.SHOP}/${event.row.id}${APP_ROUTES.ORDER}`)
       else
         this.router.navigateByUrl(`${APP_ROUTES.SHOP}/${event.row.id}`)
     }
