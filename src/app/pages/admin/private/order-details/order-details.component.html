@@ -19,7 +19,7 @@
 		              <span>₹ {{ data["price"] }}</span>	            	
 		            </div>
 
-		            <div class="col-md-4 col-lg-2">
+		            <div class="col-md-2 col-lg-2">
 		              <label class="text-primary">Order Placed Time</label>
 		              <br>
 		              <span>{{ data["order_placed_time"] || '-'  }}</span>	            	
@@ -138,64 +138,52 @@
 	    	<li ngbNavItem="transaction-tab">
 		        <a ngbNavLink>Transactions</a>
 		        <ng-template ngbNavContent>
-					<ul>
+		        	<div class="row p-3">
+				        <div class="col-md-3 col-lg-3">
+				           	<label class="text-primary">Transaction Id</label>			        		
+				        </div>
+				        <div class="col-md-2 col-lg-2">
+				           	<label class="text-primary">Status</label>			        		
+				        </div>
+				        <div class="col-md-2 col-lg-2">
+				           	<label class="text-primary">Type</label>			        		
+				        </div>
+				        <div class="col-md-2 col-lg-2">
+				           	<label class="text-primary">Payment Method</label>			        		
+				        </div>
+				        <div class="col-md-2 col-lg-2">
+				           	<label class="text-primary">Transaction Time</label>			        		
+				        </div>				        
+				        <div class="col-md-1 col-lg-1">
+				           	<label class="text-primary">Amount</label>			        		
+				        </div>				        
+		        	</div>
+					<ul>						
 					  <li *ngFor="let transaction of data['transactions']">
 		          		<div class="row p-3">
-				            <div class="col-md-5 col-lg-5">
-				              <label class="text-primary">Transaction Id</label>
-				              <br>
-				              <span>{{ transaction.id }}</span>	            	
+				            <div class="col-md-3 col-lg-3">
+				              <span>{{ transaction.id || '-' }}</span>	            	
 				            </div>
 
 				            <div class="col-md-2 col-lg-2">
-				              <label class="text-primary">Bank Ref No</label>
-				              <br>
-				              <span>{{ transaction.bank_ref_num }}</span>	            	
-				            </div>				            
-
-				            <div class="col-md-1 col-lg-1">
-				              <label class="text-primary"> Amount</label>
-				              <br>
-				              <span>{{ transaction.amount }}</span>	            	
-				            </div>				            
-
-				            <div class="col-md-2 col-lg-2">
-				              <label class="text-primary"> Status</label>
-				              <br>
-				              <span class="text-capitalize">{{ transaction.txn_status }}</span>	            	
+				              <span class="text-capitalize">{{ transaction.txn_status || '-' }}</span>	            	
 				            </div>	
 
 				            <div class="col-md-2 col-lg-2">
-				              <label class="text-primary"> Type</label>
-				              <br>
-				              <span class="text-capitalize">{{ transaction.txn_type }}</span>	            	
+				              <span class="text-capitalize">{{ transaction.txn_type || '-' }}</span>	            	
 				            </div>					           
-		            	</div>
 
-		            	<div class="row p-3">
 				            <div class="col-md-2 col-lg-2">
-				              <label class="text-primary">Payment Method</label>
-				              <br>
-				              <span>{{ transaction.payment_method }}</span>	            	
+				              <span>{{ transaction.payment_method || '-' }}</span>	            	
 				            </div>
 
-				            <div class="col-md-3 col-lg-3">
-				              <label class="text-primary">Transaction Time</label>
-				              <br>
-				              <span>{{ transaction.txn_time }}</span>	            	
+				            <div class="col-md-2 col-lg-2">
+				              <span>{{ transaction.txn_time || '-' }}</span>	            	
 				            </div>
 
-				            <div class="col-md-3 col-lg-3">
-				              <label class="text-primary">Created At</label>
-				              <br>
-				              <span>{{ transaction.created_at }}</span>	            	
+				            <div class="col-md-1 col-lg-1">
+				              <span>{{ transaction.amount || '-' }}</span>	            	
 				            </div>
-
-				            <div class="col-md-3 col-lg-3">
-				              <label class="text-primary">Updated At</label>
-				              <br>
-				              <span>{{ transaction.updated_at }}</span>	            	
-				            </div>				            		            		
 		            	</div>
 		            	<hr>
 					  </li>
