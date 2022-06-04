@@ -18,6 +18,7 @@ export const API_ENDPOINTS = {
   ITEM_NEW: 'item/new',
   ITEM_DELETE: 'item/delete',
   ITEM_CONFIG: 'v1/item_config',
+  ORDER: 'order',
 };
 
 export const APP_ROUTES = {
@@ -26,7 +27,8 @@ export const APP_ROUTES = {
   AUTH_FORGOT_PASSWORD: '/auth/forgot_password',
   AUTH_SIGNUP: '/auth/signup',
   SHOP: '/shop',
-  ITEM: '/item'
+  ITEM: '/item',
+  ORDER: '/order'
 };
 
 export const SESSION_KEY = {

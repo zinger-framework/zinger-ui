@@ -1,0 +1,123 @@
+<breadcrumb [data]="breadCrumbData" title="Orders"></breadcrumb>
+<div class="card-box overflow-hidden p-4">
+  <form (ngSubmit)="updateFilters()" [formGroup]="orderSearchForm" class="order-search">
+    <div class="row">
+      <div class="col-6">
+        <range-date-picker #datePicker (dateSelectionEvent)="onDateSelection($event)"
+                           [fromDate]="this.orderSearchForm.get('start_date').value" [hoveredDate]="hoveredDate"
+                           [toDate]="this.orderSearchForm.get('end_date').value"></range-date-picker>
+      </div>
+      <div class="col-6">
+        <label>Search</label>
+        <form-input inputType="text" name="id" placeholder="Order Id"></form-input>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-3">
+        <label>Order Status</label>
+        <div class="form-group form-group-order_status">
+          <ng-select [clearable]="false" [items]="statuses.order_status" [multiple]="true" [searchable]="false"
+                     class="text-capitalize" formControlName="order_status" placeholder="Order Status">
+          </ng-select>
+          <div class="form-control-feedback has-danger"></div>
+        </div>
+      </div>
+      <div class="col-3">
+        <label>Payment Status</label>
+        <div class="form-group form-group-payment_status">
+          <ng-select [clearable]="false" [items]="statuses.payment_status" [multiple]="true" [searchable]="false"
+                     class="text-capitalize" formControlName="payment_status" placeholder="Payment Status">
+          </ng-select>
+          <div class="form-control-feedback has-danger"></div>
+        </div>
+      </div>
+      <div class="col-3">
+        <label>Sort</label>
+        <div class="form-group form-group-sort_order ml-2 pl-1">
+          <div class="row mt-2">
+            <div class="col-4 custom-control custom-radio">
+              <input class="custom-control-input" formControlName="sort_order" id="asc" name="sort_order" type="radio"
+                     value="ASC">
+              <label class="custom-control-label" for="asc">ASC</label>
+            </div>
+            <div class="col-3 custom-control custom-radio">
+              <input class="custom-control-input" formControlName="sort_order" id="dsc" name="sort_order" type="radio"
+                     value="DESC">
+              <label class="custom-control-label" for="dsc">DESC</label>
+            </div>
+          </div>
+          <div class="form-control-feedback has-danger"></div>
+        </div>
+      </div>
+      <div class="col-1 mt-3">
+        <button (click)="reset()" class="btn btn-outline-primary mt-4" type="button">Reset</button>
+      </div>
+      <div class="col-1 mt-3">
+        <input class="btn btn-primary mt-4" type="submit" value="Apply"/>
+      </div>
+    </div>
+    <div class="form-feedback has-danger mt-1 ml-3"></div>
+  </form>
+
+  <hr>
+  <div class="pb-3">
+    <span class="h5">Orders ({{totalElements}})</span>
+  </div>
+  <ngx-datatable
+    #orderList
+    (activate)="onRowClick($event)"
+    (scroll)="onScroll($event.offsetY)"
+    [columnMode]="ColumnMode.standard"
+    [headerHeight]="headerHeight"
+    [loadingIndicator]="isLoading"
+    [rowHeight]="rowHeight"
+    [rows]="rows"
+    [scrollbarV]="true"
+    class="material bg-white box-shadow-none border-1 server-scrolling-demo cursor-pointer"
+    reorderable="false">
+
+    <ngx-datatable-column [sortable]="false" [width]="250" name="Id" prop="id">
+      <ng-template let-id="value" ngx-datatable-cell-template>
+        {{id}}
+      </ng-template>
+    </ngx-datatable-column>
+
+    <ngx-datatable-column [sortable]="false" [width]="150" name="Customer Id" prop="customer_id">
+      <ng-template let-customer_id="value" ngx-datatable-cell-template>
+        {{customer_id}}
+      </ng-template>
+    </ngx-datatable-column>
+
+    <ngx-datatable-column [sortable]="false" [width]="100" name="Price" prop="price">
+      <ng-template let-price="value" ngx-datatable-cell-template>
+        {{price}}
+      </ng-template>
+    </ngx-datatable-column>
+
+    <ngx-datatable-column [sortable]="false" [width]="175" cellClass="text-capitalize" name="Order Status"
+                          prop="order_status">
+      <ng-template let-order_status="value" ngx-datatable-cell-template>
+        {{order_status}}
+      </ng-template>
+    </ngx-datatable-column>
+
+    <ngx-datatable-column [sortable]="false" [width]="175" cellClass="text-capitalize" name="Payment Status"
+                          prop="payment_status">
+      <ng-template let-payment_status="value" ngx-datatable-cell-template>
+        {{payment_status}}
+      </ng-template>
+    </ngx-datatable-column>
+
+    <ngx-datatable-column [sortable]="false" [width]="200" name="Creation Time" prop="created_at">
+      <ng-template let-created_at="value" ngx-datatable-cell-template>
+        {{created_at}}
+      </ng-template>
+    </ngx-datatable-column>
+
+    <ngx-datatable-column [sortable]="false" [width]="200" name="Placed Time" prop="order_placed_time">
+      <ng-template let-order_placed_time="value" ngx-datatable-cell-template>
+        {{order_placed_time || '-'}}
+      </ng-template>
+    </ngx-datatable-column>
+  </ngx-datatable>
+</div>
