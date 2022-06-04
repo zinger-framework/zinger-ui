@@ -1,198 +1,229 @@
 <breadcrumb [data]="breadCrumbData" title="Orders"></breadcrumb>
-<form (ngSubmit)="updateOrderDetails()" [formGroup]="orderDetailsForm" class="order-details">
-	<div class="bg-white rounded p-3 height-consistent">
-	  <div class="d-flex justify-content-between border-bottom">
-	    <ul #nav="ngbNav" [destroyOnHide]="false" activeId="basic-tab" class="nav-tabs border-bottom-0" ngbNav>		
-	    	<li ngbNavItem="basic-tab">
-		        <a ngbNavLink>Overview</a>
-		        <ng-template ngbNavContent>
-		          <div class="row p-3">
+
+<div class="bg-white rounded p-3 height-consistent">
+  <div class="d-flex justify-content-between border-bottom">
+    <ul #nav="ngbNav" [destroyOnHide]="false" activeId="basic-tab" class="nav-tabs border-bottom-0" ngbNav>		
+    	<li ngbNavItem="basic-tab">
+	        <a ngbNavLink>Overview</a>
+	        <ng-template ngbNavContent>
+	          <div class="row p-3">
+	            <div class="col-md-2 col-lg-2">
+	              <label class="text-primary">Customer Id</label>
+	              <br>
+	              <span>{{ data["customer_id"] || '-'  }}</span>	            	
+	            </div>
+
+	            <div class="col-md-2 col-lg-2">
+	              <label class="text-primary">Order Total</label>
+	              <br>
+	              <span>₹ {{ data["price"] }}</span>	            	
+	            </div>
+
+	            <div class="col-md-2 col-lg-2">
+	              <label class="text-primary">Order Placed Time</label>
+	              <br>
+	              <span>{{ data["order_placed_time"] || '-'  }}</span>	            	
+	            </div>
+
+	            <div class="col-md-2 col-lg-2">
+	              <label class="text-primary">Order Status</label>
+	              <br>
+	              <span class="text-capitalize">{{ data["order_status"] || '-'  }}</span>	            	
+	            </div>
+
+	            <div class="col-md-2 col-lg-2">
+	              <label class="text-primary">Payment Status</label>
+	              <br>
+	              <span class="text-capitalize">{{ data["payment_status"] || '-'  }}</span>
+	            </div>		            
+
+	            <div class="col-md-2 col-lg-2">
+	              <label class="text-primary">Order Rating</label>
+	              <br>
+	              <span>{{ data["rating"] || '-'  }}</span>	            	
+	            </div>		            
+	          </div>
+
+	          <div class="row p-3">
+	          	<div class="col-md-4 col-lg-4">
+	              <label class="text-primary">Shipping Address</label>
+	              <br>
+	              <span>{{ data["shipping_addr"]["name"] || '-'  }}</span>
+	              <br>
+	              <span>{{ data["shipping_addr"]["street"] || '-'  }}, {{ data["shipping_addr"]["area"] || '-'  }}</span>
+	              <br>
+	              <span>{{ data["shipping_addr"]["state"] || '-'  }} - {{ data["shipping_addr"]["pincode"] || '-'  }}</span>      
+	            </div>
+
+	            <div class="col-md-2 col-lg-2">
+	            </div>
+
+	            <div class="col-md-4 col-lg-4">
+	              <label class="text-primary">Billing Address</label>
+	              <br>
+	              <span>{{ data["billing_addr"]["name"] || '-'  }}</span>
+	              <br>
+	              <span>{{ data["billing_addr"]["street"] || '-'  }}, {{ data["shipping_addr"]["area"] || '-'  }}</span>
+	              <br>
+	              <span>{{ data["billing_addr"]["state"] || '-'  }} - {{ data["shipping_addr"]["pincode"] || '-'  }}</span>      
+	            </div>
+	          </div>
+
+	        </ng-template>
+    	</li>
+    	<li ngbNavItem="details-tab">
+	        <a ngbNavLink>Item</a>
+	        <ng-template ngbNavContent>
+          		<div class="row p-3">
 		            <div class="col-md-2 col-lg-2">
-		              <label class="text-primary">Customer Id</label>
-		              <br>
-		              <span>{{ data["customer_id"] || '-'  }}</span>	            	
+		              <label class="text-primary">Name</label>
 		            </div>
 
 		            <div class="col-md-2 col-lg-2">
-		              <label class="text-primary">Order Total</label>
-		              <br>
-		              <span>₹ {{ data["price"] }}</span>	            	
-		            </div>
+		              <label class="text-primary">Variant</label>
+		            </div>				            
 
 		            <div class="col-md-2 col-lg-2">
-		              <label class="text-primary">Order Placed Time</label>
-		              <br>
-		              <span>{{ data["order_placed_time"] || '-'  }}</span>	            	
-		            </div>
+		              <label class="text-primary"> Actual Price (₹)</label>
+		            </div>				            
 
 		            <div class="col-md-2 col-lg-2">
-		              <label class="text-primary">Order Status</label>
-		              <br>
-		              <span class="text-capitalize">{{ data["order_status"] || '-'  }}</span>	            	
-		            </div>
+		              <label class="text-primary"> Quantity</label>
+		            </div>	
 
 		            <div class="col-md-2 col-lg-2">
-		              <label class="text-primary">Payment Status</label>
-		              <br>
-		              <span class="text-capitalize">{{ data["payment_status"] || '-'  }}</span>
-		            </div>		            
-
-		            <div class="col-md-2 col-lg-2">
-		              <label class="text-primary">Order Rating</label>
-		              <br>
-		              <span>{{ data["rating"] || '-'  }}</span>	            	
-		            </div>		            
-		          </div>
-
-		          <div class="row p-3">
-		          	<div class="col-md-4 col-lg-4">
-		              <label class="text-primary">Shipping Address</label>
-		              <br>
-		              <span>{{ data["shipping_addr"]["name"] || '-'  }}</span>
-		              <br>
-		              <span>{{ data["shipping_addr"]["street"] || '-'  }}, {{ data["shipping_addr"]["area"] || '-'  }}</span>
-		              <br>
-		              <span>{{ data["shipping_addr"]["state"] || '-'  }} - {{ data["shipping_addr"]["pincode"] || '-'  }}</span>      
-		            </div>
-
-		            <div class="col-md-2 col-lg-2">
-		            </div>
-
-		            <div class="col-md-4 col-lg-4">
-		              <label class="text-primary">Billing Address</label>
-		              <br>
-		              <span>{{ data["billing_addr"]["name"] || '-'  }}</span>
-		              <br>
-		              <span>{{ data["billing_addr"]["street"] || '-'  }}, {{ data["shipping_addr"]["area"] || '-'  }}</span>
-		              <br>
-		              <span>{{ data["billing_addr"]["state"] || '-'  }} - {{ data["shipping_addr"]["pincode"] || '-'  }}</span>      
-		            </div>
-		          </div>
-
-		        </ng-template>
-	    	</li>
-	    	<li ngbNavItem="details-tab">
-		        <a ngbNavLink>Item</a>
-		        <ng-template ngbNavContent>
+		              <label class="text-primary"> Total Price (₹)</label>     	
+		            </div>					           
+            	</div>		        	
+	        	<ul>
+	        	 <li *ngFor="let item of data['items']">
 	          		<div class="row p-3">
-			            <div class="col-md-2 col-lg-2">
-			              <label class="text-primary">Name</label>
+			            <div class="col-md-2 col-lg-2">				            
+			              <a href="shop/{{shopId}}/item/{{item.item_id}}"><span>{{ item.name || '-'  }}</span></a>
 			            </div>
 
 			            <div class="col-md-2 col-lg-2">
-			              <label class="text-primary">Variant</label>
+			              <span>{{ item.item_variant_name || '-'  }} - {{ item.item_variant_value || '-'  }}</span>	            	
 			            </div>				            
 
 			            <div class="col-md-2 col-lg-2">
-			              <label class="text-primary"> Actual Price (₹)</label>
+			              <span>{{ item.actual_price || '-'  }}</span>	            	
 			            </div>				            
 
 			            <div class="col-md-2 col-lg-2">
-			              <label class="text-primary"> Quantity</label>
+			              <span>{{ item.quantity || '-'  }}</span>	            	
 			            </div>	
 
 			            <div class="col-md-2 col-lg-2">
-			              <label class="text-primary"> Total Price (₹)</label>     	
+			              <span>{{ item.total_price || '-'  }}</span>	            	
 			            </div>					           
-	            	</div>		        	
-		        	<ul>
-		        	 <li *ngFor="let item of data['items']">
-		          		<div class="row p-3">
-				            <div class="col-md-2 col-lg-2">				            
-				              <a href="shop/{{shopId}}/item/{{item.item_id}}"><span>{{ item.name || '-'  }}</span></a>
-				            </div>
+	            	</div>		        	 	
+	            	<hr>
+	        	 </li>
+	        	</ul>
+	        	<div class="row p-3">
+	        		<div class="col-md-6 col-lg-6">
+	        		</div>
 
-				            <div class="col-md-2 col-lg-2">
-				              <span>{{ item.item_variant_name || '-'  }} - {{ item.item_variant_value || '-'  }}</span>	            	
-				            </div>				            
+		            <div class="col-md-2 col-lg-2">				            
+		              <span><b> Total </b></span>	            	
+		            </div>
 
-				            <div class="col-md-2 col-lg-2">
-				              <span>{{ item.actual_price || '-'  }}</span>	            	
-				            </div>				            
-
-				            <div class="col-md-2 col-lg-2">
-				              <span>{{ item.quantity || '-'  }}</span>	            	
-				            </div>	
-
-				            <div class="col-md-2 col-lg-2">
-				              <span>{{ item.total_price || '-'  }}</span>	            	
-				            </div>					           
-		            	</div>		        	 	
-		            	<hr>
-		        	 </li>
-		        	</ul>
-		        	<div class="row p-3">
-		        		<div class="col-md-6 col-lg-6">
-		        		</div>
-
-			            <div class="col-md-2 col-lg-2">				            
-			              <span><b> Total </b></span>	            	
+		            <div class="col-md-2 col-lg-2">				            
+		              <span> ₹ {{ data["price"] || '-'  }}</span>	            	
+		            </div>			            		
+	        	</div>
+	        </ng-template>	    		
+    	</li>
+    	<li ngbNavItem="transaction-tab">
+	        <a ngbNavLink>Transactions</a>
+	        <ng-template ngbNavContent>
+	        	<div class="row p-3">
+			        <div class="col-md-3 col-lg-3">
+			           	<label class="text-primary">Transaction Id</label>			        		
+			        </div>
+			        <div class="col-md-2 col-lg-2">
+			           	<label class="text-primary">Status</label>			        		
+			        </div>
+			        <div class="col-md-2 col-lg-2">
+			           	<label class="text-primary">Type</label>			        		
+			        </div>
+			        <div class="col-md-2 col-lg-2">
+			           	<label class="text-primary">Payment Method</label>			        		
+			        </div>
+			        <div class="col-md-2 col-lg-2">
+			           	<label class="text-primary">Transaction Time</label>			        		
+			        </div>				        
+			        <div class="col-md-1 col-lg-1">
+			           	<label class="text-primary">Amount</label>			        		
+			        </div>				        
+	        	</div>
+				<ul>						
+				  <li *ngFor="let transaction of data['transactions']">
+	          		<div class="row p-3">
+			            <div class="col-md-3 col-lg-3">
+			              <span>{{ transaction.id || '-' }}</span>	            	
 			            </div>
 
-			            <div class="col-md-2 col-lg-2">				            
-			              <span> ₹ {{ data["price"] || '-'  }}</span>	            	
-			            </div>			            		
-		        	</div>
-		        </ng-template>	    		
-	    	</li>
-	    	<li ngbNavItem="transaction-tab">
-		        <a ngbNavLink>Transactions</a>
-		        <ng-template ngbNavContent>
-		        	<div class="row p-3">
-				        <div class="col-md-3 col-lg-3">
-				           	<label class="text-primary">Transaction Id</label>			        		
-				        </div>
-				        <div class="col-md-2 col-lg-2">
-				           	<label class="text-primary">Status</label>			        		
-				        </div>
-				        <div class="col-md-2 col-lg-2">
-				           	<label class="text-primary">Type</label>			        		
-				        </div>
-				        <div class="col-md-2 col-lg-2">
-				           	<label class="text-primary">Payment Method</label>			        		
-				        </div>
-				        <div class="col-md-2 col-lg-2">
-				           	<label class="text-primary">Transaction Time</label>			        		
-				        </div>				        
-				        <div class="col-md-1 col-lg-1">
-				           	<label class="text-primary">Amount</label>			        		
-				        </div>				        
-		        	</div>
-					<ul>						
-					  <li *ngFor="let transaction of data['transactions']">
-		          		<div class="row p-3">
-				            <div class="col-md-3 col-lg-3">
-				              <span>{{ transaction.id || '-' }}</span>	            	
-				            </div>
+			            <div class="col-md-2 col-lg-2">
+			              <span class="text-capitalize">{{ transaction.txn_status || '-' }}</span>	            	
+			            </div>	
 
-				            <div class="col-md-2 col-lg-2">
-				              <span class="text-capitalize">{{ transaction.txn_status || '-' }}</span>	            	
-				            </div>	
+			            <div class="col-md-2 col-lg-2">
+			              <span class="text-capitalize">{{ transaction.txn_type || '-' }}</span>	            	
+			            </div>					           
 
-				            <div class="col-md-2 col-lg-2">
-				              <span class="text-capitalize">{{ transaction.txn_type || '-' }}</span>	            	
-				            </div>					           
+			            <div class="col-md-2 col-lg-2">
+			              <span>{{ transaction.payment_method || '-' }}</span>	            	
+			            </div>
 
-				            <div class="col-md-2 col-lg-2">
-				              <span>{{ transaction.payment_method || '-' }}</span>	            	
-				            </div>
+			            <div class="col-md-2 col-lg-2">
+			              <span>{{ transaction.txn_time || '-' }}</span>	            	
+			            </div>
 
-				            <div class="col-md-2 col-lg-2">
-				              <span>{{ transaction.txn_time || '-' }}</span>	            	
-				            </div>
+			            <div class="col-md-1 col-lg-1">
+			              <span>{{ transaction.amount || '-' }}</span>	            	
+			            </div>
+	            	</div>
+	            	<hr>
+				  </li>
+				 </ul>		        	
+	        </ng-template>	    		
+    	</li>
+    </ul>
+    <span class="small text-light-gray pt-2 mt-2">Last updated at {{ data['updated_at'] | date: 'medium' }}</span>
+  </div>
+  <div [ngbNavOutlet]="nav"></div>
+</div>
 
-				            <div class="col-md-1 col-lg-1">
-				              <span>{{ transaction.amount || '-' }}</span>	            	
-				            </div>
-		            	</div>
-		            	<hr>
-					  </li>
-					 </ul>		        	
-		        </ng-template>	    		
-	    	</li>
-	    </ul>
-	    <span class="small text-light-gray pt-2 mt-2">Last updated at {{ data['updated_at'] | date: 'medium' }}</span>
-	  </div>
-	  <div [ngbNavOutlet]="nav"></div>
-	</div>
-</form>
+<ngb-accordion #accordion="ngbAccordion" *ngIf="['placed', 'delivery_pending'].includes(data['order_status'])" [destroyOnHide]="false" activeIds="ngb-panel-0">
+  <ngb-panel *ngIf="!data['deleted']" cardClass="mt-4" id="updateStatusPanel">
+    <ng-template class="panel-header" let-opened="opened" ngbPanelHeader>
+      <accordion-header [accordion]="accordion" [opened]="opened" [panelId]="'updateStatusPanel'"
+                        title='Update Status'></accordion-header>
+    </ng-template>
+    <ng-template ngbPanelContent>
+    	<div [ngSwitch]="data['order_status']" class="row">
+        <div *ngSwitchCase="'placed'" class="row col-6">
+          <div class="col-6">
+            <button (click)="updateOrderStatus('delivery_pending')" class="btn btn-outline-primary btn-block" type="button">
+            	Delivery Pending
+            </button>            
+          </div>
+          <div class="col-6">
+            <button (click)="updateOrderStatus('cancelled')" class="btn btn-primary btn-block" type="button">
+            	Cancelled
+            </button>
+          </div>
+        </div>
+        <div *ngSwitchCase="'delivery_pending'" class="row col-6">
+          <div class="col-6">
+            <button (click)="updateOrderStatus('delivered')" class="btn btn-primary btn-block" type="button">
+            	Delivered
+            </button>           
+          </div>
+        </div>        
+      </div>
+    </ng-template>
+  </ngb-panel>	
+</ngb-accordion>

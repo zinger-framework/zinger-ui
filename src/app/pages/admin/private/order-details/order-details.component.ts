@@ -44,21 +44,29 @@ export class OrderDetailsComponent extends BaseComponent {
   }
 
   ngOnInit(): void {
-  	console.log("I am here")
+  	this.getOrderDetails()
+  }
+
+  getOrderDetails() {
     this.orderService.getOrderDetails(this.shopId, this.orderId)
       .then(response => {
         this.data = response['data']['order']
-        console.log(this.data)
       })
       .catch(error => {
-        this.toastr.error(error['error']['message']);
-        // TODO Redirect to list of shops
+        this.toastr.error(error['error']['message']);       
         this.router.navigate([APP_ROUTES.DASHBOARD])
-      })
+      })  	
   }
 
-
-  updateOrderDetails() {
-
+  updateOrderStatus(status) {
+  	let requestBody = {'order_status': status}
+    this.orderService.updateOrderDetails(this.shopId, this.orderId, requestBody)
+      .then(response => {
+        this.getOrderDetails()
+      })
+      .catch(error => {
+        this.toastr.error(error['error']['message']);       
+        this.router.navigate([APP_ROUTES.DASHBOARD])
+      })  	
   }
 }
