@@ -36,7 +36,6 @@ export class OrderDetailsComponent extends BaseComponent {
         {label: String(this.orderId), link: ``}
       )
     });
-
     this.orderDetailsForm = this.fb.group({
     	order_status: new ExtendedFormControl('', [], 'order_status'),
     	className: 'order-details'
