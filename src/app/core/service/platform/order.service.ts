@@ -17,9 +17,4 @@ export class OrderService extends PlatformService {
     let url = `${API_ENDPOINTS.SHOP}/${String(shopId)}/${API_ENDPOINTS.ORDER}/${orderId}`
     return this.get(url);
   }
-
-  updateOrderDetails(shopId, orderId, requestBody) {
-    let url = `${API_ENDPOINTS.SHOP}/${String(shopId)}/${API_ENDPOINTS.ORDER}/${orderId}`
-    return this.put(url, requestBody);
-  }
 }
