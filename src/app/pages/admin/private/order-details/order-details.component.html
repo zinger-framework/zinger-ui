@@ -1,8 +1,8 @@
 <breadcrumb [data]="breadCrumbData" title="Orders"></breadcrumb>
 <div class="bg-white rounded p-3 height-consistent">
   <div class="d-flex justify-content-between border-bottom">
-    <ul #nav="ngbNav" [destroyOnHide]="false" activeId="basic-tab" class="nav-tabs border-bottom-0" ngbNav>		
-    	<li ngbNavItem="basic-tab">
+    <ul #nav="ngbNav" [destroyOnHide]="false" activeId="overview-tab" class="nav-tabs border-bottom-0" ngbNav>		
+    	<li ngbNavItem="overview-tab">
 	        <a ngbNavLink>Overview</a>
 	        <ng-template ngbNavContent>
 	          <div class="row p-3">
@@ -61,7 +61,7 @@
 	          </div>
 	        </ng-template>
     	</li>
-    	<li ngbNavItem="details-tab">
+    	<li ngbNavItem="item-tab">
 	        <a ngbNavLink>Item</a>
 	        <ng-template ngbNavContent>
           		<div class="row p-3">
